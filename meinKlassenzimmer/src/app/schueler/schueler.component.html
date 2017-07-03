@@ -1,0 +1,21 @@
+<div>
+<label>Neuen Schüler hinzufügen:</label>
+<div class ="schuelerHinzufuegen">
+  <label>Vorname: </label>
+  <input #neuerSchuelerVorname />
+  <label>Name: </label>
+  <input #neuerSchuelerName />
+  <button type="button" class="btn btn-primary" 
+      (click)="add(neuerSchuelerVorname.value, neuerSchuelerName.value); neuerSchuelerVorname.value='';neuerSchuelerName.value=''">
+            Hinzufügen
+          </button>
+</div>
+
+</div>
+<ol class="schuelerListe">
+  <li *ngFor="let schueler of schuelerToKlasse">
+    <span>{{schueler.vorname}}</span>
+    <span>{{schueler.name}}</span>
+    <span><button type = "button" class = "btn btn-secondary">x</button></span>
+  </li>
+</ol>

@@ -1,0 +1,16 @@
+<app-header></app-header>
+<div class="sitzordnung">
+  <div>
+    <h4>Sitzordnung</h4>
+  </div>
+  <div>
+    <p>
+      Wähle Klasse aus:
+    </p>
+  </div>
+  <div class="dropdownKlassen">
+    <select name="klassen">
+    <option *ngFor = "let klasse of klassen" value = "klasse">{{klasse.name}}</option>
+  </select>
+  </div>
+</div>

@@ -1,3 +1,7 @@
+.navigation-oben{
+  size: 50px;
+  color: #23282e;
+}
 .nav-side-menu {
   overflow: auto;
   font-family: verdana;
@@ -5,7 +9,7 @@
   font-weight: 200;
   background-color: #2e353d;
   position: fixed;
-  top: 0px;
+  top: 0rem;
   width: 300px;
   height: 100%;
   color: #e1ffff;
@@ -22,7 +26,7 @@
   list-style: none;
   padding: 0px;
   margin: 0px;
-  line-height: 50px;
+  line-height: 4rem;
   cursor: pointer;
   
 }

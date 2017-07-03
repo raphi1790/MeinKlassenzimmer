@@ -1,0 +1,17 @@
+<app-header></app-header>
+<div class="container-fluid-offset">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" (click) ="showKlassen = true">Klassen</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click) ="showKlassen = false">Schulzimmer</a>
+    </li>
+  </ul>
+</div>
+<div class="klassen" *ngIf = "showKlassen === true">
+  <app-klassen></app-klassen>
+</div>
+<div class="schulzimmer" *ngIf = "showKlassen === false">
+  <app-schulzimmer></app-schulzimmer>
+</div>
