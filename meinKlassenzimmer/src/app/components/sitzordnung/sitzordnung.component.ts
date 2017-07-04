@@ -1,9 +1,9 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 
-import {Klasse} from '../models/klasse';
-import {Schueler} from '../models/schueler';
+import {Klasse} from 'app/models/klasse';
+import {Schueler} from 'app/models/schueler';
 import {KlassenComponent } from '../klassen/klassen.component';
-import {KlassenService} from '../klassen.service';
+import {KlassenService} from 'app/services/klassen.service';
 
 @Component({
   selector: 'app-zuordnung',

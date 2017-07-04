@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ZuordnungComponent} from '../zuordnung/zuordnung.component';
+import {SitzordnungComponent} from '../sitzordnung/sitzordnung.component';
 
 @Component({
   selector: 'app-wrapper',

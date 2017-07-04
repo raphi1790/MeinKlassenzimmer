@@ -1,8 +1,8 @@
 import { Component, OnInit ,Input, OnChanges} from '@angular/core';
 
-import {Klasse} from '../models/klasse';
-import {Schueler} from '../models/schueler';
-import {SchuelerService} from '../schueler.service'
+import {Klasse} from 'app/models/klasse';
+import {Schueler} from 'app/models/schueler';
+import {SchuelerService} from 'app/services/schueler.service'
 
 @Component({
   selector: 'app-schueler',

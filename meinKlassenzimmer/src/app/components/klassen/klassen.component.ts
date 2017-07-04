@@ -1,10 +1,10 @@
 import { Component, OnInit, Input , OnChanges} from '@angular/core';
 import { Router }            from '@angular/router';
 
-import {Klasse} from '../models/klasse';
-import {Schueler} from '../models/schueler';
-import {KlassenService} from '../klassen.service';
-import {SchuelerService} from '../schueler.service';
+import {Klasse} from 'app/models/klasse';
+import {Schueler} from 'app/models/schueler';
+import {KlassenService} from 'app/services/klassen.service';
+import {SchuelerService} from 'app/services/schueler.service';
 
 @Component({
   selector: 'app-klassen',

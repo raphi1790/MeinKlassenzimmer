@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Klasse } from './models/klasse';
+import { Klasse } from '../models/klasse';
 
 @Injectable()
 export class KlassenService {

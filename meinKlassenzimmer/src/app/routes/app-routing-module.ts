@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes}from '@angular/router';
 
-import {VerwaltungComponent} from './verwaltung/verwaltung.component';
-import {KlassenComponent} from './klassen/klassen.component';
-import {SchulzimmerComponent} from'./schulzimmer/schulzimmer.component';
-import {SitzordnungComponent} from './sitzordnung/sitzordnung.component'
-import {StartseiteComponent} from './startseite/startseite.component';
+import {VerwaltungComponent} from '../components/verwaltung/verwaltung.component';
+import {KlassenComponent} from '../components/klassen/klassen.component';
+import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.component';
+import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
+import {StartseiteComponent} from '../components/startseite/startseite.component';
 
 const routes: Routes = [
       
