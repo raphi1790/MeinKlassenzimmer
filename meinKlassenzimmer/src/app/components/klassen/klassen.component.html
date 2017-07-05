@@ -5,28 +5,29 @@
         <h3>Klassen</h3>
         <div>
           <label>Neue Klasse hinzufügen:</label> <input #neueKlasse />
-          <button type = "button" class ="btn btn-primary"  (click)="add(neueKlasse.value); neueKlasse.value=''">
+          <button type="button" class="btn btn-primary" (click)="add(neueKlasse.value); neueKlasse.value=''">
             Hinzufügen
           </button>
         </div>
         <ol class="klassen">
-          <li *ngFor="let klasse of klassenToPerson"  (click)="onSelect(klasse)" [class.selected]="klasse === selectedKlasse">
+          <li *ngFor="let klasse of klassenToPerson" (click)="onSelect(klasse)" [class.selected]="klasse === selectedKlasse">
             <span><button type ="button" class = "btn btn-success">{{klasse.name}}</button></span>
             <span><button type = "button" class = "btn btn-secondary">x</button></span>
           </li>
         </ol>
       </div>
-      <button type ="button" class = "btn btn-primary">Speichern</button>
+
+      <button type="button" class="btn btn-primary">Speichern</button>
     </div>
     <div class="col-md-6">
       <div class="column2">
-        <div class="schueler" *ngIf ="selectedKlasse">
-        <h3>Schueler der Klasse {{selectedKlasse.name}}</h3>
-        <div class = "schuelerListe">
-          <app-schueler [klassenId]="selectedKlasse.id"  [schuelerToPerson]="schuelerToPerson"></app-schueler>
+        <div class="schueler" *ngIf="selectedKlasse">
+          <h3>Schueler der Klasse {{selectedKlasse.name}}</h3>
+          <div class="schuelerListe">
+            <app-schueler [klassenId]="selectedKlasse.id" [schuelerToPerson]="schuelerToPerson"></app-schueler>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>

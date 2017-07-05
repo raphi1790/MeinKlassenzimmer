@@ -22,6 +22,8 @@ import { StartseiteComponent } from './components/startseite/startseite.componen
 import { KlassenService} from './services/klassen.service';
 import { SchuelerService} from './services/schueler.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
+import {InlineEditorModule} from 'ng2-inline-editor';
+import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
 
 @NgModule({
   declarations: [
@@ -34,14 +36,17 @@ import { SchuelerComponent } from './components/schueler/schueler.component';
     SitzordnungComponent,
     WrapperComponent,
     StartseiteComponent,
-    SchuelerComponent
+    SchuelerComponent,
+    InlineEditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    InlineEditorModule
   ],
   providers: [KlassenService, SchuelerService, KlassenComponent],
   bootstrap: [AppComponent]

@@ -4,6 +4,8 @@ import {Klasse} from 'app/models/klasse';
 import {Schueler} from 'app/models/schueler';
 import {SchuelerService} from 'app/services/schueler.service'
 
+
+
 @Component({
   selector: 'app-schueler',
   templateUrl: './schueler.component.html',
@@ -16,6 +18,7 @@ export class SchuelerComponent implements OnChanges {
 
     schuelerToKlasse: Schueler[];
     neuerSchueler: Schueler;
+ 
 
 
   constructor(private schuelerService : SchuelerService) { }
@@ -42,8 +45,7 @@ export class SchuelerComponent implements OnChanges {
     console.log(this.klassenid);
     this.getSchuelerToKlasse(this.klassenid);
 
-
-    
   }
+
 
 }
