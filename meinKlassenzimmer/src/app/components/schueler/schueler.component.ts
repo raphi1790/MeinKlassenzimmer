@@ -2,7 +2,7 @@ import { Component, OnInit ,Input, OnChanges} from '@angular/core';
 
 import {Klasse} from 'app/models/klasse';
 import {Schueler} from 'app/models/schueler';
-import {SchuelerService} from 'app/services/schueler.service'
+import {KlassenService} from 'app/services/klassen.service'
 
 
 
@@ -21,7 +21,7 @@ export class SchuelerComponent implements OnChanges {
  
 
 
-  constructor(private schuelerService : SchuelerService) { }
+  constructor(private KlassenService : KlassenService) { }
 
 
     getSchuelerToKlasse(id: number):void{
@@ -35,7 +35,7 @@ export class SchuelerComponent implements OnChanges {
     if (!name || !vorname) { console.log("error name");return; }
     console.log("error name")
 
-    this.schuelerService.create(vorname, name)
+    this.KlassenService.createSchueler(vorname, name)
       .then(schueler => 
         this.schuelerToKlasse.push(schueler)
       );

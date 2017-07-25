@@ -1,3 +1,40 @@
-<p>
-  schulzimmer works!
-</p>
+<app-header></app-header>
+<app-navbar ></app-navbar>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="column1">
+        <h3>Schulzimmer</h3>
+        <div>
+          <label>Neues Schulzimmer hinzufügen:</label> <input #neuesSchulzimmer />
+          <button type="button" class="btn btn-primary" (click)="add(neuesSchulzimmer.value); neuesSchulzimmer.value=''">
+            Hinzufügen
+          </button>
+        </div>
+        <div class="schulzimmerListe">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th>Schulzimmer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let schulzimmer of schulzimmerToPerson">
+                <td><span><button type ="button" class = "btn btn-success" (click)="onSelect(schulzimmer)" [class.selected]="schulzimmer === selectedSchulzimmer">{{schulzimmer.name}}</button></span>                  </td>
+                <i class="fa fa-pencil fa-lg" ></i>
+                <td><span><button type = "button" class = "btn btn-secondary">X</button></span> </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary">Speichern</button>
+    </div>
+    <div class="col-md-8">
+      <div class="column2">
+      </div>
+    </div>
+  </div>
+</div>

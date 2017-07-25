@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && node server.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -21,10 +21,13 @@
     "@angular/platform-browser": "^4.2.2",
     "@angular/platform-browser-dynamic": "^4.2.2",
     "@angular/router": "^4.2.2",
-    "angular-in-memory-web-api": "~0.3.2",
+    "axios": "^0.16.2",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
+    "express": "^4.15.3",
     "font-awesome": "^4.7.0",
+    "md5": "^2.2.1",
+    "mysql": "^2.13.0",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
   },

@@ -4,7 +4,6 @@ import { Router }            from '@angular/router';
 import {Klasse} from 'app/models/klasse';
 import {Schueler} from 'app/models/schueler';
 import {KlassenService} from 'app/services/klassen.service';
-import {SchuelerService} from 'app/services/schueler.service';
 
 @Component({
   selector: 'app-klassen',
@@ -15,35 +14,29 @@ export class KlassenComponent implements OnInit {
 
  @Input() personid: number
 
-  constructor(private klassenService: KlassenService, private schuelerService : SchuelerService) { }
+  constructor(private klassenService: KlassenService) { }
 
   klassenToPerson: Klasse[];
   selectedKlasse: Klasse;
   schuelerToPerson: Schueler[];
 
-  getKlassenToPerson():Klasse[] {
-    this.klassenService.getKlassenByPersonid().then(klassen => this.klassenToPerson = klassen);
-    return this.klassenToPerson;
-  }
-  getSchuelerToPerson(): Schueler[]{
-    this.schuelerService.getSchuelerByPersonid()
+  getKlassenToPerson():void {
+    this.klassenService.getKlassenByPersonid()
     .then(
-      schueler =>
-       this.schuelerToPerson = schueler );
-       return this.schuelerToPerson;
-  
-  } 
+        klassen => 
+            this.klassenToPerson = klassen);
+    console.log("service1");
+  }
 
    onSelect(klasse: Klasse): void {
     this.selectedKlasse = klasse;
 
-    
   }
 
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
-    this.klassenService.create(name)
+    this.klassenService.createKlasse(name)
       .then(klasse => {
         this.klassenToPerson.push(klasse);
         this.selectedKlasse = null;
@@ -52,7 +45,6 @@ export class KlassenComponent implements OnInit {
 
   ngOnInit(){
     this.getKlassenToPerson();
-    this.getSchuelerToPerson();
   }
 
 }

@@ -1,6 +1,8 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="column1">
         <h3>Klassen</h3>
         <div>
@@ -9,17 +11,31 @@
             Hinzufügen
           </button>
         </div>
-        <ol class="klassen">
-          <li *ngFor="let klasse of klassenToPerson" (click)="onSelect(klasse)" [class.selected]="klasse === selectedKlasse">
-            <span><button type ="button" class = "btn btn-success">{{klasse.name}}</button></span>
-            <span><button type = "button" class = "btn btn-secondary">x</button></span>
-          </li>
-        </ol>
+        <div class="klassenListe">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th>Klasse</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let klasse of klassenToPerson">
+
+                <td><span><button type ="button" class = "btn btn-success" (click)="onSelect(klasse)" [class.selected]="klasse === selectedKlasse">{{klasse.name}}</button></span></td>
+                <td>
+                <i class="fa fa-pencil fa-lg" ></i>
+                </td>
+                <td><span><button type = "button" class = "btn btn-secondary">X</button></span> </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <button type="button" class="btn btn-primary">Speichern</button>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
       <div class="column2">
         <div class="schueler" *ngIf="selectedKlasse">
           <h3>Schueler der Klasse {{selectedKlasse.name}}</h3>

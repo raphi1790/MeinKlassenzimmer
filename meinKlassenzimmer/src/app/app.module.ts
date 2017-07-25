@@ -6,8 +6,6 @@ import { RouterModule }from '@angular/router';
 
 import { AppRoutingModule} from './routes/app-routing-module';
 
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './in-memory-data.service';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -20,10 +18,12 @@ import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.compo
 import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { StartseiteComponent } from './components/startseite/startseite.component'
 import { KlassenService} from './services/klassen.service';
-import { SchuelerService} from './services/schueler.service';
+import { SchulzimmerService} from './services/schulzimmer.service';
+
 import { SchuelerComponent } from './components/schueler/schueler.component';
-import {InlineEditorModule} from 'ng2-inline-editor';
+import { InlineEditorModule} from 'ng2-inline-editor';
 import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -37,18 +37,18 @@ import { InlineEditComponent } from './components/inline-edit/inline-edit.compon
     WrapperComponent,
     StartseiteComponent,
     SchuelerComponent,
-    InlineEditComponent
+    InlineEditComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule,
     FormsModule,
     InlineEditorModule
   ],
-  providers: [KlassenService, SchuelerService, KlassenComponent],
+  providers: [KlassenService,SchulzimmerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
