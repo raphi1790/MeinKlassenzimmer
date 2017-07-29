@@ -21,12 +21,11 @@ export class KlassenService {
   getKlassenByPersonid(): Promise<Klasse[]> {
 	
     return this.http.get(this.klassenUrl)
-    .map(response => {
-			return response.json() || {success: false, message: "No response from server"};
-    })
-    .catch((error: Response | any) => {
-			return Observable.throw(error.json());
-		}).toPromise();
+      .toPromise()
+      .then(
+        response => 
+          response.json().data as Klasse[])
+      .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
