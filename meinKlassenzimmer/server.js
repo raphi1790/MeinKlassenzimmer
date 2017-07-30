@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const md5 = require('MD5');
 const rest = require("./server/routes/api.js");
+var CONFIG = require('./config.json');
 
 function REST(){
     var self = this;
@@ -18,10 +19,10 @@ REST.prototype.connectMysql = function() {
     var self = this;
     var pool      =    mysql.createPool({
         connectionLimit : 100,
-        host     : 'localhost',
-        user     : 'root',
-        password : '*',
-        database : 'MeinKlassenzimmerDb',
+        host     : CONFIG.host,
+        user     : CONFIG.user,
+        password : CONFIG.password,
+        database : CONFIG.database,
         debug    :  false
     });
     pool.getConnection(function(err,connection){
