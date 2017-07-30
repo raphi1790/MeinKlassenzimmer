@@ -23,8 +23,15 @@ export class KlassenService {
     return this.http.get(this.klassenUrl)
       .toPromise()
       .then(
-        response => 
-          response.json().data as Klasse[])
+        response =>
+          {
+          debugger;
+          let responseObject = response.json();
+          if (responseObject.Klasse) {
+            return responseObject.Klasse as Klasse[];
+          } 
+          return [];
+          }) 
       .catch(this.handleError);
   }
 
@@ -52,7 +59,7 @@ export class KlassenService {
   }
 
     createSchueler(vorname: string, name: string): Promise<Schueler> {
-    return this.http
+    return this.http 
       .post(this.schuelerUrl, JSON.stringify({vorname: vorname, name: name}), {headers: this.headers})
       .toPromise()
       .then(res => res.json().data as Schueler)
