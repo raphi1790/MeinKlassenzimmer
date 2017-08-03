@@ -6,8 +6,8 @@
       <div class="column1">
         <h3>Klassen</h3>
         <div>
-          <label>Neue Klasse hinzufügen:</label> <input #neueKlasse />
-          <button type="button" class="btn btn-primary" (click)="add(neueKlasse.value); neueKlasse.value=''">
+          <label>Neue Klasse hinzufügen:</label> <input  #neueKlasse />
+          <button type="button" class="btn btn-primary" (click)="addKlasseTmp(neueKlasse.value); neueKlasse.value=''">
             Hinzufügen
           </button>
         </div>
@@ -20,20 +20,15 @@
             </thead>
             <tbody>
               <tr *ngFor="let klasse of klassenToPerson">
-
                 <td><span><button type ="button" class = "btn btn-success" (click)="onSelect(klasse)" [class.selected]="klasse === selectedKlasse">{{klasse.name}}</button></span></td>
-                <td>
-                <i class="fa fa-pencil fa-lg" ></i>
-                </td>
-                <td><span><button type = "button" class = "btn btn-secondary">X</button></span> </td>
-
+                <td><span><button type = "button" class = "btn btn-secondary" (click) ="deleteKlasseTmp(klasse); $event.stopPropagation()">X</button></span> </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <button type="button" class="btn btn-primary">Speichern</button>
+      <button type="button" class="btn btn-primary" [disabled]="!savingIsActiv()" (click) ="save()">Speichern</button>
     </div>
     <div class="col-md-8">
       <div class="column2">

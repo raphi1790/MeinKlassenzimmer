@@ -24,6 +24,31 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, md5) {
         });
     });
 
+    router.post("/klassen", function (req, res) {
+        var query = "INSERT INTO ??(??,??) VALUES (?,?)";
+        var table = ["klassen", "personid", "name",  req.body.personid,req.body.name];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing adding of Klasse query" });
+            } else {
+                res.json({"Message": "Klasse added", "KlassenId": rows.insertId});
+            }
+        });
+    });
+     router.delete("/klassen/:id", function (req, res) {
+        var query = "DELETE from ?? WHERE ??=?";
+        var table = ["klassen", "id", req.params.id];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing MySQL query" });
+            } else {
+                res.json({ "Error": false, "Message": "Deleted Klasse with ID " + req.params.id });
+            }
+        });
+    });
+
     router.get("/heroes/:id", function (req, res) {
         var query = "SELECT * FROM ?? WHERE ??=?";
         var table = ["heroes", "id", req.params.id];
@@ -37,18 +62,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, md5) {
         });
     });
 
-    router.post("/heroes", function (req, res) {
-        var query = "INSERT INTO ??(??,??) VALUES (?,?)";
-        var table = ["heroes", "id", "name", req.body.id, req.body.name];
-        query = mysql.format(query, table);
-        connection.query(query, function (err, rows) {
-            if (err) {
-                res.json({ "Error": true, "Message": "Error executing MySQL query" });
-            } else {
-                res.json({ "Error": false, "Message": "Hero Added !" });
-            }
-        });
-    });
+
 
     router.put("/heroes", function (req, res) {
         var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
@@ -63,18 +77,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, md5) {
         });
     });
 
-    router.delete("/heroes/:id", function (req, res) {
-        var query = "DELETE from ?? WHERE ??=?";
-        var table = ["heroes", "id", req.params.id];
-        query = mysql.format(query, table);
-        connection.query(query, function (err, rows) {
-            if (err) {
-                res.json({ "Error": true, "Message": "Error executing MySQL query" });
-            } else {
-                res.json({ "Error": false, "Message": "Deleted Hero with ID " + req.params.id });
-            }
-        });
-    });
+   
 }
 
 module.exports = REST_ROUTER;

@@ -19,7 +19,6 @@ export class KlassenService {
   constructor(private http: Http) { }
 
   getKlassenByPersonid(): Promise<Klasse[]> {
-	
     return this.http.get(this.klassenUrl)
       .toPromise()
       .then(
@@ -40,13 +39,39 @@ export class KlassenService {
     return Promise.reject(error.message || error);
   }
 
-  createKlasse(name: string): Promise<Klasse> {
+
+
+  createKlasseToPersonid( neueKlasse: Klasse): Promise<Klasse> {
     return this.http
-      .post(this.klassenUrl, JSON.stringify({name: name}), {headers: this.headers})
+      .post(this.klassenUrl, JSON.stringify({personid: neueKlasse.personid, name:neueKlasse.name}), {headers: this.headers})
       .toPromise()
-      .then(res => res.json().data as Klasse)
+      .then(
+        response =>
+          {
+          debugger;
+          let responseObject = response.json();
+          if (responseObject.Klasse) {
+            return responseObject.Klasse as Klasse;
+          } 
+          return [];
+          }) 
       .catch(this.handleError);
   }
+   
+    deleteKlasseToPersonid( deletedKlasseid: number): Promise<void> {
+      const url = `${this.klassenUrl}/${deletedKlasseid}`
+      return this.http
+        .delete(url,  {headers: this.headers})
+        .toPromise()
+        .then(
+          response =>
+            {
+            debugger;
+            let responseObject = response.json();
+            return [];
+            }) 
+        .catch(this.handleError);
+    }
 
   getSchuelerByKlassenid(id:number[]): Promise<Schueler[]> {
     console.log(id[0] +"service");
