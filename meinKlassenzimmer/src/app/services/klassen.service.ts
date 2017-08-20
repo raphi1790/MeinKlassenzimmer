@@ -40,7 +40,6 @@ export class KlassenService {
   }
 
 
-
   createKlasseToPersonid( neueKlasse: Klasse): Promise<Klasse> {
     return this.http
       .post(this.klassenUrl, JSON.stringify({personid: neueKlasse.personid, name:neueKlasse.name}), {headers: this.headers})
@@ -73,22 +72,52 @@ export class KlassenService {
         .catch(this.handleError);
     }
 
-  getSchuelerByKlassenid(id:number[]): Promise<Schueler[]> {
-    console.log(id[0] +"service");
+  getSchuelerByPersonid():Promise<Schueler[]> {
     return this.http.get(this.schuelerUrl)
       .toPromise()
       .then(
-        response => 
-          response.json().data as Schueler[])
+        response =>
+          {
+          debugger;
+          let responseObject = response.json();
+          if (responseObject.Schueler) {
+            return responseObject.Schueler as Schueler[];
+          } 
+          return [];
+          }) 
       .catch(this.handleError);
   }
 
-    createSchueler(vorname: string, name: string): Promise<Schueler> {
-    return this.http 
-      .post(this.schuelerUrl, JSON.stringify({vorname: vorname, name: name}), {headers: this.headers})
+    createSchuelerToKlassenid( neuerSchueler: Schueler): Promise<Schueler> {
+    return this.http
+      .post(this.schuelerUrl, JSON.stringify({klassenid: neuerSchueler.klassenid, vorname:neuerSchueler.vorname, name:neuerSchueler.name}), {headers: this.headers})
       .toPromise()
-      .then(res => res.json().data as Schueler)
+      .then(
+        response =>
+          {
+          debugger;
+          let responseObject = response.json();
+          if (responseObject.Schueler) {
+            return responseObject.Schueler as Schueler;
+          } 
+          return [];
+          }) 
       .catch(this.handleError);
   }
+
+      deleteSchuelerToKlassenid( deletedSchuelerid: number): Promise<void> {
+      const url = `${this.schuelerUrl}/${deletedSchuelerid}`
+      return this.http
+        .delete(url,  {headers: this.headers})
+        .toPromise()
+        .then(
+          response =>
+            {
+            debugger;
+            let responseObject = response.json();
+            return [];
+            }) 
+        .catch(this.handleError);
+    }
 
 }

@@ -27,11 +27,17 @@ export class KlassenComponent implements OnInit {
 
 
 
-  getKlassenToPerson():void {
+  getKlassenAndSchuelerToPerson():void {
     this.klassenService.getKlassenByPersonid()
     .then(
         klassen => 
             this.klassenToPerson = klassen);
+     debugger;       
+    this.klassenService.getSchuelerByPersonid()
+    .then(
+      schueler =>
+            this.schuelerToPerson = schueler);
+            
   }
 
    onSelect(klasse: Klasse): void {
@@ -94,7 +100,7 @@ export class KlassenComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.getKlassenToPerson();
+    this.getKlassenAndSchuelerToPerson();
   }
 
 }

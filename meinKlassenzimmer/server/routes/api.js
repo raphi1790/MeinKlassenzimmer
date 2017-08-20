@@ -49,15 +49,40 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, md5) {
         });
     });
 
-    router.get("/heroes/:id", function (req, res) {
-        var query = "SELECT * FROM ?? WHERE ??=?";
-        var table = ["heroes", "id", req.params.id];
+    router.get("/schueler", function (req, res) {
+        var query = "SELECT * FROM ??";
+        var table = ["schueler"];
         query = mysql.format(query, table);
         connection.query(query, function (err, rows) {
             if (err) {
                 res.json({ "Error": true, "Message": "Error executing MySQL query" });
             } else {
-                res.json({ "Error": false, "Message": "Success", "Hero": rows });
+                res.json({ "Error": false, "Message": "Success", "Schueler": rows });
+            }
+        });
+    });
+    router.post("/schueler", function (req, res) {
+        var query = "INSERT INTO ??(??,??,??) VALUES (?,?,?)";
+        var table = ["schueler", "klassenid", "vorname", "name",  req.body.klassenid,req.body.vorname,req.body.name];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing adding of Schueler query", "Original":err });
+            } else {
+                res.json({"Message": "Schueler added", "SchuelerId": rows.insertId});
+            }
+        });
+    });
+
+    router.delete("/schueler/:id", function (req, res) {
+        var query = "DELETE from ?? WHERE ??=?";
+        var table = ["schueler", "id", req.params.id];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing MySQL query" });
+            } else {
+                res.json({ "Error": false, "Message": "Deleted Schueler with ID " + req.params.id });
             }
         });
     });

@@ -5,9 +5,9 @@
     <input #neuerSchuelerVorname />
     <label>Name: </label>
     <input #neuerSchuelerName />
-    <button type="button" class="btn btn-primary" (click)="add(neuerSchuelerVorname.value, neuerSchuelerName.value); neuerSchuelerVorname.value='';neuerSchuelerName.value=''">
+    <button type="button" class="btn btn-primary" (click)="addSchuelerTmp(neuerSchuelerVorname.value, neuerSchuelerName.value); neuerSchuelerVorname.value='';neuerSchuelerName.value=''">
             Hinzufügen
-          </button>
+      </button>
   </div>
 
 
@@ -21,11 +21,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let schueler of schuelerToKlasse">
-          <td><app-inline-edit [(ngModel)]="schueler.vorname" label="Vorname" [required]="true" type="text">
-              {{schueler.vorname}} </app-inline-edit></td>
-          <td><app-inline-edit [(ngModel)]="schueler.name" label="Name" [required]="true" type="text">
-              {{schueler.name}} </app-inline-edit></td>
+          <td>{{schueler.vorname}}</td>
+          <td>{{schueler.name}} </td>
+          <td><span><button type = "button" class = "btn btn-secondary" (click) ="deleteSchuelerTmp(schueler); $event.stopPropagation()">X</button></span> </td>
         </tr>
       </tbody>
     </table>
   </div>
+  <button type="button" class="btn btn-primary" [disabled]="!savingSchuelerIsActiv()" (click) ="saveSchueler()">Speichern</button>

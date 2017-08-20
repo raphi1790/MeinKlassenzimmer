@@ -18,32 +18,82 @@ export class SchuelerComponent implements OnChanges {
 
     schuelerToKlasse: Schueler[];
     neuerSchueler: Schueler;
+    neueSchuelerTmp:  Schueler[] = new Array();
+    deletedSchuelerTmp: Schueler[] = new Array();
+    savingIsActive: boolean;
  
 
 
-  constructor(private KlassenService : KlassenService) { }
+  constructor(private klassenService : KlassenService) { }
 
 
-    getSchuelerToKlasse(id: number):void{
+    getSchuelerToKlassenid(id: number):void{
       console.log(id);
-        this.schuelerToKlasse = this.schuelerToPerson.filter(item => item.klassenid === id )
+      debugger;
+        this.schuelerToKlasse = this.schuelerToPerson.filter(
+            item => 
+              item.klassenid === id )
       
   }
- add(vorname: string, name:string): void {
+
+   addSchuelerTmp(vorname: string, name:string):void {
     vorname = vorname.trim();
     name = name.trim();
-    if (!name || !vorname) { console.log("error name");return; }
-    console.log("error name")
-
-    this.KlassenService.createSchueler(vorname, name)
-      .then(schueler => 
-        this.schuelerToKlasse.push(schueler)
-      );
+    var neuerSchuelerTmp = new Schueler(this.klassenid,vorname,name);
+    this.neueSchuelerTmp.push(neuerSchuelerTmp);
+    this.schuelerToKlasse.push(neuerSchuelerTmp);
+    neuerSchuelerTmp = null;
   }
+  deleteSchuelerTmp(schueler:Schueler):void{
+    this.deletedSchuelerTmp.push(schueler);
+    this.schuelerToKlasse = this.schuelerToKlasse.filter(k => k!== schueler);
+  }
+
+  saveSchueler(): void {
+    debugger;
+    if (this.neueSchuelerTmp.length > 0) {
+      for (let schueler of this.neueSchuelerTmp){
+        debugger;
+         this.klassenService.createSchuelerToKlassenid(schueler);
+       };
+       this.neueSchuelerTmp = null;
+    } 
+    if (this.deletedSchuelerTmp.length > 0){
+      for (let schueler of this.deletedSchuelerTmp){
+         this.klassenService.deleteSchuelerToKlassenid(schueler.id);
+       };
+       this.deletedSchuelerTmp = null;
+    }
+    
+  }
+  
+  savingSchuelerIsActiv(): boolean{
+    if (this.needSaving()){
+      return this.savingIsActive = true;
+    }
+    else{
+      return this.savingIsActive = false;
+    }
+  }
+
+  private needSaving(): boolean{
+    if ((this.neueSchuelerTmp == null || this.neueSchuelerTmp.length == 0 )
+      && (this.deletedSchuelerTmp == null || this.deletedSchuelerTmp.length == 0))
+      {
+        return false;
+      }
+     else{
+       return true;
+     } 
+      
+  }
+  
+
 
   ngOnChanges() {
     console.log(this.klassenid);
-    this.getSchuelerToKlasse(this.klassenid);
+    this.getSchuelerToKlassenid(this.klassenid);
+    
 
   }
 

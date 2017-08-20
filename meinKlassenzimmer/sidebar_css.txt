@@ -1,0 +1,64 @@
+.navigation-oben{
+  size: 50px;
+  color: #23282e;
+}
+.nav-side-menu {
+  overflow: auto;
+  font-family: verdana;
+  font-size: 1rem;
+  font-weight: 200;
+  background-color: #2e353d;
+  position: fixed;
+  top: 0rem;
+  height: 100%;
+  color: #e1ffff;
+}
+.nav-side-menu .brand {
+  background-color: #23282e;
+  line-height: 50px;
+  display: block;
+  text-align: center;
+  font-size: 1rem;
+}
+.nav-side-menu ul,
+.nav-side-menu li {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  line-height: 4rem;
+  cursor: pointer;
+  
+}
+.toggle-btn{
+  font-size: 2rem;
+  color: white;
+}
+
+.nav-side-menu li {
+  padding-left: 0px;
+  border-left: 3px solid #2e353d;
+  border-bottom: 1px solid #23282e;
+}
+.nav-side-menu li a {
+  text-decoration: none;
+  color: #e1ffff;
+}
+.nav-side-menu li a i {
+  padding-left: 10px;
+  width: 20px;
+  padding-right: 20px;
+}
+.nav-side-menu li:hover {
+  border-left: 3px solid #d19b3d;
+  background-color: #4f5b69;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
