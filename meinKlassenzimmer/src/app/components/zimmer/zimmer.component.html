@@ -1,12 +1,5 @@
-<div *ngFor ="let row of [1,2,3,4,5]" >
-  <div *ngFor = "let column of [1,2,3,4,5]">
-  
-  <label> 1</label>
-  <label> 2</label>
-  <label> 3</label>
-  <label> 4</label>
-  <label> 5</label>
-  </div>
+<div *ngFor ="let row of [1,2,3,4,5]" style="height:17px" >    
+  <input *ngFor = "let column of [1,2,3,4,5]" id="checkBox-{{row}}-{{column}}" type="checkbox" style="width: 17px; height: 17px">  
 </div>
 
 
