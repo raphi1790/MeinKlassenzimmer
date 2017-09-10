@@ -13,6 +13,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { VerwaltungComponent } from './components/verwaltung/verwaltung.component';
 import { KlassenComponent } from './components/klassen/klassen.component';
 import { SchulzimmerComponent } from './components/schulzimmer/schulzimmer.component';
+import { ZimmerComponent } from './components/zimmer/zimmer.component';
 
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
 import { WrapperComponent } from './components/wrapper/wrapper.component';
@@ -20,10 +21,12 @@ import { StartseiteComponent } from './components/startseite/startseite.componen
 import { KlassenService} from './services/klassen.service';
 import { SchulzimmerService} from './services/schulzimmer.service';
 
+
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { InlineEditorModule} from 'ng2-inline-editor';
 import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +41,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     StartseiteComponent,
     SchuelerComponent,
     InlineEditComponent,
-    NavbarComponent
+    NavbarComponent,
+    ZimmerComponent
   ],
   imports: [
     BrowserModule,
