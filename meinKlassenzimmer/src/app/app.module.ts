@@ -8,7 +8,6 @@ import { AppRoutingModule} from './routes/app-routing-module';
 
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { VerwaltungComponent } from './components/verwaltung/verwaltung.component';
 import { KlassenComponent } from './components/klassen/klassen.component';
@@ -20,18 +19,19 @@ import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { StartseiteComponent } from './components/startseite/startseite.component'
 import { KlassenService} from './services/klassen.service';
 import { SchulzimmerService} from './services/schulzimmer.service';
+import { AuthService} from './services/auth.service';
 
 
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { InlineEditorModule} from 'ng2-inline-editor';
 import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     SidebarComponent,
     VerwaltungComponent,
     KlassenComponent,
@@ -42,7 +42,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     SchuelerComponent,
     InlineEditComponent,
     NavbarComponent,
-    ZimmerComponent
+    ZimmerComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
