@@ -1,3 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~font-awesome/css/font-awesome.css";
 
+.fill { 
+    padding: 0;
+}
+
+.navbar {
+    margin: 0;
+}
+
+.noMargin {
+    margin: 0;
+}
+
+.noPadding {
+    padding: 0;
+}
+
+.heigh100 {
+    height: 100%;
+}
