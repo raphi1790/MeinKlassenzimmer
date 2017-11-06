@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule }from '@angular/router';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AppRoutingModule} from './routes/app-routing-module';
 
@@ -15,7 +16,6 @@ import { SchulzimmerComponent } from './components/schulzimmer/schulzimmer.compo
 import { ZimmerComponent } from './components/zimmer/zimmer.component';
 
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
-import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { StartseiteComponent } from './components/startseite/startseite.component'
 import { KlassenService} from './services/klassen.service';
 import { SchulzimmerService} from './services/schulzimmer.service';
@@ -27,6 +27,8 @@ import { InlineEditorModule} from 'ng2-inline-editor';
 import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { CallbackComponent } from './components/callback/callback.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
@@ -37,13 +39,14 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     KlassenComponent,
     SchulzimmerComponent,
     SitzordnungComponent,
-    WrapperComponent,
     StartseiteComponent,
     SchuelerComponent,
     InlineEditComponent,
     NavbarComponent,
     ZimmerComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    CallbackComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -51,9 +54,11 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     HttpModule,
     AppRoutingModule,
     FormsModule,
-    InlineEditorModule
+    InlineEditorModule,
+    BrowserAnimationsModule
+
   ],
-  providers: [KlassenService,SchulzimmerService],
+  providers: [KlassenService,SchulzimmerService,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

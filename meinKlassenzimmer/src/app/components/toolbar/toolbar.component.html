@@ -1,15 +1,35 @@
-<nav class="navbar  navbar-toggleable-md navbar-default bg-inverse fixed-top">
-  <a class="navbar-brand" href="#">MeinKlassenzimmer</a>
-
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <form class="nav navbar-nav navbar-right">
- 
-    </form>
-    <form class="navbar-form navbar-right" role="search">
-      <button class ="btn btn-default" (click)="auth.login()">Login</button>
-      <button class="btn btn-default" (click)="auth.logout()">Logout</button>
-    </form>
-
-    
-  </div>
-</nav>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Auth0 - Angular</a>
+  
+        <button
+          class="btn btn-primary btn-margin"
+          routerLink="/">
+            Home
+        </button>
+  
+        <button
+          class="btn btn-primary btn-margin"
+          *ngIf="auth.isAuthenticated()"
+          routerLink="/profile">
+            Profile
+        </button>
+  
+        <button
+          class="btn btn-primary btn-margin"
+          *ngIf="!auth.isAuthenticated()"
+          (click)="auth.login()">
+            Log In
+        </button>
+  
+        <button
+          class="btn btn-primary btn-margin"
+          *ngIf="auth.isAuthenticated()"
+          (click)="auth.logout()">
+            Log Out
+        </button>
+  
+      </div>
+    </div>
+  </nav>

@@ -9,6 +9,8 @@ const md5 = require('MD5');
 const rest = require("./server/routes/api.js");
 var CONFIG = require('./config.json');
 
+
+
 function REST(){
     var self = this;
     self.connectMysql();

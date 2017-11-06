@@ -6,7 +6,8 @@ import {KlassenComponent} from '../components/klassen/klassen.component';
 import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.component';
 import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
 import {StartseiteComponent} from '../components/startseite/startseite.component';
-
+import {ProfileComponent} from '../components/profile/profile.component';
+import {CallbackComponent} from '../components/callback/callback.component';
 const routes: Routes = [
       
       {
@@ -34,6 +35,13 @@ const routes: Routes = [
           path: 'sitzordnung',
           component: SitzordnungComponent
       },
+      { 
+          path: 'profile', 
+          component: ProfileComponent 
+      },
+      {   path: 'callback', 
+          component: CallbackComponent
+      }
     
 
     ];

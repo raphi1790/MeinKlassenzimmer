@@ -12,7 +12,8 @@ export class ToolbarComponent {
   login() {
     this.auth.login();
   }
-  logout() {
-    this.auth.logout();
-  }
+  // logout() {
+  //   this.auth.logout();
+  // }
+
 }
