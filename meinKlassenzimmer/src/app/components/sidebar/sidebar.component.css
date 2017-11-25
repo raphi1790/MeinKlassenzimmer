@@ -10,11 +10,13 @@
   height: 100%;
 }
 .nav-side-menu .brand {
-  background-color: #23282e;
+  background-color: #577aa3;
   line-height: 50px;
   display: block;
   text-align: center;
-  font-size: 14px;
+  font-size: 22px;
+  
+  
 }
 .nav-side-menu .toggle-btn {
   display: none;
@@ -84,7 +86,7 @@
   padding-right: 20px;
 }
 .nav-side-menu li:hover {
-  border-left: 3px solid #43b0f8;
+  border-left: 3px solid #577aa3;
   background-color: #4f5b69;
 
 }

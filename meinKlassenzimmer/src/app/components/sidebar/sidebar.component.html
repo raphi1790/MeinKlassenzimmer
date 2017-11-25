@@ -2,7 +2,7 @@
     <div class="row">
   
       <div class="nav-side-menu">
-        <div class="brand">Brand Logo</div>
+        <div class="brand">MeinKlassenzimmer</div>
   
         <div class="menu-list">
   
@@ -16,8 +16,8 @@
               <a routerLink ="/verwaltung/klassen" ><i class="fa fa-gift fa-lg"></i> Verwaltung <span class="arrow"></span></a>
             </li>
             <ul class = "sub-menu collapse" id="products">
-                <li class="active"><a routerLink ="/verwaltung/klassen">Klassen</a></li>
-                <li><a routerLink ="/verwaltung/schulzimmer">Schulzimmer</a></li>
+                <li [routerLinkActive]="['active']"><a routerLink ="/verwaltung/klassen">Klassen</a></li>
+                <li [routerLinkActive]="['active']"><a routerLink ="/verwaltung/schulzimmer">Schulzimmer</a></li>
             </ul>
             <li>
               <a routerLink="/sitzordnung">
