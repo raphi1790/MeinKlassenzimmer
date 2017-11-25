@@ -1,69 +1,57 @@
-// Get dependencies
 const express = require('express');
-const mysql = require("mysql");
-const path = require('path');
-const http = require('http');
-const bodyParser = require('body-parser');
 const app = express();
-const md5 = require('MD5');
-const rest = require("./server/routes/api.js");
-var CONFIG = require('./config.json');
+const jwt = require('express-jwt');
+const jwtAuthz = require('express-jwt-authz');
+const path = require('path');
+const jwksRsa = require('jwks-rsa');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
+const api = require('./server/routes/api');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-function REST(){
-    var self = this;
-    self.connectMysql();
-};
+// Point static path to dist
+app.use(express.static(path.join(__dirname, 'dist')));
 
-//DB connection
-REST.prototype.connectMysql = function() {
-    var self = this;
-    var pool      =    mysql.createPool({
-        connectionLimit : 100,
-        host     : CONFIG.host,
-        user     : CONFIG.user,
-        password : CONFIG.password,
-        database : CONFIG.database,
-        debug    :  false
-    });
-    pool.getConnection(function(err,connection){
-        if(err) {
-          self.stop(err);
-        } else {
-          self.configureExpress(connection);
-        }
-    });
-}
-console.log("DB connection estabhlished");
-REST.prototype.configureExpress = function (connection) {
-    var self = this;
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
-    var router = express.Router();
-    app.use('/api', router);
-    app.use(express.static(path.join(__dirname, 'dist')));
+// Set our api routes
+app.use('/api', api);
 
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, 'dist/index.html'));
-    });
-    var rest_router = new rest(router, connection, md5);
-    self.startServer();
-}
+// Catch all other routes and return the index file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
 
-REST.prototype.startServer = function () {
-  
-  app.listen(3000, function () {
-    console.log("All right ! I am alive at Port 3000.");
+const checkJwt = jwt({
+  // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://meinklassenzimmer.auth0.com/.well-known/jwks.json`
+  }),
+
+  // Validate the audience and the issuer.
+  audience: 'https://api.meinKlassenzimmer.ch',
+  issuer: `https://meinklassenzimmer.auth0.com/`,
+  algorithms: ['RS256']
+});
+
+const checkScopes = jwtAuthz(['admin:admin']);
+
+app.get('/api/public', function(req, res) {
+  res.json({
+    message: "Hello from a public endpoint! You don't need to be authenticated to see this."
   });
- 
+});
 
-}
+app.get('/api/private', checkJwt, checkScopes, function(req, res) {
+  res.json({
+    message: 'Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this.'
+  });
+});
 
-REST.prototype.stop = function (err) {
-    console.log("ISSUE WITH MYSQL n" + err);
-    process.exit(1);
-}
-
-new REST();
-
+app.listen(3000);
+console.log('Listening on http://localhost:3000');

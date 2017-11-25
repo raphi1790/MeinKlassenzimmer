@@ -14,7 +14,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: 'https://meinklassenzimmer.auth0.com/userinfo',
     redirectUri: 'http://localhost:3000/callback',      
-    scope: 'openid profile'
+    scope: 'openid profile admin:admin'
   });
 
   userProfile: any;

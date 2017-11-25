@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VerwaltungComponent } from './verwaltung.component';
+import { PingComponent } from './ping.component';
 
-describe('VerwaltungComponent', () => {
-  let component: VerwaltungComponent;
-  let fixture: ComponentFixture<VerwaltungComponent>;
+describe('PingComponent', () => {
+  let component: PingComponent;
+  let fixture: ComponentFixture<PingComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VerwaltungComponent ]
+      declarations: [ PingComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VerwaltungComponent);
+    fixture = TestBed.createComponent(PingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

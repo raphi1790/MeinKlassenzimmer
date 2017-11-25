@@ -1,19 +1,16 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes}from '@angular/router';
 
-import {VerwaltungComponent} from '../components/verwaltung/verwaltung.component';
 import {KlassenComponent} from '../components/klassen/klassen.component';
 import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.component';
 import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
 import {StartseiteComponent} from '../components/startseite/startseite.component';
 import {ProfileComponent} from '../components/profile/profile.component';
 import {CallbackComponent} from '../components/callback/callback.component';
+import {PingComponent} from '../components/ping/ping.component';
+
 const routes: Routes = [
-      
-      {
-        path: 'verwaltung',
-        component: VerwaltungComponent
-      },
+
       {
           path: 'verwaltung/klassen',
           component: KlassenComponent
@@ -41,7 +38,9 @@ const routes: Routes = [
       },
       {   path: 'callback', 
           component: CallbackComponent
-      }
+      },
+      {   path: 'ping', 
+          component: PingComponent },
     
 
     ];

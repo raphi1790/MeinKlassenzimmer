@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { RouterModule }from '@angular/router';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -10,7 +10,6 @@ import { AppRoutingModule} from './routes/app-routing-module';
 
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { VerwaltungComponent } from './components/verwaltung/verwaltung.component';
 import { KlassenComponent } from './components/klassen/klassen.component';
 import { SchulzimmerComponent } from './components/schulzimmer/schulzimmer.component';
 import { ZimmerComponent } from './components/zimmer/zimmer.component';
@@ -29,13 +28,21 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { CallbackComponent } from './components/callback/callback.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { PingComponent } from './components/ping/ping.component';
 
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig({
+    tokenGetter: (() => localStorage.getItem('access_token')),
+    globalHeaders: [{'Content-Type': 'application/json'}],
+  }), http, options);
+}
 
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
-    VerwaltungComponent,
     KlassenComponent,
     SchulzimmerComponent,
     SitzordnungComponent,
@@ -46,7 +53,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     ZimmerComponent,
     ToolbarComponent,
     CallbackComponent,
-    ProfileComponent
+    ProfileComponent,
+    PingComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +66,13 @@ import { ProfileComponent } from './components/profile/profile.component';
     BrowserAnimationsModule
 
   ],
-  providers: [KlassenService,SchulzimmerService,AuthService],
+  providers: [KlassenService,SchulzimmerService,
+    AuthService,
+    {
+      provide: AuthHttp,
+      useFactory: authHttpServiceFactory,
+      deps: [Http, RequestOptions]
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

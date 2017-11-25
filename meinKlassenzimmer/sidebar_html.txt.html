@@ -1,0 +1,49 @@
+<div class="wrapper">
+  <!-- Sidebar Holder -->
+  <nav id="sidebar">
+      <div class="sidebar-header">
+          <h3>MeinKlassenzimmer</h3>
+      </div>
+
+      <ul class="list-unstyled components">
+          <p>Dummy Heading</p>
+          <li>
+              <a routerLink="/home">
+            <i class="fa fa-home fa-lg" ></i> Startseite
+            </a>
+            </li>
+          <li class="active">
+              <a href="#" data-toggle="collapse" aria-expanded="false"> <i class="fa fa-cog fa-lg" ></i> Verwaltung</a>
+              <ul class="collapse list-unstyled" id="verwaltungSubmenu">
+                  <li><a routerLink="/verwaltung/klassen">Klassen</a></li>
+                  <li><a routerLink="/verwaltung/schulzimmer">Schulzimmer</a></li>
+              </ul>
+          </li>
+          <li>
+              <a routerLink="/sitzordnung"><i class="fa fa-calculator  fa-lg" ></i>Sitzordnung</a>
+          </li>
+         
+      </ul>
+
+      <ul class="list-unstyled CTAs">
+          <li><a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a></li>
+          <li><a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a></li>
+      </ul>
+  </nav>
+
+  <!-- Page Content Holder -->
+
+
+  
+
+</div>
+
+
+
+<script type="text/javascript">
+   $(document).ready(function () {
+       $('#sidebarCollapse').on('click', function () {
+           $('#sidebar').toggleClass('active');
+       });
+   });
+</script>
