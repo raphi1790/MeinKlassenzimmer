@@ -37,6 +37,7 @@
     "md5": "^2.2.1",
     "mysql": "^2.14.1",
     "rxjs": "^5.4.3",
+    "travis": "^0.1.1",
     "zone.js": "^0.8.17"
   },
   "devDependencies": {
