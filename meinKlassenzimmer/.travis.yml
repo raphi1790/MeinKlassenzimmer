@@ -10,9 +10,3 @@ script:
   # call script for deploying of produced artifacts
   - bash ./.travis-deploy.sh
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: 9b1128007cd9a29104fce3b0534c4882c79710fe # Set in travis-ci.org dashboard
-  on:
-    branch: master
