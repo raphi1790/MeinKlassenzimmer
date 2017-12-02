@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - stable
+  - "5.3"
+
+
+script:
+  - cd meinKlassenzimmer
+  - npm install
+  - npm run build
+
