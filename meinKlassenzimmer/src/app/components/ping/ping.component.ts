@@ -20,22 +20,27 @@ export class PingComponent implements OnInit {
   }
 
   public ping(): void {
+
     this.message = '';
     this.http.get(`${this.API_URL}/public`)
-      .map(res => res.json())
+      .map((res) => res.json())
       .subscribe(
         data => this.message = data.message,
         error => this.message = error
+       
       );
-  }
+    }
+    
+
+
 
   public securedPing(): void {
     this.message = '';
     this.authHttp.get(`${this.API_URL}/private`)
       .map(res => res.json())
       .subscribe(
-        data => this.message = data.message,
-        error => this.message = error
+        error => this.message = "Fehler Private",
+        data => this.message = "Private"
       );
   }
 }

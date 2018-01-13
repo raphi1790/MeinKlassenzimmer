@@ -1,0 +1,116 @@
+var mysql = require("mysql");
+
+function REST_ROUTER(router, connection, md5) {
+    var self = this;
+    self.handleRoutes(router, connection, md5);
+}
+
+
+
+REST_ROUTER.prototype.handleRoutes = function (router, connection, md5) {
+    var self = this;
+    router.get("/", function (req, res) {
+        res.json({ "Message": "Hello World !" });
+    });
+
+    router.get("/klassen", function (req, res) {
+        var query = "SELECT * FROM ??";
+        var table = ["klassen"];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing MySQL query" });
+            } else {
+                res.json({ "Error": false, "Message": "Success", "Klasse": rows });
+            }
+        });
+    });
+
+    router.post("/klassen", function (req, res) {
+        var query = "INSERT INTO ??(??,??) VALUES (?,?)";
+        var table = ["klassen", "personid", "name",  req.body.personid,req.body.name];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing adding of Klasse query" });
+            } else {
+                res.json({"Message": "Klasse added", "KlassenId": rows.insertId});
+            }
+        });
+    });
+     router.delete("/klassen/:id", function (req, res) {
+        var query = "DELETE from ?? WHERE ??=?";
+        var table = ["klassen", "id", req.params.id];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing MySQL query" });
+            } else {
+                res.json({ "Error": false, "Message": "Deleted Klasse with ID " + req.params.id });
+            }
+        });
+    });
+
+    router.get("/schueler", function (req, res) {
+        var query = "SELECT * FROM ??";
+        var table = ["schueler"];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing MySQL query" });
+            } else {
+                res.json({ "Error": false, "Message": "Success", "Schueler": rows });
+            }
+        });
+    });
+    router.post("/schueler", function (req, res) {
+        var query = "INSERT INTO ??(??,??,??) VALUES (?,?,?)";
+        var table = ["schueler", "klassenid", "vorname", "name",  req.body.klassenid,req.body.vorname,req.body.name];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing adding of Schueler query", "Original":err });
+            } else {
+                res.json({"Message": "Schueler added", "SchuelerId": rows.insertId});
+            }
+        });
+    });
+
+    router.delete("/schueler/:id", function (req, res) {
+        var query = "DELETE from ?? WHERE ??=?";
+        var table = ["schueler", "id", req.params.id];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing MySQL query" });
+            } else {
+                res.json({ "Error": false, "Message": "Deleted Schueler with ID " + req.params.id });
+            }
+        });
+    });
+
+
+
+    router.put("/heroes", function (req, res) {
+        var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+        var table = ["heroes", "name", req.body.name, "id", req.body.id];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+            if (err) {
+                res.json({ "Error": true, "Message": "Error executing MySQL query" });
+            } else {
+                res.json({ "Error": false, "Message": "Updated Hero " + req.body.name });
+            }
+        });
+    });
+
+    router.get('/api/public', function(req, res) {
+        res.json({ message: "Hello from a public endpoint! You don't need to be authenticated to see this." });
+      });
+    
+
+   
+}
+
+
+module.exports = REST_ROUTER;
