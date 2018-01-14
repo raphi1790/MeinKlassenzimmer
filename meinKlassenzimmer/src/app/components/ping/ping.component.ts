@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthHttp } from 'angular2-jwt';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { AuthService } from 'app/services/auth.service';
 import 'rxjs/add/operator/map';
+
 
 @Component({
   selector: 'app-ping',
@@ -36,11 +37,12 @@ export class PingComponent implements OnInit {
 
   public securedPing(): void {
     this.message = '';
+
     this.authHttp.get(`${this.API_URL}/private`)
       .map(res => res.json())
       .subscribe(
-        error => this.message = "Fehler Private",
-        data => this.message = "Private"
+        data => this.message = data.message,
+        error => this.message = error
       );
   }
 }
