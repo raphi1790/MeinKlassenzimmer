@@ -18,7 +18,7 @@ export class SitzordnungComponent implements OnInit {
   constructor(private klassenService : KlassenService ) { }
 
     getKlassenToPerson():Klasse[] {
-      this.klassenService.getKlassenByPersonid().then(klassen => this.klassen = klassen);
+      this.klassenService.getKlassenByPersonid().subscribe(klassen => this.klassen = klassen);
       return this.klassen;
   }
 

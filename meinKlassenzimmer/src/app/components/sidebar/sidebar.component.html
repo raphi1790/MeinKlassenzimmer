@@ -12,20 +12,20 @@
             <i class="fa fa-home fa-lg" ></i> Startseite
             </a>
             </li>
-            <li  class="collapsed" data-toggle="collapse" data-target="#products" >
+            <li  class="collapsed" *ngIf="auth.isAuthenticated()" data-toggle="collapse" data-target="#products" >
               <a routerLink ="/verwaltung/klassen" ><i class="fa fa-gift fa-lg"></i> Verwaltung <span class="arrow"></span></a>
             </li>
             <ul class = "sub-menu collapse" id="products">
-                <li [routerLinkActive]="['active']"><a routerLink ="/verwaltung/klassen">Klassen</a></li>
-                <li [routerLinkActive]="['active']"><a routerLink ="/verwaltung/schulzimmer">Schulzimmer</a></li>
+                <li [routerLinkActive]="['active']" *ngIf="auth.isAuthenticated()"><a routerLink ="/verwaltung/klassen">Klassen</a></li>
+                <li [routerLinkActive]="['active']" *ngIf="auth.isAuthenticated()"><a routerLink ="/verwaltung/schulzimmer">Schulzimmer</a></li>
             </ul>
-            <li>
+            <li *ngIf="auth.isAuthenticated()">
               <a routerLink="/sitzordnung">
             <i class="fa fa-calculator  fa-lg" ></i> Sitzordnung
               </a>
             </li>
   
-            <li>
+            <li *ngIf="auth.isAuthenticated()">
               <a routerLink="#">
             <i class="fa fa-user fa-lg"></i> Profil
             </a>

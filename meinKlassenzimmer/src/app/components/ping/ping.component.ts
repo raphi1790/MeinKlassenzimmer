@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthHttp } from 'angular2-jwt';
 import { Http, Headers } from '@angular/http';
-import { AuthService } from 'app/services/auth.service';
+import { AuthService } from 'app/services/auth/auth.service';
 import 'rxjs/add/operator/map';
 
 

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
+import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import 'rxjs/Rx';
-
-
 import { Klasse } from '../models/klasse';
 import { Schueler  } from '../models/schueler';
+import { AuthService } from 'app/services/auth/auth.service';
+
 
 @Injectable()
 export class KlassenService {
@@ -16,108 +16,41 @@ export class KlassenService {
   private headers = new Headers({'Content-Type': 'application/json'})
   
   
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient , private auth: AuthService) { }
 
-  getKlassenByPersonid(): Promise<Klasse[]> {
-    return this.http.get(this.klassenUrl)
-      .toPromise()
-      .then(
-        response =>
-          {
-          debugger;
-          let responseObject = response.json();
-          if (responseObject.Klasse) {
-            return responseObject.Klasse as Klasse[];
-          } 
-          return [];
-          }) 
-      .catch(this.handleError);
+  private get _authHeader(): string {
+    return `Bearer ${localStorage.getItem('access_token')}`;
   }
 
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
-  }
-
-
-  createKlasseToPersonid( neueKlasse: Klasse): Promise<Klasse> {
-    return this.http
-      .post(this.klassenUrl, JSON.stringify({personid: neueKlasse.personid, name:neueKlasse.name}), {headers: this.headers})
-      .toPromise()
-      .then(
-        response =>
-          {
-          debugger;
-          let responseObject = response.json();
-          if (responseObject.Klasse) {
-            return responseObject.Klasse as Klasse;
-          } 
-          return [];
-          }) 
-      .catch(this.handleError);
-  }
-   
-    deleteKlasseToPersonid( deletedKlasseid: number): Promise<void> {
-      const url = `${this.klassenUrl}/${deletedKlasseid}`
+  getKlassenByPersonid(): Observable<Klasse[]>  {
       return this.http
-        .delete(url,  {headers: this.headers})
-        .toPromise()
-        .then(
-          response =>
-            {
-            debugger;
-            let responseObject = response.json();
-            return [];
-            }) 
-        .catch(this.handleError);
-    }
-
-  getSchuelerByPersonid():Promise<Schueler[]> {
-    return this.http.get(this.schuelerUrl)
-      .toPromise()
-      .then(
-        response =>
-          {
-          debugger;
-          let responseObject = response.json();
-          if (responseObject.Schueler) {
-            return responseObject.Schueler as Schueler[];
-          } 
-          return [];
-          }) 
-      .catch(this.handleError);
+      .get(this.klassenUrl, {
+          headers: new HttpHeaders().set('Authorization', this._authHeader)
+      }).catch(this._handleError);
+      
+     
   }
 
-    createSchuelerToKlassenid( neuerSchueler: Schueler): Promise<Schueler> {
-    return this.http
-      .post(this.schuelerUrl, JSON.stringify({klassenid: neuerSchueler.klassenid, vorname:neuerSchueler.vorname, name:neuerSchueler.name}), {headers: this.headers})
-      .toPromise()
-      .then(
-        response =>
-          {
-          debugger;
-          let responseObject = response.json();
-          if (responseObject.Schueler) {
-            return responseObject.Schueler as Schueler;
-          } 
-          return [];
-          }) 
-      .catch(this.handleError);
+  getSchuelerByPersonid():Observable<Schueler[]> {
+    return this.http.get(this.schuelerUrl,  {
+      headers: new HttpHeaders().set('Authorization', this._authHeader)
+    }).catch(this._handleError);
+  
+}
+
+  private _handleError(err: HttpErrorResponse | any) {
+    const errorMsg = err.message || 'Error: Unable to complete request.';
+    if (err.message && err.message.indexOf('No JWT present') > -1) {
+      this.auth.login();
+    }
+    return Observable.throw(errorMsg);
   }
 
-      deleteSchuelerToKlassenid( deletedSchuelerid: number): Promise<void> {
-      const url = `${this.schuelerUrl}/${deletedSchuelerid}`
-      return this.http
-        .delete(url,  {headers: this.headers})
-        .toPromise()
-        .then(
-          response =>
-            {
-            debugger;
-            let responseObject = response.json();
-            return [];
-            }) 
-        .catch(this.handleError);
-    }
+
+  
+
+  
+
+    
 
 }

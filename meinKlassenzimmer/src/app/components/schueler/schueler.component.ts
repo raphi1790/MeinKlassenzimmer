@@ -49,23 +49,23 @@ export class SchuelerComponent implements OnChanges {
     this.schuelerToKlasse = this.schuelerToKlasse.filter(k => k!== schueler);
   }
 
-  saveSchueler(): void {
-    debugger;
-    if (this.neueSchuelerTmp.length > 0) {
-      for (let schueler of this.neueSchuelerTmp){
-        debugger;
-         this.klassenService.createSchuelerToKlassenid(schueler);
-       };
-       this.neueSchuelerTmp = null;
-    } 
-    if (this.deletedSchuelerTmp.length > 0){
-      for (let schueler of this.deletedSchuelerTmp){
-         this.klassenService.deleteSchuelerToKlassenid(schueler.id);
-       };
-       this.deletedSchuelerTmp = null;
-    }
+  // saveSchueler(): void {
+  //   debugger;
+  //   if (this.neueSchuelerTmp.length > 0) {
+  //     for (let schueler of this.neueSchuelerTmp){
+  //       debugger;
+  //        this.klassenService.createSchuelerToKlassenid(schueler);
+  //      };
+  //      this.neueSchuelerTmp = null;
+  //   } 
+  //   if (this.deletedSchuelerTmp.length > 0){
+  //     for (let schueler of this.deletedSchuelerTmp){
+  //        this.klassenService.deleteSchuelerToKlassenid(schueler.id);
+  //      };
+  //      this.deletedSchuelerTmp = null;
+  //   }
     
-  }
+  // }
   
   savingSchuelerIsActiv(): boolean{
     if (this.needSaving()){

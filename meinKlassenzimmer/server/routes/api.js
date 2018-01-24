@@ -5,6 +5,8 @@ const cors = require('cors');
 const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
 const jwksRsa = require('jwks-rsa');
+const mysql = require("mysql");
+var connection = require('../../dbconnection');
 
 app.use(cors());
 /* GET home page. */
@@ -32,6 +34,39 @@ const checkScopes = jwtAuthz(['admin:admin']);
 
   router.get('/private',checkJwt, checkScopes,  function(req, res) {
     res.json({ message: "Hello from a private endpoint! You need to be authenticated and have a scope of admin:admin to see this." });
+  });
+
+ 
+  router.get("/", function (req, res) {
+      res.json({ "Message": "Hello World !" });
+  });
+
+  router.get("/klassen", checkJwt, function (req, res) {
+      var query = "SELECT * FROM ??";
+      var table = ["klassen"];
+      query = mysql.format(query, table);
+      connection.query(query, function (err, rows) {
+          if (err) {
+              res.json({ "Error": true, "Message": err });
+          } else {
+              res.json({ "Error": false, "Message": "Success", "Klasse": rows });
+          }
+      });
+  });
+
+
+
+  router.get("/schueler", function (req, res) {
+      var query = "SELECT * FROM ??";
+      var table = ["schueler"];
+      query = mysql.format(query, table);
+      connection.query(query, function (err, rows) {
+          if (err) {
+              res.json({ "Error": true, "Message": "Error executing MySQL query" });
+          } else {
+              res.json({ "Error": false, "Message": "Success", "Schueler": rows });
+          }
+      });
   });
 
 module.exports = router;

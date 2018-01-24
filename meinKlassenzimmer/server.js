@@ -9,9 +9,19 @@ require('dotenv').config();
 
 /*
  |--------------------------------------
- | MongoDB
+ | MySQLDB
  |--------------------------------------
  */
+
+ var connection = require('./dbconnection');
+
+
+connection.connect();
+
+connection.query('SELECT * from klassen', function(err, rows, fields) {
+  if (err) throw err;
+  console.log('The solution is: ', rows);
+});
 
 /*
  |--------------------------------------
@@ -31,7 +41,7 @@ app.use(express.static(path.join(__dirname, './dist')));
  |--------------------------------------
  */
 
-var routes = require('./src/server/routes/api');
+var routes = require('./server/routes/api');
 app.use('/api', routes);
 
 app.get('*', function(req, res) {

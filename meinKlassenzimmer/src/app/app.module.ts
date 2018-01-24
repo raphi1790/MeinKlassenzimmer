@@ -18,7 +18,7 @@ import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.compo
 import { StartseiteComponent } from './components/startseite/startseite.component'
 import { KlassenService} from './services/klassen.service';
 import { SchulzimmerService} from './services/schulzimmer.service';
-import { AuthService} from './services/auth.service';
+import { AuthService} from './services/auth/auth.service';
 
 
 import { SchuelerComponent } from './components/schueler/schueler.component';
@@ -31,6 +31,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { PingComponent } from './components/ping/ping.component';
 
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -60,6 +62,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BrowserModule,
     AppRoutingModule,
     HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     FormsModule,
     InlineEditorModule,

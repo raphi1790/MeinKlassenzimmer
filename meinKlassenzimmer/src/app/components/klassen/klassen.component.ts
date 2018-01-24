@@ -29,14 +29,13 @@ export class KlassenComponent implements OnInit {
 
   getKlassenAndSchuelerToPerson():void {
     this.klassenService.getKlassenByPersonid()
-    .then(
-        klassen => 
-            this.klassenToPerson = klassen);
-     debugger;       
+    .subscribe( 
+        data => 
+            this.klassenToPerson = data['Klasse']);   
     this.klassenService.getSchuelerByPersonid()
-    .then(
-      schueler =>
-            this.schuelerToPerson = schueler);
+    .subscribe(
+      data =>
+            this.schuelerToPerson = data['Schueler']);
             
   }
 
@@ -81,23 +80,23 @@ export class KlassenComponent implements OnInit {
     if (this.selectedKlasse === klasse) { this.selectedKlasse = null; }
   }
 
-  save(): void {
-    debugger;
-    if (this.neueKlassenTmp.length > 0) {
-      for (let klasse of this.neueKlassenTmp){
-         this.klassenService.createKlasseToPersonid(klasse);
-       };
-       this.neueKlassenTmp = null;
-    }   
-    if (this.deletedKlassenTmp.length > 0){
-      for (let klasse of this.deletedKlassenTmp){
-         this.klassenService.deleteKlasseToPersonid(klasse.id);
-       };
-       this.deletedKlassenTmp = null;
-    }
+  // save(): void {
+  //   debugger;
+  //   if (this.neueKlassenTmp.length > 0) {
+  //     for (let klasse of this.neueKlassenTmp){
+  //        this.klassenService.createKlasseToPersonid(klasse);
+  //      };
+  //      this.neueKlassenTmp = null;
+  //   }   
+  //   if (this.deletedKlassenTmp.length > 0){
+  //     for (let klasse of this.deletedKlassenTmp){
+  //        this.klassenService.deleteKlasseToPersonid(klasse.id);
+  //      };
+  //      this.deletedKlassenTmp = null;
+  //   }
 
     
-  }
+  // }
 
   ngOnInit(){
     this.getKlassenAndSchuelerToPerson();
