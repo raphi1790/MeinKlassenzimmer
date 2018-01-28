@@ -23,9 +23,11 @@ export class KlassenService {
   }
 
   getKlassenByPersonid(): Observable<Klasse[]>  {
+  
       return this.http
       .get(this.klassenUrl, {
           headers: new HttpHeaders().set('Authorization', this._authHeader)
+
       }).catch(this._handleError);
       
      
