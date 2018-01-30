@@ -3,8 +3,7 @@ export class Klasse{
     personid: number;
     name: string;
 
-    constructor (personid: number,name: string){
-        this.personid = personid;
+    constructor (name: string){
         this.name = name;
     }
     

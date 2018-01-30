@@ -45,7 +45,7 @@ export class KlassenComponent implements OnInit {
   }
 
   addKlasseTmp(name: string):void {
-    var neueKlasseTmp = new Klasse(3,name);
+    var neueKlasseTmp = new Klasse(name);
     this.neueKlassenTmp.push(neueKlasseTmp);
     this.klassenToPerson.push(neueKlasseTmp);
     neueKlasseTmp = null;
@@ -80,23 +80,23 @@ export class KlassenComponent implements OnInit {
     if (this.selectedKlasse === klasse) { this.selectedKlasse = null; }
   }
 
-  // save(): void {
-  //   debugger;
-  //   if (this.neueKlassenTmp.length > 0) {
-  //     for (let klasse of this.neueKlassenTmp){
-  //        this.klassenService.createKlasseToPersonid(klasse);
-  //      };
-  //      this.neueKlassenTmp = null;
-  //   }   
-  //   if (this.deletedKlassenTmp.length > 0){
-  //     for (let klasse of this.deletedKlassenTmp){
-  //        this.klassenService.deleteKlasseToPersonid(klasse.id);
-  //      };
-  //      this.deletedKlassenTmp = null;
-  //   }
+  save(): void {
+    debugger;
+    if (this.neueKlassenTmp.length > 0) {
+      for (let klasse of this.neueKlassenTmp){
+         this.klassenService.createKlasseToPersonid(klasse);
+       };
+       this.neueKlassenTmp = null;
+    }   
+    if (this.deletedKlassenTmp.length > 0){
+      for (let klasse of this.deletedKlassenTmp){
+         this.klassenService.deleteKlasseToPersonid(klasse.id);
+       };
+       this.deletedKlassenTmp = null;
+    }
 
     
-  // }
+  }
 
   ngOnInit(){
     this.getKlassenAndSchuelerToPerson();

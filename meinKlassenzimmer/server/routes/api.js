@@ -14,103 +14,136 @@ app.use(cors());
 /* GET home page. */
 
 var persondId;
-var name;
-var vorname;
-var nickname;
-var gender;
 
 const checkJwt = jwt({
-  // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://meinklassenzimmer.auth0.com/.well-known/jwks.json`
-  }),
+    // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
+    secret: jwksRsa.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: `https://meinklassenzimmer.auth0.com/.well-known/jwks.json`
+    }),
 
-  // Validate the audience and the issuer.
-  audience: 'https://api.meinKlassenzimmer.ch',
-  issuer: `https://meinklassenzimmer.auth0.com/`,
-  algorithms: ['RS256'],
-  getToken: function fromHeaderOrQuerystring (req) {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-        setPersonValues(req);
-        return req.headers.authorization.split(' ')[1];
-    } else if (req.query && req.query.token) {
-      return req.query.token;
+    // Validate the audience and the issuer.
+    audience: 'https://api.meinKlassenzimmer.ch',
+    issuer: `https://meinklassenzimmer.auth0.com/`,
+    algorithms: ['RS256'],
+    getToken: function fromHeaderOrQuerystring(req) {
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            setPersonValues(req);
+            return req.headers.authorization.split(' ')[1];
+        } else if (req.query && req.query.token) {
+            return req.query.token;
+        }
+        return null;
     }
-    return null;
-  }
 
 });
 
-function setPersonValues(req) {
+function  setPersonValues(req) {
     //set personId
     var personIdSub;
     var personIdArray;
     personIdSub = jwtDecode(req.headers.authorization.split(' ')[1]).sub;
-    console.log(personIdSub);
-    personIdArray= personIdSub.split("|").map(val => String(val) + 1);
+    personIdArray = personIdSub.split("|").map(val => String(val));
     personId = personIdArray[1];
 
-    //set other values
-    console.log(jwtDecode(req.headers.authorization.split(' ')[1]));
-    var name = jwtDecode(req.headers.authorization.split(' ')[1]).family_name;
-    var vorname = jwtDecode(req.headers.authorization.split(' ')[1]).given_name;
-    var nickname = jwtDecode(req.headers.authorization.split(' ')[1]).nickname;
-    var gender = jwtDecode(req.headers.authorization.split(' ')[1]).gender;
-    console.log("personId" +personId);
-    // console.log(name);
-    // console.log(vorname);
-    // console.log(nickname);
-    // console.log(gender);
 }
 
 
 const checkScopes = jwtAuthz(['admin:admin']);
 
-  router.get('/public', function(req, res) {
+router.get('/public', function (req, res) {
     res.json({ message: "Hello from a public endpoint! You don't need to be authenticated to see this." });
-  });
+});
 
-  router.get('/private',checkJwt, checkScopes,  function(req, res) {
+router.get('/private', checkJwt, checkScopes, function (req, res) {
     res.json({ message: "Hello from a private endpoint! You need to be authenticated and have a scope of admin:admin to see this." });
-  });
+});
 
- 
-  router.get("/", function (req, res) {
-      res.json({ "Message": "Hello World !" });
-  });
 
-  router.get("/klassen", checkJwt, function (req, res) {
-      
+router.get("/", function (req, res) {
+    res.json({ "Message": "Hello World !" });
+});
+
+router.get("/klassen", checkJwt, function (req, res) {
+    var query = "SELECT * FROM ?? WHERE ??=?";
+    var table = ["klassen", "personId", personId];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": err });
+        } else {
+            res.json({ "Error": false, "Message": "Success", "Klasse": rows });
+
+        }
+    });
+});
+
+router.post("/klassen", checkJwt, function (req, res) {
+    debugger;
+    var query = "INSERT INTO klassen(personid,name) VALUES (?,?)";
+    var table = [personId , req.body.name];
+    query = mysql.format(query, table);
     
-      var query = "SELECT * FROM ??WHERE ??=?";
-      var table = ["klassen","personId", personId];
-      query = mysql.format(query, table);
-      connection.query(query, function (err, rows) {
-          if (err) {
-              res.json({ "Error": true, "Message": err });
-          } else {
-              res.json({ "Error": false, "Message": "Success", "Klasse": rows });
-              
-          }
-      });
-  });
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing adding of Klasse query " ,"Original":err });
+        } else {
+            res.json({ "Message": "Klasse added", "KlassenId": rows.insertId });
+        }
+    });
+});
+router.delete("/klassen/:id", checkJwt, function (req, res) {
+    var query = "DELETE from klassen WHERE id=?";
+    var table = [req.params.id];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing MySQL query","Original":err });
+        } else {
+            res.json({ "Error": false, "Message": "Deleted Klasse with ID " + req.params.id });
+        }
+    });
+});
 
+router.get("/schueler", checkJwt, function (req, res) {
+    var query = "SELECT * FROM schueler WHERE klassenId IN (SELECT Id FROM klassen WHERE personId=?) ";
+    var table = [personId];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing MySQL query","Original":err });
+        } else {
+            res.json({ "Error": false, "Message": "Success", "Schueler": rows });
+        }
+    }); 
+});
 
+router.post("/schueler", function (req, res) {
+    var query = "INSERT INTO ??(??,??,??) VALUES (?,?,?)";
+    var table = ["schueler", "klassenid", "vorname", "name",  req.body.klassenid,req.body.vorname,req.body.name];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing adding of Schueler query", "Original":err });
+        } else {
+            res.json({"Message": "Schueler added", "SchuelerId": rows.insertId});
+        }
+    });
+});
 
-  router.get("/schueler", function (req, res) {
-      var query = "SELECT * FROM ??";
-      var table = ["schueler"];
-      query = mysql.format(query, table);
-      connection.query(query, function (err, rows) {
-          if (err) {
-              res.json({ "Error": true, "Message": "Error executing MySQL query" });
-          } else {
-              res.json({ "Error": false, "Message": "Success", "Schueler": rows });
-          }
-      });
-  });
+router.delete("/schueler/:id", function (req, res) {
+    var query = "DELETE from ?? WHERE ??=?";
+    var table = ["schueler", "id", req.params.id];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing MySQL query","Original":err });
+        } else {
+            res.json({ "Error": false, "Message": "Deleted Schueler with ID " + req.params.id });
+        }
+    });
+});
 
 module.exports = router;
