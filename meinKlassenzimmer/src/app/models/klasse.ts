@@ -1,6 +1,6 @@
 export class Klasse{
     id: number;
-    personid: number;
+    personid: string;
     name: string;
 
     constructor (name: string){

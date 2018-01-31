@@ -12,7 +12,7 @@ import { HttpHeaderResponse } from '@angular/common/http/src/response';
 @Injectable()
 export class KlassenService {
 
-  private klassenUrl = 'api/klassen';  // URL to web api
+  private klassenUrl = 'api/schulklasse';  // URL to web api
   private schuelerUrl = 'api/schueler';  // URL to web api
   private headers = new Headers({ 'Content-Type': 'application/json' })
 

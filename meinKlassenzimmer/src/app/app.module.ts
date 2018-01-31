@@ -17,6 +17,7 @@ import { ZimmerComponent } from './components/zimmer/zimmer.component';
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
 import { StartseiteComponent } from './components/startseite/startseite.component'
 import { KlassenService} from './services/klassen.service';
+import { PersonService} from './services/person.service';
 import { SchulzimmerService} from './services/schulzimmer.service';
 import { AuthService} from './services/auth/auth.service';
 
@@ -69,7 +70,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BrowserAnimationsModule
 
   ],
-  providers: [KlassenService,SchulzimmerService,
+  providers: [PersonService,KlassenService,SchulzimmerService,
     AuthService,
     {
       provide: AuthHttp,

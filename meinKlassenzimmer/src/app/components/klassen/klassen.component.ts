@@ -6,6 +6,8 @@ import {Schueler} from 'app/models/schueler';
 import {Person} from 'app/models/person';
 
 import {KlassenService} from 'app/services/klassen.service';
+import {PersonService} from 'app/services/person.service';
+import {AuthService} from 'app/services/auth/auth.service';
 
 @Component({
   selector: 'app-klassen',
@@ -19,28 +21,42 @@ export class KlassenComponent implements OnInit {
   selectedKlasse: Klasse;
   schuelerToPerson: Schueler[];
   person: Person;
+  neuePersonTmp: Person;
   savingIsActive: boolean;
+  profile: any;
 
  @Input() personid: number
 
-  constructor(private klassenService: KlassenService) { }
+  constructor(private klassenService: KlassenService, private personService: PersonService, public auth: AuthService) { }
 
 
 
   getKlassenAndSchuelerToPerson():void {
+     debugger;
     this.klassenService.getKlassenByPersonid()
     .subscribe( 
         data => 
-            this.klassenToPerson = data['Klasse']);   
+            this.klassenToPerson = data['Schulklasse']);   
     this.klassenService.getSchuelerByPersonid()
     .subscribe(
       data =>
             this.schuelerToPerson = data['Schueler']);
-            
+    this.personService.getPerson()
+    .subscribe( 
+        data => 
+            this.person = data['Person']);             
   }
 
-   onSelect(klasse: Klasse): void {
+  onSelect(klasse: Klasse): void {
     this.selectedKlasse = klasse;
+
+  }
+
+  private addPersonTmp(): void{
+    this.neuePersonTmp.geschlecht = this.profile.gender;
+    this.neuePersonTmp.name = this.profile.family_name;
+    this.neuePersonTmp.vorname = this.profile.given_name;
+    this.neuePersonTmp.nickname = this.profile.nickname;
 
   }
 
@@ -74,6 +90,15 @@ export class KlassenComponent implements OnInit {
       
   }
 
+  private personNeedSaving(): boolean{
+    if(this.person == undefined ){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   deleteKlasseTmp(klasse:Klasse):void{
     this.deletedKlassenTmp.push(klasse);
     this.klassenToPerson = this.klassenToPerson.filter(k => k!== klasse);
@@ -82,6 +107,11 @@ export class KlassenComponent implements OnInit {
 
   save(): void {
     debugger;
+    if (this.personNeedSaving()){
+      this.addPersonTmp()
+      this.personService.createPerson(this.neuePersonTmp);
+    }
+
     if (this.neueKlassenTmp.length > 0) {
       for (let klasse of this.neueKlassenTmp){
          this.klassenService.createKlasseToPersonid(klasse);
@@ -94,12 +124,21 @@ export class KlassenComponent implements OnInit {
        };
        this.deletedKlassenTmp = null;
     }
-
-    
   }
+
+  
 
   ngOnInit(){
     this.getKlassenAndSchuelerToPerson();
+    debugger;
+    if (this.auth.userProfile) {
+      
+      this.profile = this.auth.userProfile;
+    } else {
+      this.auth.getProfile((err, profile) => {
+        this.profile = profile;
+      });
+    }
   }
 
 }

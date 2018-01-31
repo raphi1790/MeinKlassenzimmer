@@ -66,49 +66,78 @@ router.get("/", function (req, res) {
     res.json({ "Message": "Hello World !" });
 });
 
-router.get("/klassen", checkJwt, function (req, res) {
+router.get("/person", checkJwt, function (req, res) {
     var query = "SELECT * FROM ?? WHERE ??=?";
-    var table = ["klassen", "personId", personId];
+    var table = ["Person", "PersonId", personId];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error loading Person from Database", "Original": err });
+        } else {
+            res.json({ "Error": false, "Message": "Success", "Person": rows });
+
+        }
+    });
+});
+
+router.post("/person", checkJwt, function (req, res) {
+    debugger;
+    var query = "INSERT INTO ??(??,??,??,??, ??) VALUES (?,?,?,?)";
+    var table = ["Person","PersonId","Geschlecht", "Name", "Vorname", "Nickname" ,personId,req.body.geschlecht, req.body.name,req.body.vorname,req.body.nickname];
+    query = mysql.format(query, table);
+    
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing adding Person " ,"Original":err });
+        } else {
+            res.json({ "Message": "Person added", "Id": rows.insertId, "PersonId": personId });
+        }
+    });
+});
+
+router.get("/schulklasse", checkJwt, function (req, res) {
+    var query = "SELECT * FROM ?? WHERE ??=?";
+    var table = ["schulklasse", "personId", personId];
     query = mysql.format(query, table);
     connection.query(query, function (err, rows) {
         if (err) {
             res.json({ "Error": true, "Message": err });
         } else {
-            res.json({ "Error": false, "Message": "Success", "Klasse": rows });
+            res.json({ "Error": false, "Message": "Success", "Schulklasse": rows });
 
         }
     });
 });
 
-router.post("/klassen", checkJwt, function (req, res) {
+router.post("/schulklasse", checkJwt, function (req, res) {
     debugger;
-    var query = "INSERT INTO klassen(personid,name) VALUES (?,?)";
+    var query = "INSERT INTO schulklasse(personid,name) VALUES (?,?)";
     var table = [personId , req.body.name];
     query = mysql.format(query, table);
     
     connection.query(query, function (err, rows) {
         if (err) {
-            res.json({ "Error": true, "Message": "Error executing adding of Klasse query " ,"Original":err });
+            res.json({ "Error": true, "Message": "Error executing adding of Schulklasse query " ,"Original":err });
         } else {
             res.json({ "Message": "Klasse added", "KlassenId": rows.insertId });
         }
     });
 });
-router.delete("/klassen/:id", checkJwt, function (req, res) {
-    var query = "DELETE from klassen WHERE id=?";
+router.delete("/schulklassen/:id", checkJwt, function (req, res) {
+    var query = "DELETE from schulklasse WHERE id=?";
     var table = [req.params.id];
     query = mysql.format(query, table);
     connection.query(query, function (err, rows) {
         if (err) {
             res.json({ "Error": true, "Message": "Error executing MySQL query","Original":err });
         } else {
-            res.json({ "Error": false, "Message": "Deleted Klasse with ID " + req.params.id });
+            res.json({ "Error": false, "Message": "Deleted Schulklasse with ID " + req.params.id });
         }
     });
 });
 
 router.get("/schueler", checkJwt, function (req, res) {
-    var query = "SELECT * FROM schueler WHERE klassenId IN (SELECT Id FROM klassen WHERE personId=?) ";
+    var query = "SELECT * FROM schueler WHERE klassenId IN (SELECT Id FROM schulklasse WHERE personId=?) ";
     var table = [personId];
     query = mysql.format(query, table);
     connection.query(query, function (err, rows) {
@@ -145,5 +174,7 @@ router.delete("/schueler/:id", function (req, res) {
         }
     });
 });
+
+
 
 module.exports = router;

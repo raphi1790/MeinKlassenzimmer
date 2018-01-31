@@ -18,7 +18,7 @@ require('dotenv').config();
 
 connection.connect();
 
-connection.query('SELECT * from klassen', function(err, rows, fields) {
+connection.query('SELECT * from schulklasse', function(err, rows, fields) {
   if (err) throw err;
   console.log('The solution is: ', rows);
 });
