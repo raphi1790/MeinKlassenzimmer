@@ -21,9 +21,10 @@ export class PersonService {
     return `Bearer ${localStorage.getItem('access_token')}`;
   }
 
-  getPerson(): Observable<Person[]> {
+  getPerson() {
+    debugger;
     return this.http
-      .get(this.personUrl, {
+      .get<Person>(this.personUrl, {
         headers: new HttpHeaders().set('Authorization', this._authHeader)
       }).catch(this._handleError);
   }

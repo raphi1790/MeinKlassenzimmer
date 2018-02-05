@@ -16,12 +16,12 @@ import {AuthService} from 'app/services/auth/auth.service';
 })
 export class KlassenComponent implements OnInit {
   neueKlassenTmp:  Klasse[] = new Array();
-  klassenToPerson: Klasse[];
+  klassenToPerson: Klasse[] = new Array();
   deletedKlassenTmp: Klasse[] = new Array();
   selectedKlasse: Klasse;
   schuelerToPerson: Schueler[];
-  person: Person;
-  neuePersonTmp: Person;
+  person: Person = new Person;
+  neuePersonTmp: Person = new Person;
   savingIsActive: boolean;
   profile: any;
 
@@ -35,16 +35,18 @@ export class KlassenComponent implements OnInit {
      debugger;
     this.klassenService.getKlassenByPersonid()
     .subscribe( 
-        data => 
-            this.klassenToPerson = data['Schulklasse']);   
+        data => {
+            this.klassenToPerson = data['Schulklasse'];
+            console.log("Test" + this.klassenToPerson); 
+        });   
+           
     this.klassenService.getSchuelerByPersonid()
     .subscribe(
       data =>
-            this.schuelerToPerson = data['Schueler']);
+            this.schuelerToPerson = data['Schueler']);       
     this.personService.getPerson()
     .subscribe( 
-        data => 
-            this.person = data['Person']);             
+      data => this.person = { ...data });             
   }
 
   onSelect(klasse: Klasse): void {
@@ -71,7 +73,7 @@ export class KlassenComponent implements OnInit {
 
 
   savingIsActiv(): boolean{
-    if (this.needSaving()){
+    if (this.klassenNeedSaving()){
       return this.savingIsActive = true;
     }
     else{
@@ -79,7 +81,7 @@ export class KlassenComponent implements OnInit {
     }
   }
 
-  private needSaving(): boolean{
+  private klassenNeedSaving(): boolean{
     if( (this.neueKlassenTmp == null || this.neueKlassenTmp.length == 0 )
       && (this.deletedKlassenTmp == null || this.deletedKlassenTmp.length == 0)){
         return false;
@@ -91,11 +93,11 @@ export class KlassenComponent implements OnInit {
   }
 
   private personNeedSaving(): boolean{
-    if(this.person == undefined ){
+    if(this.person == null ){
       return true;
     }
     else{
-      return false;
+      return true;
     }
   }
 
@@ -129,6 +131,7 @@ export class KlassenComponent implements OnInit {
   
 
   ngOnInit(){
+    debugger;
     this.getKlassenAndSchuelerToPerson();
     debugger;
     if (this.auth.userProfile) {

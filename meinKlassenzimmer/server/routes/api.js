@@ -82,7 +82,7 @@ router.get("/person", checkJwt, function (req, res) {
 
 router.post("/person", checkJwt, function (req, res) {
     debugger;
-    var query = "INSERT INTO ??(??,??,??,??, ??) VALUES (?,?,?,?)";
+    var query = "INSERT INTO ??(??,??,??,??, ??) VALUES (?,?,?,?,?)";
     var table = ["Person","PersonId","Geschlecht", "Name", "Vorname", "Nickname" ,personId,req.body.geschlecht, req.body.name,req.body.vorname,req.body.nickname];
     query = mysql.format(query, table);
     

@@ -6,7 +6,8 @@ import 'rxjs/Rx';
 import { Klasse } from '../models/klasse';
 import { Schueler } from '../models/schueler';
 import { AuthService } from 'app/services/auth/auth.service';
-import { HttpHeaderResponse } from '@angular/common/http/src/response';
+import { HttpHeaderResponse, HttpResponse } from '@angular/common/http/src/response';
+
 
 
 @Injectable()
@@ -23,13 +24,14 @@ export class KlassenService {
     return `Bearer ${localStorage.getItem('access_token')}`;
   }
 
-  getKlassenByPersonid(): Observable<Klasse[]> {
+  getKlassenByPersonid(): Observable<any> {
 
     return this.http
-      .get(this.klassenUrl, {
-        headers: new HttpHeaders().set('Authorization', this._authHeader)
+      .get(this.klassenUrl,  {
+        headers: new HttpHeaders().set('Authorization', this._authHeader),
+        responseType: 'json'
 
-      }).catch(this._handleError);
+      } ).catch(this._handleError);
   }
 
   createKlasseToPersonid(neueKlasse: Klasse): void {
