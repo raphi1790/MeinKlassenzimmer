@@ -1,4 +1,4 @@
-import { Component, OnInit, Input , OnChanges} from '@angular/core';
+import { Component, OnInit, Input , OnChanges, ViewChild} from '@angular/core';
 import { Router }            from '@angular/router';
 
 import {Klasse} from 'app/models/klasse';
@@ -8,45 +8,53 @@ import {Person} from 'app/models/person';
 import {KlassenService} from 'app/services/klassen.service';
 import {PersonService} from 'app/services/person.service';
 import {AuthService} from 'app/services/auth/auth.service';
+import { KlassenSchuelerSaver } from 'app/components/klassen/klassenschuelersaver';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import {SchuelerComponent} from 'app/components/schueler/schueler.component';
+import { SaveChecker } from 'app/savechecker';
 
 @Component({
   selector: 'app-klassen',
   templateUrl: './klassen.component.html',
   styleUrls: ['./klassen.component.css']
 })
-export class KlassenComponent implements OnInit {
-  neueKlassenTmp:  Klasse[] = new Array();
-  klassenToPerson: Klasse[] = new Array();
-  deletedKlassenTmp: Klasse[] = new Array();
+
+
+
+export class KlassenComponent implements OnInit, AfterViewInit {
+  
+  neueKlassenTmp:  Klasse[] = [];
+  klassenToPerson: Klasse[] = [];
+  deletedKlassenTmp: Klasse[] = [];
   selectedKlasse: Klasse;
-  schuelerToPerson: Schueler[];
+  schuelerToPerson: Schueler[] = [];
   person: Person = new Person;
   neuePersonTmp: Person = new Person;
   savingIsActive: boolean;
   profile: any;
+  neueSchuelerTmp: Schueler[] = [];
+  deletedSchuelerTmp: Schueler[] = [];
+  
 
- @Input() personid: number
-
-  constructor(private klassenService: KlassenService, private personService: PersonService, public auth: AuthService) { }
+  @ViewChild(SchuelerComponent) SchuelerComponent;
 
 
+ 
+  constructor(private klassenService: KlassenService, private personService: PersonService) {
+    
+   }
 
   getKlassenAndSchuelerToPerson():void {
      debugger;
     this.klassenService.getKlassenByPersonid()
     .subscribe( 
-        data => {
-            this.klassenToPerson = data['Schulklasse'];
-            console.log("Test" + this.klassenToPerson); 
-        });   
+        klassen => this.klassenToPerson = klassen       
+        );   
            
     this.klassenService.getSchuelerByPersonid()
     .subscribe(
-      data =>
-            this.schuelerToPerson = data['Schueler']);       
-    this.personService.getPerson()
-    .subscribe( 
-      data => this.person = { ...data });             
+      schueler =>
+            this.schuelerToPerson = schueler);        
   }
 
   onSelect(klasse: Klasse): void {
@@ -54,51 +62,23 @@ export class KlassenComponent implements OnInit {
 
   }
 
-  private addPersonTmp(): void{
-    this.neuePersonTmp.geschlecht = this.profile.gender;
-    this.neuePersonTmp.name = this.profile.family_name;
-    this.neuePersonTmp.vorname = this.profile.given_name;
-    this.neuePersonTmp.nickname = this.profile.nickname;
 
-  }
 
   addKlasseTmp(name: string):void {
-    var neueKlasseTmp = new Klasse(name);
+    var neueKlasseTmp = new Klasse();
+    neueKlasseTmp.setName(name);
     this.neueKlassenTmp.push(neueKlasseTmp);
     this.klassenToPerson.push(neueKlasseTmp);
     neueKlasseTmp = null;
     this.selectedKlasse = null;
-
+ 
   }
 
+  
 
   savingIsActiv(): boolean{
-    if (this.klassenNeedSaving()){
-      return this.savingIsActive = true;
-    }
-    else{
-      return this.savingIsActive = false;
-    }
-  }
-
-  private klassenNeedSaving(): boolean{
-    if( (this.neueKlassenTmp == null || this.neueKlassenTmp.length == 0 )
-      && (this.deletedKlassenTmp == null || this.deletedKlassenTmp.length == 0)){
-        return false;
-      }
-     else{
-       return true;
-     } 
-      
-  }
-
-  private personNeedSaving(): boolean{
-    if(this.person == null ){
-      return true;
-    }
-    else{
-      return true;
-    }
+    var saveChecker = new SaveChecker()
+    return saveChecker.klasseSchuelerNeedSaving(this.neueKlassenTmp, this.deletedKlassenTmp,this.neueSchuelerTmp ,this.deletedSchuelerTmp);
   }
 
   deleteKlasseTmp(klasse:Klasse):void{
@@ -107,41 +87,24 @@ export class KlassenComponent implements OnInit {
     if (this.selectedKlasse === klasse) { this.selectedKlasse = null; }
   }
 
-  save(): void {
-    debugger;
-    if (this.personNeedSaving()){
-      this.addPersonTmp()
-      this.personService.createPerson(this.neuePersonTmp);
-    }
-
-    if (this.neueKlassenTmp.length > 0) {
-      for (let klasse of this.neueKlassenTmp){
-         this.klassenService.createKlasseToPersonid(klasse);
-       };
-       this.neueKlassenTmp = null;
-    }   
-    if (this.deletedKlassenTmp.length > 0){
-      for (let klasse of this.deletedKlassenTmp){
-         this.klassenService.deleteKlasseToPersonid(klasse.id);
-       };
-       this.deletedKlassenTmp = null;
-    }
+  saveKlassenSchueler(): void {
+    var savingObject = new KlassenSchuelerSaver();
+    savingObject.save(this.neueKlassenTmp, this.deletedKlassenTmp,this.neueSchuelerTmp ,this.deletedSchuelerTmp);
+    this.neueKlassenTmp = null;
+    this.deletedKlassenTmp = null;
+    this.neueSchuelerTmp = null
+    this.deletedSchuelerTmp = null;
+    
   }
-
-  
 
   ngOnInit(){
     debugger;
     this.getKlassenAndSchuelerToPerson();
-    debugger;
-    if (this.auth.userProfile) {
-      
-      this.profile = this.auth.userProfile;
-    } else {
-      this.auth.getProfile((err, profile) => {
-        this.profile = profile;
-      });
-    }
+  }
+
+  ngAfterViewInit(){
+    this.neueSchuelerTmp = this.SchuelerComponent.neueSchuelerTmp
+    this.deletedSchuelerTmp = this.SchuelerComponent.deletedSchuelerTmp
   }
 
 }

@@ -6,6 +6,7 @@ import {KlassenService} from 'app/services/klassen.service'
 
 
 
+
 @Component({
   selector: 'app-schueler',
   templateUrl: './schueler.component.html',
@@ -16,15 +17,15 @@ export class SchuelerComponent implements OnChanges {
   @Input('klassenId') klassenid: number
   @Input('schuelerToPerson')  schuelerToPerson: Schueler[];
 
-    schuelerToKlasse: Schueler[];
+    schuelerToKlasse: Schueler[] = [];
     neuerSchueler: Schueler;
-    neueSchuelerTmp:  Schueler[] = new Array();
-    deletedSchuelerTmp: Schueler[] = new Array();
-    savingIsActive: boolean;
+    neueSchuelerTmp:  Schueler[] = [];
+    deletedSchuelerTmp: Schueler[] = [];
+
  
 
 
-  constructor(private klassenService : KlassenService) { }
+  constructor() { }
 
 
     getSchuelerToKlassenid(id: number):void{
@@ -39,7 +40,8 @@ export class SchuelerComponent implements OnChanges {
    addSchuelerTmp(vorname: string, name:string):void {
     vorname = vorname.trim();
     name = name.trim();
-    var neuerSchuelerTmp = new Schueler(this.klassenid,vorname,name);
+    var neuerSchuelerTmp = new Schueler()
+    neuerSchuelerTmp.setValues(this.klassenid,vorname,name);
     this.neueSchuelerTmp.push(neuerSchuelerTmp);
     this.schuelerToKlasse.push(neuerSchuelerTmp);
     neuerSchuelerTmp = null;
@@ -49,49 +51,7 @@ export class SchuelerComponent implements OnChanges {
     this.schuelerToKlasse = this.schuelerToKlasse.filter(k => k!== schueler);
   }
 
-  saveSchueler(): void {
-    debugger;
-    if (this.neueSchuelerTmp.length > 0) {
-      for (let schueler of this.neueSchuelerTmp){
-        debugger;
-         this.klassenService.createSchuelerToKlassenid(schueler);
-       };
-       this.neueSchuelerTmp = null;
-    } 
-    if (this.deletedSchuelerTmp.length > 0){
-      for (let schueler of this.deletedSchuelerTmp){
-         this.klassenService.deleteSchuelerToKlassenid(schueler.id);
-       };
-       this.deletedSchuelerTmp = null;
-    }
-    
-  }
-  
-  savingSchuelerIsActiv(): boolean{
-    if (this.needSaving()){
-      return this.savingIsActive = true;
-    }
-    else{
-      return this.savingIsActive = false;
-    }
-  }
-
-  private needSaving(): boolean{
-    if ((this.neueSchuelerTmp == null || this.neueSchuelerTmp.length == 0 )
-      && (this.deletedSchuelerTmp == null || this.deletedSchuelerTmp.length == 0))
-      {
-        return false;
-      }
-     else{
-       return true;
-     } 
-      
-  }
-  
-
-
   ngOnChanges() {
-    console.log(this.klassenid);
     this.getSchuelerToKlassenid(this.klassenid);
     
 

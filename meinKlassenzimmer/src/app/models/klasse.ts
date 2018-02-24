@@ -3,7 +3,7 @@ export class Klasse{
     personid: string;
     name: string;
 
-    constructor (name: string){
+     setName(name: string): void{
         this.name = name;
     }
     

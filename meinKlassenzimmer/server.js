@@ -18,10 +18,11 @@ require('dotenv').config();
 
 connection.connect();
 
-connection.query('SELECT * from schulklasse', function(err, rows, fields) {
-  if (err) throw err;
-  console.log('The solution is: ', rows);
-});
+// Check DB-connection
+// connection.query('SELECT * from schulklasse', function(err, rows, fields) {
+//   if (err) throw err;
+//   console.log('The solution is: ', rows);
+// });
 
 /*
  |--------------------------------------

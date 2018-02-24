@@ -7,6 +7,7 @@ import { Klasse } from '../models/klasse';
 import { Schueler } from '../models/schueler';
 import { AuthService } from 'app/services/auth/auth.service';
 import { HttpHeaderResponse, HttpResponse } from '@angular/common/http/src/response';
+import { Response } from 'express';
 
 
 
@@ -15,7 +16,7 @@ export class KlassenService {
 
   private klassenUrl = 'api/schulklasse';  // URL to web api
   private schuelerUrl = 'api/schueler';  // URL to web api
-  private headers = new Headers({ 'Content-Type': 'application/json' })
+  testobject: Klasse[];
 
 
   constructor(private http: HttpClient, private auth: AuthService) { }
@@ -24,14 +25,15 @@ export class KlassenService {
     return `Bearer ${localStorage.getItem('access_token')}`;
   }
 
-  getKlassenByPersonid(): Observable<any> {
+  getKlassenByPersonid(): Observable<Klasse[]> {
 
     return this.http
-      .get(this.klassenUrl,  {
-        headers: new HttpHeaders().set('Authorization', this._authHeader),
-        responseType: 'json'
+      .get<Klasse[]>(this.klassenUrl,  
+         {
+        headers: new HttpHeaders({'Content-Type':  'application/json', 'Authorization': this._authHeader})
+            }
+    ).catch(this._handleError);
 
-      } ).catch(this._handleError);
   }
 
   createKlasseToPersonid(neueKlasse: Klasse): void {

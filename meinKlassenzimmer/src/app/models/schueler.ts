@@ -4,7 +4,7 @@ export class Schueler{
     vorname: string;
     name: string;
 
-    constructor (klassenid: number,vorname: string,name: string){
+    setValues (klassenid: number,vorname: string,name: string): void{
         this.klassenid = klassenid;
         this.vorname = vorname;
         this.name = name;
