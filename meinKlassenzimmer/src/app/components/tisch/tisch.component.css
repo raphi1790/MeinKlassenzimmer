@@ -1,0 +1,14 @@
+.unselectedTischStyle{
+    width: 75px; 
+    height: 75px;
+    border: 2px solid white;
+    background-color:  #6c92bd;
+} 
+
+.selectedTischStyle{
+    width: 75px; 
+    height: 75px;
+    border: 2px solid white;
+    background-color:  rgb(30, 75, 133);
+ 
+}

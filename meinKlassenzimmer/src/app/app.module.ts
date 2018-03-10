@@ -33,6 +33,7 @@ import { PingComponent } from './components/ping/ping.component';
 
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { TischComponent } from './components/tisch/tisch.component';
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -57,7 +58,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ToolbarComponent,
     CallbackComponent,
     ProfileComponent,
-    PingComponent
+    PingComponent,
+    TischComponent
   ],
   imports: [
     BrowserModule,

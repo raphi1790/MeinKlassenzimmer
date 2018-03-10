@@ -1,7 +1,11 @@
+<table class="zimmer">
+  <tbody>
+    <tr *ngFor="let row of zimmerRows; let r = index">
+      <td  *ngFor="let column of zimmerColumns; let c = index" ><app-tisch [rowZimmer] ="r" [columnZimmer] ="c" (noteZimmer)="writeZimmer($event)"  [tischeToSchulzimmer]="zimmer.tische"></app-tisch></td>
+    </tr>
+  </tbody>
+</table>
 
-<div *ngFor ="let row of [1,2,3,4,5]" style="height:17px" >    
- <input *ngFor = "let column of [1,2,3,4,5]" id="checkBox-{{row}}-{{column}}" type="checkbox" style="width: 17px; height: 17px">  
-   </div>
 
-
-
+<!-- <td [className]="my_Class" *ngFor="let column of zimmerColumns" (click)="setColor()" id="classroom-{{row}}-{{column}}"></td> -->
+<!-- <app-schueler [klassenId]="selectedKlasse.id" [schuelerToPerson]="schuelerToPerson"></app-schueler> -->

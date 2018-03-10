@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router }            from '@angular/router';
 import {Schulzimmer} from 'app/models/schulzimmer';
-import {Zimmer} from 'app/models/zimmer';
 import { SchulzimmerService } from "app/services/schulzimmer.service";
 
 @Component({
@@ -13,24 +12,31 @@ export class SchulzimmerComponent implements OnInit {
 
  @Input() personid: number
 
-  constructor(private schulzimmerService: SchulzimmerService) { }
+  constructor(private schulzimmerService: SchulzimmerService) {
+    this.neueSchulzimmerTmp = new Array();
+    this.schulzimmerToPerson = new Array();
+    this.maximalSchulzimmerId = 0;
+
+   }
 
   schulzimmerToPerson: Schulzimmer[];
   selectedSchulzimmer: Schulzimmer;
-  zimmerToPerson: Zimmer[];
+  zimmerToPerson: Schulzimmer[];
+  neueSchulzimmerTmp: Schulzimmer[];
+  maximalSchulzimmerId: number;
 
-  getSchulzimmerToPerson():Schulzimmer[] {
-    this.schulzimmerService.getSchulzimmerByPersonid().then(schulzimmer => this.schulzimmerToPerson = schulzimmer);
-    return this.schulzimmerToPerson;
-  }
-  getZimmerToPerson(): Zimmer[]{
-    this.schulzimmerService.getZimmerByPersonid()
-    .then(
-      zimmer =>
-       this.zimmerToPerson = zimmer );
-       return this.zimmerToPerson;
+  // getSchulzimmerToPerson():Schulzimmer[] {
+  //   this.schulzimmerService.getSchulzimmerByPersonid().then(schulzimmer => this.schulzimmerToPerson = schulzimmer);
+  //   return this.schulzimmerToPerson;
+  // }
+  // getZimmerToPerson(): Schulzimmer[]{
+  //   this.schulzimmerService.getZimmerByPersonid()
+  //   .then(
+  //     zimmer =>
+  //      this.zimmerToPerson = zimmer );
+  //      return this.zimmerToPerson;
   
-  } 
+  // } 
 
    onSelect(schulzimmer: Schulzimmer): void {
     this.selectedSchulzimmer = schulzimmer;
@@ -38,19 +44,23 @@ export class SchulzimmerComponent implements OnInit {
     
   }
 
-  add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.schulzimmerService.createSchulzimmer(name)
-      .then(schulzimmer => {
-        this.schulzimmerToPerson.push(schulzimmer);
-        this.selectedSchulzimmer = null;
-      });
+  addSchulzimmerTmp(name: string):void {
+    debugger;
+    this.maximalSchulzimmerId ++;
+    var neuesSchulzimmerTmp = new Schulzimmer();
+    neuesSchulzimmerTmp.name = name;
+    neuesSchulzimmerTmp.id = this.maximalSchulzimmerId;
+    this.neueSchulzimmerTmp.push(neuesSchulzimmerTmp);
+    this.schulzimmerToPerson.push(neuesSchulzimmerTmp);
+    neuesSchulzimmerTmp = null;
+    this.selectedSchulzimmer = null;
+
+ 
   }
 
   ngOnInit(){
-    this.getSchulzimmerToPerson();
-    //this.getZimmerToPerson();
+    // this.getSchulzimmerToPerson();
+
   }
 
 

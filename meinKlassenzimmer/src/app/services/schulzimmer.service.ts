@@ -4,7 +4,6 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { Schulzimmer } from '../models/schulzimmer';
-import { Zimmer } from '../models/zimmer';
 
 @Injectable()
 export class SchulzimmerService {
@@ -28,10 +27,10 @@ export class SchulzimmerService {
         return Promise.reject(error.message || error);
     }
 
-    getZimmerByPersonid(): Promise<Zimmer[]> {
+    getZimmerByPersonid(): Promise<Schulzimmer[]> {
         return this.http.get(this.zimmerUrl)
             .toPromise()
-            .then(response => response.json().data as Zimmer[])
+            .then(response => response.json().data as Schulzimmer[])
             .catch(this.handleError);
     }
 

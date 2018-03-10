@@ -4,8 +4,9 @@
       <div class="column1">
         <h3>Schulzimmer</h3>
         <div>
-          <label>Neues Schulzimmer hinzufügen:</label> <input #neuesSchulzimmer />
-          <button type="button" class="btn btn-primary" (click)="add(neuesSchulzimmer.value); neuesSchulzimmer.value=''">
+          <label>Neues Schulzimmer hinzufügen:</label>
+          <input #neuesSchulzimmer />
+          <button type="button" class="btn btn-primary" (click)="addSchulzimmerTmp(neuesSchulzimmer.value); neuesSchulzimmer.value=''">
             Hinzufügen
           </button>
         </div>
@@ -13,14 +14,21 @@
           <table class="table table-striped table-sm">
             <thead>
               <tr>
-                <th>Schulzimmer</th>
+                <th>Erfasste Schulzimmer</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let schulzimmer of schulzimmerToPerson">
-                <td><span><button type ="button" class = "btn btn-success" (click)="onSelect(schulzimmer)" [class.selected]="schulzimmer === selectedSchulzimmer">{{schulzimmer.name}}</button></span>                  </td>
-                <i class="fa fa-pencil fa-lg" ></i>
-                <td><span><button type = "button" class = "btn btn-secondary">X</button></span> </td>
+                <td>
+                  <span>
+                    <button type="button" class="btn btn-success" (click)="onSelect(schulzimmer)" [class.selected]="schulzimmer === selectedSchulzimmer">{{schulzimmer.name}}</button>
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    <button type="button" class="btn btn-secondary">X</button>
+                  </span>
+                </td>
 
               </tr>
             </tbody>
@@ -28,12 +36,17 @@
         </div>
       </div>
 
-      <button type="button" class="btn btn-primary">Speichern</button>
     </div>
     <div class="col-md-8">
       <div class="column2">
-        <app-zimmer></app-zimmer>
+        <div class="schulzimmer" *ngIf="selectedSchulzimmer">
+          <div class="zimmer">
+            <h3>Schulzimmer {{selectedSchulzimmer.name}}</h3>
+            <app-zimmer  [schulzimmerId]="selectedSchulzimmer.id" [schulzimmerToPerson]="schulzimmerToPerson" ></app-zimmer>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<button type="button" class="btn btn-primary">Speichern</button>
