@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, OnChanges, EventEmitter, Output } from '@angular/core';
 
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Tisch } from '../../models/tisch';
@@ -10,11 +10,13 @@ import { TischOutput } from '../../models/tischOutput';
   styleUrls: ['./zimmer.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZimmerComponent implements OnChanges {
+export class ZimmerComponent implements OnInit, OnChanges {
   
   @Input('schulzimmerId') schulzimmerId: number
   @Input('schulzimmerToPerson')  schulzimmerToPerson: Schulzimmer[]; 
   
+  @Output() noteSchulzimmer: EventEmitter<Schulzimmer> = new EventEmitter<Schulzimmer>();
+
   zimmerRows = [0,1,2,3,4,5,6,7,8,9];
   zimmerColumns = [0,1,2,3,4,5,6,7,8,9];
 
@@ -45,10 +47,10 @@ export class ZimmerComponent implements OnChanges {
 
     debugger;
       
-      this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
+    this.zimmer = this.schulzimmerToPerson.filter(
           item => 
-            item.id === id )
-      this.zimmer = this.schulzimmerToPerson[0];
+            item.id === id )[0]
+    
     
 }
 
@@ -66,8 +68,13 @@ export class ZimmerComponent implements OnChanges {
 
   }
 
-  ngOnChanges() {
+  ngOnInit() {
     this.getSchuelerToKlassenid(this.schulzimmerId);
+  }
+  ngOnChanges(){
+    this.noteSchulzimmer.emit(this.zimmer);
+
   }
 
 }
+

@@ -8,7 +8,7 @@ import { Tisch } from '../../models/tisch';
   templateUrl: './tisch.component.html',
   styleUrls: ['./tisch.component.css']
 })
-export class TischComponent implements OnInit {
+export class TischComponent implements OnChanges {
 
   constructor() { }
 
@@ -40,9 +40,6 @@ export class TischComponent implements OnInit {
     
 }
   
-
-
-  
   selectTisch(): void {
     debugger;
     this.tischOutput.position = new PositionTisch(this.row,this.column);
@@ -60,7 +57,7 @@ export class TischComponent implements OnInit {
     this.tischSelected = !this.tischSelected;
   }
 
-  ngOnInit() {
+  ngOnChanges() {
     this.getTisch();
   }
 

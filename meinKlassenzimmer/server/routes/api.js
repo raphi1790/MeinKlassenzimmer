@@ -176,5 +176,102 @@ router.delete("/schueler/:id", function (req, res) {
 });
 
 
+router.get("/schulzimmer", checkJwt, function (req, res) {
+    var query = "SELECT * FROM ?? WHERE ??=?";
+    var table = ["schulzimmer", "personId", personId];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": err });
+        } else {
+            res.json({ "Error": false, "Message": "Success", "Schulzimmer": rows });
+
+        }
+    });
+});
+
+// router.get("/schulzimmertische", checkJwt, function (req, res) {
+//     var query = "SELECT * FROM schulzimmer s join tisch t on t.SchulzimmerId = s.Id WHERE s.personId=?";
+//     var table = [personId];
+//     query = mysql.format(query, table);
+//     connection.query(query, function (err, rows) {
+//         if (err) {
+//             res.json({ "Error": true, "Message": err });
+//         } else {
+//             res.json({ "Error": false, "Message": "Success", "SchulzimmerTische": rows });
+
+//         }
+//     });
+// });
+
+router.post("/schulzimmer", checkJwt, function (req, res) {
+    debugger;
+    var query = "INSERT INTO schulzimmer(personid,name) VALUES (?,?)";
+    var table = [personId , req.body.Name];
+    query = mysql.format(query, table);
+    
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing adding of Schulzimmer query " ,"Original":err });
+        } else {
+            res.json({ "Message": "Schulzimmer added", "SchulzimmerId": rows.insertId });
+        }
+    });
+});
+router.delete("/schulzimmer/:id", checkJwt, function (req, res) {
+    var query = "DELETE from schulzimmer WHERE id=?";
+    var table = [req.params.id];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing MySQL query","Original":err });
+        } else {
+            res.json({ "Error": false, "Message": "Deleted Schulzimmer with ID " + req.params.id });
+        }
+    });
+});
+
+router.get("/tisch/:id", checkJwt, function (req, res) {
+    var query = "SELECT * FROM tisch WHERE schulzimmerId =? ";
+    var table = [req.params.id];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": err });
+        } else {
+            res.json({ "Error": false, "Message": "Success", "Tische": rows });
+
+        }
+    });
+});
+
+router.post("/tisch", function (req, res) {
+    var query = "INSERT INTO ??(??,??,??) VALUES (?,?,?)";
+    var table = ["tisch", "schulzimmerId", "RowNumber", "ColumnNumber",  req.body.SchulzimmerId, req.body.RowNumber ,req.body.ColumnNumber];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing adding of Tisch query", "Original":err });
+        } else {
+            res.json({"Message": "Tisch added", "TischId": rows.insertId});
+        }
+    });
+});
+
+router.delete("/tisch/:id", checkJwt, function (req, res) {
+    var query = "DELETE from tisch WHERE id=?";
+    var table = [req.params.id];
+    query = mysql.format(query, table);
+    connection.query(query, function (err, rows) {
+        if (err) {
+            res.json({ "Error": true, "Message": "Error executing MySQL query","Original":err });
+        } else {
+            res.json({ "Error": false, "Message": "Deleted Tisch with ID " + req.params.id });
+        }
+    });
+});
+
+
+
 
 module.exports = router;
