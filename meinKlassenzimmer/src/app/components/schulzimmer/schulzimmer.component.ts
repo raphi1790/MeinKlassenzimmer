@@ -3,12 +3,15 @@ import { Router } from '@angular/router';
 import { Schulzimmer } from 'app/models/schulzimmer';
 import { SchulzimmerService } from "app/services/schulzimmer.service";
 import { Tisch } from '../../models/tisch';
+import { PositionTisch } from '../../models/positiontisch';
 
 @Component({
   selector: 'app-schulzimmer',
   templateUrl: './schulzimmer.component.html',
   styleUrls: ['./schulzimmer.component.css']
 })
+
+
 export class SchulzimmerComponent implements OnInit {
 
   @Input() personid: number
@@ -19,7 +22,7 @@ export class SchulzimmerComponent implements OnInit {
 
   }
 
-  schulzimmerToPerson = new Array<Schulzimmer>();
+  schulzimmerToPerson = [];
   selectedSchulzimmer: Schulzimmer;
   zimmerToPerson: Schulzimmer[];
   neueSchulzimmerTmp: Schulzimmer[];
@@ -27,102 +30,76 @@ export class SchulzimmerComponent implements OnInit {
 
   getSchulzimmerToPerson() {
     debugger;
-    this.schulzimmerService.getSchulzimmerByPersonid().subscribe(data => {
-      console.log(data['Schulzimmer']);
-      for (let index = 0; index < data['Schulzimmer'].length; index++) {
-        this.schulzimmerToPerson[index] = new Schulzimmer();
-        this.schulzimmerToPerson[index].id = data['Schulzimmer'][index].Id
-        this.schulzimmerToPerson[index].personid = data['Schulzimmer'][index].PersonId
-        this.schulzimmerToPerson[index].name = data['Schulzimmer'][index].Name;
-      }
-              }
-                
-    );
-}
 
-getTischeToSchulzimmer(){
-  for (let index = 0; index < this.schulzimmerToPerson.length; index++) {
-    this.schulzimmerService.getTischeBySchulzimmerId(this.schulzimmerToPerson[index].id)
-      .subscribe(data => {
-        debugger;
-        console.log("Tische " + data['Tische']);
-        console.log("Laenge Tische " + data['Tische'].length);
+    this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(data => {
+      debugger;
+      console.log("Schulzimmer " + data['Schulzimmer']);
+      console.log("Tische " + data['Tische']);
+      for (let indexZimmer = 0; indexZimmer < data['Schulzimmer'].length; indexZimmer++) {
+        this.schulzimmerToPerson[indexZimmer] = new Schulzimmer();
+        this.schulzimmerToPerson[indexZimmer].id = data['Schulzimmer'][indexZimmer].Id;
+        this.schulzimmerToPerson[indexZimmer].personid = data['Schulzimmer'][indexZimmer].PersonId;
+        this.schulzimmerToPerson[indexZimmer].name = data['Schulzimmer'][indexZimmer].Name;
+        this.schulzimmerToPerson[indexZimmer].tische = new Array<Tisch>();
         for (let indexTisch = 0; indexTisch < data['Tische'].length; indexTisch++) {
-          
-          this.schulzimmerToPerson[index].tische[indexTisch] = new Tisch();
-          this.schulzimmerToPerson[index].tische[indexTisch].position.row = data['Tisch'][indexTisch].RowNumber;
-          this.schulzimmerToPerson[index].tische[indexTisch].position.column = data['Tisch'][indexTisch].ColumnNumber;
-          console.log(this.schulzimmerToPerson[index].tische[indexTisch].position.column);
+          if (this.schulzimmerToPerson[indexZimmer].id == data['Tische'][indexTisch].SchulzimmerId) {
+            debugger;
+            var tischTmp = new Tisch()
+            tischTmp.position = new PositionTisch(data['Tische'][indexTisch].RowNumber, data['Tische'][indexTisch].ColumnNumber);
+            this.schulzimmerToPerson[indexZimmer].tische.push(tischTmp);
+          }
         }
-      });
-    } 
-}
 
-getSchulzimmerAndTischeToPerson2(){
-  debugger;
-    this.schulzimmerService.getSchulzimmerByPersonid().subscribe(data => {
-      for (let index = 0; index < data['SchulzimmerTische'].length; index++) {
-        this.schulzimmerToPerson[index] = new Schulzimmer();
-        this.schulzimmerToPerson[index].id = data['Schulzimmer'][index].Id
-        this.schulzimmerToPerson[index].personid = data['Schulzimmer'][index].PersonId
-        this.schulzimmerToPerson[index].name = data['Schulzimmer'][index].Name;
+
       }
+      console.log(this.schulzimmerToPerson);
+      console.log(this.schulzimmerToPerson[0].name);
 
-    })
-}
-
-// getZimmerToPerson(): Schulzimmer[]{
-//   this.schulzimmerService.getZimmerByPersonid()
-//   .then(
-//     zimmer =>
-//      this.zimmerToPerson = zimmer );
-//      return this.zimmerToPerson;
-
-// } 
-
-onSelect(schulzimmer: Schulzimmer): void {
-  this.selectedSchulzimmer = schulzimmer;
+    }
 
 
-}
+    );
+  }
 
-addSchulzimmerTmp(name: string): void {
-  debugger;
-  this.maximalSchulzimmerId++;
-  var neuesSchulzimmerTmp = new Schulzimmer();
-  neuesSchulzimmerTmp.name = name;
-  neuesSchulzimmerTmp.id = this.maximalSchulzimmerId;
-  this.neueSchulzimmerTmp.push(neuesSchulzimmerTmp);
-  this.schulzimmerToPerson.push(neuesSchulzimmerTmp);
-  neuesSchulzimmerTmp = null;
-  this.selectedSchulzimmer = null;
+  onSelect(schulzimmer: Schulzimmer): void {
+    debugger;
+    this.selectedSchulzimmer = schulzimmer;
 
 
-}
-  private updateSchulzimmer(updatedZimmer: Schulzimmer): void {
+  }
 
-  this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
-    item =>
-      item.id !== updatedZimmer.id)
-    if(typeof this.schulzimmerToPerson == 'undefined') {
-  console.log("SchulzimmerToPerson is undefined");
-}
+  addSchulzimmerTmp(name: string): void {
+    debugger;
+    this.maximalSchulzimmerId++;
+    var neuesSchulzimmerTmp = new Schulzimmer();
+    neuesSchulzimmerTmp.name = name;
+    neuesSchulzimmerTmp.id = this.maximalSchulzimmerId;
+    neuesSchulzimmerTmp.tische = new Array<Tisch>();
+    // this.neueSchulzimmerTmp.push(neuesSchulzimmerTmp);
+    this.schulzimmerToPerson.push(neuesSchulzimmerTmp);
+    neuesSchulzimmerTmp = null;
+    this.selectedSchulzimmer = null;
+
+  }
+  updateSchulzimmer(updatedZimmer: Schulzimmer): void {
+    debugger;
+    this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
+      item =>
+        item.id !== updatedZimmer.id)
+    if (typeof this.schulzimmerToPerson == 'undefined') {
+      console.log("SchulzimmerToPerson is undefined");
+    }
     else {
-  this.schulzimmerToPerson.push(updatedZimmer);
-}
+      this.schulzimmerToPerson.push(updatedZimmer);
+    }
   }
 
 
 
-ngOnInit() {
-  this.getSchulzimmerToPerson();
-  debugger;
-  if (typeof this.schulzimmerToPerson != undefined && this.schulzimmerToPerson.length > 0) {
-    this.getTischeToSchulzimmer();
-  }
-  // this.getSchulzimmerAndTischeToPerson2();
+  ngOnInit() {
+    this.getSchulzimmerToPerson();
 
-}
+  }
 
 
 }

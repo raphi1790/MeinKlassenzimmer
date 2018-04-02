@@ -19,19 +19,21 @@ export class TischComponent implements OnChanges {
 
   @Output() noteZimmer: EventEmitter<TischOutput> = new EventEmitter<TischOutput>();
 
-  tisch = 'unselectedTischStyle';
-  tischSelected = false;
+  tischStyle : string
+  tischSelected: boolean
   tischOutput = new TischOutput();
 
   getTisch():void{
 
     debugger;
-      if(typeof this.tischeToSchulzimmer != 'undefined'){
+    this.tischSelected = false;
+    this.tischStyle = 'unselectedTischStyle';
+      if(this.tischeToSchulzimmer.length != 0){
           this.tischeToSchulzimmer = this.tischeToSchulzimmer.filter(
             item => 
               item.position.row === this.row && item.position.column === this.column)
           if (this.tischeToSchulzimmer.length == 1){
-            this.tisch = 'selectedTischStyle'
+            this.tischStyle = 'selectedTischStyle'
             this.tischSelected = true;
           }
 
@@ -45,12 +47,12 @@ export class TischComponent implements OnChanges {
     this.tischOutput.position = new PositionTisch(this.row,this.column);
 
     if (this.tischSelected) {
-      this.tisch = 'unselectedTischStyle';
+      this.tischStyle = 'unselectedTischStyle';
       this.tischOutput.selected = false;
       this.noteZimmer.emit(this.tischOutput);
       
     } else {
-      this.tisch = 'selectedTischStyle';
+      this.tischStyle = 'selectedTischStyle';
       this.tischOutput.selected = true;
       this.noteZimmer.emit(this.tischOutput);
     }
@@ -60,5 +62,6 @@ export class TischComponent implements OnChanges {
   ngOnChanges() {
     this.getTisch();
   }
+
 
 }

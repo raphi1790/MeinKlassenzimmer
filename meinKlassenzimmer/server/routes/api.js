@@ -7,6 +7,7 @@ const jwtAuthz = require('express-jwt-authz');
 const jwksRsa = require('jwks-rsa');
 const mysql = require("mysql");
 const jwtDecode = require('jwt-decode');
+const async = require('async');
 var connection = require('../../dbconnection');
 
 
@@ -177,32 +178,38 @@ router.delete("/schueler/:id", function (req, res) {
 
 
 router.get("/schulzimmer", checkJwt, function (req, res) {
-    var query = "SELECT * FROM ?? WHERE ??=?";
-    var table = ["schulzimmer", "personId", personId];
-    query = mysql.format(query, table);
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({ "Error": true, "Message": err });
-        } else {
-            res.json({ "Error": false, "Message": "Success", "Schulzimmer": rows });
+    var queryTische = "SELECT * FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
+    var tableTisch = ["tisch","t.SchulzimmerId","s.Id","schulzimmer", "s.PersonId", personId];
+    var querySchulzimmer = "SELECT * FROM ?? s WHERE ??=? Group By ??";
+    var tableSchulzimmer = ["schulzimmer", "s.PersonId", personId, "s.Id"];
 
+    querySchulzimmer = mysql.format(querySchulzimmer, tableSchulzimmer);
+    queryTische = mysql.format(queryTische, tableTisch)
+    
+    var return_data = {};
+
+    async.parallel([
+        function(parallel_done) {
+            connection.query(querySchulzimmer, {}, function(err, results) {
+                if (err) return parallel_done(err);
+                return_data.Schulzimmer = results;
+                parallel_done();
+            });
+        },
+        function(parallel_done) {
+            connection.query(queryTische, {}, function(err, results) {
+                if (err) return parallel_done(err);
+                return_data.Tische = results;
+                parallel_done();
+            });
         }
-    });
+     ], function(err) {
+          if (err) console.log(err);
+          res.send(return_data);
+     });
+
+
 });
-
-// router.get("/schulzimmertische", checkJwt, function (req, res) {
-//     var query = "SELECT * FROM schulzimmer s join tisch t on t.SchulzimmerId = s.Id WHERE s.personId=?";
-//     var table = [personId];
-//     query = mysql.format(query, table);
-//     connection.query(query, function (err, rows) {
-//         if (err) {
-//             res.json({ "Error": true, "Message": err });
-//         } else {
-//             res.json({ "Error": false, "Message": "Success", "SchulzimmerTische": rows });
-
-//         }
-//     });
-// });
 
 router.post("/schulzimmer", checkJwt, function (req, res) {
     debugger;

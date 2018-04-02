@@ -13,7 +13,6 @@ import { Response } from 'express';
 export class SchulzimmerService {
 
     private schulzimmerUrl = 'api/schulzimmer';// URL to web api
-    private schulzimmerAndTischeUrl = 'api/schulzimmertische';
     private tischeUrl = 'api/tisch';
     private headers = new Headers({ 'Content-Type': 'application/json' })
 
@@ -24,35 +23,14 @@ export class SchulzimmerService {
       return `Bearer ${localStorage.getItem('access_token')}`;
     }
 
-    getSchulzimmerByPersonid(): Observable<any> {
+  
+      getSchulzimmerAndTischeByPersonid(): Observable<any> {
         return this.http
           .get(this.schulzimmerUrl,
             {
               headers: new HttpHeaders({'Content-Type':  'application/json', 'Authorization': this._authHeader})
             }
     
-        ).catch(this._handleError);
-    
-      }
-
-      // getSchulzimmerAndTischeByPersonid(): Observable<any> {
-      //   return this.http
-      //     .get(this.schulzimmerAndTischeUrl,
-      //       {
-      //         headers: new HttpHeaders({'Content-Type':  'application/json', 'Authorization': this._authHeader})
-      //       }
-    
-      //   ).catch(this._handleError);
-    
-      // }
-
-      getTischeBySchulzimmerId(schulzimmerId: number): Observable<any> {
-        const url = `${this.tischeUrl}/${schulzimmerId}`
-        return this.http
-          .get(url,  
-             {
-            headers: new HttpHeaders({'Content-Type':  'application/json', 'Authorization': this._authHeader})
-                }
         ).catch(this._handleError);
     
       }

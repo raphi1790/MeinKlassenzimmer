@@ -43,7 +43,7 @@
         <div class="schulzimmer" *ngIf="selectedSchulzimmer">
           <div class="zimmer">
             <h3>Schulzimmer {{selectedSchulzimmer.name}}</h3>
-            <app-zimmer  [schulzimmerId]="selectedSchulzimmer.id" [schulzimmerToPerson]="schulzimmerToPerson" (noteSchulzimmer)="updateSchulzimmer($event)" ></app-zimmer>
+            <app-zimmer  [schulzimmerId]="selectedSchulzimmer.id" [selectedSchulzimmer]="selectedSchulzimmer" (noteSchulzimmer)="updateSchulzimmer($event)" ></app-zimmer>
           </div>
         </div>
       </div>

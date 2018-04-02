@@ -10,10 +10,10 @@ import { TischOutput } from '../../models/tischOutput';
   styleUrls: ['./zimmer.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZimmerComponent implements OnInit, OnChanges {
+export class ZimmerComponent implements  OnChanges {
   
   @Input('schulzimmerId') schulzimmerId: number
-  @Input('schulzimmerToPerson')  schulzimmerToPerson: Schulzimmer[]; 
+  @Input('selectedSchulzimmer')  selectedSchulzimmer: Schulzimmer; 
   
   @Output() noteSchulzimmer: EventEmitter<Schulzimmer> = new EventEmitter<Schulzimmer>();
 
@@ -43,38 +43,39 @@ export class ZimmerComponent implements OnInit, OnChanges {
     this.zimmer.tische = new Array();
   }
 
-  getSchuelerToKlassenid(id: number):void{
-
-    debugger;
-      
-    this.zimmer = this.schulzimmerToPerson.filter(
-          item => 
-            item.id === id )[0]
-    
-    
-}
-
   private writeZimmer(tischOutput:TischOutput):void {
+    debugger;
     this.tischTmp.position = tischOutput.position
     if(tischOutput.selected){
-      // this.selectedTische[tischOutput.position.row][tischOutput.position.column] = true;
       this.zimmer.tische.push(this.tischTmp)
     }else{
-      // this.selectedTische[tischOutput.position.row][tischOutput.position.column] = false;
-      this.zimmer.tische.filter(function(tisch) {
-        return tisch.position !== tischOutput.position} )
+      this.zimmer.tische = this.zimmer.tische.filter(
+         item => item.position !== tischOutput.position
+      )
     } 
+
+    
+    console.log("Tische nach Auswahl:");
     console.log(this.zimmer.tische);
 
-  }
 
-  ngOnInit() {
-    this.getSchuelerToKlassenid(this.schulzimmerId);
-  }
-  ngOnChanges(){
+    console.log("Update Zimmer:");
+    console.log(this.zimmer);
+    console.log("Id of updated Zimmer:");
+    console.log(this.zimmer.id);
     this.noteSchulzimmer.emit(this.zimmer);
 
   }
+
+  ngOnChanges(){
+    this.zimmer = this.selectedSchulzimmer;
+    console.log("Zimmer beim Laden");
+    console.log(this.zimmer);
+
+  }
+
+
+
 
 }
 
