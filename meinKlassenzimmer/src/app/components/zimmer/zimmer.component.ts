@@ -21,36 +21,31 @@ export class ZimmerComponent implements  OnChanges {
   zimmerColumns = [0,1,2,3,4,5,6,7,8,9];
 
 
-  // selectedTische: boolean[][];
   zimmer = new Schulzimmer();
-  tischTmp = new Tisch();
+  tischTmp: Tisch;
+  
   
   
 
 
 
   constructor() { 
-    // this.selectedTische = new Array(this.zimmerRows.length )
-    // for (let index = 0; index < this.selectedTische.length; index++) {
-    //   this.selectedTische[index] = new Array(this.zimmerRows.length )
-    //   for (let index2 = 0; index2 < this.selectedTische[index].length; index2++) {
-    //       this.selectedTische[index][index2] = false;
-        
-    //   }
-      
-    // }  
-
     this.zimmer.tische = new Array();
   }
 
   private writeZimmer(tischOutput:TischOutput):void {
     debugger;
+    this.tischTmp = new Tisch();
+    console.log("Zimmer before:");
+    console.log(this.zimmer);
     this.tischTmp.position = tischOutput.position
+    console.log("Zimmer after:");
+    console.log(this.zimmer);
     if(tischOutput.selected){
       this.zimmer.tische.push(this.tischTmp)
     }else{
       this.zimmer.tische = this.zimmer.tische.filter(
-         item => item.position !== tischOutput.position
+         item =>  !(item.position.column == tischOutput.position.column && item.position.row == tischOutput.position.row)
       )
     } 
 

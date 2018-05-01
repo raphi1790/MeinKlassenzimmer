@@ -34,6 +34,14 @@ export class SchulzimmerService {
         ).catch(this._handleError);
     
       }
+      updateSchulzimmerAndTische(newSchulzimmer: Schulzimmer[]): Observable<Schulzimmer[]> {
+        debugger;
+        const body = newSchulzimmer;
+        return this.http.post(this.schulzimmerUrl, body, {
+          headers: new HttpHeaders().set('Authorization', this._authHeader)
+        }).catch(this._handleError)
+           
+      };
 
       private _handleError(err: HttpErrorResponse | any) {
         const errorMsg = err.message || 'Error: Unable to complete request.';

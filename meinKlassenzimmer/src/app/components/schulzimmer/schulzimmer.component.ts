@@ -4,6 +4,9 @@ import { Schulzimmer } from 'app/models/schulzimmer';
 import { SchulzimmerService } from "app/services/schulzimmer.service";
 import { Tisch } from '../../models/tisch';
 import { PositionTisch } from '../../models/positiontisch';
+import { PersonDbHelper } from '../../helpers/person.DbHelper';
+import { PersonService } from '../../services/person.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -14,9 +17,17 @@ import { PositionTisch } from '../../models/positiontisch';
 
 export class SchulzimmerComponent implements OnInit {
 
+
+
+  
+ 
+  
+
+  personDbHelper: PersonDbHelper;
   @Input() personid: number
 
-  constructor(private schulzimmerService: SchulzimmerService) {
+  constructor(private schulzimmerService: SchulzimmerService, private personService: PersonService, private auth : AuthService ) {
+    this.personDbHelper = new PersonDbHelper(personService, auth);
     this.maximalSchulzimmerId = 0;
 
 
@@ -27,9 +38,11 @@ export class SchulzimmerComponent implements OnInit {
   zimmerToPerson: Schulzimmer[];
   neueSchulzimmerTmp: Schulzimmer[];
   maximalSchulzimmerId: number;
+  personNeedSaving: boolean;
+
+  
 
   getSchulzimmerToPerson() {
-    debugger;
 
     this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(data => {
       debugger;
@@ -67,6 +80,11 @@ export class SchulzimmerComponent implements OnInit {
 
 
   }
+  deleteSchulzimmer(schulzimmer: Schulzimmer):void{
+    this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
+      item =>
+        item.id !== schulzimmer.id)
+  }
 
   addSchulzimmerTmp(name: string): void {
     debugger;
@@ -93,10 +111,18 @@ export class SchulzimmerComponent implements OnInit {
       this.schulzimmerToPerson.push(updatedZimmer);
     }
   }
+  saveSchulzimmerTische(): void {
+    debugger;
+    this.personDbHelper.savePerson();
+    this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe();
+  }
+
 
 
 
   ngOnInit() {
+    debugger;
+    this.personDbHelper.getPerson();
     this.getSchulzimmerToPerson();
 
   }

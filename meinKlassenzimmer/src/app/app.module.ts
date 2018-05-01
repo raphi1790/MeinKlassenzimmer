@@ -22,6 +22,7 @@ import { SchulzimmerService} from './services/schulzimmer.service';
 import { AuthService} from './services/auth/auth.service';
 
 
+
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { InlineEditorModule} from 'ng2-inline-editor';
 import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
@@ -30,6 +31,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { CallbackComponent } from './components/callback/callback.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PingComponent } from './components/ping/ping.component';
+
 
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { HttpClient, HttpClientModule } from '@angular/common/http';

@@ -21,20 +21,33 @@ export class PersonService {
     return `Bearer ${localStorage.getItem('access_token')}`;
   }
 
-  getPerson() {
-    debugger;
+  getPerson(): Observable<any> {
+    debugger
     return this.http
-      .get<Person>(this.personUrl, {
-        headers: new HttpHeaders().set('Authorization', this._authHeader)
-      }).catch(this._handleError);
+      .get(this.personUrl,
+        {
+          headers: new HttpHeaders({'Content-Type':  'application/json', 'Authorization': this._authHeader})
+        }
+
+    ).catch(this._handleError);
+
   }
 
-  createPerson(neuePerson: Person): void {
-    const body = { name: neuePerson.name, vorname: neuePerson.vorname, nickname: neuePerson.nickname, geschlecht: neuePerson.geschlecht  };
+  createPerson(newPerson: Person): void {
+    const body = { name: newPerson.name, vorname: newPerson.vorname, nickname: newPerson.nickname, geschlecht: newPerson.geschlecht  };
     const req = this.http.post(this.personUrl, body, {
       headers: new HttpHeaders().set('Authorization', this._authHeader),
     })
     req.subscribe();
+  }
+  updatePerson(modifiedPerson: Person): void {
+    const url = `${this.personUrl}/${modifiedPerson.id}`
+    const body = { name: modifiedPerson.name, vorname: modifiedPerson.vorname, nickname: modifiedPerson.nickname, geschlecht: modifiedPerson.geschlecht  };
+    const req = this.http.put(url, body, {
+      headers: new HttpHeaders().set('Authorization', this._authHeader),
+    })
+    req.subscribe();
+    
 
   }
 
