@@ -31,8 +31,7 @@ class ParentChildInserter{
             console.log(valuesChildrenWithForeignKey);
             connection.query(queryChild,[valuesChildrenWithForeignKey], function(err, results) {
                 if (err) console.log(err);
-                // console.log("Inserted ChildId:");
-                // console.log(results.insertId);
+         
     
                
             })

@@ -5,7 +5,7 @@
     <input #neuerSchuelerVorname />
     <label>Name: </label>
     <input #neuerSchuelerName />
-    <button type="button" class="btn btn-primary" (click)="addSchuelerTmp(neuerSchuelerVorname.value, neuerSchuelerName.value); neuerSchuelerVorname.value='';neuerSchuelerName.value=''">
+    <button type="button" class="btn btn-primary" (click)="addSchueler(neuerSchuelerVorname.value, neuerSchuelerName.value); neuerSchuelerVorname.value='';neuerSchuelerName.value=''">
             Hinzufügen
       </button>
   </div>
@@ -20,10 +20,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let schueler of schuelerToKlasse">
+        <tr *ngFor="let schueler of schulklasse.schueler">
           <td>{{schueler.vorname}}</td>
           <td>{{schueler.name}} </td>
-          <td><span><button type = "button" class = "btn btn-secondary" (click) ="deleteSchuelerTmp(schueler); $event.stopPropagation()">X</button></span> </td>
+          <td><span><button type = "button" class = "btn btn-secondary" (click) ="deleteSchueler(schueler); $event.stopPropagation()">X</button></span> </td>
         </tr>
       </tbody>
     </table>

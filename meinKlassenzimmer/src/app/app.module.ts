@@ -10,13 +10,13 @@ import { AppRoutingModule} from './routes/app-routing-module';
 
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { KlassenComponent } from './components/klassen/klassen.component';
+import { SchulklassenComponent } from './components/schulklassen/schulklassen.component';
 import { SchulzimmerComponent } from './components/schulzimmer/schulzimmer.component';
 import { ZimmerComponent } from './components/zimmer/zimmer.component';
 
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
 import { StartseiteComponent } from './components/startseite/startseite.component'
-import { KlassenService} from './services/klassen.service';
+import { SchulklassenService} from './services/schulklassen.service';
 import { PersonService} from './services/person.service';
 import { SchulzimmerService} from './services/schulzimmer.service';
 import { AuthService} from './services/auth/auth.service';
@@ -49,7 +49,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   declarations: [
     AppComponent,
     SidebarComponent,
-    KlassenComponent,
+    SchulklassenComponent,
     SchulzimmerComponent,
     SitzordnungComponent,
     StartseiteComponent,
@@ -74,7 +74,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BrowserAnimationsModule
 
   ],
-  providers: [PersonService,KlassenService,SchulzimmerService,
+  providers: [PersonService,SchulklassenService,SchulzimmerService,
     AuthService,
     {
       provide: AuthHttp,

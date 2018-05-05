@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation, Input, OnChanges, EventEmitter, O
 
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Tisch } from '../../models/tisch';
-import { TischOutput } from '../../models/tischOutput';
+import { TischOutput } from '../../models/output.tisch';
 
 @Component({
   selector: 'app-zimmer',
@@ -12,7 +12,7 @@ import { TischOutput } from '../../models/tischOutput';
 })
 export class ZimmerComponent implements  OnChanges {
   
-  @Input('schulzimmerId') schulzimmerId: number
+
   @Input('selectedSchulzimmer')  selectedSchulzimmer: Schulzimmer; 
   
   @Output() noteSchulzimmer: EventEmitter<Schulzimmer> = new EventEmitter<Schulzimmer>();

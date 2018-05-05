@@ -15,7 +15,7 @@ export class PersonDbHelper {
   }
   
 
-  personNeedInsert: boolean;
+  personNeedInsert = true;
   personData : Person;
 
     getPerson() {
@@ -30,6 +30,7 @@ export class PersonDbHelper {
     }
      savePerson(){
       this.auth.getProfile((err, profile) => {
+        debugger;
         this.personData = new Person();
         this.personData.id = profile.sub.split('|')[1];
         this.personData.geschlecht = profile.gender;

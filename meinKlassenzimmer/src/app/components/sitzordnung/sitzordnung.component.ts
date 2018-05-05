@@ -1,30 +1,30 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 
-import {Klasse} from 'app/models/klasse';
+import {Schulklasse} from 'app/models/schulklasse';
 import {Schueler} from 'app/models/schueler';
-import {KlassenComponent } from '../klassen/klassen.component';
-import {KlassenService} from 'app/services/klassen.service';
+import {SchulklassenComponent } from '../schulklassen/schulklassen.component';
+import {SchulklassenService} from 'app/services/schulklassen.service';
 
 @Component({
   selector: 'app-zuordnung',
   templateUrl: './sitzordnung.component.html',
   styleUrls: ['./sitzordnung.component.css']
 })
-export class SitzordnungComponent implements OnInit {
+export class SitzordnungComponent  {
 
-  klassen: Klasse[];
-  schueler: Schueler[];
+  // klassen: Schulklasse[];
+  // schueler: Schueler[];
 
-  constructor(private klassenService : KlassenService ) { }
+  // constructor(private klassenService : SchulklassenService ) { }
 
-    getKlassenToPerson():Klasse[] {
-      this.klassenService.getKlassenByPersonid().subscribe(klassen => this.klassen = klassen);
-      return this.klassen;
-  }
+  //   getKlassenToPerson():Schulklasse[] {
+  //     this.klassenService.getKlassenAndSchuelerByPersonid().subscribe(klassen => this.klassen = klassen);
+  //     return this.klassen;
+  // }
 
-  ngOnInit() {
-    this.klassen  = this.getKlassenToPerson();
+  // ngOnInit() {
+  //   this.klassen  = this.getKlassenToPerson();
         
-  }
+  // }
 
 }

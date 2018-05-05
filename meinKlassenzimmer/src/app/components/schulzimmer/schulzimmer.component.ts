@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Schulzimmer } from 'app/models/schulzimmer';
 import { SchulzimmerService } from "app/services/schulzimmer.service";
 import { Tisch } from '../../models/tisch';
-import { PositionTisch } from '../../models/positiontisch';
+import { PositionTisch } from '../../models/position.tisch';
 import { PersonDbHelper } from '../../helpers/person.DbHelper';
 import { PersonService } from '../../services/person.service';
 import { AuthService } from '../../services/auth/auth.service';
@@ -19,10 +19,6 @@ export class SchulzimmerComponent implements OnInit {
 
 
 
-  
- 
-  
-
   personDbHelper: PersonDbHelper;
   @Input() personid: number
 
@@ -35,10 +31,8 @@ export class SchulzimmerComponent implements OnInit {
 
   schulzimmerToPerson = [];
   selectedSchulzimmer: Schulzimmer;
-  zimmerToPerson: Schulzimmer[];
   neueSchulzimmerTmp: Schulzimmer[];
   maximalSchulzimmerId: number;
-  personNeedSaving: boolean;
 
   
 
@@ -111,10 +105,10 @@ export class SchulzimmerComponent implements OnInit {
       this.schulzimmerToPerson.push(updatedZimmer);
     }
   }
-  saveSchulzimmerTische(): void {
+  async saveSchulzimmerTische(): Promise<void> {
     debugger;
     this.personDbHelper.savePerson();
-    this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe();
+    await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe();
   }
 
 

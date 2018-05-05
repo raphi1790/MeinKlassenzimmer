@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes}from '@angular/router';
 
-import {KlassenComponent} from '../components/klassen/klassen.component';
+import {SchulklassenComponent} from '../components/schulklassen/schulklassen.component';
 import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.component';
 import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
 import {StartseiteComponent} from '../components/startseite/startseite.component';
@@ -13,7 +13,7 @@ const routes: Routes = [
 
       {
           path: 'verwaltung/klassen',
-          component: KlassenComponent
+          component: SchulklassenComponent
       },
       {
           path: 'verwaltung/schulzimmer',

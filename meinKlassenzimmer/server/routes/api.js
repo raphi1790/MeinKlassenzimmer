@@ -9,7 +9,7 @@ const mysql = require("mysql");
 const jwtDecode = require('jwt-decode');
 const async = require('async');
 var connection = require('../../dbconnection');
-var parentChildInserter = require('./parentChildInserter');
+var parentChildInserter = require('./helper/parentChildInserter');
 
 
 app.use(cors());
@@ -116,13 +116,13 @@ router.put("/person/:id", checkJwt, function (req, res) {
 });
 
 router.get("/schulzimmer", checkJwt, function (req, res) {
-    var queryTische = "SELECT * FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
+    var sqlTische = "SELECT * FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
     var tableTisch = ["tisch","t.SchulzimmerId","s.Id","schulzimmer", "s.PersonId", personId];
-    var querySchulzimmer = "SELECT * FROM ?? s WHERE ??=? Group By ??";
-    var tableSchulzimmer = ["schulzimmer", "s.PersonId", personId, "s.Id"];
+    var sqlSchulzimmer = "SELECT * FROM ?? s WHERE ??=?";
+    var tableSchulzimmer = ["schulzimmer", "s.PersonId", personId];
 
-    querySchulzimmer = mysql.format(querySchulzimmer, tableSchulzimmer);
-    queryTische = mysql.format(queryTische, tableTisch)
+    querySchulzimmer = mysql.format(sqlSchulzimmer, tableSchulzimmer);
+    queryTische = mysql.format(sqlTische, tableTisch)
     
     var return_data = {};
 
@@ -150,13 +150,13 @@ router.get("/schulzimmer", checkJwt, function (req, res) {
 });
 
 router.post("/schulzimmer", checkJwt, function (req, res) {
-    var sqlDeleteTische = "DELETE FROM ?? WHERE ?? in (SELECT ?? from ??  where ?? = ?)";
-    var valuesDeleteTische = ["tisch","SchulzimmerId","Id","schulzimmer", "PersonId", personId];
+    var sqlDeleteTisch = "DELETE FROM ?? WHERE ?? in (SELECT ?? from ??  where ?? = ?)";
+    var valuesDeleteTisch = ["tisch","SchulzimmerId","Id","schulzimmer", "PersonId", personId];
 
     var sqlDeleteSchulzimmer = "DELETE FROM ?? where ?? = ?";
     var valuesDeleteSchulzimmer = ["schulzimmer","PersonId", personId];
 
-    queryDeleteTische = mysql.format(sqlDeleteTische, valuesDeleteTische);
+    queryDeleteTische = mysql.format(sqlDeleteTisch, valuesDeleteTisch);
     queryDeleteSchulzimmer = mysql.format(sqlDeleteSchulzimmer, valuesDeleteSchulzimmer)
 
 
@@ -209,62 +209,102 @@ router.post("/schulzimmer", checkJwt, function (req, res) {
    
 });
 
+router.get("/schulklasse", checkJwt, function (req, res) {
+    var sqlSchueler = "SELECT * FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
+    var tableSchueler = ["schueler","t.SchulklassenId","s.Id","schulklasse", "s.PersonId", personId];
+    var sqlSchulklasse = "SELECT * FROM ?? s WHERE ??=?";
+    var tableSchulklasse = ["schulklasse", "s.PersonId", personId];
 
+    querySchulklasse = mysql.format(sqlSchulklasse, tableSchulklasse);
+    querySchueler = mysql.format(sqlSchueler, tableSchueler)
+    
+    var return_data = {};
 
-
-
-router.delete("/schulzimmer/:id", checkJwt, function (req, res) {
-    var query = "DELETE from schulzimmer WHERE id=?";
-    var table = [req.params.id];
-    query = mysql.format(query, table);
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({ "Error": true, "Message": "Error executing MySQL query","Original":err });
-        } else {
-            res.json({ "Error": false, "Message": "Deleted Schulzimmer with ID " + req.params.id });
+    async.parallel([
+        function(parallel_done) {
+            connection.query(querySchulklasse, {}, function(err, results) {
+                if (err) return parallel_done(err);
+                return_data.Schulklassen = results;
+                parallel_done();
+            });
+        },
+        function(parallel_done) {
+            connection.query(querySchueler, {}, function(err, results) {
+                if (err) return parallel_done(err);
+                return_data.Schueler = results;
+                parallel_done();
+            });
         }
-    });
+     ], function(err) {
+          if (err) console.log(err);
+          res.send(return_data);
+     });
+
+
 });
 
-router.get("/tisch/:id", checkJwt, function (req, res) {
-    var query = "SELECT * FROM tisch WHERE schulzimmerId =? ";
-    var table = [req.params.id];
-    query = mysql.format(query, table);
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({ "Error": true, "Message": err });
-        } else {
-            res.json({ "Error": false, "Message": "Success", "Tische": rows });
+router.post("/schulklasse", checkJwt, function (req, res) {
+    var sqlDeleteSchueler = "DELETE FROM ?? WHERE ?? in (SELECT ?? from ??  where ?? = ?)";
+    var valuesDeleteSchueler = ["schueler","SchulklassenId","Id","schulklasse", "PersonId", personId];
 
+    var sqlDeleteSchulklasse = "DELETE FROM ?? where ?? = ?";
+    var valuesDeleteSchulklasse = ["schulklasse","PersonId", personId];
+
+    queryDeleteSchueler = mysql.format(sqlDeleteSchueler, valuesDeleteSchueler);
+    queryDeleteSchulklasse = mysql.format(sqlDeleteSchulklasse, valuesDeleteSchulklasse)
+
+
+    var queryInsertSchulklasse = "INSERT INTO schulklasse (PersonId, Name) VALUES ?";
+    var queryInsertSchueler = "INSERT INTO schueler (SchulklassenId,Name,Vorname) VALUES ?";
+    var valuesInsertSchulklasse = [];
+    var valuesInsertSchulklasseWithId = [];
+
+    var valuesInsertSchueler= [];
+
+    for(var i = 0; i < req.body.length; i++) {
+        var obj = req.body[i];
+        valuesInsertSchulklasse.push(new Array(personId,req.body[i].name));
+        valuesInsertSchulklasseWithId.push(new Array(personId,req.body[i].id, req.body[i].name));
+        for(var j=0; j<req.body[i].schueler.length; j++){
+            valuesInsertSchueler.push(new Array(req.body[i].id,req.body[i].schueler[j].vorname, req.body[i].schueler[j].name) );
         }
-    });
+        console.log("Object:");
+        console.log(obj);
+    }
+
+    return_data={};
+    async.parallel([
+        function(parallel_done) {
+            connection.query(queryDeleteSchueler, {}, function(err, results) {
+                if (err) return parallel_done(err);
+                console.log("Schueler deleted");
+                parallel_done();
+                
+            });
+
+            
+        },
+        function(parallel_done) {
+            connection.query(queryDeleteSchulklasse, {}, function(err, results) {
+                if (err) return parallel_done(err);
+                console.log("Schulklasse deleted");
+                parallel_done();
+                
+            });
+
+            
+        }
+        
+    ], function(err) {
+        if (err) console.log(err);
+        ParentChildInserter.InsertParentChild(connection, queryInsertSchulklasse, queryInsertSchueler, valuesInsertSchulklasse,valuesInsertSchulklasseWithId,valuesInsertSchueler)
+        res.send(return_data);
+   });
+   
 });
 
-router.post("/tisch", function (req, res) {
-    var query = "INSERT INTO ??(??,??,??) VALUES (?,?,?)";
-    var table = ["tisch", "schulzimmerId", "RowNumber", "ColumnNumber",  req.body.SchulzimmerId, req.body.RowNumber ,req.body.ColumnNumber];
-    query = mysql.format(query, table);
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({ "Error": true, "Message": "Error executing adding of Tisch query", "Original":err });
-        } else {
-            res.json({"Message": "Tisch added", "TischId": rows.insertId});
-        }
-    });
-});
 
-router.delete("/tisch/:id", checkJwt, function (req, res) {
-    var query = "DELETE from tisch WHERE id=?";
-    var table = [req.params.id];
-    query = mysql.format(query, table);
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({ "Error": true, "Message": "Error executing MySQL query","Original":err });
-        } else {
-            res.json({ "Error": false, "Message": "Deleted Tisch with ID " + req.params.id });
-        }
-    });
-});
+
 
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { PositionTisch } from '../../models/positiontisch';
-import { TischOutput } from '../../models/tischOutput';
+import { PositionTisch } from '../../models/position.tisch';
+import { TischOutput } from '../../models/output.tisch';
 import { Tisch } from '../../models/tisch';
 
 @Component({

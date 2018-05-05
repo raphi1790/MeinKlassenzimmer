@@ -1,8 +1,9 @@
-import { Component, OnInit ,Input, OnChanges} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, OnChanges, EventEmitter, Output } from '@angular/core';
 
-import {Klasse} from 'app/models/klasse';
+import {Schulklasse} from 'app/models/schulklasse';
 import {Schueler} from 'app/models/schueler';
-import {KlassenService} from 'app/services/klassen.service'
+import {SchulklassenService} from 'app/services/schulklassen.service'
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 
@@ -12,50 +13,51 @@ import {KlassenService} from 'app/services/klassen.service'
   templateUrl: './schueler.component.html',
   styleUrls: ['./schueler.component.css']
 })
-export class SchuelerComponent implements OnChanges {
-
-  @Input('klassenId') klassenid: number
-  @Input('schuelerToPerson')  schuelerToPerson: Schueler[];
-
-    schuelerToKlasse: Schueler[] = [];
-    neuerSchueler: Schueler;
-    neueSchuelerTmp:  Schueler[] = [];
-    deletedSchuelerTmp: Schueler[] = [];
-
- 
+export class SchuelerComponent implements OnChanges{
 
 
-  constructor() { }
+  constructor() {
+    this.schulklasse.schueler = new Array();
+    this.maximalSchuelerId = 0
+  }
+  @Input('selectedSchulklasse')  selectedSchulklasse: Schulklasse; 
+  @Output() noteSchulklasse: EventEmitter<Schulklasse> = new EventEmitter<Schulklasse>();
+  maximalSchuelerId: number;
+  schulklasse = new Schulklasse();
 
 
-    getSchuelerToKlassenid(id: number):void{
-      console.log(id);
-      debugger;
-        this.schuelerToKlasse = this.schuelerToPerson.filter(
-            item => 
-              item.klassenid === id )
-      
+  private deleteSchueler(deletedSchueler: Schueler):void{
+    debugger;
+    this.schulklasse.schueler = this.schulklasse.schueler.filter(
+      item => item.id != deletedSchueler.id
+    );
+    console.log("Klasse nach Update (Delete):");
+    console.log(this.schulklasse);
+    this.noteSchulklasse.emit(this.schulklasse);
+  };
+
+  private addSchueler(vorname: string, name:string):void {
+    debugger;
+    var schuelerTmp = new Schueler();
+    schuelerTmp.id = this.maximalSchuelerId;
+    schuelerTmp.vorname = vorname;
+    schuelerTmp.name = name;
+    this.schulklasse.schueler.push( schuelerTmp);
+
+    console.log("Klasse nach Update (Adding):");
+    console.log(this.schulklasse);
+    this.noteSchulklasse.emit(this.schulklasse);
+
   }
 
-   addSchuelerTmp(vorname: string, name:string):void {
-    vorname = vorname.trim();
-    name = name.trim();
-    var neuerSchuelerTmp = new Schueler()
-    neuerSchuelerTmp.setValues(this.klassenid,vorname,name);
-    this.neueSchuelerTmp.push(neuerSchuelerTmp);
-    this.schuelerToKlasse.push(neuerSchuelerTmp);
-    neuerSchuelerTmp = null;
-  }
-  deleteSchuelerTmp(schueler:Schueler):void{
-    this.deletedSchuelerTmp.push(schueler);
-    this.schuelerToKlasse = this.schuelerToKlasse.filter(k => k!== schueler);
-  }
 
-  ngOnChanges() {
-    this.getSchuelerToKlassenid(this.klassenid);
+  ngOnChanges(){
+    debugger;
+    this.schulklasse = this.selectedSchulklasse;
+    console.log("Schulklasse beim Laden");
+    console.log(this.schulklasse);
     
-
   }
-
+    
 
 }
