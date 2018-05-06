@@ -60,8 +60,6 @@ export class SchulzimmerComponent implements OnInit {
 
       }
       console.log(this.schulzimmerToPerson);
-      console.log(this.schulzimmerToPerson[0].name);
-
     }
 
 
@@ -77,7 +75,8 @@ export class SchulzimmerComponent implements OnInit {
   deleteSchulzimmer(schulzimmer: Schulzimmer):void{
     this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
       item =>
-        item.id !== schulzimmer.id)
+        item.id !== schulzimmer.id);
+    this.selectedSchulzimmer = null;     
   }
 
   addSchulzimmerTmp(name: string): void {
@@ -87,7 +86,6 @@ export class SchulzimmerComponent implements OnInit {
     neuesSchulzimmerTmp.name = name;
     neuesSchulzimmerTmp.id = this.maximalSchulzimmerId;
     neuesSchulzimmerTmp.tische = new Array<Tisch>();
-    // this.neueSchulzimmerTmp.push(neuesSchulzimmerTmp);
     this.schulzimmerToPerson.push(neuesSchulzimmerTmp);
     neuesSchulzimmerTmp = null;
     this.selectedSchulzimmer = null;
@@ -110,9 +108,6 @@ export class SchulzimmerComponent implements OnInit {
     this.personDbHelper.savePerson();
     await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe();
   }
-
-
-
 
   ngOnInit() {
     debugger;

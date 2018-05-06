@@ -43,6 +43,7 @@ export class SchuelerComponent implements OnChanges{
     schuelerTmp.vorname = vorname;
     schuelerTmp.name = name;
     this.schulklasse.schueler.push( schuelerTmp);
+    this.maximalSchuelerId++;
 
     console.log("Klasse nach Update (Adding):");
     console.log(this.schulklasse);

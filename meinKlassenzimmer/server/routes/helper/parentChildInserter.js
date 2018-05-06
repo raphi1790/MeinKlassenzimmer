@@ -11,16 +11,23 @@ class ParentChildInserter{
         var mappingTable =[];
         async.parallel([
             function(parallel_done) {
-                connection.query(queryParent,[valuesParent], function(err, results) {
-                    if (err) return parallel_done(err);
-                    console.log("Inserted ParentId:");
-                    console.log(results.insertId);
-                    var MappingTableCreator = new mappingTableCreator();
-                    mappingTable = MappingTableCreator.CreateMappingIdTable(valuesParentWithOldId, results.insertId);
+                if(valuesParent.length > 0){
+                    connection.query(queryParent,[valuesParent], function(err, results) {
+                        if (err) return parallel_done(err);
+                        console.log("Inserted ParentId:");
+                        console.log(results.insertId);
+                        var MappingTableCreator = new mappingTableCreator();
+                        mappingTable = MappingTableCreator.CreateMappingIdTable(valuesParentWithOldId, results.insertId);
+                        parallel_done();
+                    })
+                }
+                else{
+                    console.log("No parent records");
                     parallel_done();
                     
-
-                })
+                }
+                
+                
             }
 
         ],function(err) {
@@ -29,13 +36,13 @@ class ParentChildInserter{
             var valuesChildrenWithForeignKey = ForeignKeyPreparer.PrepareChildWithForeignKeys(valuesChildren, mappingTable);
             console.log("Values Children:")
             console.log(valuesChildrenWithForeignKey);
-            connection.query(queryChild,[valuesChildrenWithForeignKey], function(err, results) {
-                if (err) console.log(err);
-         
-    
-               
-            })
-            
+            if (valuesChildrenWithForeignKey.length > 0){
+                connection.query(queryChild,[valuesChildrenWithForeignKey], function(err, results) {
+                    if (err) console.log(err);
+                })
+            }else{
+                console.log("No children records");
+            }
         })
 
 

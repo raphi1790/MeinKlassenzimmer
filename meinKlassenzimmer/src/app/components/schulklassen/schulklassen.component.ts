@@ -60,11 +60,11 @@ export class SchulklassenComponent implements OnInit {
             schueler.id = data['Schueler'][indexSchueler].Id
             schueler.name = data['Schueler'][indexSchueler].Name;
             schueler.vorname = data['Schueler'][indexSchueler].Vorname;
+            this.klassenToPerson[indexKlasse].schueler.push(schueler);
           }
         }
       }
       console.log(this.klassenToPerson);
-      console.log(this.klassenToPerson[0].name)
       
     });
   }
@@ -79,7 +79,9 @@ export class SchulklassenComponent implements OnInit {
   deleteSchulklasse(klasse: Schulklasse):void{
     this.klassenToPerson = this.klassenToPerson.filter(
       item =>
-        item.id !== klasse.id)
+        item.id !== klasse.id);
+    this.selectedSchulklasse = null    
+
   }
 
   addSchulklasseTmp(name: string): void {
