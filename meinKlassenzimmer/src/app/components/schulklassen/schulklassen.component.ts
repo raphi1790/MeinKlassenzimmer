@@ -33,40 +33,18 @@ export class SchulklassenComponent implements OnInit {
 
   }
 
-  klassenToPerson = [];
+  klassenToPerson: Schulklasse[];
   selectedSchulklasse: Schulklasse;
   maximalKlassenId: number;
 
 
   getSchulklassenToPerson() {
 
-    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe(data => {
-      debugger;
-      console.log("Geladene Schulklassen:");
-      console.log( data['Schulklassen']);
-      console.log("Geladene Schueler:");
-      console.log(data['Schueler']);
-      for (let indexKlasse = 0; indexKlasse < data['Schulklassen'].length; indexKlasse++) {
+    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe(
+      (data:Schulklasse[]) => {
         debugger;
-        this.klassenToPerson[indexKlasse] = new Schulklasse();
-        this.klassenToPerson[indexKlasse].id = data['Schulklassen'][indexKlasse].Id;
-        this.klassenToPerson[indexKlasse].personid = data['Schulklassen'][indexKlasse].PersonId;
-        this.klassenToPerson[indexKlasse].name = data['Schulklassen'][indexKlasse].Name;
-        this.klassenToPerson[indexKlasse].schueler = new Array<Schueler>();
-        for (let indexSchueler = 0; indexSchueler < data['Schueler'].length; indexSchueler++) {
-          if (this.klassenToPerson[indexKlasse].id == data['Schueler'][indexSchueler].SchulklassenId) {
-            debugger;
-            var schueler = new Schueler();
-            schueler.id = data['Schueler'][indexSchueler].Id
-            schueler.name = data['Schueler'][indexSchueler].Name;
-            schueler.vorname = data['Schueler'][indexSchueler].Vorname;
-            this.klassenToPerson[indexKlasse].schueler.push(schueler);
-          }
-        }
-      }
-      console.log(this.klassenToPerson);
-      
-    });
+        this.klassenToPerson = data});
+  
   }
 
 

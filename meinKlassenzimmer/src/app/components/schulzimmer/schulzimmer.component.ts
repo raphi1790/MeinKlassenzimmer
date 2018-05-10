@@ -29,7 +29,7 @@ export class SchulzimmerComponent implements OnInit {
 
   }
 
-  schulzimmerToPerson = [];
+  schulzimmerToPerson :Schulzimmer[];
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
   maximalSchulzimmerId: number;
@@ -38,31 +38,10 @@ export class SchulzimmerComponent implements OnInit {
 
   getSchulzimmerToPerson() {
 
-    this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(data => {
-      debugger;
-      console.log("Schulzimmer " + data['Schulzimmer']);
-      console.log("Tische " + data['Tische']);
-      for (let indexZimmer = 0; indexZimmer < data['Schulzimmer'].length; indexZimmer++) {
-        this.schulzimmerToPerson[indexZimmer] = new Schulzimmer();
-        this.schulzimmerToPerson[indexZimmer].id = data['Schulzimmer'][indexZimmer].Id;
-        this.schulzimmerToPerson[indexZimmer].personid = data['Schulzimmer'][indexZimmer].PersonId;
-        this.schulzimmerToPerson[indexZimmer].name = data['Schulzimmer'][indexZimmer].Name;
-        this.schulzimmerToPerson[indexZimmer].tische = new Array<Tisch>();
-        for (let indexTisch = 0; indexTisch < data['Tische'].length; indexTisch++) {
-          if (this.schulzimmerToPerson[indexZimmer].id == data['Tische'][indexTisch].SchulzimmerId) {
-            debugger;
-            var tischTmp = new Tisch()
-            tischTmp.position = new PositionTisch(data['Tische'][indexTisch].RowNumber, data['Tische'][indexTisch].ColumnNumber);
-            this.schulzimmerToPerson[indexZimmer].tische.push(tischTmp);
-          }
-        }
-
-
+    this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(
+      (data:Schulzimmer[]) => {
+        this.schulzimmerToPerson = data;
       }
-      console.log(this.schulzimmerToPerson);
-    }
-
-
     );
   }
 

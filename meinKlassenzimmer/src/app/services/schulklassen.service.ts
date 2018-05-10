@@ -15,6 +15,7 @@ import { Response } from 'express';
 export class SchulklassenService {
 
   private klassenUrl = 'api/schulklasse';  // URL to web api
+ 
 
 
 
@@ -25,14 +26,42 @@ export class SchulklassenService {
   }
 
 
-  getKlassenAndSchuelerByPersonid(){
+  getKlassenAndSchuelerByPersonid() {
     return this.http
-      .get(this.klassenUrl,
+      .get<Schulklasse[]>(this.klassenUrl,
         {
           headers: new HttpHeaders({'Content-Type':  'application/json', 'Authorization': this._authHeader})
         }
 
-    ).catch(this._handleError)
+    ).map(data => {
+      debugger;
+      console.log("Geladene Schulklassen:");
+      console.log( data['Schulklassen']);
+      console.log("Geladene Schueler:");
+      console.log(data['Schueler']);
+      var klassenToPerson = new Array<Schulklasse>();
+      for (let indexKlasse = 0; indexKlasse < data['Schulklassen'].length; indexKlasse++) {
+        debugger;
+        klassenToPerson[indexKlasse] = new Schulklasse();
+        klassenToPerson[indexKlasse].id = data['Schulklassen'][indexKlasse].Id;
+        klassenToPerson[indexKlasse].personid = data['Schulklassen'][indexKlasse].PersonId;
+        klassenToPerson[indexKlasse].name = data['Schulklassen'][indexKlasse].Name;
+        klassenToPerson[indexKlasse].schueler = new Array<Schueler>();
+        for (let indexSchueler = 0; indexSchueler < data['Schueler'].length; indexSchueler++) {
+          if (klassenToPerson[indexKlasse].id == data['Schueler'][indexSchueler].SchulklassenId) {
+            debugger;
+            var schueler = new Schueler();
+            schueler.id = data['Schueler'][indexSchueler].Id
+            schueler.name = data['Schueler'][indexSchueler].Name;
+            schueler.vorname = data['Schueler'][indexSchueler].Vorname;
+            klassenToPerson[indexKlasse].schueler.push(schueler);
+          }
+        }
+      }
+      console.log(klassenToPerson);
+      return klassenToPerson;
+      
+    }).catch(this._handleError)
   
 
   }

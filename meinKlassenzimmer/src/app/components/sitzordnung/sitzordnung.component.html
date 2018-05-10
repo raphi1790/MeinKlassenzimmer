@@ -1,15 +1,41 @@
-<div class="sitzordnung">
-  <div>
-    <h4>Sitzordnung</h4>
-  </div>
-  <div>
-    <p>
-      Wähle Klasse aus:
-    </p>
-  </div>
-  <div class="dropdownKlassen">
-    <select name="klassen">
-    <option *ngFor = "let klasse of klassen" value = "klasse">{{klasse.name}}</option>
-  </select>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="column1">
+        <h3>Sitzordnung</h3>
+
+        <div>
+          <label>Schulzimmer auswählen:</label>
+          <select id="Id" [(ngModel)]="schulzimmerId" name="Id" (change)="selectSchulzimmer();">
+            <option [ngValue]="zimmer.id" *ngFor="let zimmer of zimmerToPerson">
+              {{zimmer.name}}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label>Schulklasse auswählen:</label>
+          <select id="Id" [(ngModel)]="schulklasseId" name="Id" (change)="selectSchulklasse();">
+            <option [ngValue]="klasse.id" *ngFor="let klasse of klassenToPerson">
+              {{klasse.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="col-md-8">
+      <div class="column2">
+        <div class="schulzimmer" *ngIf="showSitzordnung">
+          <div class="zimmer">
+            <h3>Schulzimmer {{selectedSchulzimmer.name}}</h3>
+            <app-zimmer-vereinfacht [selectedSchulzimmer]="selectedSchulzimmer" [selectedSchulklasse]="selectedSchulklasse"></app-zimmer-vereinfacht>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<button type="button" class="btn btn-primary" (click) = "randomizePlaces()" >Zuordnen</button>

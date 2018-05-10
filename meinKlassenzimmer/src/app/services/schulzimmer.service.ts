@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/Rx';
 import { Schulzimmer } from '../models/schulzimmer';
+import { PositionTisch } from '../models/position.tisch';
 import { Tisch } from '../models/tisch';
 import { AuthService } from 'app/services/auth/auth.service';
 import { HttpHeaderResponse, HttpResponse } from '@angular/common/http/src/response';
@@ -24,13 +25,41 @@ export class SchulzimmerService {
     }
 
   
-      getSchulzimmerAndTischeByPersonid(): Observable<any> {
+      getSchulzimmerAndTischeByPersonid() {
         return this.http
-          .get(this.schulzimmerUrl,
+          .get<Schulzimmer[]>(this.schulzimmerUrl,
             {
               headers: new HttpHeaders({'Content-Type':  'application/json', 'Authorization': this._authHeader})
             }
     
+        ).map(
+          data => {
+            debugger;
+
+            console.log("Schulzimmer " + data['Schulzimmer']);
+            console.log("Tische " + data['Tische']);
+            var schulzimmerToPerson = new Array<Schulzimmer>();
+            for (let indexZimmer = 0; indexZimmer < data['Schulzimmer'].length; indexZimmer++) {
+              schulzimmerToPerson[indexZimmer] = new Schulzimmer();
+              schulzimmerToPerson[indexZimmer].id = data['Schulzimmer'][indexZimmer].Id;
+              schulzimmerToPerson[indexZimmer].personid = data['Schulzimmer'][indexZimmer].PersonId;
+              schulzimmerToPerson[indexZimmer].name = data['Schulzimmer'][indexZimmer].Name;
+              schulzimmerToPerson[indexZimmer].tische = new Array<Tisch>();
+              for (let indexTisch = 0; indexTisch < data['Tische'].length; indexTisch++) {
+                if (schulzimmerToPerson[indexZimmer].id == data['Tische'][indexTisch].SchulzimmerId) {
+                  debugger;
+                  var tischTmp = new Tisch()
+                  tischTmp.position = new PositionTisch(data['Tische'][indexTisch].RowNumber, data['Tische'][indexTisch].ColumnNumber);
+                  schulzimmerToPerson[indexZimmer].tische.push(tischTmp);
+                }
+              }
+      
+      
+            }
+            console.log(schulzimmerToPerson);
+            return schulzimmerToPerson;
+          }
+
         ).catch(this._handleError);
     
       }

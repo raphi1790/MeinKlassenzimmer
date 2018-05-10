@@ -2,9 +2,10 @@
   <tbody>
     <tr *ngFor="let row of zimmerRows; let r = index">
       <td  *ngFor="let column of zimmerColumns; let c = index" >
-        <app-tisch [rowZimmer] ="r" [columnZimmer] ="c" (noteZimmer)="writeZimmer($event)"  [tischeToSchulzimmer]="zimmer.tische"></app-tisch>
+          <div [className]="tischStyle" >
+              {{row}}, {{column}}
+            </div>
       </td>
     </tr>
   </tbody>
 </table>
-
