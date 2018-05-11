@@ -1,2 +1,9 @@
 <div [className]="tischStyle" >
+    <div class ="tisch" *ngIf ="tischSelected">
+        <div class ="schueler" *ngIf ="schuelerExists">
+            <p>{{schueler[schuelerIndex].vorname}}</p>
+            <p>{{schueler[schuelerIndex].name}}</p>
+        </div>
+        
+    </div>
 </div>

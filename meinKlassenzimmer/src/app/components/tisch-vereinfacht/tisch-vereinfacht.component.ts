@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angu
 import { PositionTisch } from '../../models/position.tisch';
 import { TischOutput } from '../../models/output.tisch';
 import { Tisch } from '../../models/tisch';
+import { Schueler } from '../../models/schueler';
 
 
 @Component({
@@ -11,16 +12,23 @@ import { Tisch } from '../../models/tisch';
 })
 export class TischVereinfachtComponent implements OnChanges {
 
-  constructor() { }
+  constructor() { 
+    this.schuelerExists = false;
+  }
 
   
   @Input('rowZimmer') row: number
   @Input('columnZimmer')  column: number;
   @Input('tischeToSchulzimmer') tischeToSchulzimmer: Tisch[];
+  @Input('schueler') schueler: Schueler[];
+  @Input('schuelerIndex') schuelerIndex: number
+  
+
+  @Output() noteZimmerVereinfacht: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   tischStyle : string
   tischSelected: boolean
-  tischOutput = new TischOutput();
+  schuelerExists: boolean
 
   getTisch():void{
 
@@ -34,8 +42,12 @@ export class TischVereinfachtComponent implements OnChanges {
           if (this.tischeToSchulzimmer.length == 1){
             this.tischStyle = 'selectedTischStyle'
             this.tischSelected = true;
+            this.noteZimmerVereinfacht.emit(this.tischSelected);
           }
 
+      }
+      if(typeof this.schueler[this.schuelerIndex] !== 'undefined'){
+        this.schuelerExists = true;
       }
       
     

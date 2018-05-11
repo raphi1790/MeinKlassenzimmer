@@ -2,9 +2,12 @@
   <tbody>
     <tr *ngFor="let row of zimmerRows; let r = index">
       <td  *ngFor="let column of zimmerColumns; let c = index" >
-          <div [className]="tischStyle" >
-              {{row}}, {{column}}
-            </div>
+        <app-tisch-vereinfacht [rowZimmer] ="r" [columnZimmer] ="c" 
+              [tischeToSchulzimmer]="zimmer.tische"
+               [schueler]="schuelerPrepared"
+               [schuelerIndex] ="schuelerIndex"
+               (noteZimmerVereinfacht)="increaseSchuelerIndex($event)" >
+        </app-tisch-vereinfacht>
       </td>
     </tr>
   </tbody>
