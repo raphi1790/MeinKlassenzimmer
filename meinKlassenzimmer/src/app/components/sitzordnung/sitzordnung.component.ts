@@ -2,10 +2,12 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 
 import { Schulklasse } from 'app/models/schulklasse';
 import { Schueler } from 'app/models/schueler';
+import { TischSchueler } from 'app/models/tisch.schueler';
 import { SchulklassenComponent } from '../schulklassen/schulklassen.component';
 import { SchulklassenService } from 'app/services/schulklassen.service';
 import { SchulzimmerService } from 'app/services/schulzimmer.service';
 import { Schulzimmer } from '../../models/schulzimmer';
+import { TischSchuelerPreparer } from '../../helpers/tischSchueler.preparer';
 
 @Component({
   selector: 'app-zuordnung',
@@ -16,14 +18,24 @@ export class SitzordnungComponent {
 
   selectedSchulzimmer: Schulzimmer;
   selectedSchulklasse: Schulklasse;
+  outputSchulzimmer: Schulzimmer;
+  outputSchulklasse: Schulklasse;
   klassenToPerson: Schulklasse[];
   zimmerToPerson: Schulzimmer[];
   schulzimmerId: Number;
   schulklasseId: Number;
   showSitzordnung: boolean
+  tischSchuelerPreparer: TischSchuelerPreparer;
+  rowSchulzimmer: number[];
+  columnSchulzimmer: number[];
+  preparedTischSchueler: TischSchueler[][];
+  
 
   constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService) { 
     this.showSitzordnung = false;
+    this.rowSchulzimmer = [0,1,2,3,4,5,6,7,8,9];
+    this.columnSchulzimmer = [0,1,2,3,4,5,6,7,8,9];
+    
   }
 
   loadInputData() {
@@ -31,12 +43,6 @@ export class SitzordnungComponent {
     this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => { this.zimmerToPerson = data });
 
   }
-
-  ngOnInit() {
-    this.loadInputData();
-
-  }
-
   selectSchulzimmer() {
     this.selectedSchulzimmer = this.zimmerToPerson.filter(item => item.id == this.schulzimmerId)[0];
 
@@ -45,7 +51,22 @@ export class SitzordnungComponent {
     this.selectedSchulklasse = this.klassenToPerson.filter(item => item.id == this.schulklasseId)[0];
   }
   randomizePlaces(){
+    debugger;
+    this.tischSchuelerPreparer = new TischSchuelerPreparer();
     this.showSitzordnung = true;
+    this.outputSchulzimmer = this.selectedSchulzimmer;
+    this.outputSchulklasse = this.selectedSchulklasse;
+    this.preparedTischSchueler = this.tischSchuelerPreparer.prepareTischSchuelerCombination(this.outputSchulzimmer.tische, this.outputSchulklasse.schueler)
+    console.log("Randomized SchuelerTischArray");
+    console.log(this.preparedTischSchueler);
+
   }
+
+  ngOnInit() {
+    this.loadInputData();
+
+  }
+
+
 
 }

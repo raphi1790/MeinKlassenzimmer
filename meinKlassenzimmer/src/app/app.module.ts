@@ -36,8 +36,7 @@ import { PingComponent } from './components/ping/ping.component';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
-import { TischVereinfachtComponent } from './components/tisch-vereinfacht/tisch-vereinfacht.component';
-import { ZimmerVereinfachtComponent } from './components/zimmer-vereinfacht/zimmer-vereinfacht.component';
+import { TischSchuelerComponent } from './components/tisch-schueler/tisch-schueler.component';
 
 
 
@@ -65,8 +64,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ProfileComponent,
     PingComponent,
     TischComponent,
-    ZimmerVereinfachtComponent,
-    TischVereinfachtComponent
+    TischSchuelerComponent
     
   ],
   imports: [

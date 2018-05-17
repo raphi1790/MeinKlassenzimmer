@@ -3,6 +3,14 @@
     <div class="col-md-4">
       <div class="column1">
         <h3>Sitzordnung</h3>
+        <div>
+          <label>Schulklasse auswählen:</label>
+          <select id="Id" [(ngModel)]="schulklasseId" name="Id" (change)="selectSchulklasse();">
+            <option [ngValue]="klasse.id" *ngFor="let klasse of klassenToPerson">
+              {{klasse.name}}
+            </option>
+          </select>
+        </div>
 
         <div>
           <label>Schulzimmer auswählen:</label>
@@ -12,14 +20,7 @@
             </option>
           </select>
         </div>
-        <div>
-          <label>Schulklasse auswählen:</label>
-          <select id="Id" [(ngModel)]="schulklasseId" name="Id" (change)="selectSchulklasse();">
-            <option [ngValue]="klasse.id" *ngFor="let klasse of klassenToPerson">
-              {{klasse.name}}
-            </option>
-          </select>
-        </div>
+
       </div>
     </div>
 
@@ -29,8 +30,18 @@
       <div class="column2">
         <div class="schulzimmer" *ngIf="showSitzordnung">
           <div class="zimmer">
-            <h3>Schulzimmer {{selectedSchulzimmer.name}}</h3>
-            <app-zimmer-vereinfacht [selectedSchulzimmer]="selectedSchulzimmer" [selectedSchulklasse]="selectedSchulklasse"></app-zimmer-vereinfacht>
+            <h3>Schulklasse {{outputSchulklasse.name}} im Schulzimmer {{outputSchulzimmer.name}} </h3>
+            <table class="zimmer">
+              <tbody>
+                <tr *ngFor="let row of rowSchulzimmer; let r = index">
+                  <td *ngFor="let column of columnSchulzimmer; let c = index">
+                    <app-tisch-schueler [TischSchuelerCombination]="preparedTischSchueler[r][c]">
+                    </app-tisch-schueler>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
           </div>
         </div>
       </div>
@@ -38,4 +49,4 @@
   </div>
 </div>
 
-<button type="button" class="btn btn-primary" (click) = "randomizePlaces()" >Zuordnen</button>
+<button type="button" class="btn btn-primary" (click)="randomizePlaces()">Zuordnen</button>
