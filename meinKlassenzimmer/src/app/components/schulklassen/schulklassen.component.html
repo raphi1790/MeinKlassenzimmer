@@ -4,7 +4,7 @@
       <div class="column1">
         <h3>Klassen</h3>
         <div>
-          <label>Neue Klasse hinzufügen:</label> <input  #neueSchulklasse />
+          <label>Neue Klasse hinzufügen:</label> <input required  #neueSchulklasse  />
           <button type="button" class="btn btn-primary" (click)="addSchulklasseTmp(neueSchulklasse.value); neueSchulklasse.value=''">
             Hinzufügen
           </button>
@@ -40,4 +40,4 @@
     </div>
   </div>
 </div>
-<button type="button" class="btn btn-primary" (click) ="saveSchulklasseSchueler()">Speichern</button>
+<button type="button" class="btn btn-primary" [disabled]="!savingIsActiv" (click) ="saveSchulklasseSchueler()">Speichern</button>

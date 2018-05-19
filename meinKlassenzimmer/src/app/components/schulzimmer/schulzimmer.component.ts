@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Router } from '@angular/router';
 import { Schulzimmer } from 'app/models/schulzimmer';
 import { SchulzimmerService } from "app/services/schulzimmer.service";
 import { Tisch } from '../../models/tisch';
@@ -7,6 +6,8 @@ import { PositionTisch } from '../../models/position.tisch';
 import { PersonDbHelper } from '../../helpers/person.DbHelper';
 import { PersonService } from '../../services/person.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { TischOutput } from '../../models/output.tisch';
+import { TischOutputPreparer } from '../../helpers/tischOutput.preparer';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -17,24 +18,26 @@ import { AuthService } from '../../services/auth/auth.service';
 
 export class SchulzimmerComponent implements OnInit {
 
-
-
+  columnSchulzimmer: number[];
+  rowSchulzimmer: number[];
+  schulzimmerToPerson :Schulzimmer[];
+  selectedSchulzimmer: Schulzimmer;
+  neueSchulzimmerTmp: Schulzimmer[];
+  maximalSchulzimmerId: number;
   personDbHelper: PersonDbHelper;
+  preparedTischOutput: TischOutput[][];
+  tischOutputPreparer: TischOutputPreparer;
+  savingIsActiv : boolean
+
+  
   @Input() personid: number
 
   constructor(private schulzimmerService: SchulzimmerService, private personService: PersonService, private auth : AuthService ) {
     this.personDbHelper = new PersonDbHelper(personService, auth);
     this.maximalSchulzimmerId = 0;
-
-
+    this.rowSchulzimmer = [0,1,2,3,4,5,6,7,8,9];
+    this.columnSchulzimmer = [0,1,2,3,4,5,6,7,8,9];
   }
-
-  schulzimmerToPerson :Schulzimmer[];
-  selectedSchulzimmer: Schulzimmer;
-  neueSchulzimmerTmp: Schulzimmer[];
-  maximalSchulzimmerId: number;
-
-  
 
   getSchulzimmerToPerson() {
 
@@ -48,14 +51,17 @@ export class SchulzimmerComponent implements OnInit {
   onSelect(schulzimmer: Schulzimmer): void {
     debugger;
     this.selectedSchulzimmer = schulzimmer;
-
+    this.tischOutputPreparer = new TischOutputPreparer();
+    this.preparedTischOutput = this.tischOutputPreparer.prepareTischOutput(this.selectedSchulzimmer);
 
   }
+
   deleteSchulzimmer(schulzimmer: Schulzimmer):void{
     this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
       item =>
         item.id !== schulzimmer.id);
-    this.selectedSchulzimmer = null;     
+    this.selectedSchulzimmer = null;    
+    this.savingIsActiv = true; 
   }
 
   addSchulzimmerTmp(name: string): void {
@@ -68,10 +74,14 @@ export class SchulzimmerComponent implements OnInit {
     this.schulzimmerToPerson.push(neuesSchulzimmerTmp);
     neuesSchulzimmerTmp = null;
     this.selectedSchulzimmer = null;
+    this.savingIsActiv = true;
 
   }
-  updateSchulzimmer(updatedZimmer: Schulzimmer): void {
+  updateSchulzimmer(updatedTischOutput: TischOutput): void {
     debugger;
+    var updatedZimmer = new Schulzimmer;
+    this.tischOutputPreparer = new TischOutputPreparer();
+    updatedZimmer = this.tischOutputPreparer.extractTischOfTischOutput(updatedTischOutput, this.selectedSchulzimmer);
     this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
       item =>
         item.id !== updatedZimmer.id)
@@ -81,11 +91,17 @@ export class SchulzimmerComponent implements OnInit {
     else {
       this.schulzimmerToPerson.push(updatedZimmer);
     }
+    this.savingIsActiv = true;
+    console.log("Updated SchulzimmerToPerson");
+    console.log(this.schulzimmerToPerson);
+
   }
   async saveSchulzimmerTische(): Promise<void> {
     debugger;
+    this.savingIsActiv = false;
     this.personDbHelper.savePerson();
     await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe();
+    
   }
 
   ngOnInit() {

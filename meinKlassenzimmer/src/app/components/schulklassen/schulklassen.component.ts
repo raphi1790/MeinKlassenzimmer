@@ -23,6 +23,7 @@ import { PersonDbHelper } from '../../helpers/person.DbHelper';
 export class SchulklassenComponent implements OnInit {
   
   personDbHelper: PersonDbHelper;
+  savingIsActiv: boolean;
 
   @Input() personid: number
 
@@ -58,7 +59,8 @@ export class SchulklassenComponent implements OnInit {
     this.klassenToPerson = this.klassenToPerson.filter(
       item =>
         item.id !== klasse.id);
-    this.selectedSchulklasse = null    
+    this.selectedSchulklasse = null;
+    this.savingIsActiv = true;
 
   }
 
@@ -72,6 +74,7 @@ export class SchulklassenComponent implements OnInit {
     this.klassenToPerson.push(neueKlasseTmp);
     neueKlasseTmp = null;
     this.selectedSchulklasse = null;
+    this.savingIsActiv = true;
 
   }
 
@@ -86,11 +89,13 @@ export class SchulklassenComponent implements OnInit {
     else {
       this.klassenToPerson.push(updatedKlasse);
     }
+    this.savingIsActiv = true;
   }
 
   
   async saveSchulklasseSchueler(): Promise<void> {
     debugger;
+    this.savingIsActiv = false; 
     this.personDbHelper.savePerson();
     await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe();
   }

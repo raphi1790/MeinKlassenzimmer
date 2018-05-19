@@ -12,7 +12,6 @@ import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SchulklassenComponent } from './components/schulklassen/schulklassen.component';
 import { SchulzimmerComponent } from './components/schulzimmer/schulzimmer.component';
-import { ZimmerComponent } from './components/zimmer/zimmer.component';
 
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
 import { StartseiteComponent } from './components/startseite/startseite.component'
@@ -58,7 +57,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SchuelerComponent,
     InlineEditComponent,
     NavbarComponent,
-    ZimmerComponent,
     ToolbarComponent,
     CallbackComponent,
     ProfileComponent,
