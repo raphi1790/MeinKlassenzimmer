@@ -6,6 +6,7 @@ import { PersonDbHelper } from '../helpers/person.DbHelper';
 import { Randomizer } from '../helpers/randomizer';
 import { PositionTisch } from "../models/position.tisch";
 
+var CONFIG = require('../../../config.json');
 
 export class TischSchuelerPreparer {
 
@@ -19,9 +20,9 @@ export class TischSchuelerPreparer {
         debugger;
         this.randomizer = new Randomizer();
         this.preparedTischSchueler = [];
-        for(var row: number = 0; row < 10; row++) {
+        for(var row: number = 0; row < CONFIG.numberOfRows; row++) {
             this.preparedTischSchueler[row] = [];
-            for(var column: number = 0; column< 10; column++) {
+            for(var column: number = 0; column< CONFIG.numberOfColumns; column++) {
                 this.preparedTischSchueler[row][column] = new TischSchueler();
                 this.preparedTischSchueler[row][column].tischOutput = new TischOutput();
                 this.preparedTischSchueler[row][column].tischOutput.selected = false;

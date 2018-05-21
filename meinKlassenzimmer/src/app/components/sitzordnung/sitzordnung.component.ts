@@ -9,6 +9,8 @@ import { SchulzimmerService } from 'app/services/schulzimmer.service';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { TischSchuelerPreparer } from '../../helpers/tischSchueler.preparer';
 
+var CONFIG = require('../../../../config.json');
+
 @Component({
   selector: 'app-zuordnung',
   templateUrl: './sitzordnung.component.html',
@@ -33,9 +35,8 @@ export class SitzordnungComponent {
 
   constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService) { 
     this.showSitzordnung = false;
-    this.rowSchulzimmer = [0,1,2,3,4,5,6,7,8,9];
-    this.columnSchulzimmer = [0,1,2,3,4,5,6,7,8,9];
-    
+    this.rowSchulzimmer = Array.from(new Array(CONFIG.numberOfRows),(val,index)=>index);
+    this.columnSchulzimmer = Array.from(new Array(CONFIG.numberOfColumns),(val,index)=>index);
   }
 
   loadInputData() {

@@ -9,6 +9,8 @@ import { AuthService } from '../../services/auth/auth.service';
 import { TischOutput } from '../../models/output.tisch';
 import { TischOutputPreparer } from '../../helpers/tischOutput.preparer';
 
+var CONFIG = require('../../../../config.json');
+
 @Component({
   selector: 'app-schulzimmer',
   templateUrl: './schulzimmer.component.html',
@@ -35,8 +37,8 @@ export class SchulzimmerComponent implements OnInit {
   constructor(private schulzimmerService: SchulzimmerService, private personService: PersonService, private auth : AuthService ) {
     this.personDbHelper = new PersonDbHelper(personService, auth);
     this.maximalSchulzimmerId = 0;
-    this.rowSchulzimmer = [0,1,2,3,4,5,6,7,8,9];
-    this.columnSchulzimmer = [0,1,2,3,4,5,6,7,8,9];
+    this.rowSchulzimmer = Array.from(new Array(CONFIG.numberOfRows),(val,index)=>index);
+    this.columnSchulzimmer = Array.from(new Array(CONFIG.numberOfColumns),(val,index)=>index);
   }
 
   getSchulzimmerToPerson() {

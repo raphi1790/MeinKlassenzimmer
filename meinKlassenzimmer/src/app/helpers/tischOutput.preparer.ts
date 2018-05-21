@@ -5,6 +5,8 @@ import { Randomizer } from '../helpers/randomizer';
 import { PositionTisch } from "../models/position.tisch";
 import { Schulzimmer } from "../models/schulzimmer";
 
+var CONFIG = require('../../../config.json');
+
 
 export class TischOutputPreparer {
 
@@ -23,9 +25,9 @@ export class TischOutputPreparer {
         debugger;
         var preparedTischOutput : TischOutput[][];
         preparedTischOutput = [];
-        for(var row: number = 0; row < 10; row++) {
+        for(var row: number = 0; row < CONFIG.numberOfRows; row++) {
             preparedTischOutput[row] = [];
-            for(var column: number = 0; column< 10; column++) {
+            for(var column: number = 0; column< CONFIG.numberOfRows; column++) {
                 preparedTischOutput[row][column] = new TischOutput();
                 preparedTischOutput[row][column].selected = false;
                 preparedTischOutput[row][column].position = new PositionTisch(row,column);

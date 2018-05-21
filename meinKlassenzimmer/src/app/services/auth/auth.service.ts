@@ -13,7 +13,7 @@ export class AuthService {
     domain: 'meinklassenzimmer.auth0.com',
     responseType: 'token id_token',
     audience: 'https://api.meinKlassenzimmer.ch',
-    redirectUri: 'http://localhost:3000/callback',      
+    redirectUri: 'http://192.168.1.113:3000/callback',      
     scope: 'openid profile admin:admin'
   });
 
