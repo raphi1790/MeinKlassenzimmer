@@ -1,5 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~font-awesome/css/font-awesome.css";
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+
+body { 
+    font-family: Roboto, Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .basic-container {
+    padding: 5px;
+  }
+  
+  .version-info {
+    font-size: 8pt;
+    float: right;
+  }
+
+
+
+
 
 

@@ -1,31 +1,68 @@
 <div>
-  <label>Neuen Schüler hinzufügen:</label>
-  <div class="schuelerHinzufuegen">
-    <label>Vorname: </label>
-    <input #neuerSchuelerVorname />
-    <label>Name: </label>
-    <input #neuerSchuelerName />
-    <button type="button" class="btn btn-primary" (click)="addSchueler(neuerSchuelerVorname.value, neuerSchuelerName.value); neuerSchuelerVorname.value='';neuerSchuelerName.value=''">
-            Hinzufügen
-      </button>
-  </div>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>
+          <h4>Schüler hinzufügen</h4>
+        </mat-card-title>
+      </mat-card-title-group>
+
+    </mat-card-header>
+    <mat-card-content>
+      <div class = "input-form-field">
+        <mat-form-field>
+          <input matInput placeholder="Vorname" required #neuerSchuelerVorname>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Name" required #neuerSchuelerName>
+        </mat-form-field>
+      </div>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button (click)="addSchueler(neuerSchuelerVorname.value, neuerSchuelerName.value); neuerSchuelerVorname.value='';neuerSchuelerName.value=''">Hinzufügen</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>
+          <h4>Schülerliste</h4>
+        </mat-card-title>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-table #table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="vorname">
+          <mat-header-cell *matHeaderCellDef> Vorname </mat-header-cell>
+          <mat-cell *matCellDef="let schueler"> {{schueler.vorname}} </mat-cell>
+        </ng-container>
 
 
-  <div class="schuelerListe">
-    <table class="table table-striped table-sm">
-      <thead>
-        <tr>
-          <th>Vorname</th>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let schueler of schulklasse.schueler">
-          <td>{{schueler.vorname}}</td>
-          <td>{{schueler.name}} </td>
-          <td><span><button type = "button" class = "btn btn-secondary" (click) ="deleteSchueler(schueler); $event.stopPropagation()">X</button></span> </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let schueler"> {{schueler.name}} </mat-cell>
+        </ng-container>
 
+
+        <ng-container matColumnDef="symbol">
+          <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
+          <mat-cell *matCellDef="let schueler">
+            <span>
+              <mat-icon matListIcon (click)="deleteSchueler(schueler)">delete</mat-icon>
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </mat-card-content>
+  </mat-card>
+</div>

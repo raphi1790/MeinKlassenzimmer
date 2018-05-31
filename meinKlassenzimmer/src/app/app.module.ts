@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { RouterModule }from '@angular/router';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MaterialModule} from './material.module'
 
 import { AppRoutingModule} from './routes/app-routing-module';
 
@@ -23,8 +23,6 @@ import { AuthService} from './services/auth/auth.service';
 
 
 import { SchuelerComponent } from './components/schueler/schueler.component';
-import { InlineEditorModule} from 'ng2-inline-editor';
-import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { CallbackComponent } from './components/callback/callback.component';
@@ -55,7 +53,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SitzordnungComponent,
     StartseiteComponent,
     SchuelerComponent,
-    InlineEditComponent,
     NavbarComponent,
     ToolbarComponent,
     CallbackComponent,
@@ -72,8 +69,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    InlineEditorModule,
-    BrowserAnimationsModule
+
+    MaterialModule
 
   ],
   providers: [PersonService,SchulklassenService,SchulzimmerService,

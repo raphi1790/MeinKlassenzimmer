@@ -1,0 +1,22 @@
+.input-form-field {
+  display: flex;
+  flex-direction: column;
+}
+.input-form-field > * {
+  width: 100%;
+}
+  
+  .mat-table {
+    overflow: auto;
+    max-height: 500px;
+  }
+  .mat-card-header {
+    display: grid;
+}  
+
+.mat-card-header-text {
+    margin: 0 0px;
+}
+
+  
+ 

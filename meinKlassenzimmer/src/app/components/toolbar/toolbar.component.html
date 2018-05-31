@@ -1,41 +1,26 @@
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">Auth0 - Angular</a>
-  
-        <button
-          class="btn btn-primary btn-margin"
-          routerLink="/">
-            Home
-        </button>
-  
-        <button
-          class="btn btn-primary btn-margin"
-          *ngIf="auth.isAuthenticated()"
-          routerLink="/profile">
-            Profile
-        </button>
+<mat-toolbar color="primary">
+  <!-- <button mat-icon-button (click)="snav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button> -->
+  <span routerLink="/">
+    <h1>MeinKlassenzimmer
+    </h1>
+  </span>
+  <span class="toolbar-spacer"></span>
+  <button mat-button *ngIf="!auth.isAuthenticated()" (click)="auth.login()">
+    Login
+  </button>
+  <button mat-button *ngIf="auth.isAuthenticated()" (click)="auth.logout()">
+    Logout
+  </button>
 
-        <button
-        class="btn btn-primary btn-margin"
-        *ngIf="auth.isAuthenticated()"
-        routerLink="/ping">Ping
-      </button>
-  
-        <button
-          class="btn btn-primary btn-margin"
-          *ngIf="!auth.isAuthenticated()"
-          (click)="auth.login()">
-            Log In
-        </button>
-  
-        <button
-          class="btn btn-primary btn-margin"
-          *ngIf="auth.isAuthenticated()"
-          (click)="auth.logout()">
-            Log Out
-        </button>
-  
-      </div>
-    </div>
-  </nav>
+  <!-- <mat-icon matListIcon class="toolbar-icon" *ngIf="auth.isAuthenticated()" routerLink="/profile" >face</mat-icon> -->
+
+
+
+  <!-- <mat-icon matListIcon class="toolbar-icon" *ngIf="!auth.isAuthenticated()" (click)="auth.login()" >input</mat-icon>
+
+
+    <mat-icon matListIcon class="toolbar-icon" *ngIf="auth.isAuthenticated()" (click)="auth.logout()">exit_to_app</mat-icon> -->
+
+</mat-toolbar>

@@ -15,7 +15,8 @@ import { PersonDbHelper } from '../../helpers/person.DbHelper';
 @Component({
   selector: 'app-schulklassen',
   templateUrl: './schulklassen.component.html',
-  styleUrls: ['./schulklassen.component.css']
+  styleUrls: ['./schulklassen.component.css'],
+  
 })
 
 
