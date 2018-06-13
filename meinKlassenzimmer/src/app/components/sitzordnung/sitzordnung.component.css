@@ -1,0 +1,8 @@
+.input-form-field {
+    display: flex;
+    flex-direction: column;
+  }
+  .mat-form-field {
+    display: block;
+    width: 50%
+}  

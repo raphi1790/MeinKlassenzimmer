@@ -31,6 +31,8 @@ export class SitzordnungComponent {
   rowSchulzimmer: number[];
   columnSchulzimmer: number[];
   preparedTischSchueler: TischSchueler[][];
+
+
   
 
   constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService) { 
@@ -44,10 +46,10 @@ export class SitzordnungComponent {
     this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => { this.zimmerToPerson = data });
 
   }
-  selectSchulzimmer() {
-    this.selectedSchulzimmer = this.zimmerToPerson.filter(item => item.id == this.schulzimmerId)[0];
+  // selectSchulzimmer() {
+  //   this.selectedSchulzimmer = this.zimmerToPerson.filter(item => item.id == this.schulzimmerId)[0];
 
-  }
+  // }
   selectSchulklasse() {
     this.selectedSchulklasse = this.klassenToPerson.filter(item => item.id == this.schulklasseId)[0];
   }

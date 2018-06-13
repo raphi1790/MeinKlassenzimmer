@@ -11,6 +11,8 @@ import {AuthService} from 'app/services/auth/auth.service';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import {SchuelerComponent} from 'app/components/schueler/schueler.component';
 import { PersonDbHelper } from '../../helpers/person.DbHelper';
+import { FormControl, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-schulklassen',
@@ -38,6 +40,7 @@ export class SchulklassenComponent implements OnInit {
   klassenToPerson: Schulklasse[];
   selectedSchulklasse: Schulklasse;
   maximalKlassenId: number;
+  neueSchulklasse = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
 
   getSchulklassenToPerson() {
@@ -47,6 +50,13 @@ export class SchulklassenComponent implements OnInit {
         debugger;
         this.klassenToPerson = data});
   
+  }
+
+
+  getErrorMessageNeueSchulklasse() {
+    return this.neueSchulklasse.hasError('required') ? 'Wert erforderlich' :
+        this.neueSchulklasse.hasError('minlength') ? 'Name zu kurz' :
+            '';
   }
 
 

@@ -3,51 +3,82 @@
     <div class="col-md-4">
       <div class="column1">
         <h3>Sitzordnung</h3>
-        <div>
-          <label>Schulklasse auswählen:</label>
-          <select id="Id" [(ngModel)]="schulklasseId" name="Id" (change)="selectSchulklasse();">
-            <option [ngValue]="klasse.id" *ngFor="let klasse of klassenToPerson">
-              {{klasse.name}}
-            </option>
-          </select>
-        </div>
+        <div class="input-form-container">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Schulklasse und Zimmer auswählen</h4>
+                </mat-card-title>
+              </mat-card-title-group>
 
-        <div>
-          <label>Schulzimmer auswählen:</label>
-          <select id="Id" [(ngModel)]="schulzimmerId" name="Id" (change)="selectSchulzimmer();">
-            <option [ngValue]="zimmer.id" *ngFor="let zimmer of zimmerToPerson">
-              {{zimmer.name}}
-            </option>
-          </select>
-        </div>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="input-form-field" >  <mat-form-field>
+                  <mat-select placeholder="Schulklasse"  [(ngModel)]="selectedSchulklasse"  >
+                 <mat-option  *ngFor="let klasse of klassenToPerson" [value] ="klasse">{{klasse.name}}</mat-option>
+                 
+                </mat-select> 
+              
+              </mat-form-field> 
+                   <mat-form-field>
+                      <mat-select placeholder="Schulzimmer"  [(ngModel)]="selectedSchulzimmer"  >
+                     <mat-option  *ngFor="let zimmer of zimmerToPerson" [value] ="zimmer">{{zimmer.name}}</mat-option>
+                     
+                    </mat-select> 
+                  
+                 </mat-form-field> 
+                </div>
+             
+            
 
+
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-stroked-button (click)="randomizePlaces()" color="accent">Zuordnen</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
       </div>
     </div>
+
 
 
 
     <div class="col-md-8">
       <div class="column2">
         <div class="schulzimmer" *ngIf="showSitzordnung">
-          <div class="zimmer">
-            <h3>Schulklasse {{outputSchulklasse.name}} im Schulzimmer {{outputSchulzimmer.name}} </h3>
-            <table class="zimmer">
-              <tbody>
-                <tr *ngFor="let row of rowSchulzimmer; let r = index">
-                  <td *ngFor="let column of columnSchulzimmer; let c = index">
-                    <app-tisch-schueler [TischSchuelerCombination]="preparedTischSchueler[r][c]">
-                    </app-tisch-schueler>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Schulklasse {{outputSchulklasse.name}} im Schulzimmer {{outputSchulzimmer.name}} </h4>
+                </mat-card-title>
+              </mat-card-title-group>
 
-          </div>
+            </mat-card-header>
+            <mat-card-content>
+              <table class="zimmer">
+                <tbody>
+                  <tr *ngFor="let row of rowSchulzimmer; let r = index">
+                    <td *ngFor="let column of columnSchulzimmer; let c = index">
+                      <app-tisch-schueler [TischSchuelerCombination]="preparedTischSchueler[r][c]">
+                      </app-tisch-schueler>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </mat-card-content>
+          </mat-card>
+
+
+
+
+
         </div>
       </div>
     </div>
+
+
+
   </div>
-  <div class="row">
-    <button mat-stroked-button (click)="randomizePlaces()">Zuordnen</button>
-  </div>
-</div>

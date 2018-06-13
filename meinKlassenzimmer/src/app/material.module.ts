@@ -1,5 +1,6 @@
+import {CdkTableModule} from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
-
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {
   MatAutocompleteModule,
@@ -34,12 +35,14 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
+  MatFormFieldModule
 } from '@angular/material';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
-    MatAutocompleteModule,
+  CdkTableModule,
+  MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -71,10 +74,15 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  BrowserAnimationsModule
+  MatFormFieldModule,
+  BrowserAnimationsModule,
+  FormsModule,
+  ReactiveFormsModule
+
   ],
   exports: [
-    MatAutocompleteModule,
+  CdkTableModule,
+  MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -106,7 +114,10 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  BrowserAnimationsModule
+  MatFormFieldModule,
+  BrowserAnimationsModule,
+  FormsModule,
+  ReactiveFormsModule
   ]
 })
 export class MaterialModule {}
