@@ -33,8 +33,14 @@
     height: 100%;
   }
   .mat-sidenav-content {
-    background-image: linear-gradient(to bottom, #EEEEEE 0%, #EEEEEE 35%, white 35%,white 100%);
+    background-image: linear-gradient(to bottom, #cac7cc 0%, #cac7cc 35%, #f7f7f7 35%,#f7f7f7 100%);
 }
+
+.mat-list-item.active{
+  background-color: var(--accent-color);
+}
+
+
 
   
   

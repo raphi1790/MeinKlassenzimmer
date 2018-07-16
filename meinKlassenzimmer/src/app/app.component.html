@@ -25,13 +25,13 @@
       <mat-sidenav #snav class="app-sidenav" [mode]="'side'" opened="true" [fixedInViewport]="false">
         <mat-nav-list>
 
-          <a mat-list-item routerLink="/verwaltung/klassen" *ngIf="auth.isAuthenticated()">
+          <a mat-list-item  routerLink="/verwaltung/klassen" routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
             <mat-icon>settings</mat-icon>Klassen</a>
-          <a mat-list-item routerLink="/verwaltung/schulzimmer" *ngIf="auth.isAuthenticated()">
+          <a mat-list-item routerLink="/verwaltung/schulzimmer"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
             <mat-icon>build</mat-icon>Schulzimmer</a>
-          <a mat-list-item routerLink="/sitzordnung" *ngIf="auth.isAuthenticated()">
+          <a mat-list-item routerLink="/sitzordnung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
             <mat-icon>menu</mat-icon>Sitzordnung</a>
-
+ 
 
         </mat-nav-list>
       </mat-sidenav>

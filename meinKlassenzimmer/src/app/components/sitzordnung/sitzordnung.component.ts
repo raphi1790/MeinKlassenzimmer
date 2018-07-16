@@ -31,14 +31,20 @@ export class SitzordnungComponent {
   rowSchulzimmer: number[];
   columnSchulzimmer: number[];
   preparedTischSchueler: TischSchueler[][];
+  zuvieleSchuelerInSchulzimmer: boolean;
 
 
   
 
   constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService) { 
     this.showSitzordnung = false;
+    this.zuvieleSchuelerInSchulzimmer = false;
     this.rowSchulzimmer = Array.from(new Array(CONFIG.numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array(CONFIG.numberOfColumns),(val,index)=>index);
+  }
+
+  getErrorMessageZuvieleSchuelerInSchulzimmer(){
+     return "Es passen nicht alle Schüler ins Schulzimmer!"
   }
 
   loadInputData() {
@@ -46,22 +52,29 @@ export class SitzordnungComponent {
     this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => { this.zimmerToPerson = data });
 
   }
-  // selectSchulzimmer() {
-  //   this.selectedSchulzimmer = this.zimmerToPerson.filter(item => item.id == this.schulzimmerId)[0];
-
-  // }
+ 
   selectSchulklasse() {
     this.selectedSchulklasse = this.klassenToPerson.filter(item => item.id == this.schulklasseId)[0];
   }
   randomizePlaces(){
     debugger;
-    this.tischSchuelerPreparer = new TischSchuelerPreparer();
-    this.showSitzordnung = true;
-    this.outputSchulzimmer = this.selectedSchulzimmer;
-    this.outputSchulklasse = this.selectedSchulklasse;
-    this.preparedTischSchueler = this.tischSchuelerPreparer.prepareTischSchuelerCombination(this.outputSchulzimmer.tische, this.outputSchulklasse.schueler)
-    console.log("Randomized SchuelerTischArray");
-    console.log(this.preparedTischSchueler);
+    if(this.selectedSchulzimmer.tische.length < this.selectedSchulklasse.schueler.length){
+      this.zuvieleSchuelerInSchulzimmer = true;
+      this.showSitzordnung = false;
+
+    }
+    else{
+      this.zuvieleSchuelerInSchulzimmer = false;
+      this.tischSchuelerPreparer = new TischSchuelerPreparer();
+      this.showSitzordnung = true;
+      this.outputSchulzimmer = this.selectedSchulzimmer;
+      this.outputSchulklasse = this.selectedSchulklasse;
+      this.preparedTischSchueler = this.tischSchuelerPreparer.prepareTischSchuelerCombination(this.outputSchulzimmer.tische, this.outputSchulklasse.schueler)
+      console.log("Randomized SchuelerTischArray");
+      console.log(this.preparedTischSchueler);
+
+    }
+    
 
   }
 

@@ -1,0 +1,12 @@
+.button-list{
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.mat-form-field {
+    display: block;
+}  
+.mat-list-item.highlighted{
+    background-color: var(--accent-color);
+}

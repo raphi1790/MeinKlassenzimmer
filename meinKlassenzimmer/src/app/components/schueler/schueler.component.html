@@ -1,6 +1,6 @@
 <div>
 
-  <mat-card>
+  <mat-card class="second-column-card">
     <mat-card-header>
       <mat-card-title-group>
         <mat-card-title>
@@ -12,23 +12,36 @@
     <mat-card-content>
       <div class = "input-form-field">
         <mat-form-field>
-          <input matInput placeholder="Vorname" required #neuerSchuelerVorname>
+          <input matInput placeholder="Vorname" required 
+          [(ngModel)]="neuerSchuelerVorname" [formControl]="neuerSchuelerVornameForm"
+          >
+          <mat-error *ngIf="neuerSchuelerVornameForm.invalid && (neuerSchuelerVornameForm.dirty || neuerSchuelerVornameForm.touched)">
+            {{getErrorMessageNeuerSchuelerVorname()}}
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="Name" required #neuerSchuelerName>
+          <input matInput placeholder="Name" required 
+          [(ngModel)]="neuerSchuelerName" [formControl]="neuerSchuelerNameForm"
+          >
+          <mat-error *ngIf="neuerSchuelerNameForm.invalid && (neuerSchuelerNameForm.dirty || neuerSchuelerNameForm.touched)">
+            {{getErrorMessageNeuerSchuelerName()}}
+          </mat-error>
         </mat-form-field>
       </div>
 
     </mat-card-content>
     <mat-card-actions>
-      <button mat-stroked-button (click)="addSchueler(neuerSchuelerVorname.value, neuerSchuelerName.value); neuerSchuelerVorname.value='';neuerSchuelerName.value=''">Hinzufügen</button>
+      <button mat-raised-button color="accent" [disabled]="!(neuerSchuelerVornameForm.valid && neuerSchuelerNameForm.valid)" 
+          (click)="addSchueler()">
+          Hinzufügen
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>
 
 <div>
-  <mat-card>
+  <mat-card class="second-column-card">
     <mat-card-header>
       <mat-card-title-group>
         <mat-card-title>

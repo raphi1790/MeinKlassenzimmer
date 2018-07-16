@@ -40,7 +40,8 @@ export class SchulklassenComponent implements OnInit {
   klassenToPerson: Schulklasse[];
   selectedSchulklasse: Schulklasse;
   maximalKlassenId: number;
-  neueSchulklasse = new FormControl('', [Validators.required, Validators.minLength(2)]);
+  neueSchulklasseName: string
+  neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
 
   getSchulklassenToPerson() {
@@ -54,8 +55,8 @@ export class SchulklassenComponent implements OnInit {
 
 
   getErrorMessageNeueSchulklasse() {
-    return this.neueSchulklasse.hasError('required') ? 'Wert erforderlich' :
-        this.neueSchulklasse.hasError('minlength') ? 'Name zu kurz' :
+    return this.neueSchulklasseForm.hasError('required') ? 'Wert erforderlich' :
+        this.neueSchulklasseForm.hasError('minlength') ? 'Name zu kurz' :
             '';
   }
 
@@ -75,17 +76,18 @@ export class SchulklassenComponent implements OnInit {
 
   }
 
-  addSchulklasseTmp(name: string): void {
+  addSchulklasseTmp(): void {
     debugger;
     this.maximalKlassenId++;
     var neueKlasseTmp = new Schulklasse();
-    neueKlasseTmp.name = name;
+    neueKlasseTmp.name = this.neueSchulklasseName;
     neueKlasseTmp.id = this.maximalKlassenId;
     neueKlasseTmp.schueler = new Array<Schueler>();
     this.klassenToPerson.push(neueKlasseTmp);
     neueKlasseTmp = null;
     this.selectedSchulklasse = null;
     this.savingIsActiv = true;
+    this.neueSchulklasseName = null;
 
   }
 

@@ -1,66 +1,103 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="column1">
-        <h3>Schulzimmer</h3>
-        <div>
-          <label>Neues Schulzimmer hinzufügen:</label>
-          <input #neuesSchulzimmer />
-          <button type="button" class="btn btn-primary" (click)="addSchulzimmerTmp(neuesSchulzimmer.value); neuesSchulzimmer.value=''">
-            Hinzufügen
-          </button>
+        
+        <div class="input-form-container">
 
-          <div class="schulzimmerListe">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>Erfasste Schulzimmer</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let schulzimmer of schulzimmerToPerson">
-                  <td>
-                    <span>
-                      <button type="button" class="btn btn-success" (click)="onSelect(schulzimmer)" [class.selected]="schulzimmer === selectedSchulzimmer">{{schulzimmer.name}}</button>
-                    </span>
-                  </td>
-                  <td>
-                    <span>
-                      <button type="button" class="btn btn-secondary" (click)="deleteSchulzimmer(schulzimmer)">X</button>
-                    </span>
-                  </td>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Schulzimmer hinzufügen</h4>
+                </mat-card-title>
+              </mat-card-title-group>
 
+            </mat-card-header>
+            <mat-card-content>
+              <mat-form-field>
+                <input matInput placeholder="Name des Schulzimmers" required  
+                [(ngModel)] ="neuesSchulzimmerName" [formControl]="neuesSchulzimmerForm" >
+                <mat-error *ngIf="neuesSchulzimmerForm.invalid && (neuesSchulzimmerForm.dirty || neuesSchulzimmerForm.touched)">
+                  {{getErrorMessageNeuesSchulzimmer()}}
+                </mat-error>
 
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="accent" [disabled]="!neuesSchulzimmerForm.valid" (click)="addSchulzimmerTmp()">Hinzufügen</button>
+            </mat-card-actions>
+          </mat-card>
         </div>
 
-      </div>
-    </div>
-    <div class="col-md-8">
+
+          <div class="schulzimmerListe">
+              <mat-card>
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-title>
+                        <h4>Erfasste Schulzimmer</h4>
+                      </mat-card-title>
+                    </mat-card-title-group>
+      
+                  </mat-card-header>
+                  <mat-card-content>
+                    <mat-nav-list>
+                      <mat-list-item *ngFor="let schulzimmer of schulzimmerToPerson;last as last"  [class.highlighted]="schulzimmer === selectedSchulzimmer">
+                       <div class="button-list" (click)="onSelect(schulzimmer)">
+                          {{schulzimmer.name}}
+                          </div>
+                        
+                        <span>
+                          <mat-icon matListIcon (click)="deleteSchulzimmer(schulzimmer)">delete</mat-icon>
+                        </span>
+                        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+                      </mat-list-item>
+                    </mat-nav-list>
+                  </mat-card-content>
+      
+                </mat-card>
+
+                <button mat-raised-button color="accent" [disabled]="!savingIsActiv" (click)="saveSchulzimmerTische()">Speichern</button>
+              </div>
+
+             
+          </div>
+            
+        </div>
+
+    <div class="col-md-7">
       <div class="column2">
         <div class="schulzimmer" *ngIf="selectedSchulzimmer">
           <div class="zimmer">
-            <h3>Schulzimmer {{selectedSchulzimmer.name}}</h3>
 
-            <table class="zimmer">
-              <tbody>
-                <tr *ngFor="let row of rowSchulzimmer; let r = index">
-                  <td *ngFor="let column of columnSchulzimmer; let c = index">
-                    <app-tisch [TischOutput]="preparedTischOutput[r][c]" (noteSchulzimmer)="updateSchulzimmer($event)">
-                    </app-tisch>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <mat-card class="second-column-card">
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-title>
+                        <h4>Schulzimmer {{selectedSchulzimmer.name}}</h4>
+                      </mat-card-title>
+                    </mat-card-title-group>
+      
+                  </mat-card-header>
+                  <mat-card-content>
+                      <table class="zimmer">
+                          <tbody>
+                            <tr *ngFor="let row of rowSchulzimmer; let r = index">
+                              <td *ngFor="let column of columnSchulzimmer; let c = index">
+                                <app-tisch [TischOutput]="preparedTischOutput[r][c]" (noteSchulzimmer)="updateSchulzimmer($event)">
+                                </app-tisch>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                  </mat-card-content>
+                </mat-card>
+
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class = "row">
-    <button type="button" class="btn btn-primary" [disabled]="!savingIsActiv" (click)="saveSchulzimmerTische()">Speichern</button>
-  </div>
+  
 </div>

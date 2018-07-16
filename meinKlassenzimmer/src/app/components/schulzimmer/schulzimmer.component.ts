@@ -8,6 +8,7 @@ import { PersonService } from '../../services/person.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { TischOutput } from '../../models/output.tisch';
 import { TischOutputPreparer } from '../../helpers/tischOutput.preparer';
+import { FormControl, Validators } from '@angular/forms';
 
 var CONFIG = require('../../../../config.json');
 
@@ -30,6 +31,8 @@ export class SchulzimmerComponent implements OnInit {
   preparedTischOutput: TischOutput[][];
   tischOutputPreparer: TischOutputPreparer;
   savingIsActiv : boolean
+  neuesSchulzimmerName: string;
+  neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
   
   @Input() personid: number
@@ -50,6 +53,12 @@ export class SchulzimmerComponent implements OnInit {
     );
   }
 
+  getErrorMessageNeuesSchulzimmer() {
+    return this.neuesSchulzimmerForm.hasError('required') ? 'Wert erforderlich' :
+        this.neuesSchulzimmerForm.hasError('minlength') ? 'Name zu kurz' :
+            '';
+  }
+
   onSelect(schulzimmer: Schulzimmer): void {
     debugger;
     this.selectedSchulzimmer = schulzimmer;
@@ -66,17 +75,18 @@ export class SchulzimmerComponent implements OnInit {
     this.savingIsActiv = true; 
   }
 
-  addSchulzimmerTmp(name: string): void {
+  addSchulzimmerTmp(): void {
     debugger;
     this.maximalSchulzimmerId++;
     var neuesSchulzimmerTmp = new Schulzimmer();
-    neuesSchulzimmerTmp.name = name;
+    neuesSchulzimmerTmp.name = this.neuesSchulzimmerName;
     neuesSchulzimmerTmp.id = this.maximalSchulzimmerId;
     neuesSchulzimmerTmp.tische = new Array<Tisch>();
     this.schulzimmerToPerson.push(neuesSchulzimmerTmp);
     neuesSchulzimmerTmp = null;
     this.selectedSchulzimmer = null;
     this.savingIsActiv = true;
+    this.neuesSchulzimmerName = null;
 
   }
   updateSchulzimmer(updatedTischOutput: TischOutput): void {

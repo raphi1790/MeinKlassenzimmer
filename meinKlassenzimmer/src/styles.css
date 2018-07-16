@@ -3,7 +3,15 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-
+:root {
+  --primary-color: #673AB7;
+  --primary-color-light:#7E57C2;
+  --primary-color-very-light:#D1C4E9;
+  --primary-color-dark:#5E35B1;
+  --accent-color: #FFD740;
+  --accent-color-light:#FFE57F;
+  --accent-color-dark: #FFC400;  
+}
 body { 
     font-family: Roboto, Arial, sans-serif;
     margin: 0;
@@ -17,6 +25,22 @@ body {
     font-size: 8pt;
     float: right;
   }
+  .mat-card{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left:20px;
+    margin-right: 20px;
+  }
+  .mat-card-header {
+    display: grid;
+}  
+
+.mat-card-header-text {
+    margin: 0 0px;
+} 
+.second-column-card{
+  width: 790px;
+}
 
 
 
