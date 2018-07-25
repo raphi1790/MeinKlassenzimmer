@@ -76,7 +76,7 @@ export class SchulklassenComponent implements OnInit {
 
   }
 
-  addSchulklasseTmp(): void {
+  addSchulklasse(): void {
     debugger;
     this.maximalKlassenId++;
     var neueKlasseTmp = new Schulklasse();

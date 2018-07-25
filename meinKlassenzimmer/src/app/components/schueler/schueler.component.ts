@@ -49,7 +49,7 @@ export class SchuelerComponent implements OnChanges{
 
 
 
-  private deleteSchueler(deletedSchueler: Schueler):void{
+  deleteSchueler(deletedSchueler: Schueler):void{
     debugger;
     this.schulklasse.schueler = this.schulklasse.schueler.filter(
       item => item.id != deletedSchueler.id
@@ -63,7 +63,7 @@ export class SchuelerComponent implements OnChanges{
     
   };
 
-  private addSchueler(vorname: string, name:string):void {
+  addSchueler():void {
     debugger;
     var schuelerTmp = new Schueler();
     schuelerTmp.id = this.maximalSchuelerId;

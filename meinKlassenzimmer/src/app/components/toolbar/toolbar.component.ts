@@ -8,7 +8,7 @@ import { AuthService } from 'app/services/auth/auth.service';
   providers: [AuthService]
 })
 export class ToolbarComponent {
-  constructor(private auth: AuthService) {}
+  constructor(public auth: AuthService) {}
   login() {
     this.auth.login();
   }
