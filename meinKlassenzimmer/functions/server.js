@@ -16,7 +16,12 @@ require('dotenv').config();
  var connection = require('./dbconnection');
 
 
-connection.connect();
+// connection.connect();
+connection.query('SELECT * from schulklasse', function(err, rows, fields) {
+  if (err) throw err;
+  console.log('The solution is: ', rows);
+});
+
 
 // Check DB-connection
 // connection.query('SELECT * from schulklasse', function(err, rows, fields) {
@@ -33,7 +38,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, './dist')));
+app.use(express.static(path.join(__dirname, '../public/dist')));
 
 
 /*
@@ -45,16 +50,18 @@ app.use(express.static(path.join(__dirname, './dist')));
 var routes = require('./server/routes/api');
 app.use('/api', routes);
 
-app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '/dist/index.html'));
-  });
+module.exports = app;
+
+// app.get('*', function(req, res) {
+//     res.sendFile(path.join(__dirname, '/dist/index.html'));
+//   });
 
 
-/*
- |--------------------------------------
- | Server
- |--------------------------------------
- */
+// /*
+//  |--------------------------------------
+//  | Server
+//  |--------------------------------------
+//  */
 
-app.listen(3000);
-console.log('Listening on http://localhost:3000');
+// app.listen(3000);
+// console.log('Listening on http://localhost:3000');

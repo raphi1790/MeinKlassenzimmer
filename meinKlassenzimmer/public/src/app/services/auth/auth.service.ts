@@ -13,7 +13,8 @@ export class AuthService {
     domain: 'meinklassenzimmer.auth0.com',
     responseType: 'token id_token',
     audience: 'https://api.meinKlassenzimmer.ch',
-    redirectUri: 'https://meinklassenzimmer-184820.firebaseapp.com/home/callback',      
+    redirectUri: 'https://meinklassenzimmer-184820.firebaseapp.com',   
+    // redirectUri: 'http://localhost:4200' ,
     scope: 'openid profile admin:admin'
   });
 

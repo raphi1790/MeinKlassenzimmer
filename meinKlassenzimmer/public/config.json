@@ -1,0 +1,5 @@
+{ 	
+	"numberOfRows" : 10,
+	"numberOfColumns": 10,
+	"api": "https://us-central1-meinklassenzimmer-184820.cloudfunctions.net/myfirebasefunction"
+}

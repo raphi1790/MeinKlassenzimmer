@@ -8,15 +8,14 @@ import { Schueler } from '../models/schueler';
 import { AuthService } from 'app/services/auth/auth.service';
 import { HttpHeaderResponse, HttpResponse } from '@angular/common/http/src/response';
 import { Response } from 'express';
+var CONFIG = require('../../../config.json');
 
 
 
 @Injectable()
 export class SchulklassenService {
 
-  private klassenUrl = 'api/schulklasse';  // URL to web api
- 
-
+  private klassenUrl = CONFIG.api.concat("/api/schulklasse");  // URL to web api;
 
 
   constructor(private http: HttpClient, private auth: AuthService) { }
@@ -27,6 +26,7 @@ export class SchulklassenService {
 
 
   getKlassenAndSchuelerByPersonid() {
+    console.log(this.klassenUrl);
     return this.http
       .get<Schulklasse[]>(this.klassenUrl,
         {

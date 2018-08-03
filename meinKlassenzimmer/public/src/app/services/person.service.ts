@@ -7,11 +7,14 @@ import { Person } from '../models/person';
 import { AuthService } from 'app/services/auth/auth.service';
 import { HttpHeaderResponse } from '@angular/common/http/src/response';
 
+var CONFIG = require('../../../config.json');
+
 
 @Injectable()
 export class PersonService {
 
-  private personUrl = 'api/person';  // URL to web api
+  private personUrl = CONFIG.api.concat("/api/person");  // URL to web api;
+
   private headers = new Headers({ 'Content-Type': 'application/json' })
 
 
@@ -23,6 +26,7 @@ export class PersonService {
 
   getPerson(): Observable<any> {
     debugger
+    console.log(this.personUrl);
     return this.http
       .get(this.personUrl,
         {

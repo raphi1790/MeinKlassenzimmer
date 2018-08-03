@@ -9,13 +9,13 @@ import { Tisch } from '../models/tisch';
 import { AuthService } from 'app/services/auth/auth.service';
 import { HttpHeaderResponse, HttpResponse } from '@angular/common/http/src/response';
 import { Response } from 'express';
+var CONFIG = require('../../../config.json');
 
 @Injectable()
 export class SchulzimmerService {
 
-    private schulzimmerUrl = 'api/schulzimmer';// URL to web api
-    private tischeUrl = 'api/tisch';
-    private headers = new Headers({ 'Content-Type': 'application/json' })
+    private schulzimmerUrl = CONFIG.api.concat("/api/schulzimmer");  // URL to web api;
+
 
 
     constructor(private http: HttpClient, private auth: AuthService) { }

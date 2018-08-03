@@ -1,0 +1,31 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "async": "^2.6.1",
+    "auth0-js": "^9.5.1",
+    "body-parser": "^1.18.3",
+    "core-js": "^2.5.3",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "express-jwt": "^5.3.1",
+    "express-jwt-authz": "^1.0.0",
+    "firebase-admin": "^5.13.1",
+    "firebase-functions": "^2.0.2",
+    "jwks-rsa": "^1.2.1",
+    "jwt-decode": "^2.2.0",
+    "md5": "^2.2.1",
+    "mysql": "^2.15.0",
+    "rxjs": "^5.5.6",
+    "zone.js": "^0.8.20"
+  },
+  "private": true
+}
