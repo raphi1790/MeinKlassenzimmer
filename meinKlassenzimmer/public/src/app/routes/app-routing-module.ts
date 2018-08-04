@@ -5,9 +5,8 @@ import {SchulklassenComponent} from '../components/schulklassen/schulklassen.com
 import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.component';
 import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
 import {StartseiteComponent} from '../components/startseite/startseite.component';
-import {ProfileComponent} from '../components/profile/profile.component';
-import {CallbackComponent} from '../components/callback/callback.component';
-import {PingComponent} from '../components/ping/ping.component';
+import {KontaktComponent} from '../components/kontakt/kontakt.component';
+
 
 const routes: Routes = [
 
@@ -33,14 +32,10 @@ const routes: Routes = [
           component: SitzordnungComponent
       },
       { 
-          path: 'profile', 
-          component: ProfileComponent 
-      },
-      {   path: 'callback', 
-          component: CallbackComponent
-      },
-      {   path: 'ping', 
-          component: PingComponent },
+        path: 'kontakt',
+        component: KontaktComponent
+    },
+     
     
 
     ];

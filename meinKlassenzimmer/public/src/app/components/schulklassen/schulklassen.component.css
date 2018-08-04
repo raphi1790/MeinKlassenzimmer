@@ -1,9 +1,9 @@
-.example-container {
+.input-form-container {
     display: flex;
     flex-direction: column;
   }
   
-  .example-container > * {
+  .input-form-containerr > * {
     width: 100%;
   }
   
@@ -20,6 +20,12 @@
 .mat-list-item.highlighted{
     background-color: var(--accent-color);
 }
+.mat-card-header {
+    display: grid;
+  }  
+  .mat-card-header-text {
+    margin: 0 0px;
+  }
 
 
 

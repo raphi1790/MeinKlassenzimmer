@@ -31,16 +31,11 @@ body {
     margin-left:20px;
     margin-right: 20px;
   }
-  .mat-card-header {
-    display: grid;
-}  
 
-.mat-card-header-text {
-    margin: 0 0px;
-} 
 .second-column-card{
   width: 790px;
 }
+
 
 
 

@@ -26,11 +26,13 @@
         <mat-nav-list>
 
           <a mat-list-item  routerLink="/verwaltung/klassen" routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
-            <mat-icon>settings</mat-icon>Klassen</a>
+            <mat-icon>settings</mat-icon><span class="item-spacer"></span> Klassen</a>
           <a mat-list-item routerLink="/verwaltung/schulzimmer"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
-            <mat-icon>build</mat-icon>Schulzimmer</a>
+            <mat-icon>build </mat-icon><span class="item-spacer"></span>Schulzimmer</a>
           <a mat-list-item routerLink="/sitzordnung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
-            <mat-icon>menu</mat-icon>Sitzordnung</a>
+            <mat-icon>reorder</mat-icon><span class="item-spacer"></span>Sitzordnung</a>
+          <a mat-list-item routerLink="/kontakt"  routerLinkActive="active">
+            <mat-icon>phone </mat-icon><span class="item-spacer"></span>Kontakt / Informationen</a>  
  
 
         </mat-nav-list>

@@ -14,3 +14,8 @@
     font-size: 2rem;
     text-align: center;
 }
+.container-fluid {
+    background-image: url("/assets/images/pencils.jpg");
+    height: 100%;
+    background-size: cover;
+}

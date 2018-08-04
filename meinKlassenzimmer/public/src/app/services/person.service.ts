@@ -26,7 +26,6 @@ export class PersonService {
 
   getPerson(): Observable<any> {
     debugger
-    console.log(this.personUrl);
     return this.http
       .get(this.personUrl,
         {

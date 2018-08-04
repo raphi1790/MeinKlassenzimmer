@@ -26,7 +26,6 @@ export class SchulklassenService {
 
 
   getKlassenAndSchuelerByPersonid() {
-    console.log(this.klassenUrl);
     return this.http
       .get<Schulklasse[]>(this.klassenUrl,
         {

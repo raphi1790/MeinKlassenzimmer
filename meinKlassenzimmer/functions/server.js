@@ -16,19 +16,6 @@ require('dotenv').config();
  var connection = require('./dbconnection');
 
 
-// connection.connect();
-connection.query('SELECT * from schulklasse', function(err, rows, fields) {
-  if (err) throw err;
-  console.log('The solution is: ', rows);
-});
-
-
-// Check DB-connection
-// connection.query('SELECT * from schulklasse', function(err, rows, fields) {
-//   if (err) throw err;
-//   console.log('The solution is: ', rows);
-// });
-
 /*
  |--------------------------------------
  | App

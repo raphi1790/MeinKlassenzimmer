@@ -9,7 +9,7 @@ export class StartseiteComponent implements OnInit {
   fullImagePath: string
 
   constructor() { 
-     this.fullImagePath = '/assets/images/education.jpg'
+     this.fullImagePath = '/assets/images/pencils.jpg'
   }
 
   ngOnInit() {

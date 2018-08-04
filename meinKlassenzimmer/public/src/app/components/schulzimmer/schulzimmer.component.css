@@ -10,3 +10,9 @@
 .mat-list-item.highlighted{
     background-color: var(--accent-color);
 }
+.mat-card-header {
+    display: grid;
+  }  
+  .mat-card-header-text {
+    margin: 0 0px;
+  }

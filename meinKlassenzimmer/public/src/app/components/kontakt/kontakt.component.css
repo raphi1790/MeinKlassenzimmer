@@ -1,0 +1,26 @@
+
+
+
+.mat-card-header {
+    display: grid;
+  }  
+  .mat-card-header-text {
+    margin: 0 0px;
+  }
+  .mat-card{
+      margin-left: auto;
+      margin-right: auto;
+      height: 80%;
+      width: 35%
+  }
+  address {
+    font-style: normal;
+    display:block;
+    font-style: italic;
+}
+.adresse{
+    text-align: center;
+}
+  
+    
+   

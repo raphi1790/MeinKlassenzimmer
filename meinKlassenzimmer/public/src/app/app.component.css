@@ -6,6 +6,10 @@
   .toolbar-spacer {
     flex: 1 1 auto;
   }
+  .item-spacer {
+    display: block;
+    padding: 3px
+  }
   h1.app-name {
     margin-left: 8px;
   }
@@ -39,6 +43,8 @@
 .mat-list-item.active{
   background-color: var(--accent-color);
 }
+
+
 
 
 
