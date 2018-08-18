@@ -20,7 +20,8 @@ export class SchuelerComponent implements OnChanges{
 
   constructor(private ref: ChangeDetectorRef) {
     this.schulklasse.schueler = new Array();
-    this.maximalSchuelerId = 0
+    this.maximalSchuelerId = 0;
+    this.anzahlSchueler = 0;
 
   }
   @Input('selectedSchulklasse')  selectedSchulklasse: Schulklasse; 
@@ -35,6 +36,7 @@ export class SchuelerComponent implements OnChanges{
   neuerSchuelerName: string;
   neuerSchuelerVornameForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   neuerSchuelerNameForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
+  anzahlSchueler: number;
 
   getErrorMessageNeuerSchuelerVorname() {
     return this.neuerSchuelerVornameForm.hasError('required') ? 'Wert erforderlich' :
@@ -59,6 +61,7 @@ export class SchuelerComponent implements OnChanges{
     console.log(this.schulklasse);
     this.dataSource = this.schulklasse.schueler;
     this.noteSchulklasse.emit(this.schulklasse);
+    this.anzahlSchueler--;
   
     
   };
@@ -71,6 +74,7 @@ export class SchuelerComponent implements OnChanges{
     schuelerTmp.name = this.neuerSchuelerName;
     this.schulklasse.schueler.push(schuelerTmp);
     this.maximalSchuelerId++;
+    this.anzahlSchueler++;
     
 
     console.log("Klasse nach Update (Adding):");
@@ -87,6 +91,7 @@ export class SchuelerComponent implements OnChanges{
     debugger;
     this.schulklasse = this.selectedSchulklasse;
     this.dataSource = this.schulklasse.schueler;
+    this.anzahlSchueler = this.selectedSchulklasse.schueler.length;
     console.log("Schulklasse beim Laden");
     console.log(this.schulklasse);
     

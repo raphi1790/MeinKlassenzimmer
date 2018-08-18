@@ -6,11 +6,11 @@ import {Schueler} from 'app/models/schueler';
 import {Person} from 'app/models/person';
 
 import {SchulklassenService} from 'app/services/schulklassen.service';
-import {PersonService} from 'app/services/person.service';
+// import {PersonService} from 'app/services/person.service';
 import {AuthService} from 'app/services/auth/auth.service';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import {SchuelerComponent} from 'app/components/schueler/schueler.component';
-import { PersonDbHelper } from '../../helpers/person.DbHelper';
+// import { PersonDbHelper } from '../../helpers/person.DbHelper';
 import { FormControl, Validators } from '@angular/forms';
 
 
@@ -25,13 +25,13 @@ import { FormControl, Validators } from '@angular/forms';
 
 export class SchulklassenComponent implements OnInit {
   
-  personDbHelper: PersonDbHelper;
+  // personDbHelper: PersonDbHelper;
   savingIsActiv: boolean;
 
   @Input() personid: number
 
-  constructor(private klassenService: SchulklassenService, private personService: PersonService, private auth : AuthService ) {
-    this.personDbHelper = new PersonDbHelper(personService, auth);
+  constructor(private klassenService: SchulklassenService, private auth : AuthService ) {
+    // this.personDbHelper = new PersonDbHelper(personService, auth);
     this.maximalKlassenId = 0;
 
 
@@ -109,13 +109,13 @@ export class SchulklassenComponent implements OnInit {
   async saveSchulklasseSchueler(): Promise<void> {
     debugger;
     this.savingIsActiv = false; 
-    this.personDbHelper.savePerson();
+    // this.personDbHelper.savePerson();
     await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe();
   }
 
   ngOnInit(){
     debugger;
-    this.personDbHelper.getPerson();
+    // this.personDbHelper.getPerson();
     this.getSchulklassenToPerson();
 
   }

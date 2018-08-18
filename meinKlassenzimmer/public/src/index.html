@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
   
-  <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
+
+  <!-- Add additional services that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-functions.js"></script>
+  
   <script>
     // Initialize Firebase
     var config = {
@@ -14,8 +19,8 @@
       messagingSenderId: "337756808211"
     };
     firebase.initializeApp(config);
+
   </script>
-  <script type="text/javascript" src="node_modules/auth0-js/build/auth0.js"></script>
   <meta charset="utf-8">
   <title>MeinKlassenzimmer</title>
   <base href="/">

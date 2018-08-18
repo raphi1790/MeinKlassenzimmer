@@ -1,5 +1,4 @@
 var mysql      = require('mysql');
-var CONFIG = require('./config.json');
 
 
 const connectionName = 'meinklassenzimmer-184820:us-central1:meinklassenzimmer-database';

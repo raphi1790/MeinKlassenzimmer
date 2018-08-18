@@ -2,120 +2,120 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const cors = require('cors');
-const jwt = require('express-jwt');
-const jwtAuthz = require('express-jwt-authz');
-const jwksRsa = require('jwks-rsa');
 const mysql = require("mysql");
-const jwtDecode = require('jwt-decode');
 const async = require('async');
 var connection = require('../../dbconnection');
+var admin = require("firebase-admin");
 var parentChildInserter = require('./helper/parentChildInserter');
+
+ 
+
 
 
 app.use(cors());
+
+
 /* GET home page. */
 
-var persondId;
+
 var ParentChildInserter = new parentChildInserter(); 
+var personId;
 
 
-
-const checkJwt = jwt({
-    // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
-    secret: jwksRsa.expressJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: `https://meinklassenzimmer.auth0.com/.well-known/jwks.json`
-    }),
-
-    // Validate the audience and the issuer.
-    audience: 'https://api.meinKlassenzimmer.ch',
-    issuer: `https://meinklassenzimmer.auth0.com/`,
-    algorithms: ['RS256'],
-    getToken: function fromHeaderOrQuerystring(req) {
-        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-            setPersonValues(req);
-            return req.headers.authorization.split(' ')[1];
-        } else if (req.query && req.query.token) {
-            return req.query.token;
-        }
-        return null;
+const validateFirebaseIdToken = async (req, res, next) => {
+    console.log('Check if request is authorized with Firebase ID token');
+  
+    if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
+        !(req.cookies && req.cookies.__session)) {
+      console.error('No Firebase ID token was passed as a Bearer token in the Authorization header.',
+          'Make sure you authorize your request by providing the following HTTP header:',
+          'Authorization: Bearer <Firebase ID Token>',
+          'or by passing a "__session" cookie.');
+      res.status(403).send('Unauthorized');
+      return;
     }
-
-});
-
-function  setPersonValues(req) {
+  
+    let idToken;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      console.log('Found "Authorization" header');
+      // Read the ID Token from the Authorization header.
+      idToken = req.headers.authorization.split('Bearer ')[1];
+    } else if(req.cookies) {
+      console.log('Found "__session" cookie');
+      // Read the ID Token from cookie.
+      idToken = req.cookies.__session;
+    } else {
+      // No cookie
+      res.status(403).send('Unauthorized');
+      return;
+    }
+  
+    try {
+      console.log(idToken);
+      const decodedIdToken = await admin.auth().verifyIdToken(idToken);
+      console.log('ID Token correctly decoded', decodedIdToken);
+      setPersonValues(decodedIdToken.sub)
+      next();
+      return;
+    } catch (error) {
+      console.error('Error while verifying Firebase ID token:', error);
+      res.status(403).send('Unauthorized');
+      return;
+    }
+  };
+  
+  function  setPersonValues(req) {
     //set personId
-    var personIdSub;
-    var personIdArray;
-    personIdSub = jwtDecode(req.headers.authorization.split(' ')[1]).sub;
-    personIdArray = personIdSub.split("|").map(val => String(val));
-    personId = personIdArray[1];
-
-}
+    personId = req;
+    return personId
+  }
 
 
-const checkScopes = jwtAuthz(['admin:admin']);
+// router.get("/person", validateFirebaseIdToken, function (req, res) {
+//     var query = "SELECT * FROM  Person WHERE PersonId =?";
+//     var table = [personId];
+//     query = mysql.format(query, table);
+//     connection.query(query, function (err, rows) {
+//         if (err) {
+//             res.json({ "Error": true, "Message": "Error loading Person from Database", "Original": err });
+//         } else {
+//             res.json({ "Error": false, "Message": "Success", "Person": rows });
 
-router.get('/public', function (req, res) {
-    res.json({ message: "Hello from a public endpoint! You don't need to be authenticated to see this." });
-});
-
-router.get('/private', checkJwt, checkScopes, function (req, res) {
-    res.json({ message: "Hello from a private endpoint! You need to be authenticated and have a scope of admin:admin to see this." });
-});
-
-
-router.get("/", function (req, res) {
-    res.json({ "Message": "Hello World !" });
-});
-
-router.get("/person", checkJwt, function (req, res) {
-    var query = "SELECT * FROM  Person WHERE PersonId =?";
-    var table = [personId];
-    query = mysql.format(query, table);
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({ "Error": true, "Message": "Error loading Person from Database", "Original": err });
-        } else {
-            res.json({ "Error": false, "Message": "Success", "Person": rows });
-
-        }
-    });
-});
+//         }
+//     });
+// });
 
 
-router.post("/person", checkJwt, function (req, res) {
-    debugger;
-    var query = "INSERT INTO ??(??,??,??,??, ??) VALUES (?,?,?,?,?)";
-    var table = ["Person","PersonId","Geschlecht", "Name", "Vorname", "Nickname" ,personId,req.body.geschlecht, req.body.name,req.body.vorname,req.body.nickname];
-    query = mysql.format(query, table);
+// router.post("/person", validateFirebaseIdToken, function (req, res) {
+//     debugger;
+//     var query = "INSERT INTO ??(??,??,??,??, ??) VALUES (?,?,?,?,?)";
+//     var table = ["Person","PersonId","Geschlecht", "Name", "Vorname", "Nickname" ,personId,req.body.geschlecht, req.body.name,req.body.vorname,req.body.nickname];
+//     query = mysql.format(query, table);
     
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({ "Error": true, "Message": "Error executing adding Person " ,"Original":err });
-        } else {
-            res.json({ "Message": "Person added", "Id": rows.insertId, "PersonId": personId });
-        }
-    });
-});
+//     connection.query(query, function (err, rows) {
+//         if (err) {
+//             res.json({ "Error": true, "Message": "Error executing adding Person " ,"Original":err });
+//         } else {
+//             res.json({ "Message": "Person added", "Id": rows.insertId, "PersonId": personId });
+//         }
+//     });
+// });
 
-router.put("/person/:id", checkJwt, function (req, res) {
-    var query = "UPDATE Person SET Geschlecht = ?, Name = ?, Vorname = ?, Nickname = ? Where PersonId = ? ";
-    var table = [req.body.geschlecht, req.body.name,req.body.vorname,req.body.nickname,personId];
-    query = mysql.format(query, table);
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({ "Error": true, "Message": err });
-        } else {
-            res.json({ "Error": false, "Message": "Update Person successful", "Person": rows });
+// router.put("/person/:id", validateFirebaseIdToken, function (req, res) {
+//     var query = "UPDATE Person SET Geschlecht = ?, Name = ?, Vorname = ?, Nickname = ? Where PersonId = ? ";
+//     var table = [req.body.geschlecht, req.body.name,req.body.vorname,req.body.nickname,personId];
+//     query = mysql.format(query, table);
+//     connection.query(query, function (err, rows) {
+//         if (err) {
+//             res.json({ "Error": true, "Message": err });
+//         } else {
+//             res.json({ "Error": false, "Message": "Update Person successful", "Person": rows });
 
-        }
-    });
-});
+//         }
+//     });
+// });
 
-router.get("/schulzimmer", checkJwt, function (req, res) {
+router.get("/schulzimmer", validateFirebaseIdToken, function (req, res) {
     var sqlTische = "SELECT * FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
     var tableTisch = ["tisch","t.SchulzimmerId","s.Id","schulzimmer", "s.PersonId", personId];
     var sqlSchulzimmer = "SELECT * FROM ?? s WHERE ??=?";
@@ -131,6 +131,9 @@ router.get("/schulzimmer", checkJwt, function (req, res) {
             connection.query(querySchulzimmer, {}, function(err, results) {
                 if (err) return parallel_done(err);
                 return_data.Schulzimmer = results;
+                console.log("Schulzimmer-Query");
+                console.log(querySchulzimmer);
+                console.log(results);
                 parallel_done();
             });
         },
@@ -138,6 +141,9 @@ router.get("/schulzimmer", checkJwt, function (req, res) {
             connection.query(queryTische, {}, function(err, results) {
                 if (err) return parallel_done(err);
                 return_data.Tische = results;
+                console.log("Tisch-Query");
+                console.log(queryTische);
+                console.log(results);
                 parallel_done();
             });
         }
@@ -149,7 +155,7 @@ router.get("/schulzimmer", checkJwt, function (req, res) {
 
 });
 
-router.post("/schulzimmer", checkJwt, function (req, res) {
+router.post("/schulzimmer", validateFirebaseIdToken, function (req, res) {
     var sqlDeleteTisch = "DELETE FROM ?? WHERE ?? in (SELECT ?? from ??  where ?? = ?)";
     var valuesDeleteTisch = ["tisch","SchulzimmerId","Id","schulzimmer", "PersonId", personId];
 
@@ -209,10 +215,10 @@ router.post("/schulzimmer", checkJwt, function (req, res) {
    
 });
 
-router.get("/schulklasse", checkJwt, function (req, res) {
-    var sqlSchueler = "SELECT * FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
+router.get("/schulklasse", validateFirebaseIdToken , function (req, res) {
+    var sqlSchueler = "SELECT t.Id, t.SchulklassenId, t.Name, t.Vorname FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
     var tableSchueler = ["schueler","t.SchulklassenId","s.Id","schulklasse", "s.PersonId", personId];
-    var sqlSchulklasse = "SELECT * FROM ?? s WHERE ??=?";
+    var sqlSchulklasse = "SELECT s.Id, s.PersonId, s.Name FROM ?? s WHERE ??=?";
     var tableSchulklasse = ["schulklasse", "s.PersonId", personId];
 
     querySchulklasse = mysql.format(sqlSchulklasse, tableSchulklasse);
@@ -225,6 +231,9 @@ router.get("/schulklasse", checkJwt, function (req, res) {
             connection.query(querySchulklasse, {}, function(err, results) {
                 if (err) return parallel_done(err);
                 return_data.Schulklassen = results;
+                console.log("Schulklasse-Query");
+                console.log(querySchulklasse);
+                console.log(results);
                 parallel_done();
             });
         },
@@ -232,6 +241,9 @@ router.get("/schulklasse", checkJwt, function (req, res) {
             connection.query(querySchueler, {}, function(err, results) {
                 if (err) return parallel_done(err);
                 return_data.Schueler = results;
+                console.log("Schueler-Query");
+                console.log(querySchueler);
+                console.log(results);
                 parallel_done();
             });
         }
@@ -243,7 +255,7 @@ router.get("/schulklasse", checkJwt, function (req, res) {
 
 });
 
-router.post("/schulklasse", checkJwt, function (req, res) {
+router.post("/schulklasse", validateFirebaseIdToken,  function (req, res) {
     var sqlDeleteSchueler = "DELETE FROM ?? WHERE ?? in (SELECT ?? from ??  where ?? = ?)";
     var valuesDeleteSchueler = ["schueler","SchulklassenId","Id","schulklasse", "PersonId", personId];
 
@@ -266,7 +278,7 @@ router.post("/schulklasse", checkJwt, function (req, res) {
         valuesInsertSchulklasse.push(new Array(personId,req.body[i].name));
         valuesInsertSchulklasseWithId.push(new Array(personId,req.body[i].id, req.body[i].name));
         for(var j=0; j<req.body[i].schueler.length; j++){
-            valuesInsertSchueler.push(new Array(req.body[i].id,req.body[i].schueler[j].vorname, req.body[i].schueler[j].name) );
+            valuesInsertSchueler.push(new Array(req.body[i].id,req.body[i].schueler[j].name,req.body[i].schueler[j].vorname) );
         }
         console.log("Object:");
         console.log(obj);

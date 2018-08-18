@@ -7,13 +7,13 @@ import { Person } from '../models/person';
 import { AuthService } from 'app/services/auth/auth.service';
 import { HttpHeaderResponse } from '@angular/common/http/src/response';
 
-var CONFIG = require('../../../config.json');
+import * as CONFIG from '../../config.json';
 
 
 @Injectable()
 export class PersonService {
 
-  private personUrl = CONFIG.api.concat("/api/person");  // URL to web api;
+  private personUrl = (<any>CONFIG).api.concat("/api/person");  // URL to web api;
 
   private headers = new Headers({ 'Content-Type': 'application/json' })
 
@@ -21,7 +21,7 @@ export class PersonService {
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   private get _authHeader(): string {
-    return `Bearer ${localStorage.getItem('access_token')}`;
+    return `Bearer ${localStorage.getItem('tokenId')}`;
   }
 
   getPerson(): Observable<any> {

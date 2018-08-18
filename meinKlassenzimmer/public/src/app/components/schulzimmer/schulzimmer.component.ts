@@ -3,14 +3,14 @@ import { Schulzimmer } from 'app/models/schulzimmer';
 import { SchulzimmerService } from "app/services/schulzimmer.service";
 import { Tisch } from '../../models/tisch';
 import { PositionTisch } from '../../models/position.tisch';
-import { PersonDbHelper } from '../../helpers/person.DbHelper';
-import { PersonService } from '../../services/person.service';
+// import { PersonDbHelper } from '../../helpers/person.DbHelper';
+// import { PersonService } from '../../services/person.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { TischOutput } from '../../models/output.tisch';
 import { TischOutputPreparer } from '../../helpers/tischOutput.preparer';
 import { FormControl, Validators } from '@angular/forms';
 
-var CONFIG = require('../../../../config.json');
+import * as CONFIG from '../../../config.json';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -27,7 +27,7 @@ export class SchulzimmerComponent implements OnInit {
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
   maximalSchulzimmerId: number;
-  personDbHelper: PersonDbHelper;
+  // personDbHelper: PersonDbHelper;
   preparedTischOutput: TischOutput[][];
   tischOutputPreparer: TischOutputPreparer;
   savingIsActiv : boolean
@@ -37,11 +37,11 @@ export class SchulzimmerComponent implements OnInit {
   
   @Input() personid: number
 
-  constructor(private schulzimmerService: SchulzimmerService, private personService: PersonService, private auth : AuthService ) {
-    this.personDbHelper = new PersonDbHelper(personService, auth);
+  constructor(private schulzimmerService: SchulzimmerService,  private auth : AuthService ) {
+    // this.personDbHelper = new PersonDbHelper(personService, auth);
     this.maximalSchulzimmerId = 0;
-    this.rowSchulzimmer = Array.from(new Array(CONFIG.numberOfRows),(val,index)=>index);
-    this.columnSchulzimmer = Array.from(new Array(CONFIG.numberOfColumns),(val,index)=>index);
+    this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
+    this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
   }
 
   getSchulzimmerToPerson() {
@@ -111,14 +111,14 @@ export class SchulzimmerComponent implements OnInit {
   async saveSchulzimmerTische(): Promise<void> {
     debugger;
     this.savingIsActiv = false;
-    this.personDbHelper.savePerson();
+    // this.personDbHelper.savePerson();
     await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe();
     
   }
 
   ngOnInit() {
     debugger;
-    this.personDbHelper.getPerson();
+    // this.personDbHelper.getPerson();
     this.getSchulzimmerToPerson();
 
   }

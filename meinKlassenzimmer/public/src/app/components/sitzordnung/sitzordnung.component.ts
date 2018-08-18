@@ -9,7 +9,7 @@ import { SchulzimmerService } from 'app/services/schulzimmer.service';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { TischSchuelerPreparer } from '../../helpers/tischSchueler.preparer';
 
-var CONFIG = require('../../../../config.json');
+import * as CONFIG from '../../../config.json';
 
 @Component({
   selector: 'app-zuordnung',
@@ -39,8 +39,8 @@ export class SitzordnungComponent {
   constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService) { 
     this.showSitzordnung = false;
     this.zuvieleSchuelerInSchulzimmer = false;
-    this.rowSchulzimmer = Array.from(new Array(CONFIG.numberOfRows),(val,index)=>index);
-    this.columnSchulzimmer = Array.from(new Array(CONFIG.numberOfColumns),(val,index)=>index);
+    this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
+    this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
   }
 
   getErrorMessageZuvieleSchuelerInSchulzimmer(){

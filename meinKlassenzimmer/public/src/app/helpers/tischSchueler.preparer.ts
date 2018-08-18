@@ -2,11 +2,10 @@ import { Schueler } from "../models/schueler";
 import {TischOutput} from "../models/output.tisch";
 import {TischSchueler} from "../models/tisch.schueler";
 import {Tisch} from "../models/tisch";
-import { PersonDbHelper } from '../helpers/person.DbHelper';
 import { Randomizer } from '../helpers/randomizer';
 import { PositionTisch } from "../models/position.tisch";
 
-var CONFIG = require('../../../config.json');
+import * as CONFIG from '../../config.json';
 
 export class TischSchuelerPreparer {
 
@@ -20,9 +19,9 @@ export class TischSchuelerPreparer {
         debugger;
         this.randomizer = new Randomizer();
         this.preparedTischSchueler = [];
-        for(var row: number = 0; row < CONFIG.numberOfRows; row++) {
+        for(var row: number = 0; row < (<any>CONFIG).numberOfRows; row++) {
             this.preparedTischSchueler[row] = [];
-            for(var column: number = 0; column< CONFIG.numberOfColumns; column++) {
+            for(var column: number = 0; column< (<any>CONFIG).numberOfColumns; column++) {
                 this.preparedTischSchueler[row][column] = new TischSchueler();
                 this.preparedTischSchueler[row][column].tischOutput = new TischOutput();
                 this.preparedTischSchueler[row][column].tischOutput.selected = false;

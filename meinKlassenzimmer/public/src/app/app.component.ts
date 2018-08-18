@@ -2,6 +2,7 @@ import { Component} from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
 
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,11 +11,12 @@ import { AuthService } from './services/auth/auth.service';
 export class AppComponent {
 
   constructor(public auth: AuthService) {
-    auth.handleAuthentication();
-   
+    
+      
   }
 
   login() {
+
     this.auth.login();
   }
   logout() {

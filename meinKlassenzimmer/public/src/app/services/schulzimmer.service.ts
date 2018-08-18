@@ -7,21 +7,19 @@ import { Schulzimmer } from '../models/schulzimmer';
 import { PositionTisch } from '../models/position.tisch';
 import { Tisch } from '../models/tisch';
 import { AuthService } from 'app/services/auth/auth.service';
-import { HttpHeaderResponse, HttpResponse } from '@angular/common/http/src/response';
-import { Response } from 'express';
-var CONFIG = require('../../../config.json');
+import * as CONFIG from '../../config.json';
 
 @Injectable()
 export class SchulzimmerService {
 
-    private schulzimmerUrl = CONFIG.api.concat("/api/schulzimmer");  // URL to web api;
+    private schulzimmerUrl = (<any>CONFIG).api.concat("/api/schulzimmer");  // URL to web api;
 
 
 
     constructor(private http: HttpClient, private auth: AuthService) { }
 
     private get _authHeader(): string {
-      return `Bearer ${localStorage.getItem('access_token')}`;
+      return `Bearer ${localStorage.getItem('tokenId')}`;
     }
 
   

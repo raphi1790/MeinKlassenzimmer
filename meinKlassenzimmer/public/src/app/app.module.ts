@@ -21,15 +21,11 @@ import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
 import { TischSchuelerComponent } from './components/tisch-schueler/tisch-schueler.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { environment } from '../environments/environment';
 
 
-
-export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig({
-    tokenGetter: (() => localStorage.getItem('access_token')),
-    globalHeaders: [{'Content-Type': 'application/json'}],
-  }), http, options);
-}
 
 @NgModule({
   declarations: [
@@ -53,16 +49,12 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    MaterialModule
+    MaterialModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule // imports firebase/auth, only needed for auth features
 
   ],
-  providers: [PersonService,SchulklassenService,SchulzimmerService,
-    AuthService,
-    {
-      provide: AuthHttp,
-      useFactory: authHttpServiceFactory,
-      deps: [Http, RequestOptions]
-    }],
+  providers: [SchulklassenService,SchulzimmerService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

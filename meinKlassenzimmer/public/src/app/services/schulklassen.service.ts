@@ -1,27 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/Rx';
 import { Schulklasse } from '../models/schulklasse';
 import { Schueler } from '../models/schueler';
 import { AuthService } from 'app/services/auth/auth.service';
-import { HttpHeaderResponse, HttpResponse } from '@angular/common/http/src/response';
-import { Response } from 'express';
-var CONFIG = require('../../../config.json');
+import * as CONFIG from '../../config.json';
+
 
 
 
 @Injectable()
 export class SchulklassenService {
 
-  private klassenUrl = CONFIG.api.concat("/api/schulklasse");  // URL to web api;
+  private klassenUrl = (<any>CONFIG).api.concat("/api/schulklasse");  // URL to web api;
 
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   private get _authHeader(): string {
-    return `Bearer ${localStorage.getItem('access_token')}`;
+    return `Bearer ${localStorage.getItem('tokenId')}`;
   }
 
 
