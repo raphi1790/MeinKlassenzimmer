@@ -1,8 +1,0 @@
-{ 	
-	"host": "localhost",
-	"user": "root",
-	"password" : "CodingIsFun21?",
-	"database" : "MeinKlassenzimmerDb",
-	"numberOfRows" : 10,
-	"numberOfColumns": 10
-}
