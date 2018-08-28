@@ -37,7 +37,6 @@ export class TischSchuelerPreparer {
     prepareTischSchuelerCombination(inputTische: Tisch[], inputSchueler: Schueler[] ): TischSchueler[][]{
         
         debugger;
-        var preparedTischSchueler : TischSchueler[][];
         var schuelerPrepared: Schueler[];
         schuelerPrepared = this.randomizer.randomizeSchueler(inputSchueler, inputTische.length);
   
@@ -46,7 +45,7 @@ export class TischSchuelerPreparer {
             var column = inputTische[index].position.column;
             this.preparedTischSchueler[row][column].tischOutput.selected = true;
             if(typeof schuelerPrepared[index] !== 'undefined' ){
-                this.preparedTischSchueler[row][column].schueler.name = schuelerPrepared[index].name;
+                this.preparedTischSchueler[row][column].schueler.nameKurz = schuelerPrepared[index].nameKurz;
                 this.preparedTischSchueler[row][column].schueler.vorname = schuelerPrepared[index].vorname;
 
             }

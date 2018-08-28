@@ -1,18 +1,21 @@
 .unselectedTischStyle{
     width: 75px; 
     height: 75px;
-    border: 3px solid white;
-    background-color:  white;
+    border: 2px solid #cac7cc;
+    background-color:  #f7f7f7;
 } 
 
 .selectedTischStyle{
     width: 75px; 
     height: 75px;
-    border: 3px solid ;
+    border: 2px solid ;
     background-color: var(--primary-color);
     border-color: var(--accent-color);
     color: white
 
 
  
+}
+.schueler{
+    text-align: center;
 }

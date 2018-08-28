@@ -1,5 +1,6 @@
 import { Schueler } from "../models/schueler";
 
+
 export class Randomizer {
 
     randomizeSchueler(inputSchueler: Schueler[], tischLength: number):Schueler[]{
@@ -13,6 +14,7 @@ export class Randomizer {
         return randomizeSchueler;
         
     }
+
 
 
     shuffle(a) {

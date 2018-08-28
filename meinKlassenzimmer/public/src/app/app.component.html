@@ -30,11 +30,12 @@
           <a mat-list-item routerLink="/verwaltung/schulzimmer"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
             <mat-icon>build </mat-icon><span class="item-spacer"></span>Schulzimmer</a>
           <a mat-list-item routerLink="/sitzordnung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
-            <mat-icon>reorder</mat-icon><span class="item-spacer"></span>Sitzordnung</a>
+            <mat-icon>autorenew</mat-icon><span class="item-spacer"></span>Sitzordnung</a>
+          <a mat-list-item routerLink="/gruppeneinteilung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
+            <mat-icon>reorder</mat-icon><span class="item-spacer"></span>Gruppeneinteilung</a>  
           <a mat-list-item routerLink="/kontakt"  routerLinkActive="active">
             <mat-icon>phone </mat-icon><span class="item-spacer"></span>Kontakt / Informationen</a>  
  
-
         </mat-nav-list>
       </mat-sidenav>
 

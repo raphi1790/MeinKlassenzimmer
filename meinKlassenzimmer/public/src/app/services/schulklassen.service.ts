@@ -6,6 +6,7 @@ import { Schulklasse } from '../models/schulklasse';
 import { Schueler } from '../models/schueler';
 import { AuthService } from 'app/services/auth/auth.service';
 import * as CONFIG from '../../config.json';
+import { SchuelerPreparer } from '../helpers/schueler.preparer';
 
 
 
@@ -51,6 +52,7 @@ export class SchulklassenService {
             schueler.id = data['Schueler'][indexSchueler].Id
             schueler.name = data['Schueler'][indexSchueler].Name;
             schueler.vorname = data['Schueler'][indexSchueler].Vorname;
+            schueler.nameKurz = data['Schueler'][indexSchueler].NameKurz;
             klassenToPerson[indexKlasse].schueler.push(schueler);
           }
         }
@@ -64,6 +66,10 @@ export class SchulklassenService {
   }
   updateKlassenAndSchueler(neueSchulklassen: Schulklasse[]): Observable<Schulklasse[]> {
     debugger;
+    var prepareSchueler = new SchuelerPreparer();
+    neueSchulklassen.forEach(element => {
+      element.schueler = prepareSchueler.prepareSchuelerNameKurz(element.schueler);
+    });
     const body = neueSchulklassen;
     return this.http.post(this.klassenUrl, body, {
       headers: new HttpHeaders().set('Authorization', this._authHeader)

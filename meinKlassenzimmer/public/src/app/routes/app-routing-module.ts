@@ -6,6 +6,7 @@ import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.compone
 import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
 import {StartseiteComponent} from '../components/startseite/startseite.component';
 import {KontaktComponent} from '../components/kontakt/kontakt.component';
+import { GruppeneinteilungComponent } from '../components/gruppeneinteilung/gruppeneinteilung.component';
 
 
 const routes: Routes = [
@@ -34,9 +35,12 @@ const routes: Routes = [
       { 
         path: 'kontakt',
         component: KontaktComponent
-    },
+      },
+      {
+        path: 'gruppeneinteilung',
+        component: GruppeneinteilungComponent   
+      }
      
-    
 
     ];
 @NgModule({

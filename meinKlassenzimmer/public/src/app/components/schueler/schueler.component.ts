@@ -2,8 +2,6 @@ import { Component, OnInit,  Input, OnChanges, EventEmitter, Output, ViewChild, 
 
 import {Schulklasse} from 'app/models/schulklasse';
 import {Schueler} from 'app/models/schueler';
-import {SchulklassenService} from 'app/services/schulklassen.service'
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { MatTable } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 

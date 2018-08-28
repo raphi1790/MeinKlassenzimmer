@@ -11,7 +11,7 @@ import { KontaktComponent } from './components/kontakt/kontakt.component';
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
 import { StartseiteComponent } from './components/startseite/startseite.component'
 import { SchulklassenService} from './services/schulklassen.service';
-import { PersonService} from './services/person.service';
+import { GruppeneinteilungComponent } from  './components/gruppeneinteilung/gruppeneinteilung.component';
 import { SchulzimmerService} from './services/schulzimmer.service';
 import { AuthService} from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
@@ -23,7 +23,8 @@ import { TischComponent } from './components/tisch/tisch.component';
 import { TischSchuelerComponent } from './components/tisch-schueler/tisch-schueler.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { environment } from '../environments/environment';
+import { environment } from '../environments/environment';;
+
 
 
 
@@ -39,7 +40,8 @@ import { environment } from '../environments/environment';
     CallbackComponent,
     TischComponent,
     TischSchuelerComponent,
-    KontaktComponent
+    KontaktComponent,
+    GruppeneinteilungComponent
     
   ],
   imports: [

@@ -70,51 +70,6 @@ const validateFirebaseIdToken = async (req, res, next) => {
     return personId
   }
 
-
-// router.get("/person", validateFirebaseIdToken, function (req, res) {
-//     var query = "SELECT * FROM  Person WHERE PersonId =?";
-//     var table = [personId];
-//     query = mysql.format(query, table);
-//     connection.query(query, function (err, rows) {
-//         if (err) {
-//             res.json({ "Error": true, "Message": "Error loading Person from Database", "Original": err });
-//         } else {
-//             res.json({ "Error": false, "Message": "Success", "Person": rows });
-
-//         }
-//     });
-// });
-
-
-// router.post("/person", validateFirebaseIdToken, function (req, res) {
-//     debugger;
-//     var query = "INSERT INTO ??(??,??,??,??, ??) VALUES (?,?,?,?,?)";
-//     var table = ["Person","PersonId","Geschlecht", "Name", "Vorname", "Nickname" ,personId,req.body.geschlecht, req.body.name,req.body.vorname,req.body.nickname];
-//     query = mysql.format(query, table);
-    
-//     connection.query(query, function (err, rows) {
-//         if (err) {
-//             res.json({ "Error": true, "Message": "Error executing adding Person " ,"Original":err });
-//         } else {
-//             res.json({ "Message": "Person added", "Id": rows.insertId, "PersonId": personId });
-//         }
-//     });
-// });
-
-// router.put("/person/:id", validateFirebaseIdToken, function (req, res) {
-//     var query = "UPDATE Person SET Geschlecht = ?, Name = ?, Vorname = ?, Nickname = ? Where PersonId = ? ";
-//     var table = [req.body.geschlecht, req.body.name,req.body.vorname,req.body.nickname,personId];
-//     query = mysql.format(query, table);
-//     connection.query(query, function (err, rows) {
-//         if (err) {
-//             res.json({ "Error": true, "Message": err });
-//         } else {
-//             res.json({ "Error": false, "Message": "Update Person successful", "Person": rows });
-
-//         }
-//     });
-// });
-
 router.get("/schulzimmer", validateFirebaseIdToken, function (req, res) {
     var sqlTische = "SELECT * FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
     var tableTisch = ["tisch","t.SchulzimmerId","s.Id","schulzimmer", "s.PersonId", personId];
@@ -216,7 +171,7 @@ router.post("/schulzimmer", validateFirebaseIdToken, function (req, res) {
 });
 
 router.get("/schulklasse", validateFirebaseIdToken , function (req, res) {
-    var sqlSchueler = "SELECT t.Id, t.SchulklassenId, t.Name, t.Vorname FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
+    var sqlSchueler = "SELECT t.Id, t.SchulklassenId, t.Name, t.Vorname, t.NameKurz FROM ?? t WHERE ?? in (SELECT ?? from ?? s where ?? = ?)";
     var tableSchueler = ["schueler","t.SchulklassenId","s.Id","schulklasse", "s.PersonId", personId];
     var sqlSchulklasse = "SELECT s.Id, s.PersonId, s.Name FROM ?? s WHERE ??=?";
     var tableSchulklasse = ["schulklasse", "s.PersonId", personId];
@@ -267,7 +222,7 @@ router.post("/schulklasse", validateFirebaseIdToken,  function (req, res) {
 
 
     var queryInsertSchulklasse = "INSERT INTO schulklasse (PersonId, Name) VALUES ?";
-    var queryInsertSchueler = "INSERT INTO schueler (SchulklassenId,Name,Vorname) VALUES ?";
+    var queryInsertSchueler = "INSERT INTO schueler (SchulklassenId,Name,Vorname, NameKurz) VALUES ?";
     var valuesInsertSchulklasse = [];
     var valuesInsertSchulklasseWithId = [];
 
@@ -278,7 +233,7 @@ router.post("/schulklasse", validateFirebaseIdToken,  function (req, res) {
         valuesInsertSchulklasse.push(new Array(personId,req.body[i].name));
         valuesInsertSchulklasseWithId.push(new Array(personId,req.body[i].id, req.body[i].name));
         for(var j=0; j<req.body[i].schueler.length; j++){
-            valuesInsertSchueler.push(new Array(req.body[i].id,req.body[i].schueler[j].name,req.body[i].schueler[j].vorname) );
+            valuesInsertSchueler.push(new Array(req.body[i].id,req.body[i].schueler[j].name,req.body[i].schueler[j].vorname, req.body[i].schueler[j].nameKurz) );
         }
         console.log("Object:");
         console.log(obj);

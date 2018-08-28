@@ -55,7 +55,7 @@
             </mat-card-content>
 
           </mat-card>
-          <button mat-raised-button color="accent" [disabled]="!savingIsActiv" (click)="saveSchulklasseSchueler()">Speichern</button>
+         
         </div>
       </div>
 
@@ -71,6 +71,8 @@
           </div>
         </div>
       </div>
+     
     </div>
   </div>
+  <button mat-raised-button class="save-button" color="accent"  [disabled]="!savingIsActiv" (click)="saveSchulklasseSchueler()">Speichern</button>
 </div>

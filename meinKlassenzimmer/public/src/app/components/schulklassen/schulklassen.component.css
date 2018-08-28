@@ -14,7 +14,7 @@
 .button-list{
     width: 100%;
     height: 100%;
-    vertical-align: middle;
+    padding-top: 10px;
 }
 
 .mat-list-item.highlighted{
@@ -26,7 +26,10 @@
   .mat-card-header-text {
     margin: 0 0px;
   }
+.save-button{
+    float: right;
 
+}
 
 
   

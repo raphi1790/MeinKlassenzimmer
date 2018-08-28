@@ -1,9 +1,7 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 
 import { Schulklasse } from 'app/models/schulklasse';
-import { Schueler } from 'app/models/schueler';
 import { TischSchueler } from 'app/models/tisch.schueler';
-import { SchulklassenComponent } from '../schulklassen/schulklassen.component';
 import { SchulklassenService } from 'app/services/schulklassen.service';
 import { SchulzimmerService } from 'app/services/schulzimmer.service';
 import { Schulzimmer } from '../../models/schulzimmer';

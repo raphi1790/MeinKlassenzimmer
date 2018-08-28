@@ -3,5 +3,6 @@
     id: number;
     vorname: string;
     name: string;
+    nameKurz: string;
 }
     
