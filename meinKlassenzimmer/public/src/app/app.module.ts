@@ -17,13 +17,13 @@ import { AuthService} from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { CallbackComponent } from './components/callback/callback.component';
-import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
 import { TischSchuelerComponent } from './components/tisch-schueler/tisch-schueler.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { environment } from '../environments/environment';;
+import { environment } from '../environments/environment';
+import { UnsavedGuard } from './helpers/guards/unsaved.guard';
 
 
 
@@ -56,7 +56,7 @@ import { environment } from '../environments/environment';;
     AngularFireAuthModule // imports firebase/auth, only needed for auth features
 
   ],
-  providers: [SchulklassenService,SchulzimmerService, AuthService],
+  providers: [SchulklassenService,SchulzimmerService, AuthService, UnsavedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

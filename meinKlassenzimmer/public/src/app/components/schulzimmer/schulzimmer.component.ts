@@ -116,6 +116,11 @@ export class SchulzimmerComponent implements OnInit {
     
   }
 
+  canDeactivate(){
+    debugger;
+    return !this.savingIsActiv;
+  }
+
   ngOnInit() {
     debugger;
     // this.personDbHelper.getPerson();

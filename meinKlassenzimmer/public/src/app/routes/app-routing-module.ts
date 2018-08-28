@@ -7,17 +7,20 @@ import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.compon
 import {StartseiteComponent} from '../components/startseite/startseite.component';
 import {KontaktComponent} from '../components/kontakt/kontakt.component';
 import { GruppeneinteilungComponent } from '../components/gruppeneinteilung/gruppeneinteilung.component';
+import { UnsavedGuard} from '../helpers/guards/unsaved.guard'
 
 
 const routes: Routes = [
 
       {
           path: 'verwaltung/klassen',
-          component: SchulklassenComponent
+          component: SchulklassenComponent,
+          canDeactivate: [UnsavedGuard]
       },
       {
           path: 'verwaltung/schulzimmer',
-          component: SchulzimmerComponent
+          component: SchulzimmerComponent,
+          canDeactivate: [UnsavedGuard]
       },
       {
           path: 'home',

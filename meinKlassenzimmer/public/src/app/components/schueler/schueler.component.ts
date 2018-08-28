@@ -2,7 +2,7 @@ import { Component, OnInit,  Input, OnChanges, EventEmitter, Output, ViewChild, 
 
 import {Schulklasse} from 'app/models/schulklasse';
 import {Schueler} from 'app/models/schueler';
-import { MatTable } from '@angular/material';
+import { MatTable,MatPaginator, MatTableDataSource } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 
 
@@ -25,11 +25,13 @@ export class SchuelerComponent implements OnChanges{
   @Input('selectedSchulklasse')  selectedSchulklasse: Schulklasse; 
   @Output() noteSchulklasse: EventEmitter<Schulklasse> = new EventEmitter<Schulklasse>();
   @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   
   maximalSchuelerId: number;
   schulklasse = new Schulklasse();
   displayedColumns = ['vorname', 'name', 'symbol'];
-  dataSource: Schueler[];
+  dataSource  = new MatTableDataSource();
   neuerSchuelerVorname: string; 
   neuerSchuelerName: string;
   neuerSchuelerVornameForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
@@ -57,7 +59,7 @@ export class SchuelerComponent implements OnChanges{
 
     console.log("Klasse nach Update (Delete):");
     console.log(this.schulklasse);
-    this.dataSource = this.schulklasse.schueler;
+    this.dataSource.data = this.schulklasse.schueler;
     this.noteSchulklasse.emit(this.schulklasse);
     this.anzahlSchueler--;
   
@@ -88,13 +90,16 @@ export class SchuelerComponent implements OnChanges{
   ngOnChanges(){
     debugger;
     this.schulklasse = this.selectedSchulklasse;
-    this.dataSource = this.schulklasse.schueler;
+    this.dataSource.data = this.schulklasse.schueler;
     this.anzahlSchueler = this.selectedSchulklasse.schueler.length;
     console.log("Schulklasse beim Laden");
     console.log(this.schulklasse);
     
     
     
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
     
 

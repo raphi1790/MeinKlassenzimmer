@@ -113,6 +113,11 @@ export class SchulklassenComponent implements OnInit {
     await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe();
   }
 
+  canDeactivate(){
+    debugger;
+    return !this.savingIsActiv;
+  }
+
   ngOnInit(){
     debugger;
     // this.personDbHelper.getPerson();
