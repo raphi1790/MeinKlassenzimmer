@@ -27,6 +27,7 @@ export class SchulklassenComponent implements OnInit {
   
   // personDbHelper: PersonDbHelper;
   savingIsActiv: boolean;
+  isLoading: boolean;
 
   @Input() personid: number
 
@@ -49,7 +50,8 @@ export class SchulklassenComponent implements OnInit {
     this.klassenService.getKlassenAndSchuelerByPersonid().subscribe(
       (data:Schulklasse[]) => {
         debugger;
-        this.klassenToPerson = data});
+        this.klassenToPerson = data;
+        this.isLoading = false;});
   
   }
 
@@ -89,6 +91,10 @@ export class SchulklassenComponent implements OnInit {
     this.savingIsActiv = true;
     this.neueSchulklasseName = null;
 
+    this.neueSchulklasseForm.markAsPristine();
+    this.neueSchulklasseForm.markAsUntouched();
+    this.neueSchulklasseForm.updateValueAndValidity();
+
   }
 
   updateSchulklasse(updatedKlasse: Schulklasse): void {
@@ -121,6 +127,7 @@ export class SchulklassenComponent implements OnInit {
   ngOnInit(){
     debugger;
     // this.personDbHelper.getPerson();
+    this.isLoading = true;
     this.getSchulklassenToPerson();
 
   }

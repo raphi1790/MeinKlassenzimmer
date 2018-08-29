@@ -30,6 +30,8 @@ export class SitzordnungComponent {
   columnSchulzimmer: number[];
   preparedTischSchueler: TischSchueler[][];
   zuvieleSchuelerInSchulzimmer: boolean;
+  isLoadingSchulklasse: boolean;
+  isLoadingSchulzimmer: boolean;
 
 
   
@@ -46,8 +48,8 @@ export class SitzordnungComponent {
   }
 
   loadInputData() {
-    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((data: Schulklasse[]) => { this.klassenToPerson = data });
-    this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => { this.zimmerToPerson = data });
+    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((data: Schulklasse[]) => { this.klassenToPerson = data; this.isLoadingSchulklasse = false; });
+    this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => { this.zimmerToPerson = data; this.isLoadingSchulzimmer = false; });
 
   }
  
@@ -77,6 +79,8 @@ export class SitzordnungComponent {
   }
 
   ngOnInit() {
+    this.isLoadingSchulklasse = true;
+    this.isLoadingSchulzimmer = true;
     this.loadInputData();
 
   }

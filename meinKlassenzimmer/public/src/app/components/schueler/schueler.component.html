@@ -12,22 +12,22 @@
     <mat-card-content>
       <div class = "input-form-field">
         <mat-form-field>
-          <input matInput placeholder="Vorname" required 
-          [(ngModel)]="neuerSchuelerVorname" [formControl]="neuerSchuelerVornameForm"
-          >
-          <mat-error *ngIf="neuerSchuelerVornameForm.invalid && (neuerSchuelerVornameForm.dirty || neuerSchuelerVornameForm.touched)">
-            {{getErrorMessageNeuerSchuelerVorname()}}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <input matInput placeholder="Name" required 
-          [(ngModel)]="neuerSchuelerName" [formControl]="neuerSchuelerNameForm"
-          >
-          <mat-error *ngIf="neuerSchuelerNameForm.invalid && (neuerSchuelerNameForm.dirty || neuerSchuelerNameForm.touched)">
-            {{getErrorMessageNeuerSchuelerName()}}
-          </mat-error>
-        </mat-form-field>
+            <input matInput placeholder="Vorname" required 
+            [(ngModel)]="neuerSchuelerVorname" [formControl]="neuerSchuelerVornameForm"
+            >
+            <mat-error *ngIf="neuerSchuelerVornameForm.invalid && (neuerSchuelerVornameForm.dirty || neuerSchuelerVornameForm.touched)">
+              {{getErrorMessageNeuerSchuelerVorname()}}
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <input matInput placeholder="Name" required 
+            [(ngModel)]="neuerSchuelerName" [formControl]="neuerSchuelerNameForm"
+            >
+            <mat-error *ngIf="neuerSchuelerNameForm.invalid && (neuerSchuelerNameForm.dirty || neuerSchuelerNameForm.touched)">
+              {{getErrorMessageNeuerSchuelerName()}}
+            </mat-error>
+          </mat-form-field>
       </div>
 
     </mat-card-content>

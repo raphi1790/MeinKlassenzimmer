@@ -13,7 +13,9 @@
 
             </mat-card-header>
             <mat-card-content>
-              <div class="input-form-field" >  <mat-form-field >
+              <div class="input-form-field" >  
+                <mat-form-field > 
+                  <mat-spinner *ngIf="isLoadingSchulklasse" diameter="20"></mat-spinner>
                   <mat-select placeholder="Schulklasse"  [(ngModel)]="selectedSchulklasse" required  >
                  <mat-option  *ngFor="let klasse of klassenToPerson" [value] ="klasse">{{klasse.name}}</mat-option>
                  
@@ -21,6 +23,7 @@
               
               </mat-form-field> 
                    <mat-form-field>
+                      <mat-spinner *ngIf="isLoadingSchulzimmer" diameter="20"></mat-spinner>
                       <mat-select placeholder="Schulzimmer"  [(ngModel)]="selectedSchulzimmer" required >
                      <mat-option  *ngFor="let zimmer of zimmerToPerson" [value] ="zimmer">{{zimmer.name}}</mat-option>
                      

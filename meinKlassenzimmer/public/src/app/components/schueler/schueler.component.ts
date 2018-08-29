@@ -31,7 +31,7 @@ export class SchuelerComponent implements OnChanges{
   maximalSchuelerId: number;
   schulklasse = new Schulklasse();
   displayedColumns = ['vorname', 'name', 'symbol'];
-  dataSource  = new MatTableDataSource();
+  dataSource = new MatTableDataSource<Schueler>();
   neuerSchuelerVorname: string; 
   neuerSchuelerName: string;
   neuerSchuelerVornameForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
@@ -76,15 +76,23 @@ export class SchuelerComponent implements OnChanges{
     this.maximalSchuelerId++;
     this.anzahlSchueler++;
     
+    this.dataSource.data = this.schulklasse.schueler;
 
     console.log("Klasse nach Update (Adding):");
     console.log(this.schulklasse);
-    this.table.renderRows();
+
  
     this.noteSchulklasse.emit(this.schulklasse);
     this.neuerSchuelerVorname = null;
     this.neuerSchuelerName = null;
+
+    this.neuerSchuelerVornameForm.markAsPristine();
+    this.neuerSchuelerVornameForm.markAsUntouched();
+    this.neuerSchuelerVornameForm.updateValueAndValidity();
     
+    this.neuerSchuelerNameForm.markAsPristine();
+    this.neuerSchuelerNameForm.markAsUntouched();
+    this.neuerSchuelerNameForm.updateValueAndValidity();
 
   }
   ngOnChanges(){

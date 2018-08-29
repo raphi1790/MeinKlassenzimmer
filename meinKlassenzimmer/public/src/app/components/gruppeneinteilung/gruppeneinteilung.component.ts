@@ -21,6 +21,7 @@ export class GruppeneinteilungComponent implements OnInit {
   groupPreparer: GroupPreparer;
   outputSchulklasse: Schulklasse
   outputGroupSize: number;
+  isLoadingSchulklasse: boolean;
   
  
   
@@ -45,7 +46,7 @@ export class GruppeneinteilungComponent implements OnInit {
   }
 
   loadInputData() {
-    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((data: Schulklasse[]) => { this.klassenToPerson = data });
+    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((data: Schulklasse[]) => { this.klassenToPerson = data ; this.isLoadingSchulklasse = false;});
   }
 
   randomizeGroups(){
@@ -85,6 +86,7 @@ export class GruppeneinteilungComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoadingSchulklasse = true;
     this.loadInputData();
 
   }

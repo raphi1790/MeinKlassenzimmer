@@ -40,6 +40,7 @@
 
             </mat-card-header>
             <mat-card-content>
+              <mat-spinner *ngIf="isLoading"></mat-spinner>
               <mat-nav-list>
                 <mat-list-item *ngFor="let klasse of klassenToPerson;last as last" [class.highlighted]="klasse === selectedSchulklasse">
                   <div class="button-list" (click)="onSelect(klasse)">

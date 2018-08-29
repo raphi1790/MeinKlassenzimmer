@@ -30,7 +30,8 @@ export class SchulzimmerComponent implements OnInit {
   // personDbHelper: PersonDbHelper;
   preparedTischOutput: TischOutput[][];
   tischOutputPreparer: TischOutputPreparer;
-  savingIsActiv : boolean
+  savingIsActiv : boolean;
+  isLoading: boolean;
   neuesSchulzimmerName: string;
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
@@ -49,6 +50,7 @@ export class SchulzimmerComponent implements OnInit {
     this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(
       (data:Schulzimmer[]) => {
         this.schulzimmerToPerson = data;
+        this.isLoading = false;
       }
     );
   }
@@ -88,6 +90,10 @@ export class SchulzimmerComponent implements OnInit {
     this.savingIsActiv = true;
     this.neuesSchulzimmerName = null;
 
+    this.neuesSchulzimmerForm.markAsPristine();
+    this.neuesSchulzimmerForm.markAsUntouched();
+    this.neuesSchulzimmerForm.updateValueAndValidity();
+
   }
   updateSchulzimmer(updatedTischOutput: TischOutput): void {
     debugger;
@@ -123,6 +129,7 @@ export class SchulzimmerComponent implements OnInit {
 
   ngOnInit() {
     debugger;
+    this.isLoading = true;
     // this.personDbHelper.getPerson();
     this.getSchulzimmerToPerson();
 
