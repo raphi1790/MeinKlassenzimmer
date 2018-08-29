@@ -28,6 +28,7 @@ export class SchulklassenComponent implements OnInit {
   // personDbHelper: PersonDbHelper;
   savingIsActiv: boolean;
   isLoading: boolean;
+  isSaving: boolean;
 
   @Input() personid: number
 
@@ -115,8 +116,9 @@ export class SchulklassenComponent implements OnInit {
   async saveSchulklasseSchueler(): Promise<void> {
     debugger;
     this.savingIsActiv = false; 
+    this.isSaving = true;this.savingIsActiv
     // this.personDbHelper.savePerson();
-    await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe();
+    await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe(() => this.isSaving = false);
   }
 
   canDeactivate(){

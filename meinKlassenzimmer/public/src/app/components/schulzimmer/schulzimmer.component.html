@@ -59,6 +59,7 @@
       
                 </mat-card>
 
+
                 <button mat-raised-button class="save-button" color="accent" [disabled]="!savingIsActiv" (click)="saveSchulzimmerTische()">Speichern</button>
               </div>
 
@@ -98,6 +99,8 @@
           </div>
         </div>
       </div>
+      <div id ="center" style="position:fixed;top:50%;left:50%">
+          <mat-spinner *ngIf="isSaving"></mat-spinner></div>
     </div>
   </div>
   

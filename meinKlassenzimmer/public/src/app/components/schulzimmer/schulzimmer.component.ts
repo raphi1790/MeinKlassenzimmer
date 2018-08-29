@@ -34,6 +34,7 @@ export class SchulzimmerComponent implements OnInit {
   isLoading: boolean;
   neuesSchulzimmerName: string;
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
+  isSaving: boolean;
 
   
   @Input() personid: number
@@ -117,8 +118,9 @@ export class SchulzimmerComponent implements OnInit {
   async saveSchulzimmerTische(): Promise<void> {
     debugger;
     this.savingIsActiv = false;
+    this.isSaving = true; 
     // this.personDbHelper.savePerson();
-    await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe();
+    await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe(() => this.isSaving = false);
     
   }
 

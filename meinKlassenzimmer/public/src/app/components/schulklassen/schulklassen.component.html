@@ -1,4 +1,5 @@
 <div class="container-fluid">
+
   <div class="row">
     <div class="col-md-5">
       <div class="column1">
@@ -27,6 +28,7 @@
             </mat-card-actions>
           </mat-card>
         </div>
+
 
         <div class="klassenListe">
           <mat-card>
@@ -65,7 +67,6 @@
     </div>
     <div class="col-md-7">
       <div class="column2">
-
         <div class="schueler" *ngIf="selectedSchulklasse">
           <div class="schuelerListe">
             <app-schueler [selectedSchulklasse]="selectedSchulklasse" (noteSchulklasse)="updateSchulklasse($event)"></app-schueler>
@@ -75,5 +76,7 @@
      
     </div>
   </div>
+  <div id ="center" style="position:fixed;top:50%;left:50%">
+      <mat-spinner *ngIf="isSaving"></mat-spinner></div>
   <button mat-raised-button class="save-button" color="accent"  [disabled]="!savingIsActiv" (click)="saveSchulklasseSchueler()">Speichern</button>
 </div>
