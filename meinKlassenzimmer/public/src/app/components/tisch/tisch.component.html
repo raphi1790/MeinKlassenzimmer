@@ -1,2 +1,3 @@
 <div [className]="tischStyle" (click)="selectTisch()" >
+        <div class="checkboxActiveTischContainer"  ><mat-checkbox (click)="activateTisch();$event.stopPropagation();" [(ngModel)]="tischActive"  [disabled]="tischDisabled"></mat-checkbox></div>
 </div>

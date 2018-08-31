@@ -27,17 +27,17 @@ export class GroupPreparer {
                     for (let groupIndex = 0; groupIndex < numberOfGroups; groupIndex++) {
                         debugger;
                         var schueler2;
-                        if(randomizedSchueler[groupIndex * numberOfGroups + 1] == undefined ){
+                        if(randomizedSchueler[groupIndex * inputGroupSize + 1] == undefined ){
                             schueler2 = null;
                         }
                         else
                         {
-                            schueler2 = randomizedSchueler[groupIndex * numberOfGroups + 1].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 1].nameKurz
+                            schueler2 = randomizedSchueler[groupIndex * inputGroupSize + 1].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 1].nameKurz
                         }
 
                         gruppenEinteilung.push({
                             gruppe: groupIndex + 1,
-                            schueler1: randomizedSchueler[groupIndex * numberOfGroups].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups].nameKurz,
+                            schueler1: randomizedSchueler[groupIndex * inputGroupSize].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize].nameKurz,
                             schueler2: schueler2,
                         })
                     }
@@ -48,26 +48,26 @@ export class GroupPreparer {
                         debugger;
                         var schueler2;
                         var schueler3;
-                        if(randomizedSchueler[groupIndex * numberOfGroups + 1] == undefined ){
+                        if(randomizedSchueler[groupIndex * inputGroupSize + 1] == undefined ){
                             schueler2 = null;
                         
                         }
                         else
                         {
-                            schueler2 = randomizedSchueler[groupIndex * numberOfGroups + 1].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 1].nameKurz
+                            schueler2 = randomizedSchueler[groupIndex * inputGroupSize + 1].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 1].nameKurz
                         }
-                        if(randomizedSchueler[groupIndex * numberOfGroups + 2] == undefined ){
+                        if(randomizedSchueler[groupIndex * inputGroupSize + 2] == undefined ){
                             schueler3 = null;
                         
                         }
                         else
                         {
-                            schueler3 = randomizedSchueler[groupIndex * numberOfGroups + 2].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 2].nameKurz
+                            schueler3 = randomizedSchueler[groupIndex * inputGroupSize + 2].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 2].nameKurz
                         }
                         
                         gruppenEinteilung.push({
                             gruppe: groupIndex + 1,
-                            schueler1: randomizedSchueler[groupIndex * numberOfGroups].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups].nameKurz,
+                            schueler1: randomizedSchueler[groupIndex * inputGroupSize].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize].nameKurz,
                             schueler2: schueler2,
                             schueler3: schueler3
                                 
@@ -85,33 +85,33 @@ export class GroupPreparer {
                     var schueler3;
                     var schueler4;
                     var schueler5;
-                    if(randomizedSchueler[groupIndex * numberOfGroups + 1] == undefined ){
+                    if(randomizedSchueler[groupIndex * inputGroupSize + 1] == undefined ){
                         schueler2 = null;
                     
                     }
                     else
                     {
-                        schueler2 = randomizedSchueler[groupIndex * numberOfGroups + 1].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 1].nameKurz
+                        schueler2 = randomizedSchueler[groupIndex * inputGroupSize + 1].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 1].nameKurz
                     }
-                    if(randomizedSchueler[groupIndex * numberOfGroups + 2] == undefined ){
+                    if(randomizedSchueler[groupIndex * inputGroupSize + 2] == undefined ){
                         schueler3 = null;
                     
                     }
                     else
                     {
-                        schueler3 = randomizedSchueler[groupIndex * numberOfGroups + 2].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 2].nameKurz
+                        schueler3 = randomizedSchueler[groupIndex * inputGroupSize + 2].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 2].nameKurz
                     }
-                    if(randomizedSchueler[groupIndex * numberOfGroups + 3] == undefined ){
+                    if(randomizedSchueler[groupIndex * inputGroupSize + 3] == undefined ){
                         schueler4 = null;
                     
                     }
                     else
                     {
-                        schueler4 = randomizedSchueler[groupIndex * numberOfGroups + 3].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 3].nameKurz
+                        schueler4 = randomizedSchueler[groupIndex * inputGroupSize + 3].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 3].nameKurz
                     }
                     gruppenEinteilung.push({
                         gruppe: groupIndex + 1,
-                        schueler1: randomizedSchueler[groupIndex * numberOfGroups].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups].nameKurz,
+                        schueler1: randomizedSchueler[groupIndex * inputGroupSize].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize].nameKurz,
                         schueler2: schueler2,
                         schueler3: schueler3,
                         schueler4: schueler4,
@@ -129,42 +129,42 @@ export class GroupPreparer {
                     var schueler3;
                     var schueler4;
                     var schueler5;
-                    if(randomizedSchueler[groupIndex * numberOfGroups + 1] == undefined ){
+                    if(randomizedSchueler[groupIndex * inputGroupSize + 1] == undefined ){
                         schueler2 = null;
                     
                     }
                     else
                     {
-                        schueler2 = randomizedSchueler[groupIndex * numberOfGroups + 1].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 1].nameKurz
+                        schueler2 = randomizedSchueler[groupIndex * inputGroupSize + 1].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 1].nameKurz
                     }
-                    if(randomizedSchueler[groupIndex * numberOfGroups + 2] == undefined ){
+                    if(randomizedSchueler[groupIndex * inputGroupSize + 2] == undefined ){
                         schueler3 = null;
                     
                     }
                     else
                     {
-                        schueler3 = randomizedSchueler[groupIndex * numberOfGroups + 2].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 2].nameKurz
+                        schueler3 = randomizedSchueler[groupIndex * inputGroupSize + 2].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 2].nameKurz
                     }
-                    if(randomizedSchueler[groupIndex * numberOfGroups + 3] == undefined ){
+                    if(randomizedSchueler[groupIndex * inputGroupSize + 3] == undefined ){
                         schueler4 = null;
                     
                     }
                     else
                     {
-                        schueler4 = randomizedSchueler[groupIndex * numberOfGroups + 3].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 3].nameKurz
+                        schueler4 = randomizedSchueler[groupIndex * inputGroupSize + 3].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 3].nameKurz
                     }
-                    if(randomizedSchueler[groupIndex * numberOfGroups + 4] == undefined ){
+                    if(randomizedSchueler[groupIndex * inputGroupSize + 4] == undefined ){
                         schueler5 = null;
                     
                     }
                     else
                     {
-                        schueler5 = randomizedSchueler[groupIndex * numberOfGroups + 4].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups + 4].nameKurz
+                        schueler5 = randomizedSchueler[groupIndex * inputGroupSize + 4].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize + 4].nameKurz
                     }
                     
                     gruppenEinteilung.push({
                         gruppe: groupIndex + 1,
-                        schueler1: randomizedSchueler[groupIndex * numberOfGroups].vorname + " "+ randomizedSchueler[groupIndex * numberOfGroups].nameKurz,
+                        schueler1: randomizedSchueler[groupIndex * inputGroupSize].vorname + " "+ randomizedSchueler[groupIndex * inputGroupSize].nameKurz,
                         schueler2: schueler2,
                         schueler3: schueler3,
                         schueler4: schueler4,

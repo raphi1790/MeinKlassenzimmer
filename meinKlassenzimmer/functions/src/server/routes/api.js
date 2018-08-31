@@ -122,7 +122,7 @@ router.post("/schulzimmer", validateFirebaseIdToken, function (req, res) {
 
 
     var queryInsertSchulzimmer = "INSERT INTO schulzimmer (PersonId, Name) VALUES ?";
-    var queryInsertTisch = "INSERT INTO tisch (SchulzimmerId,RowNumber,ColumnNumber) VALUES ?";
+    var queryInsertTisch = "INSERT INTO tisch (SchulzimmerId,RowNumber,ColumnNumber, Active) VALUES ?";
     var valuesInsertSchulzimmer = [];
     var valuesInsertSchulzimmerWithId = [];
 
@@ -133,7 +133,7 @@ router.post("/schulzimmer", validateFirebaseIdToken, function (req, res) {
         valuesInsertSchulzimmer.push(new Array(personId,req.body[i].name));
         valuesInsertSchulzimmerWithId.push(new Array(personId,req.body[i].id, req.body[i].name));
         for(var j=0; j<req.body[i].tische.length; j++){
-            valuesInsertTisch.push(new Array(req.body[i].id,req.body[i].tische[j].position.row, req.body[i].tische[j].position.column) );
+            valuesInsertTisch.push(new Array(req.body[i].id,req.body[i].tische[j].position.row, req.body[i].tische[j].position.column, req.body[i].tische[j].active) );
         }
         console.log("Object:");
         console.log(obj);

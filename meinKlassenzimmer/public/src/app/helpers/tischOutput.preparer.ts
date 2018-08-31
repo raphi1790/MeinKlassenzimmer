@@ -30,6 +30,7 @@ export class TischOutputPreparer {
             for(var column: number = 0; column< (<any>CONFIG).numberOfRows; column++) {
                 preparedTischOutput[row][column] = new TischOutput();
                 preparedTischOutput[row][column].selected = false;
+                preparedTischOutput[row][column].active = false;
                 preparedTischOutput[row][column].position = new PositionTisch(row,column);
                 
             }
@@ -38,7 +39,8 @@ export class TischOutputPreparer {
         for (let index = 0; index < inputSchulzimmer.tische.length; index++) {
             var row = inputSchulzimmer.tische[index].position.row;
             var column = inputSchulzimmer.tische[index].position.column;
-            preparedTischOutput[row][column].selected = true;
+            preparedTischOutput[row][column].selected = true ;
+            preparedTischOutput[row][column].active = inputSchulzimmer.tische[index].active;
         }
         return preparedTischOutput;
     }
@@ -46,20 +48,21 @@ export class TischOutputPreparer {
     extractTischOfTischOutput(tischOutput: TischOutput, selectedSchulzimmer: Schulzimmer):Schulzimmer{
         debugger;
         this.updatedSchulzimmer = selectedSchulzimmer;
+        this.updatedSchulzimmer.tische = this.updatedSchulzimmer.tische.filter(
+            item =>
+              !(item.position.row == tischOutput.position.row && item.position.column == tischOutput.position.column))
+        
         if(tischOutput.selected){
             var tischTmp = new Tisch();
             tischTmp.position = new PositionTisch(tischOutput.position.row,tischOutput.position.column);
+            tischTmp.active = tischOutput.active;
             this.updatedSchulzimmer.tische.push(tischTmp);
-
-        }else{
-            this.updatedSchulzimmer.tische = this.updatedSchulzimmer.tische.filter(
-                item =>
-                  !(item.position.row == tischOutput.position.row && item.position.column == tischOutput.position.column))
         }
 
         return this.updatedSchulzimmer;
-
     }
+
+    
 
 
 

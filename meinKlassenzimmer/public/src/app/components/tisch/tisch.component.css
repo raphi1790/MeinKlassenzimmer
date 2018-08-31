@@ -3,6 +3,7 @@
     height: 75px;
     border: 3px solid white;
     background-color:  var(--primary-color-very-light);
+    position: relative;
 } 
 
 .selectedTischStyle{
@@ -11,5 +12,25 @@
     border: 3px solid  ;
     border-color: var(--accent-color);
     background-color:   var(--primary-color);
+    position: relative;
     
 }
+.checkboxActiveTisch .mat-checkbox-inner-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 15px;
+    width: 15px;
+    size: 15px;
+  }
+
+  .checkboxActiveTischContainer{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 15px;
+    width: 15px;
+  }
+
+  
+
