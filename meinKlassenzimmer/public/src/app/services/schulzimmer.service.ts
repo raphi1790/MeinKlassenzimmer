@@ -48,7 +48,7 @@ export class SchulzimmerService {
                   debugger;
                   var tischTmp = new Tisch()
                   tischTmp.position = new PositionTisch(data['Tische'][indexTisch].RowNumber, data['Tische'][indexTisch].ColumnNumber);
-                  tischTmp.active = true;
+                  tischTmp.active = data['Tische'][indexTisch].Active.data[0];
                   schulzimmerToPerson[indexZimmer].tische.push(tischTmp);
                 }
               }
