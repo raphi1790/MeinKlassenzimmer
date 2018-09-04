@@ -13,32 +13,32 @@
 
             </mat-card-header>
             <mat-card-content>
-              <div class="input-form-field" >  
-                <mat-form-field > 
-                  <mat-select placeholder="Schulklasse"  [(ngModel)]="selectedSchulklasse" required  >
-                 <mat-option  *ngFor="let klasse of klassenToPerson" [value] ="klasse">{{klasse.name}}</mat-option>
-                 
-                </mat-select> 
-              
-              </mat-form-field> 
-                   <mat-form-field>
-                      <mat-select placeholder="Schulzimmer"  [(ngModel)]="selectedSchulzimmer" required >
-                     <mat-option  *ngFor="let zimmer of zimmerToPerson" [value] ="zimmer">{{zimmer.name}}</mat-option>
-                     
-                    </mat-select> 
-                  
-                 </mat-form-field> 
-                </div>
-            
+              <div class="input-form-field">
+                <mat-form-field>
+                  <mat-select placeholder="Schulklasse" [(ngModel)]="selectedSchulklasse" required>
+                    <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select placeholder="Schulzimmer" [(ngModel)]="selectedSchulzimmer" required>
+                    <mat-option *ngFor="let zimmer of zimmerToPerson" [value]="zimmer">{{zimmer.name}}</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+              </div>
+
 
             </mat-card-content>
             <mat-card-actions>
               <button mat-raised-button (click)="randomizePlaces()" color="accent">Zuordnen
-                 
               </button>
               <mat-error *ngIf="zuvieleSchuelerInSchulzimmer">
-                  {{getErrorMessageZuvieleSchuelerInSchulzimmer()}}
-                </mat-error>
+                {{getErrorMessageZuvieleSchuelerInSchulzimmer()}}
+              </mat-error>
+              <button mat-raised-button  [disabled]="!showSitzordnung" (click)="generatePdf()">Als PDF exportieren</button>
             </mat-card-actions>
           </mat-card>
         </div>
@@ -51,37 +51,37 @@
     <div class="col-md-7">
       <div class="column2">
         <div class="schulzimmer" *ngIf="showSitzordnung">
-          <mat-card class="second-column-card">
-            <mat-card-header>
-              <mat-card-title-group>
-                <mat-card-title>
-                  <h4>Schulklasse {{outputSchulklasse.name}} im Schulzimmer {{outputSchulzimmer.name}} </h4>
-                </mat-card-title>
-              </mat-card-title-group>
+            <mat-card class="second-column-card" id="contentToPdf">
+              <mat-card-header>
 
-            </mat-card-header>
-            <mat-card-content>
-              <table class="zimmer">
-                <tbody>
-                  <tr *ngFor="let row of rowSchulzimmer; let r = index">
-                    <td *ngFor="let column of columnSchulzimmer; let c = index">
-                      <app-tisch-schueler [TischSchuelerCombination]="preparedTischSchueler[r][c]">
-                      </app-tisch-schueler>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </mat-card-content>
-          </mat-card>
-          
+                <mat-card-title-group>
+                  <mat-card-title>
+                    <h4>Schulklasse {{outputSchulklasse.name}} im Schulzimmer {{outputSchulzimmer.name}} </h4>
+                  </mat-card-title>
+                </mat-card-title-group>
 
+              </mat-card-header>
+              <mat-card-content>
+
+                <table class="zimmer">
+                  <tbody>
+                    <tr *ngFor="let row of rowSchulzimmer; let r = index">
+                      <td *ngFor="let column of columnSchulzimmer; let c = index">
+                        <app-tisch-schueler [TischSchuelerCombination]="preparedTischSchueler[r][c]">
+                        </app-tisch-schueler>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
 
 
 
-
+              </mat-card-content>
+            </mat-card>
         </div>
-        <div id ="center" style="position:fixed;top:50%;left:50%">
-            <mat-spinner *ngIf="isLoadingSchulklasse || isLoadingSchulzimmer "></mat-spinner></div>
+        <div id="center" style="position:fixed;top:50%;left:50%">
+          <mat-spinner *ngIf="isLoadingSchulklasse || isLoadingSchulzimmer "></mat-spinner>
+        </div>
       </div>
     </div>
 

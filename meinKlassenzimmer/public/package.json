@@ -37,6 +37,8 @@
     "firebase": "^5.3.1",
     "firebase-admin": "^5.13.1",
     "font-awesome": "^4.7.0",
+    "html2canvas": "^1.0.0-alpha.12",
+    "jspdf": "^1.4.1",
     "jwks-rsa": "^1.2.1",
     "jwt-decode": "^2.2.0",
     "material-design-icons": "^3.0.1",
