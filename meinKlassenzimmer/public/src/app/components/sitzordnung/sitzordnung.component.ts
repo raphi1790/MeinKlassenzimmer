@@ -90,9 +90,6 @@ export class SitzordnungComponent {
         doc.save('Sitzordnung.pdf');
       });
         
-      
-
-
   }
 
   ngOnInit() {
@@ -101,7 +98,5 @@ export class SitzordnungComponent {
     this.loadInputData();
 
   }
-
-
 
 }

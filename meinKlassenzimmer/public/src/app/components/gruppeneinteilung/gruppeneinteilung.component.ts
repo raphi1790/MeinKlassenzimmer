@@ -3,8 +3,9 @@ import { SchulklassenService } from 'app/services/schulklassen.service';
 import { SchulzimmerService } from 'app/services/schulzimmer.service';
 import { Schulklasse } from 'app/models/schulklasse';
 import { GroupPreparer } from '../../helpers/group.preparer';
-import {Schueler} from 'app/models/schueler';
 import { MatTable } from '@angular/material';
+import * as html2canvas from 'html2canvas';
+import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-gruppeneinteilung',
@@ -83,6 +84,17 @@ export class GruppeneinteilungComponent implements OnInit {
 
     console.log("Randomized Gruppeneinteilung");
     console.log(this.dataSource);
+  }
+
+  generatePdf(){
+    var data = document.getElementById("contentToPdf");
+    html2canvas(data).then(function(canvas) {
+      var img = canvas.toDataURL("image/png");
+        var doc = new jsPDF();
+        doc.addImage(img,'JPEG',0,0);
+        doc.save('Gruppeneinteilung.pdf');
+      });
+        
   }
 
   ngOnInit() {

@@ -31,22 +31,18 @@
 
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button (click)="randomizeGroups()" color="accent">Einteilen
-                 
-              </button>
+              <button mat-raised-button (click)="randomizeGroups()" color="accent">Einteilen</button>
+              <button mat-raised-button  [disabled]="!showGroups" (click)="generatePdf()">Als PDF exportieren</button>
             </mat-card-actions>
           </mat-card>
         </div>
       </div>
     </div>
 
-
-
-
     <div class="col-md-7">
       <div class="column2">
         <div class="gruppeneinteilung" *ngIf="showGroups">
-          <mat-card class="second-column-card">
+          <mat-card class="second-column-card"  id="contentToPdf">
             <mat-card-header>
               <mat-card-title-group>
                 <mat-card-title>
