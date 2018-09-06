@@ -46,7 +46,7 @@ export class SitzordnungComponent {
   }
 
   getErrorMessageZuvieleSchuelerInSchulzimmer(){
-     return "Es passen nicht alle Schüler ins Schulzimmer!"
+     return "Es gibt nicht genug aktive Tische für die Anzahl Schüler!"
   }
 
   loadInputData() {
@@ -60,7 +60,8 @@ export class SitzordnungComponent {
   }
   randomizePlaces(){
     debugger;
-    if(this.selectedSchulzimmer.tische.length < this.selectedSchulklasse.schueler.length){
+    var activeTische = this.selectedSchulzimmer.tische.filter(item => item.active == true);
+    if(activeTische.length < this.selectedSchulklasse.schueler.length){
       this.zuvieleSchuelerInSchulzimmer = true;
       this.showSitzordnung = false;
 

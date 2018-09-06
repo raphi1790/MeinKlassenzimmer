@@ -9,12 +9,17 @@
     width: 75px; 
     height: 75px;
     border: 2px solid ;
+    background-color: #979599 ;
+    border-color: #cac7cc;
+
+}
+.activeTischStyle{
+    width: 75px; 
+    height: 75px;
+    border: 2px solid ;
     background-color: var(--primary-color);
     border-color: var(--accent-color);
     color: white
-
-
- 
 }
 .schueler{
     text-align: center;

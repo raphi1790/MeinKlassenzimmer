@@ -20,15 +20,16 @@ export class TischSchuelerComponent implements OnChanges {
 
     this.schuelerExists = false;
     if(this.tischSchuelerCombination.tischOutput.selected){
-      this.tischStyle = 'selectedTischStyle'
+      this.tischStyle = 'selectedTischStyle';
+      if(this.tischSchuelerCombination.tischOutput.active){
+        this.tischStyle = 'activeTischStyle';
+      }
     }else{
       this.tischStyle = 'unselectedTischStyle';
     }
     if(typeof this.tischSchuelerCombination.schueler !== 'undefined'){
       this.schuelerExists = true;
     }
-    
-
   }
 
   ngOnChanges() {

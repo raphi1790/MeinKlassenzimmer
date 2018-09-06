@@ -25,6 +25,7 @@ export class TischSchuelerPreparer {
                 this.preparedTischSchueler[row][column] = new TischSchueler();
                 this.preparedTischSchueler[row][column].tischOutput = new TischOutput();
                 this.preparedTischSchueler[row][column].tischOutput.selected = false;
+                this.preparedTischSchueler[row][column].tischOutput.active = false;
                 this.preparedTischSchueler[row][column].tischOutput.position = new PositionTisch(row,column);
                 this.preparedTischSchueler[row][column].schueler = new Schueler();
                 
@@ -34,20 +35,24 @@ export class TischSchuelerPreparer {
     }
   
 
-    prepareTischSchuelerCombination(inputTische: Tisch[], inputSchueler: Schueler[] ): TischSchueler[][]{
+    prepareTischSchuelerCombination(inputSelectedTische: Tisch[], inputSchueler: Schueler[] ): TischSchueler[][]{
         
         debugger;
         var schuelerPrepared: Schueler[];
-        schuelerPrepared = this.randomizer.randomizeSchueler(inputSchueler, inputTische.length);
-  
-        for (let index = 0; index < inputTische.length; index++) {
-            var row = inputTische[index].position.row;
-            var column = inputTische[index].position.column;
+        var indexSchueler = 0;
+        var activeTische = inputSelectedTische.filter(item => item.active == true);
+        schuelerPrepared = this.randomizer.randomizeSchueler(inputSchueler, activeTische.length);
+        for (let index = 0; index < inputSelectedTische.length; index++) {
+            var row = inputSelectedTische[index].position.row;
+            var column = inputSelectedTische[index].position.column;
             this.preparedTischSchueler[row][column].tischOutput.selected = true;
-            if(typeof schuelerPrepared[index] !== 'undefined' ){
-                this.preparedTischSchueler[row][column].schueler.nameKurz = schuelerPrepared[index].nameKurz;
-                this.preparedTischSchueler[row][column].schueler.vorname = schuelerPrepared[index].vorname;
-
+            if(inputSelectedTische[index].active == true){
+                this.preparedTischSchueler[row][column].tischOutput.active = true;
+                if(typeof schuelerPrepared[indexSchueler] !== 'undefined' ){
+                    this.preparedTischSchueler[row][column].schueler.nameKurz = schuelerPrepared[indexSchueler].nameKurz;
+                    this.preparedTischSchueler[row][column].schueler.vorname = schuelerPrepared[indexSchueler].vorname;
+                }
+                indexSchueler++;
             }
 
         }
