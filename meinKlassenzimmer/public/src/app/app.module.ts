@@ -15,8 +15,8 @@ import { GruppeneinteilungComponent } from  './components/gruppeneinteilung/grup
 import { SchulzimmerService} from './services/schulzimmer.service';
 import { AuthService} from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
+import { AnleitungComponent } from './components/anleitung/anleitung.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { CallbackComponent } from './components/callback/callback.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
 import { TischSchuelerComponent } from './components/tisch-schueler/tisch-schueler.component';
@@ -37,8 +37,8 @@ import { UnsavedGuard } from './helpers/guards/unsaved.guard';
     StartseiteComponent,
     SchuelerComponent,
     ToolbarComponent,
-    CallbackComponent,
     TischComponent,
+    AnleitungComponent,
     TischSchuelerComponent,
     KontaktComponent,
     GruppeneinteilungComponent

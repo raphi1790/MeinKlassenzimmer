@@ -8,6 +8,7 @@ import {StartseiteComponent} from '../components/startseite/startseite.component
 import {KontaktComponent} from '../components/kontakt/kontakt.component';
 import { GruppeneinteilungComponent } from '../components/gruppeneinteilung/gruppeneinteilung.component';
 import { UnsavedGuard} from '../helpers/guards/unsaved.guard'
+import { AnleitungComponent } from '../components/anleitung/anleitung.component';
 
 
 const routes: Routes = [
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: 'gruppeneinteilung',
         component: GruppeneinteilungComponent   
+      },
+      {
+          path: 'anleitung',
+          component: AnleitungComponent
       }
      
 
