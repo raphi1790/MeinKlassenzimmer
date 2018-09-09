@@ -24,7 +24,8 @@
     <mat-sidenav-container fullscreen class="app-sidenav-container">
       <mat-sidenav #snav class="app-sidenav" [mode]="'side'" opened="true" [fixedInViewport]="false">
         <mat-nav-list>
-
+          <a mat-list-item  routerLink="/anleitung" routerLinkActive="active" >
+            <mat-icon>info</mat-icon><span class="item-spacer"></span>Erste Schritte</a>  
           <a mat-list-item  routerLink="/verwaltung/klassen" routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
             <mat-icon>settings</mat-icon><span class="item-spacer"></span> Klassen</a>
           <a mat-list-item routerLink="/verwaltung/schulzimmer"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
@@ -33,11 +34,6 @@
             <mat-icon>autorenew</mat-icon><span class="item-spacer"></span>Sitzordnung</a>
           <a mat-list-item routerLink="/gruppeneinteilung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
             <mat-icon>reorder</mat-icon><span class="item-spacer"></span>Gruppeneinteilung</a>  
-          <a mat-list-item  routerLink="/anleitung" routerLinkActive="active" >
-            <mat-icon>settings</mat-icon><span class="item-spacer"></span> Getting Started</a>  
-          <a mat-list-item routerLink="/kontakt"  routerLinkActive="active">
-            <mat-icon>phone </mat-icon><span class="item-spacer"></span>Kontakt / Informationen</a>  
-
  
         </mat-nav-list>
       </mat-sidenav>

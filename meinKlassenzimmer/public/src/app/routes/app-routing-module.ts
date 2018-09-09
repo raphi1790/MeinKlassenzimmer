@@ -5,7 +5,6 @@ import {SchulklassenComponent} from '../components/schulklassen/schulklassen.com
 import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.component';
 import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
 import {StartseiteComponent} from '../components/startseite/startseite.component';
-import {KontaktComponent} from '../components/kontakt/kontakt.component';
 import { GruppeneinteilungComponent } from '../components/gruppeneinteilung/gruppeneinteilung.component';
 import { UnsavedGuard} from '../helpers/guards/unsaved.guard'
 import { AnleitungComponent } from '../components/anleitung/anleitung.component';
@@ -35,10 +34,6 @@ const routes: Routes = [
       { 
           path: 'sitzordnung',
           component: SitzordnungComponent
-      },
-      { 
-        path: 'kontakt',
-        component: KontaktComponent
       },
       {
         path: 'gruppeneinteilung',

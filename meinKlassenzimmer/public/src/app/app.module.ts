@@ -7,7 +7,6 @@ import { AppRoutingModule} from './routes/app-routing-module';
 import { AppComponent } from './app.component';
 import { SchulklassenComponent } from './components/schulklassen/schulklassen.component';
 import { SchulzimmerComponent } from './components/schulzimmer/schulzimmer.component';
-import { KontaktComponent } from './components/kontakt/kontakt.component';
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
 import { StartseiteComponent } from './components/startseite/startseite.component'
 import { SchulklassenService} from './services/schulklassen.service';
@@ -40,7 +39,6 @@ import { UnsavedGuard } from './helpers/guards/unsaved.guard';
     TischComponent,
     AnleitungComponent,
     TischSchuelerComponent,
-    KontaktComponent,
     GruppeneinteilungComponent
     
   ],
