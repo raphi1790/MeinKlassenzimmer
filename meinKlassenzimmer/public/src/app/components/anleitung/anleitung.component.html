@@ -1,128 +1,149 @@
-<mat-card class="contact-card">
-  <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-title>
-        <h2>Getting Started</h2>
-      </mat-card-title>
-    </mat-card-title-group>
-  </mat-card-header>
-  <h3>Login/Logout</h3>
-  <mat-card-content>
-    <p>Um die Applikation zu benützen ist ein Google-Account Voraussetzung.<br>
-      Die Verwaltung der Schulklassen kann durch Drücken auf <i>Log In</i> mit anschliessender Eingabe der
-      Google-Credentials begonnen werden.<br>
-      Nach getaner Arbeit kann die Applikation durch den <i>Log Out</i>-Button beendet werden.
-    </p>
-  </mat-card-content>
-  <h3>Verwaltung der Daten</h3>
-  <mat-card-content>
-    <p>Die Verwendung der Applikation setzt eine Erfassung der Schulklassen und Schulzimmer voraus.
-      Dieser Vorgang wird in den folgenden Kapiteln beschrieben.</p>
-  </mat-card-content>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-md-9">
+    <mat-card class="anleitung-card">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>
+            <h2>Erste Schritte</h2>
+          </mat-card-title>
+        </mat-card-title-group>
+      </mat-card-header>
+      <h3>Login/Logout</h3>
+      <mat-card-content>
+        <p>Um die Applikation zu benützen ist ein Google-Account Voraussetzung.<br>
+          Die Verwaltung der Schulklassen kann durch Drücken auf <i>Log In</i> mit anschliessender Eingabe des
+          Google-Logins begonnen werden.<br>
+          Nach getaner Arbeit kann die Applikation durch den <i>Log Out</i>-Button beendet werden.
+        </p>
+      </mat-card-content>
+      <h3>Verwaltung der Daten</h3>
+      <mat-card-content>
+        <p>Die Verwendung der Applikation setzt eine Erfassung der Schulklassen und Schulzimmer voraus.
+          Dieser Vorgang wird in den folgenden Kapiteln beschrieben.</p>
+      </mat-card-content>
 
-  <h4>Erfassung der Schulklassen</h4>
-  <mat-card-content>
-    <p>Zuerst muss eine Schulklasse per Eingabefeld und Bestätigung durch <i>Hinzufügen</i> hinzugefügt werden. Die
-      bereits erfassten Klassen werden in der Liste <i>Erfasste Klassen</i> angezeigt. <br>
-      Durch das Anklicken einer erfassten Klasse erscheint das Eingabefeld der einzelnen Schüler. Hier können diese
-      wiederum durch den <i>Hinzufügen</i>-Button erfasst werden. <br>
-      Ein Tippfehler im Schulklassen-Namen oder eines Schülers kann zur Zeit nur durch das Löschen (mit <mat-icon>delete</mat-icon>)
-      der jeweiligen Klasse resp. Schüler korrigiert werden.
-      Man beachte, durch das Löschen einer Schulklasse werde alle zugehörigen Schüler automatisch gelöscht.<br>
-      <b>Wichtig:</b> Bevor die Seite verlassen wird, muss die Eingabe umbedingt mit dem <i>Speichern</i>-Button
-      gespeichert werden!
-    </p>
+      <h4>Erfassung der Schulklassen</h4>
+      <mat-card-content>
+        <p>Zuerst muss eine Schulklasse per Eingabefeld und Bestätigung durch <i>Hinzufügen</i> hinzugefügt werden. Die
+          bereits erfassten Klassen werden in der Liste <i>Erfasste Klassen</i> angezeigt. <br>
+          Durch das Anklicken einer erfassten Klasse erscheint das Eingabefeld der einzelnen Schüler. Hier können diese
+          wiederum durch den <i>Hinzufügen</i>-Button erfasst werden. <br>
+          Ein Tippfehler im Schulklassen-Namen oder eines Schülers kann zur Zeit nur durch das Löschen (mit <mat-icon>delete</mat-icon>)
+          der jeweiligen Klasse resp. Schüler korrigiert werden.
+          Man beachte, dass durch das Löschen einer Schulklasse alle zugehörigen Schüler (*) automatisch gelöscht werden.<br>
+          <b>Wichtig:</b> Bevor die Seite verlassen wird, muss die Eingabe unbedingt mit dem <i>Speichern</i>-Button
+          gespeichert werden!
+        </p>
 
-    <img src="../../../assets/images/Schulklasse_erfassen.jpg" width="1109" height="450" alt="Schulklasse erfassen">
+        <img src="../../../assets/images/Schulklasse_erfassen.jpg" width="919" height="375" alt="Schulklasse erfassen">
 
-  </mat-card-content>
+      </mat-card-content>
 
-  <h4>Erfassung der Schulzimmer</h4>
+      <h4>Erfassung der Schulzimmer</h4>
 
-  <mat-card-content>
-    <p>Analog zur "Erfassung der Schulklassen" wird auch hier zuerst der Name des Schulzimmers eingegeben und mit <i>Hinzufügen</i>
-      bestätigt.<br>
-      Ein Tippfehler im Schulzimmer-Namen kann zur Zeit nur durch das Löschen (mit <mat-icon>delete</mat-icon>) der
-      jeweiligen Zimmers korrigiert werden.
-      Man beachte, dass dabei zugehörigen Tische automatisch gelöscht werden.<br>
-      Durch Auswählen des entsprechenden Schulzimmers in der Liste "Erfasste Schulzimmer" wird ein Raster von 10 x 10
-      Feldern angezeigt. <br>
-      Für die Gestaltung des Schulzimmers müssen lediglich die entsprechenden Einzeltische durch einen Klick selektiert
-      werden. <br>
-      Falls ein Tisch zwar ausgewählt, aber nicht zur Sitzordnung gezählt (z.B. Lehrerpult) werden möchte, kann er
-      durch Deaktivierung der Checkbox ausgeklammert werden.<br>
-      <b>Wichtig:</b> Bevor die Seite verlassen wird, muss die Eingabe umbedingt mit dem <i>Speichern</i>-Button
-      gespeichert werden!
-    </p>
-    <img src="../../../assets/images/Schulzimmer_erfassen.jpg" width="1109" height="450" alt="Schulzimmer erfassen">
+      <mat-card-content>
+        <p>Analog zur "Erfassung der Schulklassen" wird auch hier zuerst der Name des Schulzimmers eingegeben und mit
+          <i>Hinzufügen</i>
+          bestätigt.<br>
+          Ein Tippfehler im Schulzimmer-Namen kann zur Zeit nur durch das Löschen (mit <mat-icon>delete</mat-icon>) der
+          jeweiligen Zimmers korrigiert werden.
+          Man beachte, dass dabei zugehörigen Tische automatisch gelöscht werden.<br>
+          Durch Auswählen des entsprechenden Schulzimmers in der Liste "Erfasste Schulzimmer" wird ein Raster von 10 x
+          10
+          Feldern angezeigt. <br>
+          Für die Gestaltung des Schulzimmers müssen lediglich die entsprechenden Einzeltische durch einen Klick
+          selektiert
+          werden. <br>
+          Falls ein Tisch zwar ausgewählt, aber nicht zur Sitzordnung gezählt werden möchte (z.B. Lehrerpult), kann er
+          durch Deaktivierung der Checkbox ausgeklammert werden.<br>
+          <b>Wichtig:</b> Bevor die Seite verlassen wird, muss die Eingabe unbedingt mit dem <i>Speichern</i>-Button
+          gespeichert werden!
+        </p>
+        <img src="../../../assets/images/Schulzimmer_erfassen.jpg" width="919" height="375" alt="Schulzimmer erfassen">
 
-  </mat-card-content>
+      </mat-card-content>
 
-  <h3>Sitzordnung</h3>
+      <h3>Sitzordnung</h3>
 
-  <mat-card-content>
-    <p>
-      Nach Eingabe von Schulklassen und Schulzimmern kann die Sitzordnung zufällig erstellt werden. Dazu wird die
-      gewünschte Klasse sowie das entsprechende Schulzimmer ausgewählt. Anschliessend wird <i>Zuordnen</i> gedrückt.
-      <br>
-      Falls das angezeigte Resultat nicht zufriedenstellend ist, kann durch erneutes Drücken von <i>Zuordnen</i> die
-      Sitzordnung erneuert werden.<br>
-      Das gewünschte Resultat kann anschliessend mit <i>Als PDF exportieren</i> als PDF heruntergeladen werden.
-    </p>
-    <img src="../../../assets/images/Sitzordnung.jpg" width="1109" height="450" alt="Schulzimmer">
-
-  </mat-card-content>
-
-  <h3>Gruppeneinteilung</h3>
-
-  <mat-card-content>
-    <p>
-      Die Applikation unterstützt nicht nur das Erstellen von zufälligen Sitzordnungen, sondern eignet sich auch zur
-      Generierung von Gruppen.
-      Dazu wird die entsprechende Schulklasse, sowie die passende Gruppengrösse ausgewählt. Anschliessend wird die
-      Selektio durch <i>Einteilen</i> bestätigt. Woraufhin die eine mögliche Gruppeneinteilung auf der rechten Seite
-      erscheint.<br>
-      Falls das angezeigte Resultat nicht zufriedenstellend ist, kann durch erneutes Drücken von <i>Einteilen</i> die
-      Gruppeneinteilung erneuert werden.<br>
-      Das gewünschte Resultat kann anschliessend mit <i>Als PDF exportieren</i> als PDF heruntergeladen werden.
-    </p>
-    <img src="../../../assets/images/Gruppeneinteilung.jpg" width="1109" height="200" alt="Gruppeneinteilung">
-  </mat-card-content>
-</mat-card>
-
-<mat-card class="contact-card">
-  <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-title>
-        <h2>Kontakt</h2>
+      <mat-card-content>
+        <p>
+          Nach Eingabe von Schulklassen und Schulzimmern kann die Sitzordnung zufällig erstellt werden. Dazu wird die
+          gewünschte Klasse sowie das entsprechende Schulzimmer ausgewählt. Anschliessend wird <i>Zuordnen</i>
+          gedrückt.
+          <br>
+          Falls das angezeigte Resultat nicht zufriedenstellend ist, kann durch erneutes Drücken von <i>Zuordnen</i>
+          die
+          Sitzordnung erneuert werden.<br>
+          Das gewünschte Resultat kann anschliessend mit <i>Als PDF exportieren</i> als PDF heruntergeladen werden.
+        </p>
+        <img  src="../../../assets/images/assets/images/Sitzordnung.jpg" width="919" height="375" alt="Sitzordnung">
         
-      </mat-card-title>
-    </mat-card-title-group>
+      </mat-card-content>
 
-  </mat-card-header>
-  <mat-card-content>
-    <div class="row">
-      <div class="col-md-4">
-          
-        <div class="parent"> 
-            <img mat-card-avatar class="avatar-image" src="../../../assets/images/Profilfoto.jpg"> 
-        </div>
-       
-      </div>
-      <div class="col-md-7">
-        <p>Falls du Fragen hast oder Störungen der Applikation feststellst, melde dich per Mail:</p>
-        <div class="adresse">
-          <address>
-            MeinKlassenzimmer
-            <br /> Raphael Metzger
-            <br /> Haltenstrasse 148
-            <br /> 8706 Meilen
-            <br />
-            <a href="mailto:raphael_90@bluewin.ch">raphael_90@bluewin.ch</a>
-          </address>
-        </div>
-      </div>
-    </div>
+      <h3>Gruppeneinteilung</h3>
 
-  </mat-card-content>
-</mat-card>
+      <mat-card-content>
+        <p>
+          Die Applikation unterstützt nicht nur das Erstellen von zufälligen Sitzordnungen, sondern eignet sich auch
+          zur
+          Generierung von Gruppen.
+          Dazu wird die entsprechende Schulklasse, sowie die passende Gruppengrösse ausgewählt. Anschliessend wird die
+          Selektion durch <i>Einteilen</i> bestätigt, woraufhin eine mögliche Gruppeneinteilung auf der rechten
+          Seite erscheint.<br>
+          Falls das angezeigte Resultat nicht zufriedenstellend ist, kann durch erneutes Drücken von <i>Einteilen</i>
+          die Gruppeneinteilung erneuert werden.<br>
+          Das gewünschte Resultat kann anschliessend mit <i>Als PDF exportieren</i> als PDF heruntergeladen werden.
+        </p>
+        <img src="../../../assets/images/Gruppeneinteilung.jpg" width="919" height="200" alt="Gruppeneinteilung">
+
+      </mat-card-content>
+      <mat-card-content>
+        <p>(*): Einfachheitshalber wird nur die männliche Form genannt, wobei die weibliche eingeschlossen ist.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-md-3">
+    <mat-card class="contact-card" >
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>
+            <h2>Kontakt</h2>
+
+          </mat-card-title>
+        </mat-card-title-group>
+
+      </mat-card-header>
+      <mat-card-content>
+          <div class="container-fluid"> 
+        <div class="row">
+          <div class="col-md-3">
+
+            <div class="parent">
+              <img mat-card-avatar class="avatar-image" src="../../../assets/images/Profilfoto.jpg">
+            </div>
+
+          </div>
+          <div class="col-md-9">
+            <p class="contact-text">Falls du Fragen hast oder Störungen der Applikation feststellst, melde dich per Mail:</p>
+            <div class="adresse">
+              <address>
+                MeinKlassenzimmer
+                <br /> Raphael Metzger
+                <br /> Haltenstrasse 148
+                <br /> 8706 Meilen
+                <br />
+                <a href="mailto:raphael_90@bluewin.ch">raphael_90@bluewin.ch</a>
+              </address>
+            </div>
+          </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+
+
+</div>
+</div>
