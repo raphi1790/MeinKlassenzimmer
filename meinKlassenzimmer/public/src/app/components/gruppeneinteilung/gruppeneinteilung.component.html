@@ -13,26 +13,35 @@
 
             </mat-card-header>
             <mat-card-content>
-              <div class="input-form-field" >  <mat-form-field >
-                  <mat-select placeholder="Schulklasse"  [(ngModel)]="selectedSchulklasse" required  >
-                 <mat-option  *ngFor="let klasse of klassenToPerson" [value] ="klasse">{{klasse.name}}</mat-option>
-                 
-                </mat-select> 
-              
-              </mat-form-field> 
-                   <mat-form-field>
-                      <mat-select placeholder="Gruppengrösse"  [(ngModel)]="selectedGroupSize" required >
-                     <mat-option  *ngFor="let groupSize of groupSizes" [value] ="groupSize">{{groupSize}}</mat-option>
-                    </mat-select> 
-                  
-                 </mat-form-field> 
-                </div>
-            
+              <div class="input-form-field">
+                <mat-form-field>
+                  <mat-select placeholder="Schulklasse" [(ngModel)]="selectedSchulklasse" required>
+                    <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
+
+                  </mat-select>
+
+
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select placeholder="Gruppengrösse / Gruppenanzahl" [(ngModel)]="selectedGroupType" required>
+                    <mat-option *ngFor="let groupType of groupTypes" [value]="groupType">{{groupType}}</mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-select placeholder="Grösse / Anzahl" [(ngModel)]="selectedGroupSize" required>
+                    <mat-option *ngFor="let groupSize of groupSizes" [value]="groupSize">{{groupSize}}</mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+              </div>
+
 
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button (click)="randomizeGroups()" color="accent">Einteilen</button>
-              <button mat-raised-button  [disabled]="!showGroups" (click)="generatePdf()">Als PDF exportieren</button>
+              <button mat-raised-button (click)="randomizeGroups()" [disabled] ="!selectedGroupSize || !selectedGroupType || !selectedSchulklasse " color="accent">Einteilen</button>
+              <button mat-raised-button [disabled]="!showGroups" (click)="generatePdf()">Als PDF exportieren</button>
             </mat-card-actions>
           </mat-card>
         </div>
@@ -42,29 +51,29 @@
     <div class="col-md-7">
       <div class="column2">
         <div class="gruppeneinteilung" *ngIf="showGroups">
-          <mat-card class="second-column-card"  id="contentToPdf">
+          <mat-card class="second-column-card" id="contentToPdf">
             <mat-card-header>
               <mat-card-title-group>
                 <mat-card-title>
-                  <h4>Schulklasse {{outputSchulklasse.name}} in {{outputGroupSize}}er-Gruppen </h4>
+                  <h4>{{gruppeneinteilungTitle}} </h4>
                 </mat-card-title>
               </mat-card-title-group>
 
             </mat-card-header>
             <mat-card-content>
-                <mat-table #table [dataSource]="dataSource" >
+              <mat-table #table [dataSource]="dataSource">
 
-                
+
                 <ng-container *ngFor="let column of  displayedColumns; let colIndex = index" matColumnDef="{{columns[colIndex]}}">
-                    <mat-header-cell mat-header-cell *matHeaderCellDef  >{{displayedColumns[colIndex]}}</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element[columns[colIndex]]}}</mat-cell>
-                  </ng-container>
+                  <mat-header-cell mat-header-cell *matHeaderCellDef>{{displayedColumns[colIndex]}}</mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element[columns[colIndex]]}}</mat-cell>
+                </ng-container>
 
-              
-                    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: columns;"></mat-row>
-                  </mat-table>
-            
+
+                <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+              </mat-table>
+
             </mat-card-content>
           </mat-card>
 
@@ -73,8 +82,9 @@
 
 
         </div>
-        <div id ="center" style="position:fixed;top:50%;left:50%">
-            <mat-spinner *ngIf="isLoadingSchulklasse"></mat-spinner></div>
+        <div id="center" style="position:fixed;top:50%;left:50%">
+          <mat-spinner *ngIf="isLoadingSchulklasse"></mat-spinner>
+        </div>
       </div>
     </div>
 

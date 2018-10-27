@@ -33,7 +33,7 @@
 
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button (click)="randomizePlaces()" color="accent">Zuordnen
+              <button mat-raised-button [disabled]="!selectedSchulklasse || !selectedSchulzimmer" (click)="randomizePlaces()" color="accent">Zuordnen
               </button>
               <mat-error *ngIf="zuvieleSchuelerInSchulzimmer">
                 {{getErrorMessageZuvieleSchuelerInSchulzimmer()}}
