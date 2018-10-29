@@ -21,18 +21,14 @@
           </mat-form-field>
   
           <mat-form-field>
-            <input matInput placeholder="Name" required 
-            [(ngModel)]="neuerSchuelerName" [formControl]="neuerSchuelerNameForm"
-            >
-            <mat-error *ngIf="neuerSchuelerNameForm.invalid && (neuerSchuelerNameForm.dirty || neuerSchuelerNameForm.touched)">
-              {{getErrorMessageNeuerSchuelerName()}}
-            </mat-error>
+            <input matInput placeholder="Name" 
+            [(ngModel)]="neuerSchuelerName" >
           </mat-form-field>
       </div>
 
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="accent" [disabled]="!(neuerSchuelerVornameForm.valid && neuerSchuelerNameForm.valid)" 
+      <button mat-raised-button color="accent" [disabled]="!neuerSchuelerVornameForm.valid" 
           (click)="addSchueler()">
           Hinzufügen
       </button>

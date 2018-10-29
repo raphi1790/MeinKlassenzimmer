@@ -67,7 +67,8 @@ export class SchulklassenService {
   updateKlassenAndSchueler(neueSchulklassen: Schulklasse[]): Observable<Schulklasse[]> {
     debugger;
     var prepareSchueler = new SchuelerPreparer();
-    neueSchulklassen.forEach(element => {
+    neueSchulklassen.forEach(element => { 
+      
       element.schueler = prepareSchueler.prepareSchuelerNameKurz(element.schueler);
     });
     const body = neueSchulklassen;

@@ -35,7 +35,6 @@ export class SchuelerComponent implements OnChanges{
   neuerSchuelerVorname: string; 
   neuerSchuelerName: string;
   neuerSchuelerVornameForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
-  neuerSchuelerNameForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   anzahlSchueler: number;
 
   getErrorMessageNeuerSchuelerVorname() {
@@ -43,13 +42,7 @@ export class SchuelerComponent implements OnChanges{
         this.neuerSchuelerVornameForm.hasError('minlength') ? 'Vorname zu kurz' :
             '';
   }
-  getErrorMessageNeuerSchuelerName() {
-    return this.neuerSchuelerNameForm.hasError('required') ? 'Wert erforderlich' :
-        this.neuerSchuelerNameForm.hasError('minlength') ? 'Name zu kurz' :
-            '';
-  }
-
-
+ 
 
   deleteSchueler(deletedSchueler: Schueler):void{
     debugger;
@@ -90,9 +83,6 @@ export class SchuelerComponent implements OnChanges{
     this.neuerSchuelerVornameForm.markAsUntouched();
     this.neuerSchuelerVornameForm.updateValueAndValidity();
     
-    this.neuerSchuelerNameForm.markAsPristine();
-    this.neuerSchuelerNameForm.markAsUntouched();
-    this.neuerSchuelerNameForm.updateValueAndValidity();
 
   }
   ngOnChanges(){

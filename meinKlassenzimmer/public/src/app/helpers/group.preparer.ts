@@ -18,6 +18,11 @@ export class GroupPreparer {
         else {
             var randomizer = new Randomizer();
             var randomizedSchueler = randomizer.shuffle(inputSchueler);
+            randomizedSchueler.forEach(element => {
+                if(element.nameKurz == null){
+                    element.nameKurz = " ";
+                }                
+            });
             var gruppenEinteilung = [];
             if (inputGroupType == 'Gruppengrösse') {
 
