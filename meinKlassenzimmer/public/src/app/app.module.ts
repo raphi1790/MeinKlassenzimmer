@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, Http, RequestOptions } from '@angular/http';
 import {MaterialModule} from './material.module'
 import { AppRoutingModule} from './routes/app-routing-module';
 import { AppComponent } from './app.component';
@@ -16,13 +15,15 @@ import { AuthService} from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { AnleitungComponent } from './components/anleitung/anleitung.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
 import { TischSchuelerComponent } from './components/tisch-schueler/tisch-schueler.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { UnsavedGuard } from './helpers/guards/unsaved.guard';
+import { Router } from '@angular/router';
+import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 
 
 
@@ -45,7 +46,6 @@ import { UnsavedGuard } from './helpers/guards/unsaved.guard';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
@@ -54,7 +54,16 @@ import { UnsavedGuard } from './helpers/guards/unsaved.guard';
     AngularFireAuthModule // imports firebase/auth, only needed for auth features
 
   ],
-  providers: [SchulklassenService,SchulzimmerService, AuthService, UnsavedGuard],
+  providers: [SchulklassenService,SchulzimmerService, AuthService, UnsavedGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useFactory: function(auth: AuthService, router: Router) {
+        return new AuthInterceptor(auth, router);
+      },
+      multi: true,
+      deps: [Router]
+   }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
