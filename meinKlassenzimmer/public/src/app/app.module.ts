@@ -57,11 +57,8 @@ import { AuthInterceptor } from './interceptors/auth-interceptor.service';
   providers: [SchulklassenService,SchulzimmerService, AuthService, UnsavedGuard,
     {
       provide: HTTP_INTERCEPTORS,
-      useFactory: function(auth: AuthService, router: Router) {
-        return new AuthInterceptor(auth, router);
-      },
+      useClass:  AuthInterceptor,
       multi: true,
-      deps: [Router]
    }
   ],
   bootstrap: [AppComponent]
