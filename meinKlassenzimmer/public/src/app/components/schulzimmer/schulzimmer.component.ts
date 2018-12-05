@@ -27,7 +27,6 @@ export class SchulzimmerComponent implements OnInit {
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
   maximalSchulzimmerId: number;
-  // personDbHelper: PersonDbHelper;
   preparedTischOutput: TischOutput[][];
   tischOutputPreparer: TischOutputPreparer;
   savingIsActiv : boolean;
@@ -35,6 +34,7 @@ export class SchulzimmerComponent implements OnInit {
   neuesSchulzimmerName: string;
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   isSaving: boolean;
+  currentTableNumber: number;
 
   
   @Input() personid: number
@@ -42,6 +42,7 @@ export class SchulzimmerComponent implements OnInit {
   constructor(private schulzimmerService: SchulzimmerService,  private auth : AuthService ) {
     // this.personDbHelper = new PersonDbHelper(personService, auth);
     this.maximalSchulzimmerId = 0;
+    this.currentTableNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
   }
@@ -64,11 +65,26 @@ export class SchulzimmerComponent implements OnInit {
 
   onSelect(schulzimmer: Schulzimmer): void {
     debugger;
+    console.log("table number (before findMaximalTableNumber): " + this.currentTableNumber);
     this.selectedSchulzimmer = schulzimmer;
     this.tischOutputPreparer = new TischOutputPreparer();
     this.preparedTischOutput = this.tischOutputPreparer.prepareTischOutput(this.selectedSchulzimmer);
+     if (this.selectedSchulzimmer.tische != null){
+      this.currentTableNumber = this.findMaximalTableNumber(this.selectedSchulzimmer.tische);
+    }
+    else{
+      this.currentTableNumber = 0;
+    }
+    console.log("table number (after findMaximalTableNumber): " + this.currentTableNumber);
 
   }
+
+  private findMaximalTableNumber(tische: Tisch[]):number{
+    debugger;
+    let allTableNumbers = tische.map(a => a.tableNumber); 
+    var maximalTableNumber = Math.max.apply(null, allTableNumbers);
+    return maximalTableNumber; 
+};
 
   deleteSchulzimmer(schulzimmer: Schulzimmer):void{
     this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
@@ -95,6 +111,10 @@ export class SchulzimmerComponent implements OnInit {
     this.neuesSchulzimmerForm.markAsUntouched();
     this.neuesSchulzimmerForm.updateValueAndValidity();
 
+  }
+  updateCurrentTableNumber(newNumber:number){
+    console.log("new Number: "+ newNumber);
+    this.currentTableNumber = newNumber;
   }
   updateSchulzimmer(updatedTischOutput: TischOutput): void {
     debugger;

@@ -34,8 +34,10 @@ export class SchulzimmerService {
           data => {
             debugger;
 
-            console.log("Schulzimmer " + data['Schulzimmer']);
-            console.log("Tische " + data['Tische']);
+            console.log("Schulzimmer ");
+            console.log(data['Schulzimmer']);
+            console.log("Tische ");
+            console.log(data['Tische']);
             var schulzimmerToPerson = new Array<Schulzimmer>();
             for (let indexZimmer = 0; indexZimmer < data['Schulzimmer'].length; indexZimmer++) {
               schulzimmerToPerson[indexZimmer] = new Schulzimmer();
@@ -47,8 +49,10 @@ export class SchulzimmerService {
                 if (schulzimmerToPerson[indexZimmer].id == data['Tische'][indexTisch].SchulzimmerId) {
                   debugger;
                   var tischTmp = new Tisch()
+                  tischTmp.id = data['Tische'][indexTisch].Id
                   tischTmp.position = new PositionTisch(data['Tische'][indexTisch].RowNumber, data['Tische'][indexTisch].ColumnNumber);
                   tischTmp.active = data['Tische'][indexTisch].Active.data[0];
+                  tischTmp.tableNumber = data['Tische'][indexTisch].TableNumber;
                   schulzimmerToPerson[indexZimmer].tische.push(tischTmp);
                 }
               }

@@ -1,0 +1,36 @@
+[debug] [2018-12-04T21:23:06.306Z] ----------------------------------------------------------------------
+[debug] [2018-12-04T21:23:06.311Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2018-12-04T21:23:06.311Z] CLI Version:   4.1.0
+[debug] [2018-12-04T21:23:06.311Z] Platform:      win32
+[debug] [2018-12-04T21:23:06.311Z] Node Version:  v8.9.4
+[debug] [2018-12-04T21:23:06.313Z] Time:          Tue Dec 04 2018 22:23:06 GMT+0100 (Mitteleuropäische Zeit)
+[debug] [2018-12-04T21:23:06.313Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-12-04T21:23:06.334Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-12-04T21:23:06.336Z] > authorizing via signed-in user
+[debug] [2018-12-04T21:23:06.337Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2018-12-04T21:23:07.003Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T21:23:07.004Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/meinklassenzimmer-184820/tokens  
+ 
+[debug] [2018-12-04T21:23:07.518Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T21:23:07.518Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2018-12-04T21:23:08.372Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\MeinKlassenzimmer'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-12-04T21:23:09.989Z] Fetching environment
+[debug] [2018-12-04T21:23:09.991Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2018-12-04T21:23:09.991Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2018-12-04T21:23:10.205Z] <<< HTTP RESPONSE 200
+[debug] [2018-12-04T21:23:10.205Z] Starting @google-cloud/functions-emulator
+[debug] [2018-12-04T21:23:10.291Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public/dist
+[info] +  hosting: Local server: http://localhost:5000
+
+[debug] [2018-12-04T21:23:13.243Z] Parsing function triggers
+[info] +  functions: myfirebasefunction: http://localhost:5001/meinklassenzimmer-184820/us-central1/myfirebasefunction

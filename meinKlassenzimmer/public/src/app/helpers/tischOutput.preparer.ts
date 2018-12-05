@@ -10,7 +10,8 @@ import * as CONFIG from '../../config.json';
 
 export class TischOutputPreparer {
 
-    updatedSchulzimmer: Schulzimmer
+    updatedSchulzimmer: Schulzimmer;
+    currentTableNumber: number;
 
     /**
      *
@@ -31,6 +32,7 @@ export class TischOutputPreparer {
                 preparedTischOutput[row][column] = new TischOutput();
                 preparedTischOutput[row][column].selected = false;
                 preparedTischOutput[row][column].active = false;
+                preparedTischOutput[row][column].tableNumber = null;
                 preparedTischOutput[row][column].position = new PositionTisch(row,column);
                 
             }
@@ -41,7 +43,9 @@ export class TischOutputPreparer {
             var column = inputSchulzimmer.tische[index].position.column;
             preparedTischOutput[row][column].selected = true ;
             preparedTischOutput[row][column].active = inputSchulzimmer.tische[index].active;
+            preparedTischOutput[row][column].tableNumber = inputSchulzimmer.tische[index].tableNumber
         }
+
         return preparedTischOutput;
     }
 
@@ -56,11 +60,13 @@ export class TischOutputPreparer {
             var tischTmp = new Tisch();
             tischTmp.position = new PositionTisch(tischOutput.position.row,tischOutput.position.column);
             tischTmp.active = tischOutput.active;
+            tischTmp.tableNumber = tischOutput.tableNumber;
             this.updatedSchulzimmer.tische.push(tischTmp);
         }
 
         return this.updatedSchulzimmer;
     }
+    
 
     
 

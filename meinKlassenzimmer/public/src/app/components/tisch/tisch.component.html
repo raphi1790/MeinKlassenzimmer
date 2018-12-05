@@ -1,3 +1,12 @@
-<div [className]="tischStyle" (click)="selectTisch()" >
-        <div class="checkboxActiveTischContainer"  ><mat-checkbox (click)="activateTisch();$event.stopPropagation();" [(ngModel)]="tischActive"  [disabled]="tischDisabled"></mat-checkbox></div>
+<div [className]="tischStyle" (click)="selectTisch()">
+  <div class="tableNumber" *ngIf="tableNumber !== null">
+    <h3>{{tableNumber}}</h3>
+  </div>
+
+  <div class="checkboxActiveTischContainer">
+
+    <mat-checkbox (click)="activateTisch();$event.stopPropagation();" [(ngModel)]="tischActive" [disabled]="tischDisabled">
+
+    </mat-checkbox>
+  </div>
 </div>

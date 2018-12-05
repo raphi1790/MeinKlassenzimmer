@@ -18,18 +18,23 @@ export class TischComponent implements OnChanges {
 
 
   @Input('TischOutput') tischOutput: TischOutput;
+  @Input('currentTableNumber') currentTableNumber: number;
 
   @Output() noteSchulzimmer: EventEmitter<TischOutput> = new EventEmitter<TischOutput>();
+  @Output() noteSchulzimmerTableNumber: EventEmitter<number> = new EventEmitter<number>();
 
   tischStyle : string
   tischActive: boolean;
   tischDisabled: boolean;
+  tableNumber: number;
 
 
   getTisch():void{
 
     debugger;
     console.log("Get Tisch")
+    this.tableNumber = this.tischOutput.tableNumber;
+      console.log("tableNumber: " + this.tableNumber );
     if(this.tischOutput.selected){
       this.tischStyle = 'selectedTischStyle';
       if(this.tischOutput.active){
@@ -45,7 +50,10 @@ export class TischComponent implements OnChanges {
       this.tischStyle = 'unselectedTischStyle';
       this.tischActive = false;
       this.tischDisabled = true;
+      this.tableNumber = null;
     }
+
+
   }
 
     
@@ -57,6 +65,9 @@ export class TischComponent implements OnChanges {
       this.tischOutput.selected = false;
       this.tischActive = false;
       this.tischDisabled = true;
+      this.tischOutput.tableNumber = null; 
+      this.tableNumber = null;
+
      
       
     } else {
@@ -64,12 +75,14 @@ export class TischComponent implements OnChanges {
       this.tischOutput.selected = true;
       this.tischActive = true;
       this.tischDisabled = false;
-      
-      
-    
+      this.currentTableNumber++ ;
+      this.tischOutput.tableNumber = this.currentTableNumber; 
+
+
     }
     this.tischOutput.active = this.tischActive;
     this.noteSchulzimmer.emit(this.tischOutput);
+    this.noteSchulzimmerTableNumber.emit(this.currentTableNumber);
   }
 
   activateTisch():void{

@@ -27,9 +27,11 @@
           <a mat-list-item  routerLink="/anleitung" routerLinkActive="active" >
             <mat-icon>info</mat-icon><span class="item-spacer"></span>Erste Schritte</a>  
           <a mat-list-item  routerLink="/verwaltung/klassen" routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
-            <mat-icon>settings</mat-icon><span class="item-spacer"></span> Klassen</a>
+            <mat-icon>settings</mat-icon><span class="item-spacer"></span> Schulklassen</a>
           <a mat-list-item routerLink="/verwaltung/schulzimmer"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
             <mat-icon>build </mat-icon><span class="item-spacer"></span>Schulzimmer</a>
+          <a mat-list-item routerLink="/regeln"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
+              <mat-icon>filter_list </mat-icon><span class="item-spacer"></span>Regeln</a>  
           <a mat-list-item routerLink="/sitzordnung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
             <mat-icon>autorenew</mat-icon><span class="item-spacer"></span>Sitzordnung</a>
           <a mat-list-item routerLink="/gruppeneinteilung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">

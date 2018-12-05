@@ -24,6 +24,8 @@ import { environment } from '../environments/environment';
 import { UnsavedGuard } from './helpers/guards/unsaved.guard';
 import { Router } from '@angular/router';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
+import { RegelnComponent } from './components/regeln/regeln.component';
+import { RegelDetailComponent } from './components/regel-detail/regel-detail.component';
 
 
 
@@ -40,7 +42,9 @@ import { AuthInterceptor } from './interceptors/auth-interceptor.service';
     TischComponent,
     AnleitungComponent,
     TischSchuelerComponent,
-    GruppeneinteilungComponent
+    GruppeneinteilungComponent,
+    RegelnComponent,
+    RegelDetailComponent
     
   ],
   imports: [
