@@ -33,15 +33,85 @@
 
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button [disabled]="!selectedSchulklasse || !selectedSchulzimmer" (click)="randomizePlaces()" color="accent">Zuordnen
+              <button mat-raised-button [disabled]="!selectedSchulklasse || !selectedSchulzimmer" (click)="randomizePlaces()"
+                color="accent">Zuordnen
               </button>
               <mat-error *ngIf="zuvieleSchuelerInSchulzimmer">
                 {{getErrorMessageZuvieleSchuelerInSchulzimmer()}}
               </mat-error>
-              <button mat-raised-button  [disabled]="!showSitzordnung" (click)="generatePdf()">Als PDF exportieren</button>
+              <button mat-raised-button [disabled]="!showSitzordnung" (click)="generatePdf()">Als PDF exportieren</button>
             </mat-card-actions>
           </mat-card>
         </div>
+
+        <div class="regel-container">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Regeln</h4>
+                </mat-card-title>
+              </mat-card-title-group>
+
+            </mat-card-header>
+            <mat-card-content>
+              <div class ="table-container">
+                  <mat-table #table [dataSource]="dataSource" *ngIf="klasseAndZimmerSelected()">
+
+                      <ng-container matColumnDef="select">
+                          <mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                          [checked]="selection.hasValue() && isAllSelected()"
+                                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox>
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                                          (change)="$event ? selection.toggle(row) : null"
+                                          [checked]="selection.isSelected(row)">
+                            </mat-checkbox>
+                          </mat-cell>
+                        </ng-container>
+                    
+    
+                    <ng-container matColumnDef="beschreibung">
+                      <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.beschreibung}} </mat-cell>
+                    </ng-container>
+    
+    
+                    <ng-container matColumnDef="type">
+                      <mat-header-cell *matHeaderCellDef> Typ der Regel </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+                    </ng-container>
+    
+    
+                    <ng-container matColumnDef="schueler">
+                      <mat-header-cell *matHeaderCellDef> Schüler </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.schueler}} </mat-cell>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="tischNumber">
+                      <mat-header-cell *matHeaderCellDef> Tisch </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.tischNumber}} </mat-cell>
+                    </ng-container>
+    
+    
+    
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"
+                            (click)="selection.toggle(row)"></mat-row>
+                  </mat-table>
+    
+
+              </div>
+              
+
+            </mat-card-content>
+
+          </mat-card>
+        </div>
+
       </div>
     </div>
 
@@ -51,33 +121,33 @@
     <div class="col-md-7">
       <div class="column2">
         <div class="schulzimmer" *ngIf="showSitzordnung">
-            <mat-card class="second-column-card" id="contentToPdf">
-              <mat-card-header>
+          <mat-card class="second-column-card" id="contentToPdf">
+            <mat-card-header>
 
-                <mat-card-title-group>
-                  <mat-card-title>
-                    <h4>Schulklasse {{outputSchulklasse.name}} im Schulzimmer {{outputSchulzimmer.name}} </h4>
-                  </mat-card-title>
-                </mat-card-title-group>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Schulklasse {{outputSchulklasse.name}} im Schulzimmer {{outputSchulzimmer.name}} </h4>
+                </mat-card-title>
+              </mat-card-title-group>
 
-              </mat-card-header>
-              <mat-card-content>
+            </mat-card-header>
+            <mat-card-content>
 
-                <table class="zimmer">
-                  <tbody>
-                    <tr *ngFor="let row of rowSchulzimmer; let r = index">
-                      <td *ngFor="let column of columnSchulzimmer; let c = index">
-                        <app-tisch-schueler [TischSchuelerCombination]="preparedTischSchueler[r][c]">
-                        </app-tisch-schueler>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <table class="zimmer">
+                <tbody>
+                  <tr *ngFor="let row of rowSchulzimmer; let r = index">
+                    <td *ngFor="let column of columnSchulzimmer; let c = index">
+                      <app-tisch-schueler [TischSchuelerCombination]="preparedTischSchueler[r][c]">
+                      </app-tisch-schueler>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
 
 
-              </mat-card-content>
-            </mat-card>
+            </mat-card-content>
+          </mat-card>
         </div>
         <div id="center" style="position:fixed;top:50%;left:50%">
           <mat-spinner *ngIf="isLoadingSchulklasse || isLoadingSchulzimmer "></mat-spinner>

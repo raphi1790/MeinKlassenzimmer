@@ -45,8 +45,9 @@ const routes: Routes = [
           component: AnleitungComponent
       },
       {
-        path: 'regeln',
-        component: RegelnComponent
+        path: 'verwaltung/regeln',
+        component: RegelnComponent,
+        // canDeactivate: [UnsavedGuard]
     }
      
 

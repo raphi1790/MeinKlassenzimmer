@@ -8,5 +8,5 @@ export class Regel{
     tischId: number;
     schueler1Id: number;
     schueler2Id: number;
-
+   
 }

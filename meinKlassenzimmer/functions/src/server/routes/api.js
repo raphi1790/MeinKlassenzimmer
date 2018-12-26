@@ -294,42 +294,54 @@ router.get("/regel", validateFirebaseIdToken, function (req, res) {
 });
 
 router.post("/regel", validateFirebaseIdToken, function (req, res) {
-  var sqlDeleteRegel = "DELETE FROM ?? r WHERE ?? = ? ";
+  var sqlDeleteRegel = "DELETE FROM ??  WHERE ?? = ? ";
   var valuesDeleteRegel = ["regel","PersonId", personId];
 
-  var sqlInsertRegel = "INSERT INTO regel (PersonId, Type, Beschreibung, TischId, Schueler1Id, Schueler2Id) VALUES ?";
+  queryDeleteRegel = mysql.format(sqlDeleteRegel, valuesDeleteRegel);
+
+  var sqlInsertRegel = "INSERT INTO regel (Id, PersonId, Type, Beschreibung, TischId, Schueler1Id, Schueler2Id) VALUES ?";
   var valuesInsertRegel = [];
 
   for (var i = 0; i < req.body.length; i++) {
     var obj = req.body[i];
-    valuesInsertRegel.push(new Array(personId, 
-                req.body[i].type, req.body[i].type,req.body[i].beschreibung,
+    valuesInsertRegel.push(new Array(req.body[i].id,personId, 
+                req.body[i].type,req.body[i].beschreibung,
                 req.body[i].tischId,req.body[i].schueler1Id,
                 req.body[i].schueler2Id ));
   }
+  console.log("Object:");
+  console.log(obj);
     
 
   async.parallel([
     function (parallel_done) {
-      connection.query(sqlDeleteRegel, valuesDeleteRegel, function (err, results) {
+      connection.query(queryDeleteRegel, {}, function (err, results) {
+        console.log("Start Delete Regel");
         if (err) return parallel_done(err);
         console.log("Regeln deleted");
-        parallel_done();
-      });
-    },
-    function (parallel_done) {
-      connection.query(sqlInsertRegel, valuesInsertRegel , function (err, results) {
-        if (err) return parallel_done(err);
-        console.log("Regel-Query");
-        console.log(mysql.format(sqlInsertRegel, valuesInsertRegel));
+        console.log(queryDeleteRegel);
         parallel_done();
       });
     }
+    
+    
   ], function (err) {
     if(err){
       res.send(JSON.stringify({"status": 500, "error": err, "response": null})); 
       //If there is error, we send the error in the error section with 500 status
-    }})
+    }else{
+      console.log("Start Insert Regeln");
+      connection.query(sqlInsertRegel, [valuesInsertRegel] , function (err, results) {
+        if(err){
+          res.send(JSON.stringify({"status": 500, "error": err, "response": null})); 
+          //If there is error, we send the error in the error section with 500 status
+        }
+        console.log("Insert Regel-Query");
+        console.log(mysql.format(sqlInsertRegel, valuesInsertRegel));
+        
+      })
+    }
+  })
   
 
   });

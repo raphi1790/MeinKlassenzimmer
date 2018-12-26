@@ -38,13 +38,13 @@ export class RegelService {
       for (let indexRegel = 0; indexRegel < data['Regeln'].length; indexRegel++) {
         debugger;
         regelnToPerson[indexRegel] = new Regel();
-        regelnToPerson[indexRegel].id = data['Regel'][indexRegel].Id;
-        regelnToPerson[indexRegel].personId = data['Schulklassen'][indexRegel].PersonId;
-        regelnToPerson[indexRegel].type = data['Schulklassen'][indexRegel].Type;
-        regelnToPerson[indexRegel].beschreibung = data['Schulklassen'][indexRegel].Beschreibung;
-        regelnToPerson[indexRegel].tischId = data['Schulklassen'][indexRegel].TischId;
-        regelnToPerson[indexRegel].schueler1Id = data['Schulklassen'][indexRegel].Schueler1Id;
-        regelnToPerson[indexRegel].schueler2Id = data['Schulklassen'][indexRegel].Schueler2Id;
+        regelnToPerson[indexRegel].id = data['Regeln'][indexRegel].Id;
+        regelnToPerson[indexRegel].personId = data['Regeln'][indexRegel].PersonId;
+        regelnToPerson[indexRegel].type = data['Regeln'][indexRegel].Type;
+        regelnToPerson[indexRegel].beschreibung = data['Regeln'][indexRegel].Beschreibung;
+        regelnToPerson[indexRegel].tischId = data['Regeln'][indexRegel].TischId;
+        regelnToPerson[indexRegel].schueler1Id = data['Regeln'][indexRegel].Schueler1Id;
+        regelnToPerson[indexRegel].schueler2Id = data['Regeln'][indexRegel].Schueler2Id;
         regelnToPerson[indexRegel].active = true;
         
       }
@@ -55,19 +55,14 @@ export class RegelService {
   
 
   }
-  // updateKlassenAndSchueler(neueSchulklassen: Schulklasse[]): Observable<Schulklasse[]> {
-  //   debugger;
-  //   var prepareSchueler = new SchuelerPreparer();
-  //   neueSchulklassen.forEach(element => { 
-      
-  //     element.schueler = prepareSchueler.prepareSchuelerNameKurz(element.schueler);
-  //   });
-  //   const body = neueSchulklassen;
-  //   return this.http.post(this.regelnUrl, body, {
-  //     headers: new HttpHeaders().set('Authorization', this._authHeader)
-  //   }).catch(this._handleError)
+  updateRegeln(neueRegeln: Regel[]): Observable<Regel[]> {
+    debugger;
+    const body = neueRegeln;
+    return this.http.post(this.regelnUrl, body, {
+      headers: new HttpHeaders().set('Authorization', this._authHeader)
+    }).catch(this._handleError)
        
-  // };
+  };
 
   private _handleError(err: HttpErrorResponse | any) {
     const errorMsg = err.message || 'Error: Unable to complete request.';

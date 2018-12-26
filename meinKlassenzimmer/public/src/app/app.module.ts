@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { RegelnComponent } from './components/regeln/regeln.component';
 import { RegelDetailComponent } from './components/regel-detail/regel-detail.component';
+import { RegelService } from './services/regel.service';
 
 
 
@@ -58,7 +59,7 @@ import { RegelDetailComponent } from './components/regel-detail/regel-detail.com
     AngularFireAuthModule // imports firebase/auth, only needed for auth features
 
   ],
-  providers: [SchulklassenService,SchulzimmerService, AuthService, UnsavedGuard,
+  providers: [SchulklassenService,SchulzimmerService, AuthService,RegelService, UnsavedGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass:  AuthInterceptor,

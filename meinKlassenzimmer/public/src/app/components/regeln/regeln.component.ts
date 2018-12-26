@@ -1,7 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RegelService } from '../../services/regel.service';
-import { AuthService } from '../../services/auth/auth.service';
+
 import { Regel } from '../../models/regel';
+import { Schulzimmer } from '../../models/schulzimmer';
+import { Schulklasse } from '../../models/schulklasse';
+import { SchulklassenService } from '../../services/schulklassen.service';
+import { SchulzimmerService } from '../../services/schulzimmer.service';
+import { Schueler } from '../../models/schueler';
+import { Tisch } from '../../models/tisch';
+import { MatTable, MatPaginator, MatTableDataSource } from '@angular/material';
+import { RegelEnricher } from '../../helpers/regel.enricher';
+import { Observable } from 'rxjs';
+import { OutputRegel } from 'app/models/output.regel';
+import * as uuidv4 from 'uuid/v4';
 
 @Component({
   selector: 'app-regeln',
@@ -12,33 +23,80 @@ export class RegelnComponent implements OnInit {
 
 
 
+  selectedSchulzimmer: Schulzimmer;
+  selectedSchulklasse: Schulklasse;
+  outputSchulzimmer: Schulzimmer;
+  outputSchulklasse: Schulklasse;
+  klassenToPerson: Schulklasse[];
+  zimmerToPerson: Schulzimmer[];
   savingIsActiv: boolean;
-  isLoading: boolean;
+  isLoadingRegel: boolean;
   isSaving: boolean;
+  isLoadingSchulklasse: boolean;
+  isLoadingSchulzimmer: boolean;
+  regelnToPerson: Regel[];
+  regelTypes = ['Fester Sitzplatz']
+  schuelerToKlasse:Schueler[];
+  tischeToZimmer: Tisch[];
 
-//   @Input() personid: number
+  displayedColumns = ['beschreibung', 'type', 'klasse', 'zimmer',  'schueler', 'tischNumber', 'symbol'];
+  selectedType: string;
+  selectedSchueler: Schueler;
+  selectedTisch: Tisch;
+  selectedBeschreibung: string;
+  regelEnricher: RegelEnricher
 
-  constructor(private regelService: RegelService, private auth : AuthService ) {
-      this.maximalRegelId = 0;
 
+  constructor(private regelService: RegelService, private klassenService: SchulklassenService 
+         ,private zimmerService : SchulzimmerService         ) 
+  {
+     this.regelEnricher = new RegelEnricher();
 
   }
+  @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  regelnToPerson: Regel[];
-  maximalRegelId: number;
+  dataSource = new MatTableDataSource<OutputRegel>();
+
+ 
 //   neueSchulklasseName: string
 //   neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
+loadInputData() {
+    
+     this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((
+        data: Schulklasse[]) => { 
+          this.klassenToPerson = data; this.isLoadingSchulklasse = false;
+          this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => 
+            { this.zimmerToPerson = data; this.isLoadingSchulzimmer = false; 
+              this.regelService.getRegelByPersonid().subscribe(
+                (data:Regel[]) => {
+                  debugger;
+                  this.regelnToPerson = data;
+                  this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson)
+                  console.log("Enriched Regeln");
+                  console.log(this.dataSource);
+                });
+            })
+         }
+        
+        
+        );
 
-getRegelnToPerson() {
+    }
+      
 
-    this.regelService.getRegelByPersonid().subscribe(
-      (data:Regel[]) => {
-        debugger;
-        this.regelnToPerson = data;
-        this.isLoading = false;});
-  
+showDetailConfiguration(): boolean {
+  var showDetailConfiguration = false;
+  if (this.selectedSchulklasse != undefined && this.selectedSchulzimmer != undefined){
+    this.schuelerToKlasse =  this.selectedSchulklasse.schueler;
+    this.tischeToZimmer = this.selectedSchulzimmer.tische.filter(tisch => tisch.active == true);
+    showDetailConfiguration = true;
+
   }
+  return showDetailConfiguration;
+
+}
 
 
 //   getErrorMessageNeueSchulklasse() {
@@ -48,39 +106,49 @@ getRegelnToPerson() {
 //   }
 
 
-//   onSelect(klasse: Schulklasse): void {
-//     debugger;
-//     this.selectedRegel = klasse;
-
 
 //   }
-//   deleteSchulklasse(klasse: Schulklasse):void{
-//     this.klassenToPerson = this.klassenToPerson.filter(
-//       item =>
-//         item.id !== klasse.id);
-//     this.selectedRegel = null;
-//     this.savingIsActiv = true;
+  deleteRegel(regelOutput: OutputRegel):void{
 
-//   }
+    this.regelnToPerson = this.regelnToPerson.filter(
+      item =>
+        item.id !== regelOutput.id);
+    this.savingIsActiv = true;
+    this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
 
-//   addSchulklasse(): void {
-//     debugger;
-//     this.maximalKlassenId++;
-//     var neueKlasseTmp = new Schulklasse();
-//     neueKlasseTmp.name = this.neueSchulklasseName;
-//     neueKlasseTmp.id = this.maximalKlassenId;
-//     neueKlasseTmp.schueler = new Array<Schueler>();
-//     this.klassenToPerson.push(neueKlasseTmp);
-//     neueKlasseTmp = null;
-//     this.selectedRegel = null;
-//     this.savingIsActiv = true;
-//     this.neueSchulklasseName = null;
+  }
 
-//     this.neueSchulklasseForm.markAsPristine();
-//     this.neueSchulklasseForm.markAsUntouched();
-//     this.neueSchulklasseForm.updateValueAndValidity();
+  addRegel(): void {
+    debugger;
+    var neueRegelTmp = new Regel();
+    neueRegelTmp.id = uuidv4();
+    neueRegelTmp.beschreibung = this.selectedBeschreibung;
+    neueRegelTmp.type = this.selectedType;
+    neueRegelTmp.schueler1Id = this.selectedSchueler.id;
+    neueRegelTmp.tischId = this.selectedTisch.id
+    this.regelnToPerson.push(neueRegelTmp);
 
-//   }
+    this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
+    this.savingIsActiv = true;
+    
+    
+    // this.maximalKlassenId++;
+    // var neueKlasseTmp = new Schulklasse();
+    // neueKlasseTmp.name = this.neueSchulklasseName;
+    // neueKlasseTmp.id = this.maximalKlassenId;
+    // neueKlasseTmp.schueler = new Array<Schueler>();
+    // this.klassenToPerson.push(neueKlasseTmp);
+    // neueKlasseTmp = null;
+    // this.selectedRegel = null;
+    
+    // this.neueSchulklasseName = null;
+
+    // this.neueSchulklasseForm.markAsPristine();
+    // this.neueSchulklasseForm.markAsUntouched();
+    // this.neueSchulklasseForm.updateValueAndValidity();
+
+  }
+  
 
 //   updateSchulklasse(updatedKlasse: Schulklasse): void {
 //     debugger;
@@ -97,13 +165,13 @@ getRegelnToPerson() {
 //   }
 
   
-//   async saveSchulklasseSchueler(): Promise<void> {
-//     debugger;
-//     this.savingIsActiv = false; 
-//     this.isSaving = true;this.savingIsActiv
-//     // this.personDbHelper.savePerson();
-//     await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe(() => this.isSaving = false);
-//   }
+  async saveRegeln(): Promise<void> {
+    debugger;
+    this.savingIsActiv = false; 
+    this.isSaving = true;this.savingIsActiv
+    // this.personDbHelper.savePerson();
+    await this.regelService.updateRegeln(this.regelnToPerson).subscribe(() => this.isSaving = false);
+  }
 
 //   canDeactivate(){
 //     debugger;
@@ -113,9 +181,14 @@ getRegelnToPerson() {
   ngOnInit(){
     debugger;
     
-    this.isLoading = true;
-    this.getRegelnToPerson();
+    this.isLoadingSchulklasse = true;
+    this.isLoadingSchulzimmer = true;
+    this.isLoadingRegel = true;
+    this.loadInputData();
 
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
  

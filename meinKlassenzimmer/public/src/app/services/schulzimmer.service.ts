@@ -32,8 +32,6 @@ export class SchulzimmerService {
     
         ).map(
           data => {
-            debugger;
-
             console.log("Schulzimmer ");
             console.log(data['Schulzimmer']);
             console.log("Tische ");
@@ -47,7 +45,6 @@ export class SchulzimmerService {
               schulzimmerToPerson[indexZimmer].tische = new Array<Tisch>();
               for (let indexTisch = 0; indexTisch < data['Tische'].length; indexTisch++) {
                 if (schulzimmerToPerson[indexZimmer].id == data['Tische'][indexTisch].SchulzimmerId) {
-                  debugger;
                   var tischTmp = new Tisch()
                   tischTmp.id = data['Tische'][indexTisch].Id
                   tischTmp.position = new PositionTisch(data['Tische'][indexTisch].RowNumber, data['Tische'][indexTisch].ColumnNumber);

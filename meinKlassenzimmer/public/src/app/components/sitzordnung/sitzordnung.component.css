@@ -12,3 +12,10 @@
 .mat-card-header-text {
   margin: 0 0px;
 }
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+.mat-column-select {
+  overflow: initial;
+}

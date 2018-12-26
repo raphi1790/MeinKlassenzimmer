@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
 
 import { Schulklasse } from 'app/models/schulklasse';
 import { TischSchueler } from 'app/models/tisch.schueler';
@@ -10,9 +10,15 @@ import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 
 import * as CONFIG from '../../../config.json';
+import { RegelService } from 'app/services/regel.service';
+import { Regel } from 'app/models/regel';
+import { RegelEnricher } from 'app/helpers/regel.enricher';
+import { MatTable, MatPaginator, MatTableDataSource, MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
+import { OutputRegel } from 'app/models/output.regel';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
-  selector: 'app-zuordnung',
+  selector: 'app-sitzordnung',
   templateUrl: './sitzordnung.component.html',
   styleUrls: ['./sitzordnung.component.css']
 })
@@ -24,6 +30,7 @@ export class SitzordnungComponent {
   outputSchulklasse: Schulklasse;
   klassenToPerson: Schulklasse[];
   zimmerToPerson: Schulzimmer[];
+  regelnToPerson: Regel[];
   schulzimmerId: Number;
   schulklasseId: Number;
   showSitzordnung: boolean
@@ -34,15 +41,39 @@ export class SitzordnungComponent {
   zuvieleSchuelerInSchulzimmer: boolean;
   isLoadingSchulklasse: boolean;
   isLoadingSchulzimmer: boolean;
+  regelEnricher: RegelEnricher;
+  displayedColumns = ['select','beschreibung', 'type',   'schueler', 'tischNumber'];
+  selection = new SelectionModel<OutputRegel>(true, []);
+  enrichedRegelnToPerson: OutputRegel[];
 
 
   
 
-  constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService) { 
+  constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService, private regelService: RegelService) { 
     this.showSitzordnung = false;
     this.zuvieleSchuelerInSchulzimmer = false;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
+    this.regelEnricher = new RegelEnricher();
+  }
+  @ViewChild(MatTable) table: MatTable<any>;
+
+
+  dataSource = new MatTableDataSource<OutputRegel>();
+
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   getErrorMessageZuvieleSchuelerInSchulzimmer(){
@@ -50,14 +81,40 @@ export class SitzordnungComponent {
   }
 
   loadInputData() {
-    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((data: Schulklasse[]) => { this.klassenToPerson = data; this.isLoadingSchulklasse = false; });
-    this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => { this.zimmerToPerson = data; this.isLoadingSchulzimmer = false; });
+    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((
+      data: Schulklasse[]) => { 
+        this.klassenToPerson = data; this.isLoadingSchulklasse = false;
+        this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => 
+          { this.zimmerToPerson = data; this.isLoadingSchulzimmer = false; 
+            this.regelService.getRegelByPersonid().subscribe(
+              (data:Regel[]) => {
+                this.regelnToPerson = data;
+                this.enrichedRegelnToPerson = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson)
+                
+              });
+          })
+       }
+      
+      
+      );
 
+  
+    }
+
+  klasseAndZimmerSelected(): boolean{
+    
+    var klasseAndZimmerSelected = false; 
+    if (this.selectedSchulklasse != undefined && this.selectedSchulzimmer !=undefined){
+      debugger;
+      klasseAndZimmerSelected = true;
+      let relevantRegeln =this.enrichedRegelnToPerson.filter(element => element.klasse == this.selectedSchulklasse.name && element.zimmer == this.selectedSchulzimmer.name)
+      this.dataSource.data = relevantRegeln;  
+       
+    }
+    return klasseAndZimmerSelected;
   }
  
-  selectSchulklasse() {
-    this.selectedSchulklasse = this.klassenToPerson.filter(item => item.id == this.schulklasseId)[0];
-  }
+
   randomizePlaces(){
     debugger;
     var activeTische = this.selectedSchulzimmer.tische.filter(item => item.active == true);

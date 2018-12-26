@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { PositionTisch } from '../../models/position.tisch';
 import { TischOutput } from '../../models/output.tisch';
-import { Tisch } from '../../models/tisch';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
 
 @Component({

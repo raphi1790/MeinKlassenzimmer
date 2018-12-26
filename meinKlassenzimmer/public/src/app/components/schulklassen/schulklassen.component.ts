@@ -29,6 +29,11 @@ export class SchulklassenComponent implements OnInit {
   savingIsActiv: boolean;
   isLoading: boolean;
   isSaving: boolean;
+  klassenToPerson: Schulklasse[];
+  selectedSchulklasse: Schulklasse;
+  maximalKlassenId: number;
+  neueSchulklasseName: string
+  neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
   @Input() personid: number
 
@@ -39,11 +44,7 @@ export class SchulklassenComponent implements OnInit {
 
   }
 
-  klassenToPerson: Schulklasse[];
-  selectedSchulklasse: Schulklasse;
-  maximalKlassenId: number;
-  neueSchulklasseName: string
-  neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
+ 
 
 
   getSchulklassenToPerson() {
@@ -116,7 +117,7 @@ export class SchulklassenComponent implements OnInit {
   async saveSchulklasseSchueler(): Promise<void> {
     debugger;
     this.savingIsActiv = false; 
-    this.isSaving = true;this.savingIsActiv
+    this.isSaving = true;
     // this.personDbHelper.savePerson();
     await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe(() => this.isSaving = false);
   }

@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-6">
       <div class="column1">
 
 
@@ -17,43 +17,135 @@
 
             </mat-card-header>
             <mat-card-content>
-              <mat-form-field>
-                <!-- <input matInput placeholder="Name der Klasse" required [(ngModel)]="neueSchulklasseName" [formControl]="neueSchulklasseForm">
-                <mat-error *ngIf="neueSchulklasseForm.invalid && (neueSchulklasseForm.dirty || neueSchulklasseForm.touched)">{{getErrorMessageNeueSchulklasse()}}</mat-error> -->
+              <div class="input-form-field">
+                <mat-form-field>
+                  <input matInput placeholder="Beschreibung der Regel" required [(ngModel)]="selectedBeschreibung">
+                  <!-- <mat-error *ngIf="neueSchulklasseForm.invalid && (neueSchulklasseForm.dirty || neueSchulklasseForm.touched)">{{getErrorMessageNeueSchulklasse()}}</mat-error> -->
 
-              </mat-form-field>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select placeholder="Schulklasse" [(ngModel)]="selectedSchulklasse" required>
+                    <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select placeholder="Schulzimmer" [(ngModel)]="selectedSchulzimmer" required>
+                    <mat-option *ngFor="let zimmer of zimmerToPerson" [value]="zimmer">{{zimmer.name}}</mat-option>
+
+                  </mat-select>
+
+                </mat-form-field>
+                <div *ngIf="showDetailConfiguration()">
+                  <mat-form-field>
+                    <mat-select placeholder="Typ der Regel" [(ngModel)]="selectedType" required>
+                      <mat-option *ngFor="let type of regelTypes" [value]="type">{{type}}</mat-option>
+
+                    </mat-select>
+
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-select placeholder="Schüler" [(ngModel)]="selectedSchueler" required>
+                      <mat-option *ngFor="let schueler of schuelerToKlasse" [value]="schueler">{{schueler.vorname}}
+                        {{schueler.nameKurz}}</mat-option>
+                    </mat-select>
+
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-select placeholder="Tisch" [(ngModel)]="selectedTisch" required>
+                      <mat-option *ngFor="let tisch of tischeToZimmer" [value]="tisch">{{tisch.tableNumber}}</mat-option>
+
+                    </mat-select>
+
+                  </mat-form-field>
+                </div>
+
+              </div>
+
             </mat-card-content>
             <mat-card-actions>
-              <!-- <button mat-raised-button color="accent" [disabled]="!neueSchulklasseForm.valid" (click)="addSchulklasse()">Hinzufügen</button> -->
+              <button mat-raised-button color="accent" (click)="addRegel()">Hinzufügen</button>
             </mat-card-actions>
           </mat-card>
+          <button mat-raised-button class="save-button" color="accent"  [disabled]="!savingIsActiv" (click)="saveRegeln()">Speichern</button>
         </div>
       </div>
 
 
 
     </div>
-    <div class="col-md-7">
+    <div class="col-md-6">
       <div class="column2">
-          <mat-card>
-              <mat-card-header>
-                <mat-card-title-group>
-                  <mat-card-title>
-                    <h4>Erfasste Regeln</h4>
-                  </mat-card-title>
-                </mat-card-title-group>
-  
-              </mat-card-header>
-              <mat-card-content>
-               
-              </mat-card-content>
-            </mat-card>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>
+                <h4>Erfasste Regeln</h4>
+              </mat-card-title>
+            </mat-card-title-group>
+
+          </mat-card-header>
+          <mat-card-content>
+            <mat-table #table [dataSource]="dataSource">
+
+              <ng-container matColumnDef="beschreibung">
+                <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.beschreibung}} </mat-cell>
+              </ng-container>
+
+
+              <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef> Typ der Regel </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+              </ng-container>
+
+
+              <ng-container matColumnDef="klasse">
+                <mat-header-cell *matHeaderCellDef> Schulklasse </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.klasse}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="zimmer">
+                <mat-header-cell *matHeaderCellDef> Schulzimmer </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.zimmer}} </mat-cell>
+              </ng-container>
+
+
+              <ng-container matColumnDef="schueler">
+                <mat-header-cell *matHeaderCellDef> Schüler </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.schueler}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="tischNumber">
+                <mat-header-cell *matHeaderCellDef> Tisch </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.tischNumber}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="symbol">
+                <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>
+                    <mat-icon matListIcon (click) ="deleteRegel(element)">delete</mat-icon>
+                  </span>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+            
+            </mat-table>
+            <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" [showFirstLastButtons]="true">
+            </mat-paginator>
+          </mat-card-content>
+        </mat-card>
 
       </div>
-      </div>
-     
     </div>
-  
+
+  </div>
+
   <!-- <div id ="center" style="position:fixed;top:50%;left:50%">
       <mat-spinner *ngIf="isSaving"></mat-spinner></div> -->
 </div>

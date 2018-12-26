@@ -39,7 +39,6 @@ export class SchulklassenService {
       console.log(data['Schueler']);
       var klassenToPerson = new Array<Schulklasse>();
       for (let indexKlasse = 0; indexKlasse < data['Schulklassen'].length; indexKlasse++) {
-        debugger;
         klassenToPerson[indexKlasse] = new Schulklasse();
         klassenToPerson[indexKlasse].id = data['Schulklassen'][indexKlasse].Id;
         klassenToPerson[indexKlasse].personid = data['Schulklassen'][indexKlasse].PersonId;
@@ -47,7 +46,6 @@ export class SchulklassenService {
         klassenToPerson[indexKlasse].schueler = new Array<Schueler>();
         for (let indexSchueler = 0; indexSchueler < data['Schueler'].length; indexSchueler++) {
           if (klassenToPerson[indexKlasse].id == data['Schueler'][indexSchueler].SchulklassenId) {
-            debugger;
             var schueler = new Schueler();
             schueler.id = data['Schueler'][indexSchueler].Id
             schueler.name = data['Schueler'][indexSchueler].Name;
