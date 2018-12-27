@@ -2,13 +2,11 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Schulzimmer } from 'app/models/schulzimmer';
 import { SchulzimmerService } from "app/services/schulzimmer.service";
 import { Tisch } from '../../models/tisch';
-import { PositionTisch } from '../../models/position.tisch';
-// import { PersonDbHelper } from '../../helpers/person.DbHelper';
-// import { PersonService } from '../../services/person.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { TischOutput } from '../../models/output.tisch';
 import { TischOutputPreparer } from '../../helpers/tischOutput.preparer';
 import { FormControl, Validators } from '@angular/forms';
+import * as uuidv4 from 'uuid/v4';
 
 import * as CONFIG from '../../../config.json';
 
@@ -26,7 +24,6 @@ export class SchulzimmerComponent implements OnInit {
   schulzimmerToPerson :Schulzimmer[];
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
-  maximalSchulzimmerId: number;
   preparedTischOutput: TischOutput[][];
   tischOutputPreparer: TischOutputPreparer;
   savingIsActiv : boolean;
@@ -39,9 +36,7 @@ export class SchulzimmerComponent implements OnInit {
   
   @Input() personid: number
 
-  constructor(private schulzimmerService: SchulzimmerService,  private auth : AuthService ) {
-    // this.personDbHelper = new PersonDbHelper(personService, auth);
-    this.maximalSchulzimmerId = 0;
+  constructor(private schulzimmerService: SchulzimmerService ) {
     this.currentTableNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
@@ -82,8 +77,8 @@ export class SchulzimmerComponent implements OnInit {
   private findMaximalTableNumber(tische: Tisch[]):number{
     debugger;
     let allTableNumbers = tische.map(a => a.tableNumber); 
-    var maximalTableNumber = Math.max.apply(null, allTableNumbers);
-    return maximalTableNumber; 
+    var maximalTableNumber = Math.max.apply(null, allTableNumbers) ;
+    return Math.max(maximalTableNumber,0); 
 };
 
   deleteSchulzimmer(schulzimmer: Schulzimmer):void{
@@ -96,10 +91,9 @@ export class SchulzimmerComponent implements OnInit {
 
   addSchulzimmerTmp(): void {
     debugger;
-    this.maximalSchulzimmerId++;
     var neuesSchulzimmerTmp = new Schulzimmer();
     neuesSchulzimmerTmp.name = this.neuesSchulzimmerName;
-    neuesSchulzimmerTmp.id = this.maximalSchulzimmerId;
+    neuesSchulzimmerTmp.id = uuidv4();
     neuesSchulzimmerTmp.tische = new Array<Tisch>();
     this.schulzimmerToPerson.push(neuesSchulzimmerTmp);
     neuesSchulzimmerTmp = null;
@@ -134,7 +128,14 @@ export class SchulzimmerComponent implements OnInit {
     console.log("Updated SchulzimmerToPerson");
     console.log(this.schulzimmerToPerson);
 
+  
   }
+  canDeactivate(){
+    debugger;
+    return !this.savingIsActiv;
+  }
+
+
   async saveSchulzimmerTische(): Promise<void> {
     debugger;
     this.savingIsActiv = false;
@@ -142,11 +143,6 @@ export class SchulzimmerComponent implements OnInit {
     // this.personDbHelper.savePerson();
     await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe(() => this.isSaving = false);
     
-  }
-
-  canDeactivate(){
-    debugger;
-    return !this.savingIsActiv;
   }
 
   ngOnInit() {

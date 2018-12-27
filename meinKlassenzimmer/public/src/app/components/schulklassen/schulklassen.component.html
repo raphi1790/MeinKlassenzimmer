@@ -42,8 +42,6 @@
 
             </mat-card-header>
             <mat-card-content>
-                <div id ="center" style="position:fixed;top:50%;left:50%">
-                    <mat-spinner *ngIf="isLoading"></mat-spinner></div>
               <mat-nav-list>
                 <mat-list-item *ngFor="let klasse of klassenToPerson;last as last" [class.highlighted]="klasse === selectedSchulklasse">
                   <div class="button-list" (click)="onSelect(klasse)">
@@ -79,5 +77,5 @@
     </div>
   </div>
   <div id ="center" style="position:fixed;top:50%;left:50%">
-      <mat-spinner *ngIf="isSaving"></mat-spinner></div>
+      <mat-spinner *ngIf="isSaving || isLoading"></mat-spinner></div>
 </div>

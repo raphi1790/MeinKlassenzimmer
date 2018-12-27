@@ -1,7 +1,8 @@
 import { PositionTisch } from "./position.tisch";
 
 export class Tisch{
-    id: number;
+    id: string;
+    schulzimmerId: string;
     position: PositionTisch;
     active: boolean;
     tableNumber: number;

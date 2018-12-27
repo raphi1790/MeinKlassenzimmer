@@ -42,9 +42,6 @@
 
             </mat-card-header>
             <mat-card-content>
-              <div id="center" style="position:fixed;top:50%;left:50%">
-                <mat-spinner *ngIf="isLoading"></mat-spinner>
-              </div>
               <mat-nav-list>
                 <mat-list-item *ngFor="let schulzimmer of schulzimmerToPerson;last as last" [class.highlighted]="schulzimmer === selectedSchulzimmer">
                   <div class="button-list" (click)="onSelect(schulzimmer)">
@@ -103,7 +100,7 @@
         </div>
       </div>
       <div id="center" style="position:fixed;top:50%;left:50%">
-        <mat-spinner *ngIf="isSaving"></mat-spinner>
+        <mat-spinner *ngIf="isSaving||isLoading"></mat-spinner>
       </div>
     </div>
   </div>

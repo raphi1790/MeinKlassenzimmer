@@ -1,17 +1,13 @@
 import { Component, OnInit, Input , OnChanges, ViewChild} from '@angular/core';
-import { Router }            from '@angular/router';
 
 import {Schulklasse} from 'app/models/schulklasse';
 import {Schueler} from 'app/models/schueler';
-import {Person} from 'app/models/person';
+
 
 import {SchulklassenService} from 'app/services/schulklassen.service';
-// import {PersonService} from 'app/services/person.service';
 import {AuthService} from 'app/services/auth/auth.service';
-import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import {SchuelerComponent} from 'app/components/schueler/schueler.component';
-// import { PersonDbHelper } from '../../helpers/person.DbHelper';
 import { FormControl, Validators } from '@angular/forms';
+import * as uuidv4 from 'uuid/v4';
 
 
 @Component({
@@ -31,16 +27,12 @@ export class SchulklassenComponent implements OnInit {
   isSaving: boolean;
   klassenToPerson: Schulklasse[];
   selectedSchulklasse: Schulklasse;
-  maximalKlassenId: number;
   neueSchulklasseName: string
   neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
   @Input() personid: number
 
-  constructor(private klassenService: SchulklassenService, private auth : AuthService ) {
-    // this.personDbHelper = new PersonDbHelper(personService, auth);
-    this.maximalKlassenId = 0;
-
+  constructor(private klassenService: SchulklassenService ) {
 
   }
 
@@ -82,10 +74,9 @@ export class SchulklassenComponent implements OnInit {
 
   addSchulklasse(): void {
     debugger;
-    this.maximalKlassenId++;
     var neueKlasseTmp = new Schulklasse();
     neueKlasseTmp.name = this.neueSchulklasseName;
-    neueKlasseTmp.id = this.maximalKlassenId;
+    neueKlasseTmp.id = uuidv4();
     neueKlasseTmp.schueler = new Array<Schueler>();
     this.klassenToPerson.push(neueKlasseTmp);
     neueKlasseTmp = null;
@@ -112,24 +103,21 @@ export class SchulklassenComponent implements OnInit {
     }
     this.savingIsActiv = true;
   }
+  canDeactivate(){
+    debugger;
+    return !this.savingIsActiv;
+  }
 
   
   async saveSchulklasseSchueler(): Promise<void> {
     debugger;
     this.savingIsActiv = false; 
     this.isSaving = true;
-    // this.personDbHelper.savePerson();
     await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe(() => this.isSaving = false);
-  }
-
-  canDeactivate(){
-    debugger;
-    return !this.savingIsActiv;
   }
 
   ngOnInit(){
     debugger;
-    // this.personDbHelper.getPerson();
     this.isLoading = true;
     this.getSchulklassenToPerson();
 

@@ -1,7 +1,7 @@
 import { Tisch } from "./tisch";
 
 export class Schulzimmer{
-    id: number;
+    id: string;
     personid: number;
     name: string;
     tische: Tisch[];

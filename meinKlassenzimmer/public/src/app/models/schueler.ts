@@ -1,6 +1,7 @@
 
  export class Schueler{
-    id: number;
+    id: string;
+    schulklassenId: string;
     vorname: string;
     name: string;
     nameKurz: string;

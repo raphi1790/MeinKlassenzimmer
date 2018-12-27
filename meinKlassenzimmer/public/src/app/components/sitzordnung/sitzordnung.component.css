@@ -19,3 +19,6 @@
 .mat-column-select {
   overflow: initial;
 }
+.mat-checkbox .mat-checkbox-inner-container {
+  position: relative !important;
+}

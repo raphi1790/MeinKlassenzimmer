@@ -30,7 +30,7 @@ export class RegelnComponent implements OnInit {
   klassenToPerson: Schulklasse[];
   zimmerToPerson: Schulzimmer[];
   savingIsActiv: boolean;
-  isLoadingRegel: boolean;
+  isLoadingRegeln: boolean;
   isSaving: boolean;
   isLoadingSchulklasse: boolean;
   isLoadingSchulzimmer: boolean;
@@ -76,6 +76,7 @@ loadInputData() {
                   this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson)
                   console.log("Enriched Regeln");
                   console.log(this.dataSource);
+                  this.isLoadingRegeln = false;
                 });
             })
          }
@@ -112,7 +113,7 @@ showDetailConfiguration(): boolean {
 
     this.regelnToPerson = this.regelnToPerson.filter(
       item =>
-        item.id !== regelOutput.id);
+        item.id !== regelOutput.regelId);
     this.savingIsActiv = true;
     this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
 
@@ -130,17 +131,7 @@ showDetailConfiguration(): boolean {
 
     this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
     this.savingIsActiv = true;
-    
-    
-    // this.maximalKlassenId++;
-    // var neueKlasseTmp = new Schulklasse();
-    // neueKlasseTmp.name = this.neueSchulklasseName;
-    // neueKlasseTmp.id = this.maximalKlassenId;
-    // neueKlasseTmp.schueler = new Array<Schueler>();
-    // this.klassenToPerson.push(neueKlasseTmp);
-    // neueKlasseTmp = null;
-    // this.selectedRegel = null;
-    
+        
     // this.neueSchulklasseName = null;
 
     // this.neueSchulklasseForm.markAsPristine();
@@ -150,40 +141,27 @@ showDetailConfiguration(): boolean {
   }
   
 
-//   updateSchulklasse(updatedKlasse: Schulklasse): void {
-//     debugger;
-//     this.klassenToPerson = this.klassenToPerson.filter(
-//       item =>
-//         item.id !== updatedKlasse.id)
-//     if (typeof this.klassenToPerson == 'undefined') {
-//       console.log("klassenToPerson is undefined");
-//     }
-//     else {
-//       this.klassenToPerson.push(updatedKlasse);
-//     }
-//     this.savingIsActiv = true;
-//   }
 
   
   async saveRegeln(): Promise<void> {
     debugger;
     this.savingIsActiv = false; 
-    this.isSaving = true;this.savingIsActiv
+    this.isSaving = true;
     // this.personDbHelper.savePerson();
     await this.regelService.updateRegeln(this.regelnToPerson).subscribe(() => this.isSaving = false);
   }
 
-//   canDeactivate(){
-//     debugger;
-//     return !this.savingIsActiv;
-//   }
+  canDeactivate(){
+    debugger;
+    return !this.savingIsActiv;
+  }
 
   ngOnInit(){
     debugger;
     
     this.isLoadingSchulklasse = true;
     this.isLoadingSchulzimmer = true;
-    this.isLoadingRegel = true;
+    this.isLoadingRegeln = true;
     this.loadInputData();
 
   }

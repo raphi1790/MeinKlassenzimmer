@@ -47,7 +47,8 @@ export class SchulklassenService {
         for (let indexSchueler = 0; indexSchueler < data['Schueler'].length; indexSchueler++) {
           if (klassenToPerson[indexKlasse].id == data['Schueler'][indexSchueler].SchulklassenId) {
             var schueler = new Schueler();
-            schueler.id = data['Schueler'][indexSchueler].Id
+            schueler.id = data['Schueler'][indexSchueler].Id;
+            schueler.schulklassenId = data['Schueler'][indexSchueler].SchulklassenId;
             schueler.name = data['Schueler'][indexSchueler].Name;
             schueler.vorname = data['Schueler'][indexSchueler].Vorname;
             schueler.nameKurz = data['Schueler'][indexSchueler].NameKurz;

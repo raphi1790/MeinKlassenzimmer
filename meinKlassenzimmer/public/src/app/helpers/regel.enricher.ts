@@ -34,7 +34,7 @@ export class RegelEnricher {
                 });        
                     
             regelnOutput[indexRegel] = new OutputRegel();
-            regelnOutput[indexRegel].id = regeln[indexRegel].id;
+            regelnOutput[indexRegel].regelId = regeln[indexRegel].id;
             regelnOutput[indexRegel].beschreibung = regeln[indexRegel].beschreibung;
             regelnOutput[indexRegel].type = regeln[indexRegel].type;
             regelnOutput[indexRegel].klasse = chosenKlasse[0].name;

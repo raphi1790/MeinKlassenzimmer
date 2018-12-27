@@ -1,7 +1,7 @@
 import { Schueler } from "./schueler";
 
 export class Schulklasse{
-    id: number;
+    id: string;
     personid: string;
     name: string;
     schueler: Schueler[];

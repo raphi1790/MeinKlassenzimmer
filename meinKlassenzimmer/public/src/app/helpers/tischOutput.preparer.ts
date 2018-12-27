@@ -4,7 +4,7 @@ import {Tisch} from "../models/tisch";
 import { Randomizer } from '../helpers/randomizer';
 import { PositionTisch } from "../models/position.tisch";
 import { Schulzimmer } from "../models/schulzimmer";
-
+import * as uuidv4 from 'uuid/v4';
 import * as CONFIG from '../../config.json';
 
 
@@ -58,6 +58,8 @@ export class TischOutputPreparer {
         
         if(tischOutput.selected){
             var tischTmp = new Tisch();
+            tischTmp.id = uuidv4();
+            tischTmp.schulzimmerId = this.updatedSchulzimmer.id;
             tischTmp.position = new PositionTisch(tischOutput.position.row,tischOutput.position.column);
             tischTmp.active = tischOutput.active;
             tischTmp.tableNumber = tischOutput.tableNumber;

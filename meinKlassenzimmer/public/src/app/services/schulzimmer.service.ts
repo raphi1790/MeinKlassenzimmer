@@ -46,7 +46,8 @@ export class SchulzimmerService {
               for (let indexTisch = 0; indexTisch < data['Tische'].length; indexTisch++) {
                 if (schulzimmerToPerson[indexZimmer].id == data['Tische'][indexTisch].SchulzimmerId) {
                   var tischTmp = new Tisch()
-                  tischTmp.id = data['Tische'][indexTisch].Id
+                  tischTmp.id = data['Tische'][indexTisch].Id;
+                  tischTmp.schulzimmerId = data['Tische'][indexTisch].SchulzimmerId;
                   tischTmp.position = new PositionTisch(data['Tische'][indexTisch].RowNumber, data['Tische'][indexTisch].ColumnNumber);
                   tischTmp.active = data['Tische'][indexTisch].Active.data[0];
                   tischTmp.tableNumber = data['Tische'][indexTisch].TableNumber;

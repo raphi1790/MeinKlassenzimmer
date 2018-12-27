@@ -4,6 +4,7 @@ import {Schulklasse} from 'app/models/schulklasse';
 import {Schueler} from 'app/models/schueler';
 import { MatTable,MatPaginator, MatTableDataSource } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
+import * as uuidv4 from 'uuid/v4';
 
 
 
@@ -18,7 +19,6 @@ export class SchuelerComponent implements OnChanges{
 
   constructor(private ref: ChangeDetectorRef) {
     this.schulklasse.schueler = new Array();
-    this.maximalSchuelerId = 0;
     this.anzahlSchueler = 0;
 
   }
@@ -28,7 +28,6 @@ export class SchuelerComponent implements OnChanges{
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   
-  maximalSchuelerId: number;
   schulklasse = new Schulklasse();
   displayedColumns = ['vorname', 'name', 'symbol'];
   dataSource = new MatTableDataSource<Schueler>();
@@ -62,11 +61,12 @@ export class SchuelerComponent implements OnChanges{
   addSchueler():void {
     debugger;
     var schuelerTmp = new Schueler();
-    schuelerTmp.id = this.maximalSchuelerId;
+    schuelerTmp.id = uuidv4();
+    schuelerTmp.schulklassenId = this.schulklasse.id;
     schuelerTmp.vorname = this.neuerSchuelerVorname;
     schuelerTmp.name = this.neuerSchuelerName;
+
     this.schulklasse.schueler.push(schuelerTmp);
-    this.maximalSchuelerId++;
     this.anzahlSchueler++;
     
     this.dataSource.data = this.schulklasse.schueler;

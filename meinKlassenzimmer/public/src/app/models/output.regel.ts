@@ -1,5 +1,5 @@
 export class OutputRegel{
-    id: number;
+    regelId: string;
     beschreibung: string;
     type: string;
     klasse: string;

@@ -121,19 +121,17 @@ router.post("/schulzimmer", validateFirebaseIdToken, function (req, res) {
   queryDeleteSchulzimmer = mysql.format(sqlDeleteSchulzimmer, valuesDeleteSchulzimmer)
 
 
-  var queryInsertSchulzimmer = "INSERT INTO schulzimmer (PersonId, Name) VALUES ?";
-  var queryInsertTisch = "INSERT INTO tisch (SchulzimmerId,RowNumber,ColumnNumber, Active, TableNumber) VALUES ?";
-  var valuesInsertSchulzimmer = [];
+  var queryInsertSchulzimmer = "INSERT INTO schulzimmer (Id, PersonId, Name) VALUES ?";
+  var queryInsertTisch = "INSERT INTO tisch (Id, SchulzimmerId,RowNumber,ColumnNumber, Active, TableNumber) VALUES ?";
   var valuesInsertSchulzimmerWithId = [];
 
   var valuesInsertTisch = [];
 
   for (var i = 0; i < req.body.length; i++) {
     var obj = req.body[i];
-    valuesInsertSchulzimmer.push(new Array(personId, req.body[i].name));
-    valuesInsertSchulzimmerWithId.push(new Array(personId, req.body[i].id, req.body[i].name));
+    valuesInsertSchulzimmerWithId.push(new Array(req.body[i].id, personId,  req.body[i].name));
     for (var j = 0; j < req.body[i].tische.length; j++) {
-      valuesInsertTisch.push(new Array(req.body[i].id, req.body[i].tische[j].position.row, req.body[i].tische[j].position.column, req.body[i].tische[j].active, req.body[i].tische[j].tableNumber));
+      valuesInsertTisch.push(new Array(req.body[i].tische[j].id,req.body[i].tische[j].schulzimmerId, req.body[i].tische[j].position.row, req.body[i].tische[j].position.column, req.body[i].tische[j].active, req.body[i].tische[j].tableNumber));
     }
     console.log("Object:");
     console.log(obj);
@@ -164,7 +162,7 @@ router.post("/schulzimmer", validateFirebaseIdToken, function (req, res) {
 
   ], function (err) {
     if (err) console.log(err);
-    ParentChildInserter.InsertParentChild(connection, queryInsertSchulzimmer, queryInsertTisch, valuesInsertSchulzimmer, valuesInsertSchulzimmerWithId, valuesInsertTisch)
+    ParentChildInserter.InsertParentChild(connection, queryInsertSchulzimmer, queryInsertTisch, valuesInsertSchulzimmerWithId, valuesInsertTisch)
     res.send(return_data);
   });
 
@@ -221,8 +219,8 @@ router.post("/schulklasse", validateFirebaseIdToken, function (req, res) {
   queryDeleteSchulklasse = mysql.format(sqlDeleteSchulklasse, valuesDeleteSchulklasse)
 
 
-  var queryInsertSchulklasse = "INSERT INTO schulklasse (PersonId, Name) VALUES ?";
-  var queryInsertSchueler = "INSERT INTO schueler (SchulklassenId,Name,Vorname, NameKurz) VALUES ?";
+  var queryInsertSchulklasse = "INSERT INTO schulklasse (Id, PersonId, Name) VALUES ?";
+  var queryInsertSchueler = "INSERT INTO schueler (Id, SchulklassenId,Name,Vorname, NameKurz) VALUES ?";
   var valuesInsertSchulklasse = [];
   var valuesInsertSchulklasseWithId = [];
 
@@ -230,10 +228,9 @@ router.post("/schulklasse", validateFirebaseIdToken, function (req, res) {
 
   for (var i = 0; i < req.body.length; i++) {
     var obj = req.body[i];
-    valuesInsertSchulklasse.push(new Array(personId, req.body[i].name));
-    valuesInsertSchulklasseWithId.push(new Array(personId, req.body[i].id, req.body[i].name));
+    valuesInsertSchulklasseWithId.push(new Array(req.body[i].id ,personId,  req.body[i].name));
     for (var j = 0; j < req.body[i].schueler.length; j++) {
-      valuesInsertSchueler.push(new Array(req.body[i].id, req.body[i].schueler[j].name, req.body[i].schueler[j].vorname, req.body[i].schueler[j].nameKurz));
+      valuesInsertSchueler.push(new Array(req.body[i].schueler[j].id,req.body[i].schueler[j].schulklassenId, req.body[i].schueler[j].name, req.body[i].schueler[j].vorname, req.body[i].schueler[j].nameKurz));
     }
     console.log("Object:");
     console.log(obj);
@@ -264,7 +261,7 @@ router.post("/schulklasse", validateFirebaseIdToken, function (req, res) {
 
   ], function (err) {
     if (err) console.log(err);
-    ParentChildInserter.InsertParentChild(connection, queryInsertSchulklasse, queryInsertSchueler, valuesInsertSchulklasse, valuesInsertSchulklasseWithId, valuesInsertSchueler)
+    ParentChildInserter.InsertParentChild(connection, queryInsertSchulklasse, queryInsertSchueler, valuesInsertSchulklasseWithId, valuesInsertSchueler)
     res.send(return_data);
   });
 
