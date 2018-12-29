@@ -42,6 +42,7 @@ export class RegelEnricher {
             regelnOutput[indexRegel].tischNumber = chosenTisch[0][0].tableNumber;
             regelnOutput[indexRegel].zimmer = chosenZimmer[0].name;
             
+            
                 
             }
 

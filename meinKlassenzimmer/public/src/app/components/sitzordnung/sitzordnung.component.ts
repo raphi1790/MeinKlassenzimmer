@@ -135,9 +135,10 @@ export class SitzordnungComponent {
       this.showSitzordnung = true;
       this.outputSchulzimmer = this.selectedSchulzimmer;
       this.outputSchulklasse = this.selectedSchulklasse;
-      let outputRegeln  = this.regelnToPerson
-                      .filter(item => this.enrichRegelnBasedOnFilter(this.selectedSchulklasse, this.selectedSchulzimmer).map(output => output.regelId).includes(item.id))        
-      this.preparedTischSchueler = this.tischSchuelerPreparer.prepareTischSchuelerCombination(this.outputSchulzimmer.tische, this.outputSchulklasse.schueler, outputRegeln)
+      let outputRegelnActive  = this.regelnToPerson
+      .filter(item => this.selection.selected
+            .map(output => output.regelId).includes(item.id))           
+      this.preparedTischSchueler = this.tischSchuelerPreparer.prepareTischSchuelerCombination(this.outputSchulzimmer.tische, this.outputSchulklasse.schueler, outputRegelnActive)
       console.log("Randomized SchuelerTischArray");
       console.log(this.preparedTischSchueler);
 
