@@ -335,6 +335,7 @@ router.post("/regel", validateFirebaseIdToken, function (req, res) {
         }
         console.log("Insert Regel-Query");
         console.log(mysql.format(sqlInsertRegel, valuesInsertRegel));
+        res.send(JSON.stringify({"status": 200, "error": "OK" , "response": null}));
         
       })
     }

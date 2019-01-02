@@ -1,6 +1,4 @@
 import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
-import { SchulklassenComponent } from "../../components/schulklassen/schulklassen.component";
-import { SchulzimmerComponent } from "../../components/schulzimmer/schulzimmer.component";
 
 export class UnsavedGuard implements CanDeactivate<any> { 
     canDeactivate(component: any, 

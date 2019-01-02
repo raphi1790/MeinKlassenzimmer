@@ -8,6 +8,9 @@ import {SchulklassenService} from 'app/services/schulklassen.service';
 import {AuthService} from 'app/services/auth/auth.service';
 import { FormControl, Validators } from '@angular/forms';
 import * as uuidv4 from 'uuid/v4';
+import { RegelService } from 'app/services/regel.service';
+import { Regel } from 'app/models/regel';
+import { RegelChecker } from 'app/helpers/regel.checker';
 
 
 @Component({
@@ -21,31 +24,45 @@ import * as uuidv4 from 'uuid/v4';
 
 export class SchulklassenComponent implements OnInit {
   
-  // personDbHelper: PersonDbHelper;
   savingIsActiv: boolean;
-  isLoading: boolean;
+  isLoadingSchulklasse: boolean;
   isSaving: boolean;
   klassenToPerson: Schulklasse[];
+  isLoadingRegeln: boolean;
+  regelnToPerson: Regel[];
   selectedSchulklasse: Schulklasse;
+  regelChecker: RegelChecker;
   neueSchulklasseName: string
   neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
+
   @Input() personid: number
+  
+  
 
-  constructor(private klassenService: SchulklassenService ) {
-
+  constructor(private klassenService: SchulklassenService, private regelService: RegelService) {
+      this.regelChecker = new RegelChecker();
+      
   }
 
  
 
 
-  getSchulklassenToPerson() {
+  loadInputData() {
 
     this.klassenService.getKlassenAndSchuelerByPersonid().subscribe(
       (data:Schulklasse[]) => {
         debugger;
         this.klassenToPerson = data;
-        this.isLoading = false;});
+        this.isLoadingSchulklasse = false;
+        this.regelService.getRegelByPersonid().subscribe(
+          (data:Regel[]) => {
+            debugger;
+            this.regelnToPerson = data;
+            this.isLoadingRegeln = false;
+          });
+        }
+        );
   
   }
 
@@ -64,11 +81,17 @@ export class SchulklassenComponent implements OnInit {
 
   }
   deleteSchulklasse(klasse: Schulklasse):void{
-    this.klassenToPerson = this.klassenToPerson.filter(
-      item =>
-        item.id !== klasse.id);
-    this.selectedSchulklasse = null;
-    this.savingIsActiv = true;
+    debugger;
+    if(!this.regelChecker.regelExistsToSchulklasse(klasse, this.regelnToPerson)){
+      this.klassenToPerson = this.klassenToPerson.filter(
+        item =>
+          item.id !== klasse.id);
+      this.selectedSchulklasse = null;
+      this.savingIsActiv = true;
+    }else{
+      window.confirm("Es existieren noch Regeln zu dieser Schulklasse, weshalb sie nicht gelöscht werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+    }
+    
 
   }
 
@@ -118,8 +141,9 @@ export class SchulklassenComponent implements OnInit {
 
   ngOnInit(){
     debugger;
-    this.isLoading = true;
-    this.getSchulklassenToPerson();
+    this.isLoadingRegeln = true;
+    this.isLoadingSchulklasse = true;
+    this.loadInputData();
 
   }
 

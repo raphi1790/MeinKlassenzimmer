@@ -47,7 +47,7 @@ const routes: Routes = [
       {
         path: 'verwaltung/regeln',
         component: RegelnComponent,
-        // canDeactivate: [UnsavedGuard]
+        canDeactivate: [UnsavedGuard]
     }
      
 

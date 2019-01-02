@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
       <div class="column1">
 
 
@@ -17,65 +17,70 @@
 
             </mat-card-header>
             <mat-card-content>
-              <div class="input-form-field">
-                <mat-form-field>
-                  <input matInput placeholder="Beschreibung der Regel" required [(ngModel)]="selectedBeschreibung">
-                  <!-- <mat-error *ngIf="neueSchulklasseForm.invalid && (neueSchulklasseForm.dirty || neueSchulklasseForm.touched)">{{getErrorMessageNeueSchulklasse()}}</mat-error> -->
-
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-select placeholder="Schulklasse" [(ngModel)]="selectedSchulklasse" required>
-                    <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
-
-                  </mat-select>
-
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-select placeholder="Schulzimmer" [(ngModel)]="selectedSchulzimmer" required>
-                    <mat-option *ngFor="let zimmer of zimmerToPerson" [value]="zimmer">{{zimmer.name}}</mat-option>
-
-                  </mat-select>
-
-                </mat-form-field>
-                <div *ngIf="showDetailConfiguration()">
-                  <mat-form-field>
-                    <mat-select placeholder="Typ der Regel" [(ngModel)]="selectedType" required>
-                      <mat-option *ngFor="let type of regelTypes" [value]="type">{{type}}</mat-option>
-
-                    </mat-select>
-
+              <form  [formGroup]="myForm">
+                <div class="input-form-field">
+                  <mat-form-field >
+                    <input matInput placeholder="Beschreibung der Regel" required [(ngModel)]="selectedBeschreibung" formControlName="beschreibung">
+                      <mat-error *ngIf="isFieldValid('beschreibung')">Beschreibung erforderlich </mat-error>
                   </mat-form-field>
-                  <mat-form-field>
-                    <mat-select placeholder="Schüler" [(ngModel)]="selectedSchueler" required>
-                      <mat-option *ngFor="let schueler of schuelerToKlasse" [value]="schueler">{{schueler.vorname}}
-                        {{schueler.nameKurz}}</mat-option>
+
+                  <mat-form-field  >
+                    <mat-select placeholder="Schulklasse" [(ngModel)]="selectedSchulklasse" required formControlName="klasse">
+                      <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
                     </mat-select>
-
+                    <mat-error *ngIf="isFieldValid('klasse')">Klasse erforderlich </mat-error>
                   </mat-form-field>
-                  <mat-form-field>
-                    <mat-select placeholder="Tisch" [(ngModel)]="selectedTisch" required>
-                      <mat-option *ngFor="let tisch of tischeToZimmer" [value]="tisch">{{tisch.tableNumber}}</mat-option>
 
+                  <mat-form-field >
+                    <mat-select placeholder="Schulzimmer" [(ngModel)]="selectedSchulzimmer" required formControlName="zimmer">
+                      <mat-option *ngFor="let zimmer of zimmerToPerson" [value]="zimmer">{{zimmer.name}}</mat-option>
                     </mat-select>
-
+                    <mat-error *ngIf="isFieldValid('zimmer')">Zimmer erforderlich </mat-error>
                   </mat-form-field>
+
+                  <div *ngIf="showDetailConfiguration()">
+                    <mat-form-field  > 
+                      <mat-select placeholder="Typ der Regel" [(ngModel)]="selectedType" required formControlName="type">
+                        <mat-option *ngFor="let type of regelTypes" [value]="type">{{type}}</mat-option>
+
+                      </mat-select>
+                      <mat-error *ngIf="isFieldValid('type')">Typ erforderlich </mat-error>
+                    </mat-form-field  >
+
+                    <mat-form-field >
+                      <mat-select placeholder="Schüler" [(ngModel)]="selectedSchueler" required formControlName="schueler">
+                        <mat-option *ngFor="let schueler of schuelerToKlasse" [value]="schueler">{{schueler.vorname}}
+                          {{schueler.nameKurz}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="isFieldValid('schueler')">Schüler erforderlich </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  >
+                      <mat-select placeholder="Tisch" [(ngModel)]="selectedTisch" required formControlName="tisch">
+                        <mat-option *ngFor="let tisch of tischeToZimmer" [value]="tisch">{{tisch.tableNumber}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="isFieldValid('tisch')">Tisch erforderlich </mat-error>
+                    </mat-form-field>
+                  </div>
+
                 </div>
+              </form>
 
-              </div>
 
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="accent" (click)="addRegel()">Hinzufügen</button>
+              <button mat-raised-button  color="accent" [disabled]="!myForm.valid" (click)="addRegel()">Hinzufügen</button>
             </mat-card-actions>
           </mat-card>
-          <button mat-raised-button class="save-button" color="accent"  [disabled]="!savingIsActiv" (click)="saveRegeln()">Speichern</button>
+
         </div>
+        <button mat-raised-button class="save-button" color="accent" [disabled]="!savingIsActiv" (click)="saveRegeln()">Speichern</button>
       </div>
 
 
 
     </div>
-    <div class="col-md-6">
+    <div class="col-md-7">
       <div class="column2">
         <mat-card>
           <mat-card-header>
@@ -126,7 +131,7 @@
                 <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
                 <mat-cell *matCellDef="let element">
                   <span>
-                    <mat-icon matListIcon (click) ="deleteRegel(element)">delete</mat-icon>
+                    <mat-icon matListIcon (click)="deleteRegel(element)">delete</mat-icon>
                   </span>
                 </mat-cell>
               </ng-container>
@@ -134,9 +139,9 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-            
+
             </mat-table>
-            <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" [showFirstLastButtons]="true">
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" [showFirstLastButtons]="true">
             </mat-paginator>
           </mat-card-content>
         </mat-card>
@@ -146,6 +151,7 @@
 
   </div>
 
-  <div id ="center" style="position:fixed;top:50%;left:50%">
-      <mat-spinner *ngIf="isSaving ||isLoadingRegeln || isLoadingSchulzimmer || isLoadingSchulklasse"></mat-spinner></div>
+  <div id="center" style="position:fixed;top:50%;left:50%">
+    <mat-spinner *ngIf="isSaving || (isLoadingRegeln || isLoadingSchulzimmer || isLoadingSchulklasse)"></mat-spinner>
+  </div>
 </div>

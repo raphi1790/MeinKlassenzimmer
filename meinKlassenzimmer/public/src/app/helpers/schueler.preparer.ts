@@ -17,6 +17,7 @@ export class SchuelerPreparer {
             if(inputSchueler[index].name == undefined){
                 outputSchueler[index] = new Schueler();
                 outputSchueler[index].id = inputSchueler[index].id;
+                outputSchueler[index].schulklassenId = inputSchueler[index].schulklassenId;
                 outputSchueler[index].vorname = inputSchueler[index].vorname;
                 outputSchueler[index].name = null;
                 outputSchueler[index].nameKurz = null;
@@ -24,6 +25,7 @@ export class SchuelerPreparer {
             }else{
                 outputSchueler[index] = new Schueler();
                 outputSchueler[index].id = inputSchueler[index].id;
+                outputSchueler[index].schulklassenId = inputSchueler[index].schulklassenId;
                 outputSchueler[index].vorname = inputSchueler[index].vorname;
                 outputSchueler[index].name = inputSchueler[index].name;
                 outputSchueler[index].nameKurz = inputSchueler[index].nameKurz;

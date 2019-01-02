@@ -2,13 +2,15 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Schulzimmer } from 'app/models/schulzimmer';
 import { SchulzimmerService } from "app/services/schulzimmer.service";
 import { Tisch } from '../../models/tisch';
-import { AuthService } from '../../services/auth/auth.service';
 import { TischOutput } from '../../models/output.tisch';
 import { TischOutputPreparer } from '../../helpers/tischOutput.preparer';
 import { FormControl, Validators } from '@angular/forms';
 import * as uuidv4 from 'uuid/v4';
 
 import * as CONFIG from '../../../config.json';
+import { Regel } from 'app/models/regel';
+import { RegelService } from 'app/services/regel.service';
+import { RegelChecker } from 'app/helpers/regel.checker';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -22,32 +24,43 @@ export class SchulzimmerComponent implements OnInit {
   columnSchulzimmer: number[];
   rowSchulzimmer: number[];
   schulzimmerToPerson :Schulzimmer[];
+  regelnToPerson: Regel[];
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
   preparedTischOutput: TischOutput[][];
   tischOutputPreparer: TischOutputPreparer;
   savingIsActiv : boolean;
-  isLoading: boolean;
+  isLoadingSchulzimmer: boolean;
+  isLoadingRegeln: boolean;
   neuesSchulzimmerName: string;
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   isSaving: boolean;
   currentTableNumber: number;
+  regelChecker:RegelChecker
 
   
   @Input() personid: number
+  
 
-  constructor(private schulzimmerService: SchulzimmerService ) {
+  constructor(private schulzimmerService: SchulzimmerService, private regelService: RegelService ) {
     this.currentTableNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
+    this.regelChecker = new  RegelChecker();
   }
 
-  getSchulzimmerToPerson() {
+  loadInputData() {
 
     this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(
       (data:Schulzimmer[]) => {
         this.schulzimmerToPerson = data;
-        this.isLoading = false;
+        this.isLoadingSchulzimmer = false;
+        this.regelService.getRegelByPersonid().subscribe(
+          (data:Regel[]) => {
+            debugger;
+            this.regelnToPerson = data;
+            this.isLoadingRegeln = false;
+          });
       }
     );
   }
@@ -82,11 +95,17 @@ export class SchulzimmerComponent implements OnInit {
 };
 
   deleteSchulzimmer(schulzimmer: Schulzimmer):void{
-    this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
-      item =>
-        item.id !== schulzimmer.id);
-    this.selectedSchulzimmer = null;    
-    this.savingIsActiv = true; 
+    if(!this.regelChecker.regelExistsToSchulzimmer(schulzimmer,this.regelnToPerson)){
+      this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
+        item =>
+          item.id !== schulzimmer.id);
+      this.selectedSchulzimmer = null;    
+      this.savingIsActiv = true; 
+    }else{
+      window.confirm("Es existieren noch Regeln zu diesem Schulzimmer, weshalb es nicht gelöscht werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+
+    }
+   
   }
 
   addSchulzimmerTmp(): void {
@@ -147,9 +166,9 @@ export class SchulzimmerComponent implements OnInit {
 
   ngOnInit() {
     debugger;
-    this.isLoading = true;
-    // this.personDbHelper.getPerson();
-    this.getSchulzimmerToPerson();
+    this.isLoadingSchulzimmer = true;
+    this.isLoadingRegeln = true;
+    this.loadInputData();
 
   }
 

@@ -5,6 +5,8 @@ import {Schueler} from 'app/models/schueler';
 import { MatTable,MatPaginator, MatTableDataSource } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 import * as uuidv4 from 'uuid/v4';
+import { Regel } from 'app/models/regel';
+import { RegelChecker } from 'app/helpers/regel.checker';
 
 
 
@@ -15,14 +17,17 @@ import * as uuidv4 from 'uuid/v4';
   styleUrls: ['./schueler.component.css']
 })
 export class SchuelerComponent implements OnChanges{
+  regelChecker: RegelChecker;
 
 
   constructor(private ref: ChangeDetectorRef) {
     this.schulklasse.schueler = new Array();
+    this.regelChecker = new RegelChecker();
     this.anzahlSchueler = 0;
 
   }
-  @Input('selectedSchulklasse')  selectedSchulklasse: Schulklasse; 
+  @Input('selectedSchulklasse')  selectedSchulklasse: Schulklasse;
+  @Input('regelnToPerson') regelnToPerson: Regel[];
   @Output() noteSchulklasse: EventEmitter<Schulklasse> = new EventEmitter<Schulklasse>();
   @ViewChild(MatTable) table: MatTable<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -45,15 +50,21 @@ export class SchuelerComponent implements OnChanges{
 
   deleteSchueler(deletedSchueler: Schueler):void{
     debugger;
-    this.schulklasse.schueler = this.schulklasse.schueler.filter(
-      item => item.id != deletedSchueler.id
-    );
+    if(!this.regelChecker.regelExistsToSchueler(deletedSchueler, this.regelnToPerson)){
+      this.schulklasse.schueler = this.schulklasse.schueler.filter(
+        item => item.id != deletedSchueler.id
+      );
+  
+      console.log("Klasse nach Update (Delete):");
+      console.log(this.schulklasse);
+      this.dataSource.data = this.schulklasse.schueler;
+      this.noteSchulklasse.emit(this.schulklasse);
+      this.anzahlSchueler--;
+    }else{
+      window.confirm("Es existieren noch Regeln zu diesem Schüler, weshalb er nicht gelöscht werden kann. Bitte lösche zuerst die entsprechende Regeln.");
 
-    console.log("Klasse nach Update (Delete):");
-    console.log(this.schulklasse);
-    this.dataSource.data = this.schulklasse.schueler;
-    this.noteSchulklasse.emit(this.schulklasse);
-    this.anzahlSchueler--;
+    }
+    
   
     
   };

@@ -4,7 +4,7 @@
   }
   .mat-form-field {
     display: block;
-    width: 50%
+    width: 100%
 }  
 .mat-card-header {
   display: grid;
@@ -17,7 +17,7 @@
   max-height: 500px;
 }
 .mat-column-select {
-  overflow: initial;
+  overflow: visible;
 }
 .mat-checkbox  {
   position: relative;

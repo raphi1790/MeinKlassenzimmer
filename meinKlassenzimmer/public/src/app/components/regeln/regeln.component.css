@@ -2,13 +2,22 @@
     display: flex;
     flex-direction: column;
   }
-  .mat-form-field {
-    display: block;
-    width: 50%
-}  
+
+  .input-form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mat-form-field{
+    width: 100%
+}
+  
 .mat-card-header {
   display: grid;
 }  
 .mat-card-header-text {
   margin: 0 0px;
+}
+.save-button{
+  float: right;
 }

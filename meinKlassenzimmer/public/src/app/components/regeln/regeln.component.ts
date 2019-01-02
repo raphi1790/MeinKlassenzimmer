@@ -13,6 +13,7 @@ import { RegelEnricher } from '../../helpers/regel.enricher';
 import { Observable } from 'rxjs';
 import { OutputRegel } from 'app/models/output.regel';
 import * as uuidv4 from 'uuid/v4';
+import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-regeln',
@@ -38,17 +39,26 @@ export class RegelnComponent implements OnInit {
   regelTypes = ['Fester Sitzplatz']
   schuelerToKlasse:Schueler[];
   tischeToZimmer: Tisch[];
-
   displayedColumns = ['beschreibung', 'type', 'klasse', 'zimmer',  'schueler', 'tischNumber', 'symbol'];
   selectedType: string;
   selectedSchueler: Schueler;
   selectedTisch: Tisch;
   selectedBeschreibung: string;
   regelEnricher: RegelEnricher
+  myForm: FormGroup;
+  beschreibung: FormControl;
+  klasse: FormControl;
+  zimmer: FormControl;
+  type: FormControl;
+  schueler: FormControl;
+  tisch: FormControl;
+  formSubmitAttempt: boolean;
+
 
 
   constructor(private regelService: RegelService, private klassenService: SchulklassenService 
-         ,private zimmerService : SchulzimmerService         ) 
+         ,private zimmerService : SchulzimmerService  
+             ) 
   {
      this.regelEnricher = new RegelEnricher();
 
@@ -59,8 +69,6 @@ export class RegelnComponent implements OnInit {
   dataSource = new MatTableDataSource<OutputRegel>();
 
  
-//   neueSchulklasseName: string
-//   neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
 
 loadInputData() {
     
@@ -100,17 +108,8 @@ showDetailConfiguration(): boolean {
 }
 
 
-//   getErrorMessageNeueSchulklasse() {
-//     return this.neueSchulklasseForm.hasError('required') ? 'Wert erforderlich' :
-//         this.neueSchulklasseForm.hasError('minlength') ? 'Name zu kurz' :
-//             '';
-//   }
 
-
-
-//   }
   deleteRegel(regelOutput: OutputRegel):void{
-
     this.regelnToPerson = this.regelnToPerson.filter(
       item =>
         item.id !== regelOutput.regelId);
@@ -121,33 +120,38 @@ showDetailConfiguration(): boolean {
 
   addRegel(): void {
     debugger;
-    var neueRegelTmp = new Regel();
-    neueRegelTmp.id = uuidv4();
-    neueRegelTmp.beschreibung = this.selectedBeschreibung;
-    neueRegelTmp.type = this.selectedType;
-    neueRegelTmp.schueler1Id = this.selectedSchueler.id;
-    neueRegelTmp.tischId = this.selectedTisch.id
-    this.regelnToPerson.push(neueRegelTmp);
+    if (this.myForm.valid) {
+      
+      var neueRegelTmp = new Regel();
+      neueRegelTmp.id = uuidv4();
+      neueRegelTmp.beschreibung = this.selectedBeschreibung;
+      neueRegelTmp.type = this.selectedType;
+      neueRegelTmp.schueler1Id = this.selectedSchueler.id;
+      neueRegelTmp.tischId = this.selectedTisch.id
+      this.regelnToPerson.push(neueRegelTmp);
+      this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
+      this.savingIsActiv = true;
+      this.myForm.reset();
+      this.formSubmitAttempt = false;
+    }
 
-    this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
-    this.savingIsActiv = true;
-        
-    // this.neueSchulklasseName = null;
-
-    // this.neueSchulklasseForm.markAsPristine();
-    // this.neueSchulklasseForm.markAsUntouched();
-    // this.neueSchulklasseForm.updateValueAndValidity();
-
+  }
+  isFieldValid(field: string) {
+    return (
+      (!this.myForm.get(field).valid && (this.myForm.get(field).touched || this.myForm.get(field).dirty)) ||
+      (this.myForm.get(field).untouched && this.formSubmitAttempt)
+ 
+    );
   }
   
 
+  
 
   
   async saveRegeln(): Promise<void> {
     debugger;
     this.savingIsActiv = false; 
     this.isSaving = true;
-    // this.personDbHelper.savePerson();
     await this.regelService.updateRegeln(this.regelnToPerson).subscribe(() => this.isSaving = false);
   }
 
@@ -158,13 +162,40 @@ showDetailConfiguration(): boolean {
 
   ngOnInit(){
     debugger;
-    
+    this.createFormControls();
+    this.createForm();
     this.isLoadingSchulklasse = true;
     this.isLoadingSchulzimmer = true;
     this.isLoadingRegeln = true;
     this.loadInputData();
 
   }
+  createFormControls() {
+    this.beschreibung = new FormControl(null, Validators.required);
+    this.klasse = new FormControl(null, Validators.required);
+    this.zimmer = new FormControl(null, Validators.required);
+    this.schueler = new FormControl(null, Validators.required);
+    this.type = new FormControl(null, Validators.required);
+    this.tisch = new FormControl(null, Validators.required);
+
+  }
+  createForm() {
+    this.myForm = new FormGroup({
+      beschreibung: this.beschreibung,
+      klasse : this.klasse,
+      zimmer : this.zimmer,
+      type : this.type,
+      tisch : this.tisch,
+      schueler : this.schueler,
+    });
+  }
+  displayFieldCss(field: string) {
+    return {
+      'has-error': this.isFieldValid(field),
+      'has-feedback': this.isFieldValid(field)
+    };
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
