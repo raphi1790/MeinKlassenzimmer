@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { TischOutput } from '../../models/output.tisch';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
+import { Regel } from 'app/models/regel';
+import { RegelChecker } from 'app/helpers/regel.checker';
 
 @Component({
   selector: 'app-tisch',
@@ -11,12 +13,17 @@ import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
   ]
 })
 export class TischComponent implements OnChanges {
+  regelChecker: RegelChecker;
 
-  constructor() { }
+
+  constructor() {
+    this.regelChecker = new RegelChecker();
+   }
 
 
   @Input('TischOutput') tischOutput: TischOutput;
   @Input('currentTableNumber') currentTableNumber: number;
+  @Input('regelnToPerson') regelnToPerson: Regel[];
 
   @Output() noteSchulzimmer: EventEmitter<TischOutput> = new EventEmitter<TischOutput>();
   @Output() noteSchulzimmerTableNumber: EventEmitter<number> = new EventEmitter<number>();
@@ -59,15 +66,21 @@ export class TischComponent implements OnChanges {
     debugger;
     console.log("Selektieren Tisch")
     if (this.tischOutput.selected) {
-      this.tischStyle = 'unselectedTischStyle';
-      this.tischOutput.selected = false;
-      this.tischActive = false;
-      this.tischDisabled = true;
-      this.tischOutput.tableNumber = null; 
-      this.tableNumber = null;
-
+      if(!this.regelChecker.regelExistsToTischId(this.tischOutput.tischId, this.regelnToPerson)){
+        this.tischStyle = 'unselectedTischStyle';
+        this.tischOutput.selected = false;
+        this.tischActive = false;
+        this.tischDisabled = true;
+        this.tischOutput.tableNumber = null; 
+        this.tableNumber = null;
+        this.tischOutput.active = this.tischActive;
+        this.noteSchulzimmer.emit(this.tischOutput);
+        this.noteSchulzimmerTableNumber.emit(this.currentTableNumber);
+      }
+      else{
+        window.confirm("Es existieren noch Regeln zu diesem Tisch, weshalb er nicht gelöscht werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+      }
      
-      
     } else {
       this.tischStyle = 'selectedTischStyle';
       this.tischOutput.selected = true;
@@ -75,31 +88,37 @@ export class TischComponent implements OnChanges {
       this.tischDisabled = false;
       this.currentTableNumber++ ;
       this.tischOutput.tableNumber = this.currentTableNumber; 
+      this.tischOutput.active = this.tischActive;
+      this.noteSchulzimmer.emit(this.tischOutput);
+      this.noteSchulzimmerTableNumber.emit(this.currentTableNumber);
 
 
     }
-    this.tischOutput.active = this.tischActive;
-    this.noteSchulzimmer.emit(this.tischOutput);
-    this.noteSchulzimmerTableNumber.emit(this.currentTableNumber);
+    
   }
 
   activateTisch():void{
     debugger;
     if(!this.tischDisabled){
       if(this.tischActive){
-        this.tischActive = false;
-        console.log("Tisch-Checkbox (Active): "+ this.tischActive);
-        console.log("Tisch-Checkbox (Disabled): "+ this.tischDisabled);
+        if(!this.regelChecker.regelExistsToTischId(this.tischOutput.tischId, this.regelnToPerson)){
+          this.tischActive = false;
+          this.tischOutput.active = this.tischActive;
+          this.noteSchulzimmer.emit(this.tischOutput);
+        }else{
+          window.confirm("Es existieren noch Regeln zu diesem Tisch, weshalb er nicht deaktiviert werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+        }
+        
   
       }
       else{
         this.tischActive =  true;
-        console.log("Tisch-Checkbox (Active): "+ this.tischActive);
-        console.log("Tisch-Checkbox (Disabled): "+ this.tischDisabled);
+        this.tischOutput.active = this.tischActive;
+        this.noteSchulzimmer.emit(this.tischOutput);
+      
       }
     }
-    this.tischOutput.active = this.tischActive;
-    this.noteSchulzimmer.emit(this.tischOutput);
+    
     
    
   }

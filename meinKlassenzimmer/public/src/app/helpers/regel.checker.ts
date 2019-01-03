@@ -22,15 +22,15 @@ export class RegelChecker{
         });
         return regelExistsToKlasse
     }
-    regelExistsToTisch(inputTisch: Tisch, inputRegeln: Regel[]): boolean{
+    regelExistsToTischId(inputTischId: string, inputRegeln: Regel[]): boolean{
         debugger;
-        return inputRegeln.some(regel => regel.tischId === inputTisch.id)
+        return inputRegeln.some(regel => regel.tischId === inputTischId)
     }
     regelExistsToSchulzimmer(inputZimmer: Schulzimmer, inputRegeln: Regel[]): boolean{
         debugger;
         let regelExistsToZimmer = false;
         inputZimmer.tische.forEach(tisch => {
-            if(this.regelExistsToTisch(tisch,inputRegeln)){
+            if(this.regelExistsToTischId(tisch.id ,inputRegeln)){
                 regelExistsToZimmer= true;
             }
         });

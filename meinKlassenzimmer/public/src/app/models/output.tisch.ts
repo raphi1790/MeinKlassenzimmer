@@ -7,6 +7,7 @@ export class TischOutput{
     selected: boolean;
     active: boolean;
     tableNumber: number;
+    tischId: string;
 
 
 }

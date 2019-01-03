@@ -33,6 +33,7 @@ export class TischOutputPreparer {
                 preparedTischOutput[row][column].selected = false;
                 preparedTischOutput[row][column].active = false;
                 preparedTischOutput[row][column].tableNumber = null;
+                preparedTischOutput[row][column].tischId = null;
                 preparedTischOutput[row][column].position = new PositionTisch(row,column);
                 
             }
@@ -44,6 +45,7 @@ export class TischOutputPreparer {
             preparedTischOutput[row][column].selected = true ;
             preparedTischOutput[row][column].active = inputSchulzimmer.tische[index].active;
             preparedTischOutput[row][column].tableNumber = inputSchulzimmer.tische[index].tableNumber
+            preparedTischOutput[row][column].tischId = inputSchulzimmer.tische[index].id;
         }
 
         return preparedTischOutput;

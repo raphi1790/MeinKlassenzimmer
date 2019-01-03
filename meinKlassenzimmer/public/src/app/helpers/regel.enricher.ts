@@ -38,7 +38,11 @@ export class RegelEnricher {
             regelnOutput[indexRegel].beschreibung = regeln[indexRegel].beschreibung;
             regelnOutput[indexRegel].type = regeln[indexRegel].type;
             regelnOutput[indexRegel].klasse = chosenKlasse[0].name;
-            regelnOutput[indexRegel].schueler = chosenSchueler[0][0].vorname + ' ' + chosenSchueler[0][0].nameKurz ;
+            if(chosenSchueler[0][0].name == null){
+                regelnOutput[indexRegel].schueler = chosenSchueler[0][0].vorname
+            }else{
+                regelnOutput[indexRegel].schueler = chosenSchueler[0][0].vorname + ' ' + chosenSchueler[0][0].nameKurz ;
+            }
             regelnOutput[indexRegel].tischNumber = chosenTisch[0][0].tableNumber;
             regelnOutput[indexRegel].zimmer = chosenZimmer[0].name;
             
