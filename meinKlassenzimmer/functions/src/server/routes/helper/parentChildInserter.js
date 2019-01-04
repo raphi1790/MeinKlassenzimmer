@@ -1,5 +1,4 @@
-var foreignKeyPreparer = require('./foreignKeyPreparer');
-var mappingTableCreator = require('./mappingTableCreator');
+
 const async = require('async');
 
 
