@@ -40,12 +40,11 @@ export class TischSchuelerPreparer {
         debugger;
         var schuelerRandomizedPrepared: Schueler[];
         var indexSchueler = 0;
-        var activeTische = inputSelectedTische.filter(item => item.active == true);
         let fixedTische = inputSelectedTische.filter(item => inputRegeln.map(regel => regel.tischId).includes(item.id) );
         let flexibleTische = inputSelectedTische.filter(item => !inputRegeln.map(regel => regel.tischId).includes(item.id) )
-        let fixedSchueler = inputSchueler.filter(item => inputRegeln.map(regel => regel.schueler1Id).includes(item.id) );
+        let flexibleActiveTische = flexibleTische.filter(tisch => tisch.active == true);
         let flexibleSchueler = inputSchueler.filter(item => !inputRegeln.map(regel => regel.schueler1Id).includes(item.id) );
-        schuelerRandomizedPrepared = this.randomizer.randomizeSchueler(flexibleSchueler, flexibleTische.length);
+        schuelerRandomizedPrepared = this.randomizer.randomizeSchueler(flexibleSchueler, flexibleActiveTische.length);
         const checkTischFixedExists = tischIdParam => fixedTische.some( ({id}) => id == tischIdParam)
         for (let index = 0; index < inputSelectedTische.length; index++) {
             var row = inputSelectedTische[index].position.row;
