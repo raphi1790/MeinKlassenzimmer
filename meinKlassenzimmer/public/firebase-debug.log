@@ -1,0 +1,32 @@
+[debug] [2019-01-13T21:26:17.823Z] ----------------------------------------------------------------------
+[debug] [2019-01-13T21:26:17.826Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2019-01-13T21:26:17.826Z] CLI Version:   4.2.1
+[debug] [2019-01-13T21:26:17.826Z] Platform:      win32
+[debug] [2019-01-13T21:26:17.826Z] Node Version:  v11.6.0
+[debug] [2019-01-13T21:26:17.827Z] Time:          Sun Jan 13 2019 22:26:17 GMT+0100 (GMT+01:00)
+[debug] [2019-01-13T21:26:17.827Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-01-13T21:26:17.839Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-01-13T21:26:17.841Z] > authorizing via signed-in user
+[debug] [2019-01-13T21:26:17.843Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-01-13T21:26:18.505Z] <<< HTTP RESPONSE 200
+[debug] [2019-01-13T21:26:18.510Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-01-13T21:26:19.376Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\MeinKlassenzimmer'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2019-01-13T21:26:20.132Z] Fetching environment
+[debug] [2019-01-13T21:26:20.135Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-01-13T21:26:20.135Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-01-13T21:26:20.332Z] <<< HTTP RESPONSE 200
+[debug] [2019-01-13T21:26:20.333Z] Starting @google-cloud/functions-emulator
+[debug] [2019-01-13T21:26:20.444Z] <<< HTTP RESPONSE 200
+[info] i  hosting[meinklassenzimmer-184820]: Serving hosting files from: public/dist
+[info] +  hosting[meinklassenzimmer-184820]: Local server: http://localhost:5000
+[debug] [2019-01-13T21:26:22.369Z] Parsing function triggers
+[info] +  functions: myfirebasefunction: http://localhost:5001/meinklassenzimmer-184820/us-central1/myfirebasefunction

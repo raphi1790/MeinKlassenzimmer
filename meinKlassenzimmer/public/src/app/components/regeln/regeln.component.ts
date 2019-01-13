@@ -11,9 +11,10 @@ import { Tisch } from '../../models/tisch';
 import { MatTable, MatPaginator, MatTableDataSource } from '@angular/material';
 import { RegelEnricher } from '../../helpers/regel.enricher';
 import { Observable } from 'rxjs';
-import { OutputRegel } from 'app/models/output.regel';
+import { OutputRegelTisch } from 'app/models/output.regel.sitzordnung';
 import * as uuidv4 from 'uuid/v4';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { OutputRegelPaarung } from 'app/models/output.regel.paarung';
 
 @Component({
   selector: 'app-regeln',
@@ -36,21 +37,28 @@ export class RegelnComponent implements OnInit {
   isLoadingSchulklasse: boolean;
   isLoadingSchulzimmer: boolean;
   regelnToPerson: Regel[];
-  regelTypes = ['Fester Sitzplatz']
+  regelTypes = ['Fester Sitzplatz', 'Unmögliche Paarung']
   schuelerToKlasse:Schueler[];
   tischeToZimmer: Tisch[];
-  displayedColumns = ['beschreibung', 'type', 'klasse', 'zimmer',  'schueler', 'tischNumber', 'symbol'];
+  displayedColumnsSitzplatz = ['beschreibung', 'type', 'klasse', 'zimmer',  'schueler', 'tischNumber', 'symbol'];
+  displayedColumnsPaarung = ['beschreibung', 'type', 'klasse',  'schueler1', 'schueler2', 'symbol'];
   selectedType: string;
   selectedSchueler: Schueler;
+  selectedSchueler1: Schueler;
+  selectedSchueler2: Schueler;
   selectedTisch: Tisch;
   selectedBeschreibung: string;
   regelEnricher: RegelEnricher
-  myForm: FormGroup;
+  myFormBase: FormGroup;
+  myFormFesterSitzplatz: FormGroup;
+  myFormPaarung: FormGroup;
   beschreibung: FormControl;
   klasse: FormControl;
   zimmer: FormControl;
   type: FormControl;
   schueler: FormControl;
+  schueler1: FormControl;
+  schueler2: FormControl;
   tisch: FormControl;
   formSubmitAttempt: boolean;
 
@@ -63,10 +71,13 @@ export class RegelnComponent implements OnInit {
      this.regelEnricher = new RegelEnricher();
 
   }
-  @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChild(MatTable) tableSitzplatz: MatTable<any>;
+  @ViewChild(MatTable) tablePaarung: MatTable<any>;
+  
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  dataSource = new MatTableDataSource<OutputRegel>();
+  dataSourceSitzplatz = new MatTableDataSource<OutputRegelTisch>();
+  dataSourcePaarung = new MatTableDataSource<OutputRegelPaarung>();
 
  
 
@@ -81,9 +92,10 @@ loadInputData() {
                 (data:Regel[]) => {
                   debugger;
                   this.regelnToPerson = data;
-                  this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson)
+                  this.enrichRegeln(this.regelnToPerson);
                   console.log("Enriched Regeln");
-                  console.log(this.dataSource);
+                  console.log(this.dataSourceSitzplatz);
+                  console.log(this.dataSourcePaarung);
                   this.isLoadingRegeln = false;
                 });
             })
@@ -95,58 +107,106 @@ loadInputData() {
     }
       
 
-showDetailConfiguration(): boolean {
-  var showDetailConfiguration = false;
-  if (this.selectedSchulklasse != undefined && this.selectedSchulzimmer != undefined){
-    this.schuelerToKlasse =  this.selectedSchulklasse.schueler;
-    this.tischeToZimmer = this.selectedSchulzimmer.tische.filter(tisch => tisch.active == true);
-    showDetailConfiguration = true;
+showDetailConfigurationFesterSitzplatz(): boolean {
+    var showDetailConfigurationFesterSitzplatz = false;
+    if (this.selectedSchulklasse != undefined 
+         && this.selectedType == "Fester Sitzplatz"){
+          
+      this.schuelerToKlasse =  this.selectedSchulklasse.schueler;
+      showDetailConfigurationFesterSitzplatz = true;
 
-  }
-  return showDetailConfiguration;
+    }
+    return showDetailConfigurationFesterSitzplatz;
 
 }
+showDetailConfigurationUnpassendePaarung(): boolean {
+  var showDetailConfigurationPaarung = false;
+  if (this.selectedSchulklasse != undefined 
+      && this.selectedType == "Unmögliche Paarung"){
+        
+    this.schuelerToKlasse =  this.selectedSchulklasse.schueler;
+    showDetailConfigurationPaarung = true;
+
+  }
+  return showDetailConfigurationPaarung;
+
+}
+  enrichRegeln(regeln:Regel[]){
+    let regelnTypeSitzplatz = regeln.filter(regel => regel.type == "Fester Sitzplatz");
+    let regelnTypePaarung = regeln.filter(regel => regel.type == "Unmögliche Paarung");
+    this.dataSourceSitzplatz.data = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, regelnTypeSitzplatz);
+    this.dataSourcePaarung.data = this.regelEnricher.enrichedRegelPaarung(this.klassenToPerson, regelnTypePaarung);
+  }
 
 
 
-  deleteRegel(regelOutput: OutputRegel):void{
+
+  deleteRegelSitzplatz(regelOutput: OutputRegelTisch):void{
     this.regelnToPerson = this.regelnToPerson.filter(
       item =>
         item.id !== regelOutput.regelId);
     this.savingIsActiv = true;
-    this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
+    this.dataSourceSitzplatz.data = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
+
+  }
+  deleteRegelPaarung(regelOutput: OutputRegelPaarung):void{
+    this.regelnToPerson = this.regelnToPerson.filter(
+      item =>
+        item.id !== regelOutput.regelId);
+    this.savingIsActiv = true;
+    this.dataSourcePaarung.data = this.regelEnricher.enrichedRegelPaarung(this.klassenToPerson,  this.regelnToPerson);
 
   }
 
   addRegel(): void {
     debugger;
-    if (this.myForm.valid) {
-      
+    this.formSubmitAttempt = true;
+    if (this.myFormBase.valid && (this.myFormFesterSitzplatz.valid ||  this.myFormPaarung.valid) ){
       var neueRegelTmp = new Regel();
-      neueRegelTmp.id = uuidv4();
-      neueRegelTmp.beschreibung = this.selectedBeschreibung;
-      neueRegelTmp.type = this.selectedType;
-      neueRegelTmp.schueler1Id = this.selectedSchueler.id;
-      neueRegelTmp.tischId = this.selectedTisch.id
+        neueRegelTmp.id = uuidv4();
+        neueRegelTmp.beschreibung = this.selectedBeschreibung;
+        neueRegelTmp.type = this.selectedType;
+      if(this.myFormFesterSitzplatz.valid){
+        neueRegelTmp.schueler1Id = this.selectedSchueler.id;
+        neueRegelTmp.tischId = this.selectedTisch.id
+      }else{
+        neueRegelTmp.schueler1Id = this.selectedSchueler1.id;
+        neueRegelTmp.schueler2Id = this.selectedSchueler2.id;
+
+      }
       this.regelnToPerson.push(neueRegelTmp);
-      this.dataSource.data = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
+      this.enrichRegeln(this.regelnToPerson);
       this.savingIsActiv = true;
-      this.myForm.reset();
+      this.myFormBase.reset();
+      this.myFormFesterSitzplatz.reset();
+      this.myFormPaarung.reset();
       this.formSubmitAttempt = false;
     }
 
   }
-  isFieldValid(field: string) {
+
+  addButtonActive(): boolean{
+    return(
+      this.myFormBase.valid && (this.myFormFesterSitzplatz.valid || this.myFormPaarung.valid)
+    )
+  }
+  resetChildForms(){
+    this.myFormFesterSitzplatz.reset();
+    this.myFormPaarung.reset();
+  }
+  selectZimmer(){
+    this.tischeToZimmer = this.selectedSchulzimmer.tische.filter(tisch => tisch.active == true);
+  }
+
+  isFieldValid(form: FormGroup, field: string) {
     return (
-      (!this.myForm.get(field).valid && (this.myForm.get(field).touched || this.myForm.get(field).dirty)) ||
-      (this.myForm.get(field).untouched && this.formSubmitAttempt)
+      (!form.get(field).valid && (form.get(field).touched 
+        || form.get(field).dirty)) ||
+      (form.get(field).untouched && this.formSubmitAttempt)
  
     );
   }
   
-
-  
-
   
   async saveRegeln(): Promise<void> {
     debugger;
@@ -175,29 +235,33 @@ showDetailConfiguration(): boolean {
     this.klasse = new FormControl(null, Validators.required);
     this.zimmer = new FormControl(null, Validators.required);
     this.schueler = new FormControl(null, Validators.required);
+    this.schueler1 = new FormControl(null, Validators.required);
+    this.schueler2 = new FormControl(null, Validators.required);
     this.type = new FormControl(null, Validators.required);
     this.tisch = new FormControl(null, Validators.required);
 
   }
   createForm() {
-    this.myForm = new FormGroup({
+    this.myFormBase = new FormGroup({
       beschreibung: this.beschreibung,
       klasse : this.klasse,
+      type : this.type
+    });
+    this.myFormFesterSitzplatz = new FormGroup({
       zimmer : this.zimmer,
-      type : this.type,
       tisch : this.tisch,
-      schueler : this.schueler,
+      schueler : this.schueler
+    });
+    this.myFormPaarung = new FormGroup({
+      schueler1 : this.schueler1,
+      schueler2 : this.schueler2
     });
   }
-  displayFieldCss(field: string) {
-    return {
-      'has-error': this.isFieldValid(field),
-      'has-feedback': this.isFieldValid(field)
-    };
-  }
+
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.dataSourceSitzplatz.paginator = this.paginator;
+    this.dataSourcePaarung.paginator = this.paginator;
   }
 
  

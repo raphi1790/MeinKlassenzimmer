@@ -1,4 +1,4 @@
-export class OutputRegel{
+export class OutputRegelTisch{
     regelId: string;
     beschreibung: string;
     type: string;

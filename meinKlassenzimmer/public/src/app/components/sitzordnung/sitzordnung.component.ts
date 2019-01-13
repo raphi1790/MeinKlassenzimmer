@@ -14,7 +14,7 @@ import { RegelService } from 'app/services/regel.service';
 import { Regel } from 'app/models/regel';
 import { RegelEnricher } from 'app/helpers/regel.enricher';
 import { MatTable, MatPaginator, MatTableDataSource, MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
-import { OutputRegel } from 'app/models/output.regel';
+import { OutputRegelTisch } from 'app/models/output.regel.sitzordnung';
 import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
@@ -44,8 +44,8 @@ export class SitzordnungComponent {
   isLoadingRegeln: boolean;
   regelEnricher: RegelEnricher;
   displayedColumns = ['select','beschreibung', 'type',   'schueler', 'tischNumber'];
-  selection = new SelectionModel<OutputRegel>(true, []);
-  enrichedRegelnToPerson: OutputRegel[];
+  selection = new SelectionModel<OutputRegelTisch>(true, []);
+  enrichedRegelnToPerson: OutputRegelTisch[];
 
 
   
@@ -60,7 +60,7 @@ export class SitzordnungComponent {
   @ViewChild(MatTable) table: MatTable<any>;
 
 
-  dataSource = new MatTableDataSource<OutputRegel>();
+  dataSource = new MatTableDataSource<OutputRegelTisch>();
 
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -90,7 +90,7 @@ export class SitzordnungComponent {
             this.regelService.getRegelByPersonid().subscribe(
               (data:Regel[]) => {
                 this.regelnToPerson = data;
-                this.enrichedRegelnToPerson = this.regelEnricher.enrichedRegel(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson)
+                this.enrichedRegelnToPerson = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson)
                 this.isLoadingRegeln = false;
               });
           })
@@ -115,7 +115,7 @@ export class SitzordnungComponent {
     return klasseAndZimmerSelected;
   }
 
-  enrichRegelnBasedOnFilter(selectedSchulklasse: Schulklasse, selectedSchulzimmer: Schulzimmer): OutputRegel[]{
+  enrichRegelnBasedOnFilter(selectedSchulklasse: Schulklasse, selectedSchulzimmer: Schulzimmer): OutputRegelTisch[]{
     return this.enrichedRegelnToPerson.filter(element => element.klasse == selectedSchulklasse.name && element.zimmer == selectedSchulzimmer.name)
 
   }
