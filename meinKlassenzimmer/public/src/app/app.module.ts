@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { RegelnComponent } from './components/regeln/regeln.component';
 import { RegelService } from './services/regel.service';
+import { SitzordnungInfoDialogComponent} from './components/sitzordnung-info-dialog/sitzordnung-info-dialog.component';
 
 
 
@@ -44,6 +45,7 @@ import { RegelService } from './services/regel.service';
     TischSchuelerComponent,
     GruppeneinteilungComponent,
     RegelnComponent,
+    SitzordnungInfoDialogComponent
     
   ],
   imports: [
@@ -64,6 +66,7 @@ import { RegelService } from './services/regel.service';
       multi: true,
    }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [SitzordnungInfoDialogComponent]
 })
 export class AppModule { }

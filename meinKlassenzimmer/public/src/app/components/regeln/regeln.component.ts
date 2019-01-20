@@ -40,8 +40,8 @@ export class RegelnComponent implements OnInit {
   regelTypes = ['Fester Sitzplatz', 'Unmögliche Paarung']
   schuelerToKlasse:Schueler[];
   tischeToZimmer: Tisch[];
-  displayedColumnsSitzplatz = ['beschreibung', 'type', 'klasse', 'zimmer',  'schueler', 'tischNumber', 'symbol'];
-  displayedColumnsPaarung = ['beschreibung', 'type', 'klasse',  'schueler1', 'schueler2', 'symbol'];
+  displayedColumnsSitzplatz = ['beschreibung',  'klasse', 'zimmer',  'schueler', 'tischNumber', 'symbol'];
+  displayedColumnsPaarung = ['beschreibung', 'klasse',  'schueler1', 'schueler2', 'symbol'];
   selectedType: string;
   selectedSchueler: Schueler;
   selectedSchueler1: Schueler;

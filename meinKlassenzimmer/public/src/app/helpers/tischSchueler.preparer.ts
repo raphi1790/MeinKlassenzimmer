@@ -40,38 +40,91 @@ export class TischSchuelerPreparer {
         debugger;
         var schuelerRandomizedPrepared: Schueler[];
         var indexSchueler = 0;
+        let regelnSitzplatz = inputRegeln.filter(regel => regel.type == "Fester Sitzplatz");
+        let regelnPaarung =  inputRegeln.filter(regel => regel.type == "Unmögliche Paarung");
         let fixedTische = inputSelectedTische.filter(item => inputRegeln.map(regel => regel.tischId).includes(item.id) );
-        let flexibleTische = inputSelectedTische.filter(item => !inputRegeln.map(regel => regel.tischId).includes(item.id) )
+        let flexibleTische = inputSelectedTische.filter(item => !regelnSitzplatz.map(regel => regel.tischId).includes(item.id) )
         let flexibleActiveTische = flexibleTische.filter(tisch => tisch.active == true);
-        let flexibleSchueler = inputSchueler.filter(item => !inputRegeln.map(regel => regel.schueler1Id).includes(item.id) );
-        schuelerRandomizedPrepared = this.randomizer.randomizeSchueler(flexibleSchueler, flexibleActiveTische.length);
-        const checkTischFixedExists = tischIdParam => fixedTische.some( ({id}) => id == tischIdParam)
-        for (let index = 0; index < inputSelectedTische.length; index++) {
-            var row = inputSelectedTische[index].position.row;
-            var column = inputSelectedTische[index].position.column;
-            this.preparedTischSchueler[row][column].tischOutput.selected = true;
-            if(inputSelectedTische[index].active == true){
-                this.preparedTischSchueler[row][column].tischOutput.active = true;
-                if(checkTischFixedExists(inputSelectedTische[index].id)){
-                    let regelToFixedTisch = inputRegeln.filter(item => item.tischId == inputSelectedTische[index].id)[0];
-                    let fixedSchueler = inputSchueler.filter(item => item.id == regelToFixedTisch.schueler1Id  )[0];
-                    this.preparedTischSchueler[row][column].schueler.nameKurz = fixedSchueler.nameKurz
-                    this.preparedTischSchueler[row][column].schueler.vorname = fixedSchueler.vorname;
+        let flexibleSchueler = inputSchueler.filter(item => !regelnSitzplatz.map(regel => regel.schueler1Id).includes(item.id) );
+        
+        
+        const checkTischFixedExists = tischIdParam => fixedTische.some( ({id}) => id == tischIdParam);
+        let countAttemp = 0;
+        do {
+            schuelerRandomizedPrepared = this.randomizer.randomizeSchueler(flexibleSchueler, flexibleActiveTische.length);
+            for (let index = 0; index < inputSelectedTische.length; index++) {
+                var row = inputSelectedTische[index].position.row;
+                var column = inputSelectedTische[index].position.column;
+                this.preparedTischSchueler[row][column].tischOutput.selected = true;
+                if(inputSelectedTische[index].active == true){
+                    this.preparedTischSchueler[row][column].tischOutput.active = true;
+                    if(checkTischFixedExists(inputSelectedTische[index].id)){
+                        let regelToFixedTisch = regelnSitzplatz.filter(item => item.tischId == inputSelectedTische[index].id)[0];
+                        let fixedSchueler = inputSchueler.filter(item => item.id == regelToFixedTisch.schueler1Id  )[0];
+                        this.preparedTischSchueler[row][column].schueler.id = fixedSchueler.id;
+                        this.preparedTischSchueler[row][column].schueler.nameKurz = fixedSchueler.nameKurz
+                        this.preparedTischSchueler[row][column].schueler.vorname = fixedSchueler.vorname;
 
-                }else{
-                    if(typeof schuelerRandomizedPrepared[indexSchueler] !== 'undefined' ){
-                        this.preparedTischSchueler[row][column].schueler.nameKurz = schuelerRandomizedPrepared[indexSchueler].nameKurz;
-                        this.preparedTischSchueler[row][column].schueler.vorname = schuelerRandomizedPrepared[indexSchueler].vorname;
+                    }else{
+                        if(typeof schuelerRandomizedPrepared[indexSchueler] !== 'undefined' ){
+                            this.preparedTischSchueler[row][column].schueler.id = schuelerRandomizedPrepared[indexSchueler].id ;
+                            this.preparedTischSchueler[row][column].schueler.nameKurz = schuelerRandomizedPrepared[indexSchueler].nameKurz;
+                            this.preparedTischSchueler[row][column].schueler.vorname = schuelerRandomizedPrepared[indexSchueler].vorname;
+                        }
+                        indexSchueler++;
+
                     }
-                    indexSchueler++;
-
+                    
+                    
                 }
-                
-                
             }
+            countAttemp ++;
 
+        } while (countAttemp <= (<any>CONFIG).numberOfAttemps && !this.paarungSatisfied(this.preparedTischSchueler,regelnPaarung));
+
+
+        
+        return (this.paarungSatisfied(this.preparedTischSchueler,regelnPaarung))? this.preparedTischSchueler: undefined;
+       
+        
+    }
+
+    paarungSatisfied(inputTischSchueler: TischSchueler[][], inputRegeln: Regel[]):boolean{
+        debugger;
+        let tischSchuelerArray = this.to1DArray(inputTischSchueler);
+        let paarungSatisfied = true;
+        inputRegeln.forEach(regel => {
+            let schueler1Id = regel.schueler1Id;
+            let schueler2Id = regel.schueler2Id;
+            let tischToSchueler1 = tischSchuelerArray.filter(item => item.schueler.id == schueler1Id);
+            let tischToSchueler2 = tischSchuelerArray.filter(item => item.schueler.id == schueler2Id);
+            let rowTisch1 = tischToSchueler1[0].tischOutput.position.row;
+            let rowTisch2 = tischToSchueler2[0].tischOutput.position.row;
+            let columnTisch1 = tischToSchueler1[0].tischOutput.position.column;
+            let columnTisch2 = tischToSchueler2[0].tischOutput.position.column;
+            if((rowTisch1 == rowTisch2 && Math.abs(columnTisch1 - columnTisch2 )<=1)
+             || columnTisch1 == columnTisch2 && Math.abs(rowTisch1 - rowTisch2 )<=1 ){
+                paarungSatisfied = false;
+             }
+                
+        });
+        return paarungSatisfied;
+    }
+    private to1DArray(array) {
+        var result=new Array<TischSchueler>();
+    
+        function to1DArray(array) {
+            for (var l=array.length,i=0;i<l;i++) {
+                if (Array.isArray(array[i])) {
+                    to1DArray(array[i]);
+                } else {
+                    result.push(array[i]);
+                }
+            }
+            return result;
         }
-        return this.preparedTischSchueler;
+    
+        return to1DArray(array);
     }
 
 

@@ -73,32 +73,19 @@
                             </mat-checkbox>
                           </mat-cell>
                         </ng-container>
-                    
                   
+                      <ng-container matColumnDef="type">
+                        <mat-header-cell *matHeaderCellDef> Typ der Regel </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+                      </ng-container>    
                     
                     <ng-container matColumnDef="beschreibung">
                       <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
                       <mat-cell *matCellDef="let element"> {{element.beschreibung}} </mat-cell>
                     </ng-container>
     
-    
-                    <ng-container matColumnDef="type">
-                      <mat-header-cell *matHeaderCellDef> Typ der Regel </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
-                    </ng-container>
-    
-    
-                    <ng-container matColumnDef="schueler">
-                      <mat-header-cell *matHeaderCellDef> Schüler </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.schueler}} </mat-cell>
-                    </ng-container>
-    
-                    <ng-container matColumnDef="tischNumber">
-                      <mat-header-cell *matHeaderCellDef> Tisch </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.tischNumber}} </mat-cell>
-                    </ng-container>
-    
-    
+  
+
     
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"

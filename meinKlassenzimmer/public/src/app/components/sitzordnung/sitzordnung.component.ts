@@ -13,9 +13,10 @@ import * as CONFIG from '../../../config.json';
 import { RegelService } from 'app/services/regel.service';
 import { Regel } from 'app/models/regel';
 import { RegelEnricher } from 'app/helpers/regel.enricher';
-import { MatTable, MatPaginator, MatTableDataSource, MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
+import { MatTable, MatPaginator, MatTableDataSource, MAT_CHECKBOX_CLICK_ACTION, MatDialog, MatDialogRef } from '@angular/material';
 import { OutputRegelTisch } from 'app/models/output.regel.sitzordnung';
 import {SelectionModel} from '@angular/cdk/collections';
+import { SitzordnungInfoDialogComponent } from '../sitzordnung-info-dialog/sitzordnung-info-dialog.component';
 
 @Component({
   selector: 'app-sitzordnung',
@@ -43,14 +44,14 @@ export class SitzordnungComponent {
   isLoadingSchulzimmer: boolean;
   isLoadingRegeln: boolean;
   regelEnricher: RegelEnricher;
-  displayedColumns = ['select','beschreibung', 'type',   'schueler', 'tischNumber'];
-  selection = new SelectionModel<OutputRegelTisch>(true, []);
-  enrichedRegelnToPerson: OutputRegelTisch[];
+  displayedColumns = ['select','type' ,'beschreibung'   ];
+  selection = new SelectionModel<Regel>(true, []);
+  sitzordnungInfoDialogRef: MatDialogRef<SitzordnungInfoDialogComponent>;
 
 
   
 
-  constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService, private regelService: RegelService) { 
+  constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService, private regelService: RegelService, public dialog: MatDialog) { 
     this.showSitzordnung = false;
     this.zuvieleSchuelerInSchulzimmer = false;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
@@ -60,7 +61,7 @@ export class SitzordnungComponent {
   @ViewChild(MatTable) table: MatTable<any>;
 
 
-  dataSource = new MatTableDataSource<OutputRegelTisch>();
+  dataSource = new MatTableDataSource<Regel>();
 
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -90,7 +91,6 @@ export class SitzordnungComponent {
             this.regelService.getRegelByPersonid().subscribe(
               (data:Regel[]) => {
                 this.regelnToPerson = data;
-                this.enrichedRegelnToPerson = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson)
                 this.isLoadingRegeln = false;
               });
           })
@@ -108,15 +108,52 @@ export class SitzordnungComponent {
     if (this.selectedSchulklasse != undefined && this.selectedSchulzimmer !=undefined){
       debugger;
       klasseAndZimmerSelected = true;
-      let relevantEnrichedRegeln = this.enrichRegelnBasedOnFilter(this.selectedSchulklasse, this.selectedSchulzimmer);
-      this.dataSource.data = relevantEnrichedRegeln;  
+      let relevantRegeln = this.enrichRegelnBasedOnFilter(this.selectedSchulklasse, this.selectedSchulzimmer);
+      this.dataSource.data = relevantRegeln;  
        
     }
     return klasseAndZimmerSelected;
   }
 
-  enrichRegelnBasedOnFilter(selectedSchulklasse: Schulklasse, selectedSchulzimmer: Schulzimmer): OutputRegelTisch[]{
-    return this.enrichedRegelnToPerson.filter(element => element.klasse == selectedSchulklasse.name && element.zimmer == selectedSchulzimmer.name)
+  enrichRegelnBasedOnFilter(selectedSchulklasse: Schulklasse, selectedSchulzimmer: Schulzimmer): Regel[]{
+    let relevantRegeln = new Array<Regel>();
+    let inputRegeln = this.regelnToPerson;
+
+    for (let index = 0; index < inputRegeln.length; index++) {
+      let chosenSchueler = this.klassenToPerson.filter(klasse => 
+        klasse.schueler.some(x => x.id== inputRegeln[index].schueler1Id)).map(element => {
+            let newElt = Object.assign({}, element);
+            return newElt.schueler.filter(x => x.id== inputRegeln[index].schueler1Id)
+        });
+        let chosenTisch = this.zimmerToPerson.filter(klasse => 
+          klasse.tische.some(x => x.id== inputRegeln[index].tischId)).map(element => {
+              let newElt = Object.assign({}, element);
+              return newElt.tische.filter(x => x.id== inputRegeln[index].tischId) ;
+          }); 
+          switch (inputRegeln[index].type) {
+            case "Fester Sitzplatz":
+                if( chosenSchueler[0][0].schulklassenId == selectedSchulklasse.id 
+                      && chosenTisch[0][0].schulzimmerId == selectedSchulzimmer.id){
+                        relevantRegeln.push(inputRegeln[index]);
+                      }
+                  
+              break;
+            case "Unmögliche Paarung":
+              if( chosenSchueler[0][0].schulklassenId == selectedSchulklasse.id){
+                  relevantRegeln.push(inputRegeln[index]);
+                }
+              break;  
+          
+            default:
+              console.log("Kein gültiger Regel-Typ")
+              break;
+          }   
+      
+      
+    }
+   
+     
+    return relevantRegeln
 
   }
  
@@ -132,15 +169,27 @@ export class SitzordnungComponent {
     else{
       this.zuvieleSchuelerInSchulzimmer = false;
       this.tischSchuelerPreparer = new TischSchuelerPreparer();
-      this.showSitzordnung = true;
       this.outputSchulzimmer = this.selectedSchulzimmer;
       this.outputSchulklasse = this.selectedSchulklasse;
       let outputRegelnActive  = this.regelnToPerson
       .filter(item => this.selection.selected
-            .map(output => output.regelId).includes(item.id))           
-      this.preparedTischSchueler = this.tischSchuelerPreparer.prepareTischSchuelerCombination(this.outputSchulzimmer.tische, this.outputSchulklasse.schueler, outputRegelnActive)
-      console.log("Randomized SchuelerTischArray");
-      console.log(this.preparedTischSchueler);
+            .map(output => output.id).includes(item.id))    
+      let resultOutput =   this.tischSchuelerPreparer.prepareTischSchuelerCombination(this.outputSchulzimmer.tische, this.outputSchulklasse.schueler, outputRegelnActive);    
+      if (typeof resultOutput === 'undefined'){
+        this.showSitzordnung = false;
+        this.sitzordnungInfoDialogRef = this.dialog.open(SitzordnungInfoDialogComponent, {
+          height: '220px',
+          width: '350px',
+        });
+
+      }
+      else{
+        this.showSitzordnung = true;
+        this.preparedTischSchueler = resultOutput;
+        console.log("Randomized SchuelerTischArray");
+        console.log(this.preparedTischSchueler);
+      }
+      
 
     }
   
