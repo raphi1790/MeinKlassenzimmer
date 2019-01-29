@@ -141,9 +141,15 @@ export class GruppeneinteilungComponent implements OnInit {
   generatePdf() {
     var data = document.getElementById("contentToPdf");
     html2canvas(data).then(function (canvas) {
+      debugger;
+      var width = canvas.width;
+      var height = canvas.height;
+      var factor = width/200;
+      var new_width = width/factor;
+      var new_height = height / factor
       var img = canvas.toDataURL("image/png");
-      var doc = new jsPDF();
-      doc.addImage(img, 'JPEG', 0, 0);
+      var doc = new jsPDF("p","mm", "a4");
+      doc.addImage(img, 'JPEG', 0, 0,new_width,new_height );
       doc.save('Gruppeneinteilung.pdf');
     });
 
