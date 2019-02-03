@@ -215,6 +215,7 @@ showDetailConfigurationUnpassendePaarung(): boolean {
     this.savingIsActiv = false; 
     this.isSaving = true;
     await this.regelService.updateRegeln(this.regelnToPerson).subscribe(() => this.isSaving = false);
+    this.regelnToPersonOriginal = this.regelnToPerson;
   }
 
   cancel(){

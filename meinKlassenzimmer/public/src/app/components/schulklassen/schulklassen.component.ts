@@ -84,7 +84,6 @@ export class SchulklassenComponent implements OnInit {
   }
   deleteSchulklasse(klasse: Schulklasse):void{
     debugger;
-    this.klassenToPersonOriginal = this.klassenToPerson;
     if(!this.regelChecker.regelExistsToSchulklasse(klasse, this.regelnToPerson)){
       this.klassenToPerson = this.klassenToPerson.filter(
         item =>
@@ -140,6 +139,7 @@ export class SchulklassenComponent implements OnInit {
     this.savingIsActiv = false; 
     this.isSaving = true;
     await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe(() => this.isSaving = false);
+    this.klassenToPersonOriginal = this.klassenToPerson;
   }
   cancel(){
     debugger;

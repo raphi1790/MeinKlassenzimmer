@@ -161,8 +161,8 @@ export class SchulzimmerComponent implements OnInit {
     debugger;
     this.savingIsActiv = false;
     this.isSaving = true; 
-    // this.personDbHelper.savePerson();
     await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe(() => this.isSaving = false);
+    this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;
     
   }
   cancel(){
