@@ -1,13 +1,3 @@
-.input-form-container {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .input-form-containerr > * {
-    width: 100%;
-  }
-  
-
 .mat-form-field {
     display: block;
 }  
@@ -26,10 +16,6 @@
   .mat-card-header-text {
     margin: 0 0px;
   }
-.save-button{
-    float: right;
-
-}
 
 
 

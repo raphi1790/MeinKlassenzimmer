@@ -1,8 +1,9 @@
 
-    <h2 mat-dialog-title>Information</h2>
-    <mat-dialog-content> Es gibt keine Änderungen, die gespeichert werden können.</mat-dialog-content>
+    <h2 mat-dialog-title>Bestätigung</h2>
+    <mat-dialog-content> Möchtest du wirklich alle ungespeicherten Änderungen rückgänging machen?</mat-dialog-content>
     <mat-dialog-actions>
     
-      <button mat-button type ="button" (click)="dialogRef.close()" >Okay</button> 
+      <button mat-button type ="button" [mat-dialog-close]="true" >Ja</button> 
+      <button mat-button type ="button" mat-dialog-close cdkFocusInitial >Abbruch</button> 
     </mat-dialog-actions>
 

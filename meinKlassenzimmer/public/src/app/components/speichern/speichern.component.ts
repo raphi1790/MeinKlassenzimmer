@@ -32,15 +32,18 @@ export class SpeichernComponent implements OnInit, OnChanges {
 
   }
   cancel(){
-    
-     // this.speichernInfoDialogRef = this.dialog.open(SpeichernInfoDialogComponent, {
-      //   height: '220px',
-      //   width: '350px',
-      // });
-    this.cancelData.emit();
+    debugger;
+     this.speichernInfoDialogRef = this.dialog.open(SpeichernInfoDialogComponent, {
+        height: '180px',
+        width: '430px',
+      });
+      this.speichernInfoDialogRef.afterClosed().subscribe(result => {
+        if(result){
+          this.cancelData.emit();
+        }
+      });
+      
   }
-
-
   ngOnInit() {
   }
 
