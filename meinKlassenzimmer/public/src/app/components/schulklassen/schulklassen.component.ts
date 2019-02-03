@@ -28,6 +28,7 @@ export class SchulklassenComponent implements OnInit {
   isLoadingSchulklasse: boolean;
   isSaving: boolean;
   klassenToPerson: Schulklasse[];
+  klassenToPersonOriginal: Schulklasse[];
   isLoadingRegeln: boolean;
   regelnToPerson: Regel[];
   selectedSchulklasse: Schulklasse;
@@ -54,6 +55,7 @@ export class SchulklassenComponent implements OnInit {
       (data:Schulklasse[]) => {
         debugger;
         this.klassenToPerson = data;
+        this.klassenToPersonOriginal = data;
         this.isLoadingSchulklasse = false;
         this.regelService.getRegelByPersonid().subscribe(
           (data:Regel[]) => {
@@ -82,6 +84,7 @@ export class SchulklassenComponent implements OnInit {
   }
   deleteSchulklasse(klasse: Schulklasse):void{
     debugger;
+    this.klassenToPersonOriginal = this.klassenToPerson;
     if(!this.regelChecker.regelExistsToSchulklasse(klasse, this.regelnToPerson)){
       this.klassenToPerson = this.klassenToPerson.filter(
         item =>
@@ -137,6 +140,11 @@ export class SchulklassenComponent implements OnInit {
     this.savingIsActiv = false; 
     this.isSaving = true;
     await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe(() => this.isSaving = false);
+  }
+  cancel(){
+    debugger;
+    this.klassenToPerson = this.klassenToPersonOriginal;
+    this.savingIsActiv = false;
   }
 
   ngOnInit(){

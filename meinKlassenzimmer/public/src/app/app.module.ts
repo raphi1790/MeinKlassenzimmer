@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { SchulklassenComponent } from './components/schulklassen/schulklassen.component';
 import { SchulzimmerComponent } from './components/schulzimmer/schulzimmer.component';
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
+import { SpeichernComponent} from './components/speichern/speichern.component';
+import { SpeichernInfoDialogComponent} from './components/speichern-info-dialog/speichern-info-dialog.component'
 import { StartseiteComponent } from './components/startseite/startseite.component'
 import { SchulklassenService} from './services/schulklassen.service';
 import { GruppeneinteilungComponent } from  './components/gruppeneinteilung/gruppeneinteilung.component';
@@ -45,7 +47,9 @@ import { SitzordnungInfoDialogComponent} from './components/sitzordnung-info-dia
     TischSchuelerComponent,
     GruppeneinteilungComponent,
     RegelnComponent,
-    SitzordnungInfoDialogComponent
+    SitzordnungInfoDialogComponent,
+    SpeichernComponent,
+    SpeichernInfoDialogComponent
     
   ],
   imports: [
@@ -67,6 +71,6 @@ import { SitzordnungInfoDialogComponent} from './components/sitzordnung-info-dia
    }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SitzordnungInfoDialogComponent]
+  entryComponents: [SitzordnungInfoDialogComponent, SpeichernInfoDialogComponent]
 })
 export class AppModule { }

@@ -59,7 +59,7 @@
           </mat-card>
 
 
-          <button mat-raised-button class="save-button" color="accent" [disabled]="!savingIsActiv" (click)="saveSchulzimmerTische()">Speichern</button>
+          <app-speichern (saveData)="saveSchulzimmerTische($event)" (cancelData) ="cancel($event)" [savingIsActive] ="savingIsActiv"></app-speichern>
         </div>
 
 

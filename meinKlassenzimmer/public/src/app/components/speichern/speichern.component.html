@@ -1,0 +1,19 @@
+<mat-card class="SavingCard">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>
+        <h4>Speichern?</h4>
+      </mat-card-title>
+    </mat-card-title-group>
+
+  </mat-card-header>
+  <mat-card-actions>
+    <div>
+        <button mat-raised-button color="accent"  (click) ="save()" >Speichern</button>
+        <button mat-raised-button color="default" (click) ="cancel()">Abbruch</button>
+    </div>
+    <mat-error *ngIf="saveActionIsNotNecessary">Momentan nichts zu speichern.</mat-error>  
+   
+    
+  </mat-card-actions>
+</mat-card>

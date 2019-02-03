@@ -10,6 +10,7 @@ export class RegelEnricher {
     
     enrichedRegelSitzplatz(klassen: Schulklasse[], zimmer: Schulzimmer[], regeln: Regel[]): OutputRegelTisch[]{  
         debugger;
+        regeln = regeln.filter(regel => regel.type == "Fester Sitzplatz");
         var regelnOutputTisch = new Array<OutputRegelTisch>();
         for (let indexRegel = 0; indexRegel < regeln.length; indexRegel++) {
         
@@ -56,6 +57,7 @@ export class RegelEnricher {
     }
     enrichedRegelPaarung(klassen: Schulklasse[], regeln: Regel[]): OutputRegelPaarung[]{  
         debugger;
+        regeln=  regeln.filter(regel => regel.type == "Unmögliche Paarung");
         var regelnOutputPaarung = new Array<OutputRegelPaarung>();
         for (let indexRegel = 0; indexRegel < regeln.length; indexRegel++) {
         

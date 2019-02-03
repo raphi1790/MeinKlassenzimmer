@@ -37,6 +37,7 @@ export class RegelnComponent implements OnInit {
   isLoadingSchulklasse: boolean;
   isLoadingSchulzimmer: boolean;
   regelnToPerson: Regel[];
+  regelnToPersonOriginal: Regel[];
   regelTypes = ['Fester Sitzplatz', 'Unmögliche Paarung']
   schuelerToKlasse:Schueler[];
   tischeToZimmer: Tisch[];
@@ -92,6 +93,7 @@ loadInputData() {
                 (data:Regel[]) => {
                   debugger;
                   this.regelnToPerson = data;
+                  this.regelnToPersonOriginal = data;
                   this.enrichRegeln(this.regelnToPerson);
                   console.log("Enriched Regeln");
                   console.log(this.dataSourceSitzplatz);
@@ -213,6 +215,14 @@ showDetailConfigurationUnpassendePaarung(): boolean {
     this.savingIsActiv = false; 
     this.isSaving = true;
     await this.regelService.updateRegeln(this.regelnToPerson).subscribe(() => this.isSaving = false);
+  }
+
+  cancel(){
+    debugger;
+    this.regelnToPerson = this.regelnToPersonOriginal;
+    this.dataSourcePaarung.data = this.regelEnricher.enrichedRegelPaarung(this.klassenToPerson,  this.regelnToPerson);
+    this.dataSourceSitzplatz.data = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
+    this.savingIsActiv = false;
   }
 
   canDeactivate(){

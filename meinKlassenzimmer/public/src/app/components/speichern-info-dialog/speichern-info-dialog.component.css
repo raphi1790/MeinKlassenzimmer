@@ -1,0 +1,6 @@
+.mat-card-header {
+    display: grid;
+  }  
+  .mat-card-header-text {
+    margin: 0 0px;
+  }

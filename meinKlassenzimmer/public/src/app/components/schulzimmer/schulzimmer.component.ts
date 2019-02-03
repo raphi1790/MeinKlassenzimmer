@@ -24,6 +24,7 @@ export class SchulzimmerComponent implements OnInit {
   columnSchulzimmer: number[];
   rowSchulzimmer: number[];
   schulzimmerToPerson :Schulzimmer[];
+  schulzimmerToPersonOriginal: Schulzimmer[];
   regelnToPerson: Regel[];
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
@@ -54,6 +55,7 @@ export class SchulzimmerComponent implements OnInit {
     this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(
       (data:Schulzimmer[]) => {
         this.schulzimmerToPerson = data;
+        this.schulzimmerToPersonOriginal = data;
         this.isLoadingSchulzimmer = false;
         this.regelService.getRegelByPersonid().subscribe(
           (data:Regel[]) => {
@@ -162,6 +164,11 @@ export class SchulzimmerComponent implements OnInit {
     // this.personDbHelper.savePerson();
     await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe(() => this.isSaving = false);
     
+  }
+  cancel(){
+    debugger;
+    this.schulzimmerToPerson = this.schulzimmerToPersonOriginal;
+    this.savingIsActiv = false;
   }
 
   ngOnInit() {
