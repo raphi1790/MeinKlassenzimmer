@@ -55,7 +55,7 @@ export class SchulzimmerComponent implements OnInit {
     this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(
       (data:Schulzimmer[]) => {
         this.schulzimmerToPerson = data;
-        this.schulzimmerToPersonOriginal = data;
+        this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
         this.isLoadingSchulzimmer = false;
         this.regelService.getRegelByPersonid().subscribe(
           (data:Regel[]) => {

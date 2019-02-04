@@ -93,7 +93,7 @@ loadInputData() {
                 (data:Regel[]) => {
                   debugger;
                   this.regelnToPerson = data;
-                  this.regelnToPersonOriginal = data;
+                  this.regelnToPersonOriginal = JSON.parse(JSON.stringify(this.regelnToPerson));
                   this.enrichRegeln(this.regelnToPerson);
                   console.log("Enriched Regeln");
                   console.log(this.dataSourceSitzplatz);

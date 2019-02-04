@@ -55,7 +55,7 @@ export class SchulklassenComponent implements OnInit {
       (data:Schulklasse[]) => {
         debugger;
         this.klassenToPerson = data;
-        this.klassenToPersonOriginal = data;
+        this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
         this.isLoadingSchulklasse = false;
         this.regelService.getRegelByPersonid().subscribe(
           (data:Regel[]) => {
