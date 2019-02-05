@@ -220,7 +220,7 @@ showDetailConfigurationUnpassendePaarung(): boolean {
 
   cancel(){
     debugger;
-    this.regelnToPerson = this.regelnToPersonOriginal;
+    this.regelnToPerson = JSON.parse(JSON.stringify(this.regelnToPersonOriginal));
     this.dataSourcePaarung.data = this.regelEnricher.enrichedRegelPaarung(this.klassenToPerson,  this.regelnToPerson);
     this.dataSourceSitzplatz.data = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
     this.savingIsActiv = false;

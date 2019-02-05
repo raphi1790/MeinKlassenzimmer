@@ -143,7 +143,7 @@ export class SchulklassenComponent implements OnInit {
   }
   cancel(){
     debugger;
-    this.klassenToPerson = this.klassenToPersonOriginal;
+    this.klassenToPerson = JSON.parse(JSON.stringify(this.klassenToPersonOriginal));
     this.savingIsActiv = false;
   }
 

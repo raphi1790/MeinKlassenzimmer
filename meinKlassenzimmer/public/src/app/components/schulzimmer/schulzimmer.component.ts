@@ -167,7 +167,7 @@ export class SchulzimmerComponent implements OnInit {
   }
   cancel(){
     debugger;
-    this.schulzimmerToPerson = this.schulzimmerToPersonOriginal;
+    this.schulzimmerToPerson = JSON.parse(JSON.stringify(this.schulzimmerToPersonOriginal));
     this.savingIsActiv = false;
   }
 
