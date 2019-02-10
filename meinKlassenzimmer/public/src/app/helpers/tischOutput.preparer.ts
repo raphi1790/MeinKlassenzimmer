@@ -28,7 +28,7 @@ export class TischOutputPreparer {
         preparedTischOutput = [];
         for(var row: number = 0; row < (<any>CONFIG).numberOfRows; row++) {
             preparedTischOutput[row] = [];
-            for(var column: number = 0; column< (<any>CONFIG).numberOfRows; column++) {
+            for(var column: number = 0; column< (<any>CONFIG).numberOfColumns; column++) {
                 preparedTischOutput[row][column] = new TischOutput();
                 preparedTischOutput[row][column].selected = false;
                 preparedTischOutput[row][column].active = false;

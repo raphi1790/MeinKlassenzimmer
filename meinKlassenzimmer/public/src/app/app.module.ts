@@ -16,6 +16,7 @@ import { SchulzimmerService} from './services/schulzimmer.service';
 import { AuthService} from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { AnleitungComponent } from './components/anleitung/anleitung.component';
+import { InlineEditComponent} from './components/inline-edit/inline-edit.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
@@ -29,6 +30,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { RegelnComponent } from './components/regeln/regeln.component';
 import { RegelService } from './services/regel.service';
 import { SitzordnungInfoDialogComponent} from './components/sitzordnung-info-dialog/sitzordnung-info-dialog.component';
+import { RegelInfoDialogComponent} from './components/regel-info-dialog/regel-info-dialog.component';
 
 
 
@@ -49,7 +51,9 @@ import { SitzordnungInfoDialogComponent} from './components/sitzordnung-info-dia
     RegelnComponent,
     SitzordnungInfoDialogComponent,
     SpeichernComponent,
-    SpeichernInfoDialogComponent
+    SpeichernInfoDialogComponent,
+    InlineEditComponent,
+    RegelInfoDialogComponent
     
   ],
   imports: [
@@ -71,6 +75,6 @@ import { SitzordnungInfoDialogComponent} from './components/sitzordnung-info-dia
    }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SitzordnungInfoDialogComponent, SpeichernInfoDialogComponent]
+  entryComponents: [SitzordnungInfoDialogComponent, SpeichernInfoDialogComponent, RegelInfoDialogComponent]
 })
 export class AppModule { }

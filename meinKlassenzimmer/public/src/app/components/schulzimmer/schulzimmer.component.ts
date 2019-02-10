@@ -11,6 +11,9 @@ import * as CONFIG from '../../../config.json';
 import { Regel } from 'app/models/regel';
 import { RegelService } from 'app/services/regel.service';
 import { RegelChecker } from 'app/helpers/regel.checker';
+import { Name } from 'app/models/name';
+import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
+import { MatDialogRef, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -37,13 +40,14 @@ export class SchulzimmerComponent implements OnInit {
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   isSaving: boolean;
   currentTableNumber: number;
-  regelChecker:RegelChecker
+  regelChecker:RegelChecker;
+  regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
 
   
   @Input() personid: number
   
 
-  constructor(private schulzimmerService: SchulzimmerService, private regelService: RegelService ) {
+  constructor(private schulzimmerService: SchulzimmerService, private regelService: RegelService, public dialog: MatDialog ) {
     this.currentTableNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
@@ -73,8 +77,9 @@ export class SchulzimmerComponent implements OnInit {
             '';
   }
 
-  onSelect(schulzimmer: Schulzimmer): void {
+  onSelect(selectedId: Name): void {
     debugger;
+    let schulzimmer = this.schulzimmerToPerson.filter(zimmer => zimmer.id == selectedId.id)[0];
     console.log("table number (before findMaximalTableNumber): " + this.currentTableNumber);
     this.selectedSchulzimmer = schulzimmer;
     this.tischOutputPreparer = new TischOutputPreparer();
@@ -96,7 +101,8 @@ export class SchulzimmerComponent implements OnInit {
     return Math.max(maximalTableNumber,0); 
 };
 
-  deleteSchulzimmer(schulzimmer: Schulzimmer):void{
+  deleteSchulzimmer(selectedId: Name):void{
+    let schulzimmer = this.schulzimmerToPerson.filter(zimmer => zimmer.id == selectedId.id)[0];
     if(!this.regelChecker.regelExistsToSchulzimmer(schulzimmer,this.regelnToPerson)){
       this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
         item =>
@@ -104,10 +110,23 @@ export class SchulzimmerComponent implements OnInit {
       this.selectedSchulzimmer = null;    
       this.savingIsActiv = true; 
     }else{
-      window.confirm("Es existieren noch Regeln zu diesem Schulzimmer, weshalb es nicht gelöscht werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+      this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
+        height: '180px',
+        width: '510px',
+      });
 
     }
+
    
+  }
+
+  onNameChange(newName : Name):void{
+    debugger;
+    let oldName = this.schulzimmerToPerson.filter(zimmer => zimmer.id == newName.id)[0].name;
+    if(oldName != newName.text){
+      this.schulzimmerToPerson.filter(klasse => klasse.id == newName.id)[0].name = newName.text;
+      this.savingIsActiv = true;
+    }
   }
 
   addSchulzimmerTmp(): void {

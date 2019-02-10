@@ -44,14 +44,11 @@
             <mat-card-content>
               <mat-nav-list>
                 <mat-list-item *ngFor="let klasse of klassenToPerson;last as last" [class.highlighted]="klasse === selectedSchulklasse">
-                  <div class="button-list" (click)="onSelect(klasse)">
-                    {{klasse.name}}
-                  </div>
 
-                  <span>
-                    <mat-icon matListIcon (click)="deleteSchulklasse(klasse)">delete</mat-icon>
-                  </span>
-                  <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+                  <app-inline-edit [text]="klasse.name" [id]="klasse.id" 
+                    (edit)="onNameChange($event)" (select)="onSelect($event)" (delete) ="deleteSchulklasse($event)">
+                  </app-inline-edit>
+                  <mat-divider [inset]="true" *ngIf="!last"></mat-divider> 
                 </mat-list-item>
               </mat-nav-list>
             </mat-card-content>

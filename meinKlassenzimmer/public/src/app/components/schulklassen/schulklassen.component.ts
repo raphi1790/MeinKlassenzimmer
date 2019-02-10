@@ -11,6 +11,9 @@ import * as uuidv4 from 'uuid/v4';
 import { RegelService } from 'app/services/regel.service';
 import { Regel } from 'app/models/regel';
 import { RegelChecker } from 'app/helpers/regel.checker';
+import { Name } from 'app/models/name';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
 
 
 @Component({
@@ -35,13 +38,14 @@ export class SchulklassenComponent implements OnInit {
   regelChecker: RegelChecker;
   neueSchulklasseName: string
   neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
+  regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
 
 
   @Input() personid: number
   
   
 
-  constructor(private klassenService: SchulklassenService, private regelService: RegelService) {
+  constructor(private klassenService: SchulklassenService, private regelService: RegelService, public dialog: MatDialog) {
       this.regelChecker = new RegelChecker();
       
   }
@@ -76,14 +80,15 @@ export class SchulklassenComponent implements OnInit {
   }
 
 
-  onSelect(klasse: Schulklasse): void {
+  onSelect(selectedId: Name): void {
     debugger;
-    this.selectedSchulklasse = klasse;
+    this.selectedSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == selectedId.id)[0];
 
 
   }
-  deleteSchulklasse(klasse: Schulklasse):void{
+  deleteSchulklasse(selectedId: Name):void{
     debugger;
+    let klasse = this.klassenToPerson.filter(klasse => klasse.id == selectedId.id)[0];
     if(!this.regelChecker.regelExistsToSchulklasse(klasse, this.regelnToPerson)){
       this.klassenToPerson = this.klassenToPerson.filter(
         item =>
@@ -91,7 +96,10 @@ export class SchulklassenComponent implements OnInit {
       this.selectedSchulklasse = null;
       this.savingIsActiv = true;
     }else{
-      window.confirm("Es existieren noch Regeln zu dieser Schulklasse, weshalb sie nicht gelöscht werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+      this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
+        height: '180px',
+        width: '510px',
+      });
     }
     
 
@@ -127,6 +135,16 @@ export class SchulklassenComponent implements OnInit {
       this.klassenToPerson.push(updatedKlasse);
     }
     this.savingIsActiv = true;
+  }
+  onNameChange(newName : Name):void{
+    debugger;
+    let oldName = this.klassenToPerson.filter(klasse => klasse.id == newName.id)[0].name;
+    if(oldName != newName.text){
+      this.klassenToPerson.filter(klasse => klasse.id == newName.id)[0].name = newName.text;
+      this.savingIsActiv = true;
+    }
+    
+
   }
   canDeactivate(){
     debugger;

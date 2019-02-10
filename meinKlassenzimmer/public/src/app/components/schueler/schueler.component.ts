@@ -2,11 +2,12 @@ import { Component, OnInit,  Input, OnChanges, EventEmitter, Output, ViewChild, 
 
 import {Schulklasse} from 'app/models/schulklasse';
 import {Schueler} from 'app/models/schueler';
-import { MatTable,MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatTable,MatPaginator, MatTableDataSource, MatDialog, MatDialogRef } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 import * as uuidv4 from 'uuid/v4';
 import { Regel } from 'app/models/regel';
 import { RegelChecker } from 'app/helpers/regel.checker';
+import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
 
 
 
@@ -20,7 +21,7 @@ export class SchuelerComponent implements OnChanges{
   regelChecker: RegelChecker;
 
 
-  constructor(private ref: ChangeDetectorRef) {
+  constructor(private ref: ChangeDetectorRef, public dialog: MatDialog) {
     this.schulklasse.schueler = new Array();
     this.regelChecker = new RegelChecker();
     this.anzahlSchueler = 0;
@@ -40,6 +41,7 @@ export class SchuelerComponent implements OnChanges{
   neuerSchuelerName: string;
   neuerSchuelerVornameForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   anzahlSchueler: number;
+  regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
 
   getErrorMessageNeuerSchuelerVorname() {
     return this.neuerSchuelerVornameForm.hasError('required') ? 'Wert erforderlich' :
@@ -61,7 +63,10 @@ export class SchuelerComponent implements OnChanges{
       this.noteSchulklasse.emit(this.schulklasse);
       this.anzahlSchueler--;
     }else{
-      window.confirm("Es existieren noch Regeln zu diesem Schüler, weshalb er nicht gelöscht werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+      this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
+        height: '180px',
+        width: '510px',
+      });
 
     }
     

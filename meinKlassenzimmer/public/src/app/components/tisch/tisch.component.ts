@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { TischOutput } from '../../models/output.tisch';
-import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material';
+import { MAT_CHECKBOX_CLICK_ACTION, MatDialogRef, MatDialog } from '@angular/material';
 import { Regel } from 'app/models/regel';
 import { RegelChecker } from 'app/helpers/regel.checker';
+import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
 
 @Component({
   selector: 'app-tisch',
@@ -16,7 +17,7 @@ export class TischComponent implements OnChanges {
   regelChecker: RegelChecker;
 
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
     this.regelChecker = new RegelChecker();
    }
 
@@ -32,6 +33,7 @@ export class TischComponent implements OnChanges {
   tischActive: boolean;
   tischDisabled: boolean;
   tableNumber: number;
+  regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
 
 
   getTisch():void{
@@ -78,7 +80,10 @@ export class TischComponent implements OnChanges {
         this.noteSchulzimmerTableNumber.emit(this.currentTableNumber);
       }
       else{
-        window.confirm("Es existieren noch Regeln zu diesem Tisch, weshalb er nicht gelöscht werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+        this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
+          height: '180px',
+          width: '510px',
+        });
       }
      
     } else {
@@ -106,7 +111,10 @@ export class TischComponent implements OnChanges {
           this.tischOutput.active = this.tischActive;
           this.noteSchulzimmer.emit(this.tischOutput);
         }else{
-          window.confirm("Es existieren noch Regeln zu diesem Tisch, weshalb er nicht deaktiviert werden kann. Bitte lösche zuerst die entsprechende Regeln.");
+          this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
+            height: '180px',
+            width: '510px',
+          });
         }
         
   

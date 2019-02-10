@@ -201,8 +201,8 @@ export class SitzordnungComponent {
     var data = document.getElementById("contentToPdf");
     html2canvas(data).then(function(canvas) {
       var img = canvas.toDataURL("image/png");
-        var doc = new jsPDF();
-        doc.addImage(img,'JPEG',0,0,210,240);
+        var doc = new jsPDF('l');
+        doc.addImage(img,'JPEG',0,0,220,210);
         doc.save('Sitzordnung.pdf');
       });
         
