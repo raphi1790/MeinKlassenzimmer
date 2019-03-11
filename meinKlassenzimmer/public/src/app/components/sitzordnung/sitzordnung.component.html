@@ -45,7 +45,56 @@
         </div>
 
         <div class="regel-container">
-          <mat-card  *ngIf="klasseAndZimmerSelected()">
+            <mat-expansion-panel *ngIf="klasseAndZimmerSelected()">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      <h4>Aktive Regeln</h4>
+                  </mat-panel-title>
+                 
+                </mat-expansion-panel-header>
+            
+                <div class ="table-container">
+                    <mat-table #table [dataSource]="dataSource">
+  
+                        <ng-container matColumnDef="select">
+                            <mat-header-cell *matHeaderCellDef>
+                              <mat-checkbox (change)="$event ? masterToggle() : null"
+                                            [checked]="selection.hasValue() && isAllSelected()"
+                                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                              </mat-checkbox> 
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                              <mat-checkbox (click)="$event.stopPropagation()"
+                                            (change)="$event ? selection.toggle(row) : null"
+                                            [checked]="selection.isSelected(row)"
+                                            >
+                              </mat-checkbox>
+                            </mat-cell>
+                          </ng-container>
+                    
+                        <ng-container matColumnDef="type">
+                          <mat-header-cell *matHeaderCellDef> Typ der Regel </mat-header-cell>
+                          <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+                        </ng-container>    
+                      
+                      <ng-container matColumnDef="beschreibung">
+                        <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.beschreibung}} </mat-cell>
+                      </ng-container>
+      
+    
+  
+      
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"
+                              (click)="selection.toggle(row)"></mat-row>
+                    </mat-table>
+                </div>
+              </mat-expansion-panel>
+
+
+
+          <!-- <mat-card  *ngIf="klasseAndZimmerSelected()">
             <mat-card-header>
               <mat-card-title-group>
                 <mat-card-title>
@@ -98,7 +147,7 @@
 
             </mat-card-content>
 
-          </mat-card>
+          </mat-card> -->
         </div>
 
       </div>
