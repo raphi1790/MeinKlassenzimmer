@@ -3,9 +3,15 @@ import { SchulklassenService } from 'app/services/schulklassen.service';
 import { SchulzimmerService } from 'app/services/schulzimmer.service';
 import { Schulklasse } from 'app/models/schulklasse';
 import { GroupPreparer } from '../../helpers/group.preparer';
-import { MatTable } from '@angular/material';
+import { MatTable, MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
+import { RegelService } from 'app/services/regel.service';
+import { Regel } from 'app/models/regel';
+import { SelectionModel } from '@angular/cdk/collections';
+import { CalculatingEngine } from 'app/helpers/calculating.engine';
+import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
+import { GroupEnricher } from 'app/helpers/group.enricher';
 
 @Component({
   selector: 'app-gruppeneinteilung',
@@ -16,17 +22,20 @@ export class GruppeneinteilungComponent implements OnInit {
 
   selectedSchulklasse: Schulklasse;
   klassenToPerson: Schulklasse[];
+  regelnToPerson: Regel[];
   groupSizes = [2, 3, 4, 5, 6];
   groupTypes = ['Gruppengrösse', 'Gruppenanzahl'];
   selectedGroupType: string;
   selectedGroupSize: number;
   showGroups: boolean;
-  groupPreparer: GroupPreparer;
   outputSchulklasse: Schulklasse
   outputGroupSize: number;
   outputGroupType: string;
   isLoadingSchulklasse: boolean;
   gruppeneinteilungTitle: string;
+  isLoadingRegeln: boolean;
+  selection = new SelectionModel<Regel>(true, []);
+  einteilungInfoDialogRef: MatDialogRef<EinteilungInfoDialogComponent>;
 
 
 
@@ -52,25 +61,89 @@ export class GruppeneinteilungComponent implements OnInit {
   columnsGroupnumber6 = ['schueler', 'gruppe1', 'gruppe2', 'gruppe3', 'gruppe4', 'gruppe5', 'gruppe6'];
   columns = [];
   displayedColumns = [];
+  displayedColumnsRegel = ['select','type' ,'beschreibung'   ];
 
   @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChild(MatTable) tableRegel: MatTable<any>;
 
   dataSource: any;
+  dataSourceRegel = new MatTableDataSource<Regel>();
 
-  constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService) {
 
+  constructor(private klassenService: SchulklassenService, private regelService: RegelService, public dialog: MatDialog) {
   }
 
   loadInputData() {
-    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((data: Schulklasse[]) => { this.klassenToPerson = data; this.isLoadingSchulklasse = false; });
+    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((
+      data: Schulklasse[]) => { 
+        this.klassenToPerson = data; this.isLoadingSchulklasse = false;
+            this.regelService.getRegelByPersonid().subscribe(
+              (data:Regel[]) => {
+                this.regelnToPerson = data;
+                this.isLoadingRegeln = false;
+              });
+          })
+  }
+  klasseSelecteAndEnrichmentDone(): boolean{
+    
+    var klasseSelected = false; 
+    if (this.selectedSchulklasse != undefined){
+      klasseSelected = true;
+      let relevantRegeln = this.filterRegel(this.selectedSchulklasse);
+      this.dataSourceRegel.data = relevantRegeln;  
+       
+    }
+    return klasseSelected;
+  }
+
+  filterRegel(selectedSchulklasse: Schulklasse): Regel[]{
+    let relevantRegeln = new Array<Regel>();
+    let workingRegeln = this.regelnToPerson;
+
+    for (let index = 0; index < workingRegeln.length; index++) {
+      let chosenSchueler = this.klassenToPerson.filter(klasse => 
+        klasse.schueler.some(x => x.id== workingRegeln[index].schueler1Id)).map(element => {
+            let newElt = Object.assign({}, element);
+            return newElt.schueler.filter(x => x.id== workingRegeln[index].schueler1Id)
+        });
+          switch (workingRegeln[index].type) {
+            
+            case "Unmögliche Paarung":
+              if( chosenSchueler[0][0].schulklassenId == selectedSchulklasse.id){
+                  relevantRegeln.push(workingRegeln[index]);
+                }
+              break;  
+          
+            default:
+              break;
+          }   
+      
+    }
+    return relevantRegeln
+
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSourceRegel.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSourceRegel.data.forEach(row => this.selection.select(row));
   }
 
   randomizeGroups() {
     debugger;
-    this.showGroups = true;
     this.outputSchulklasse = this.selectedSchulklasse;
     this.outputGroupType = this.selectedGroupType;
     this.outputGroupSize = this.selectedGroupSize;
+    let outputRegelnActive  = this.regelnToPerson
+      .filter(item => this.selection.selected
+            .map(output => output.id).includes(item.id))  
 
     if (this.outputGroupType == 'Gruppengrösse') {
         this.gruppeneinteilungTitle = 'Schulklasse '+ this.outputSchulklasse.name +' in ' +this.outputGroupSize +'er-Gruppen'
@@ -129,13 +202,29 @@ export class GruppeneinteilungComponent implements OnInit {
         }
       }
 
-    this.groupPreparer = new GroupPreparer();
-    this.dataSource = this.groupPreparer
-      .prepareGruppenEinteilung(this.outputSchulklasse.schueler, this.outputGroupType, this.outputGroupSize);
+    let groupPreparer = new GroupPreparer();
+    let calculatingEngine = new CalculatingEngine(); 
+    debugger;
+    let resultOutput = calculatingEngine.calculate(groupPreparer,this.outputSchulklasse.schueler,outputRegelnActive,null,this.outputGroupType , this.outputGroupSize)       
+    if (typeof resultOutput === 'undefined'){
+      this.showGroups = false;
+      this.einteilungInfoDialogRef = this.dialog.open(EinteilungInfoDialogComponent, {
+        height: '220px',
+        width: '350px',
+      });
+
+    }
+    else{
+      this.showGroups = true;
+      let groupEnricher = new GroupEnricher();
+      this.dataSource = groupEnricher.enrichGroupBasedOnType(resultOutput, this.outputGroupType, this.outputGroupSize)
+      console.log("Randomized Gruppeneinteilung");
+      console.log(this.dataSource);
+    }
 
 
-    console.log("Randomized Gruppeneinteilung");
-    console.log(this.dataSource);
+
+    
   }
 
   generatePdf() {

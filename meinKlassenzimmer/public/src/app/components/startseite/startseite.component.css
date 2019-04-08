@@ -2,6 +2,7 @@
     background: url('../../../assets/images/pencils.jpg');
     background-attachment: fixed;
     height: 100%;
+    width: 100%;
     position: relative;
     overflow: hidden;
   }

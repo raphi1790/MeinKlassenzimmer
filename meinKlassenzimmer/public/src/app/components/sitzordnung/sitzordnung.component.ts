@@ -12,11 +12,11 @@ import * as jsPDF from 'jspdf';
 import * as CONFIG from '../../../config.json';
 import { RegelService } from 'app/services/regel.service';
 import { Regel } from 'app/models/regel';
-import { RegelEnricher } from 'app/helpers/regel.enricher';
 import { MatTable, MatPaginator, MatTableDataSource, MAT_CHECKBOX_CLICK_ACTION, MatDialog, MatDialogRef } from '@angular/material';
 import { OutputRegelTisch } from 'app/models/output.regel.sitzordnung';
 import {SelectionModel} from '@angular/cdk/collections';
-import { SitzordnungInfoDialogComponent } from '../sitzordnung-info-dialog/sitzordnung-info-dialog.component';
+import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
+import { CalculatingEngine } from 'app/helpers/calculating.engine';
 
 @Component({
   selector: 'app-sitzordnung',
@@ -43,10 +43,9 @@ export class SitzordnungComponent {
   isLoadingSchulklasse: boolean;
   isLoadingSchulzimmer: boolean;
   isLoadingRegeln: boolean;
-  regelEnricher: RegelEnricher;
   displayedColumns = ['select','type' ,'beschreibung'   ];
   selection = new SelectionModel<Regel>(true, []);
-  sitzordnungInfoDialogRef: MatDialogRef<SitzordnungInfoDialogComponent>;
+  einteilungInfoDialogRef: MatDialogRef<EinteilungInfoDialogComponent>;
 
 
   
@@ -56,7 +55,6 @@ export class SitzordnungComponent {
     this.zuvieleSchuelerInSchulzimmer = false;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
-    this.regelEnricher = new RegelEnricher();
   }
   @ViewChild(MatTable) table: MatTable<any>;
 
@@ -108,14 +106,14 @@ export class SitzordnungComponent {
     if (this.selectedSchulklasse != undefined && this.selectedSchulzimmer !=undefined){
       debugger;
       klasseAndZimmerSelected = true;
-      let relevantRegeln = this.enrichRegelnBasedOnFilter(this.selectedSchulklasse, this.selectedSchulzimmer);
+      let relevantRegeln = this.filterRegel(this.selectedSchulklasse, this.selectedSchulzimmer);
       this.dataSource.data = relevantRegeln;  
        
     }
     return klasseAndZimmerSelected;
   }
 
-  enrichRegelnBasedOnFilter(selectedSchulklasse: Schulklasse, selectedSchulzimmer: Schulzimmer): Regel[]{
+  filterRegel(selectedSchulklasse: Schulklasse, selectedSchulzimmer: Schulzimmer): Regel[]{
     let relevantRegeln = new Array<Regel>();
     let inputRegeln = this.regelnToPerson;
 
@@ -173,11 +171,13 @@ export class SitzordnungComponent {
       this.outputSchulklasse = this.selectedSchulklasse;
       let outputRegelnActive  = this.regelnToPerson
       .filter(item => this.selection.selected
-            .map(output => output.id).includes(item.id))    
-      let resultOutput =   this.tischSchuelerPreparer.prepareTischSchuelerCombination(this.outputSchulzimmer.tische, this.outputSchulklasse.schueler, outputRegelnActive);    
+            .map(output => output.id).includes(item.id))  
+      debugger;
+      let calculatingEngine = new CalculatingEngine(); 
+      let resultOutput = calculatingEngine.calculate(this.tischSchuelerPreparer,this.outputSchulklasse.schueler,outputRegelnActive, this.outputSchulzimmer.tische)       
       if (typeof resultOutput === 'undefined'){
         this.showSitzordnung = false;
-        this.sitzordnungInfoDialogRef = this.dialog.open(SitzordnungInfoDialogComponent, {
+        this.einteilungInfoDialogRef = this.dialog.open(EinteilungInfoDialogComponent, {
           height: '220px',
           width: '350px',
         });

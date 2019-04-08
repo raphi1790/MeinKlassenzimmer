@@ -7,18 +7,15 @@ import { PositionTisch } from "../models/position.tisch";
 
 import * as CONFIG from '../../config.json';
 import { Regel } from "app/models/regel";
+import { Preparer } from "./preparer";
 
-export class TischSchuelerPreparer {
+export class TischSchuelerPreparer extends Preparer {
 
-    randomizer: Randomizer;
     preparedTischSchueler: TischSchueler[][];
 
-    /**
-     *
-     */
-    constructor() {
+    
+    initializeArrays(){
         debugger;
-        this.randomizer = new Randomizer();
         this.preparedTischSchueler = [];
         for(var row: number = 0; row < (<any>CONFIG).numberOfRows; row++) {
             this.preparedTischSchueler[row] = [];
@@ -32,11 +29,11 @@ export class TischSchuelerPreparer {
                 
             }
         }
-        
-    }
-  
 
-    prepareTischSchuelerCombination(inputSelectedTische: Tisch[], inputSchueler: Schueler[], inputRegeln: Regel[] ): TischSchueler[][]{
+    }
+    
+
+    prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputSelectedTische: Tisch[], inputGroupType = null, inputGroupSize = null ): any{
         debugger;
         var schuelerRandomizedPrepared: Schueler[];
         var indexSchueler = 0;
@@ -49,42 +46,37 @@ export class TischSchuelerPreparer {
         
         
         const checkTischFixedExists = tischIdParam => fixedTische.some( ({id}) => id == tischIdParam);
-        let countAttemp = 0;
-        do {
-            schuelerRandomizedPrepared = this.randomizer.randomizeSchueler(flexibleSchueler, flexibleActiveTische.length);
-            for (let index = 0; index < inputSelectedTische.length; index++) {
-                var row = inputSelectedTische[index].position.row;
-                var column = inputSelectedTische[index].position.column;
-                this.preparedTischSchueler[row][column].tischOutput.selected = true;
-                if(inputSelectedTische[index].active == true){
-                    this.preparedTischSchueler[row][column].tischOutput.active = true;
-                    if(checkTischFixedExists(inputSelectedTische[index].id)){
-                        let regelToFixedTisch = regelnSitzplatz.filter(item => item.tischId == inputSelectedTische[index].id)[0];
-                        let fixedSchueler = inputSchueler.filter(item => item.id == regelToFixedTisch.schueler1Id  )[0];
-                        this.preparedTischSchueler[row][column].schueler.id = fixedSchueler.id;
-                        this.preparedTischSchueler[row][column].schueler.nameKurz = fixedSchueler.nameKurz
-                        this.preparedTischSchueler[row][column].schueler.vorname = fixedSchueler.vorname;
-
-                    }else{
-                        if(typeof schuelerRandomizedPrepared[indexSchueler] !== 'undefined' ){
-                            this.preparedTischSchueler[row][column].schueler.id = schuelerRandomizedPrepared[indexSchueler].id ;
-                            this.preparedTischSchueler[row][column].schueler.nameKurz = schuelerRandomizedPrepared[indexSchueler].nameKurz;
-                            this.preparedTischSchueler[row][column].schueler.vorname = schuelerRandomizedPrepared[indexSchueler].vorname;
-                        }
-                        indexSchueler++;
-
-                    }
-                    
-                    
-                }
-            }
-            countAttemp ++;
-
-        } while (countAttemp <= (<any>CONFIG).numberOfAttemps && !this.paarungSatisfied(this.preparedTischSchueler,regelnPaarung));
-
-
         
-        return (this.paarungSatisfied(this.preparedTischSchueler,regelnPaarung))? this.preparedTischSchueler: undefined;
+        let randomizer = new Randomizer();
+        schuelerRandomizedPrepared = randomizer.randomizeSchueler(flexibleSchueler, flexibleActiveTische.length);
+        for (let index = 0; index < inputSelectedTische.length; index++) {
+            var row = inputSelectedTische[index].position.row;
+            var column = inputSelectedTische[index].position.column;
+            this.preparedTischSchueler[row][column].tischOutput.selected = true;
+            if(inputSelectedTische[index].active == true){
+                this.preparedTischSchueler[row][column].tischOutput.active = true;
+                if(checkTischFixedExists(inputSelectedTische[index].id)){
+                    let regelToFixedTisch = regelnSitzplatz.filter(item => item.tischId == inputSelectedTische[index].id)[0];
+                    let fixedSchueler = inputSchueler.filter(item => item.id == regelToFixedTisch.schueler1Id  )[0];
+                    this.preparedTischSchueler[row][column].schueler.id = fixedSchueler.id;
+                    this.preparedTischSchueler[row][column].schueler.nameKurz = fixedSchueler.nameKurz
+                    this.preparedTischSchueler[row][column].schueler.vorname = fixedSchueler.vorname;
+
+                }else{
+                    if(typeof schuelerRandomizedPrepared[indexSchueler] !== 'undefined' ){
+                        this.preparedTischSchueler[row][column].schueler.id = schuelerRandomizedPrepared[indexSchueler].id ;
+                        this.preparedTischSchueler[row][column].schueler.nameKurz = schuelerRandomizedPrepared[indexSchueler].nameKurz;
+                        this.preparedTischSchueler[row][column].schueler.vorname = schuelerRandomizedPrepared[indexSchueler].vorname;
+                    }
+                    indexSchueler++;
+
+                }
+                
+                
+            }
+        }
+           
+        return this.preparedTischSchueler
        
         
     }

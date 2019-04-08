@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { RegelnComponent } from './components/regeln/regeln.component';
 import { RegelService } from './services/regel.service';
-import { SitzordnungInfoDialogComponent} from './components/sitzordnung-info-dialog/sitzordnung-info-dialog.component';
+import { EinteilungInfoDialogComponent} from './components/einteilung-info-dialog/einteilung-info-dialog.component';
 import { RegelInfoDialogComponent} from './components/regel-info-dialog/regel-info-dialog.component';
 
 
@@ -49,7 +49,7 @@ import { RegelInfoDialogComponent} from './components/regel-info-dialog/regel-in
     TischSchuelerComponent,
     GruppeneinteilungComponent,
     RegelnComponent,
-    SitzordnungInfoDialogComponent,
+    EinteilungInfoDialogComponent,
     SpeichernComponent,
     SpeichernInfoDialogComponent,
     InlineEditComponent,
@@ -75,6 +75,6 @@ import { RegelInfoDialogComponent} from './components/regel-info-dialog/regel-in
    }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SitzordnungInfoDialogComponent, SpeichernInfoDialogComponent, RegelInfoDialogComponent]
+  entryComponents: [EinteilungInfoDialogComponent, SpeichernInfoDialogComponent, RegelInfoDialogComponent]
 })
 export class AppModule { }
