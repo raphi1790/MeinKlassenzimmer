@@ -33,6 +33,7 @@ export class GroupEnricher{
                         
                         
                     }
+                    displayedGruppenEinteilung.push(groupObject);
 
                 
                 }
@@ -65,11 +66,9 @@ export class GroupEnricher{
                         
                         
                     }
+                    displayedGruppenEinteilung.push(groupObject);
 
-                    
-                    
-                    
-                    
+                
                 }
                 
                 break;
