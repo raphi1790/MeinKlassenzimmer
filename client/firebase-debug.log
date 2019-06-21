@@ -1,0 +1,547 @@
+[debug] [2019-06-20T19:00:25.589Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T19:00:25.591Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T19:00:25.592Z] CLI Version:   7.0.1
+[debug] [2019-06-20T19:00:25.592Z] Platform:      win32
+[debug] [2019-06-20T19:00:25.592Z] Node Version:  v10.16.0
+[debug] [2019-06-20T19:00:25.593Z] Time:          Thu Jun 20 2019 21:00:25 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T19:00:25.593Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T19:00:25.602Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T19:00:25.603Z] > authorizing via signed-in user
+[debug] [2019-06-20T19:00:25.603Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T19:00:25.604Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T19:00:26.486Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T19:00:26.489Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T19:00:27.299Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T19:00:27.313Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T19:00:27.314Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T19:00:27.544Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T19:00:27.769Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T19:00:28.287Z] Functions runtime initialized.
+[debug] [2019-06-20T19:00:28.287Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T19:00:28.467Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-20T19:03:48.866Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T19:03:48.869Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T19:03:48.869Z] CLI Version:   7.0.1
+[debug] [2019-06-20T19:03:48.869Z] Platform:      win32
+[debug] [2019-06-20T19:03:48.869Z] Node Version:  v10.16.0
+[debug] [2019-06-20T19:03:48.870Z] Time:          Thu Jun 20 2019 21:03:48 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T19:03:48.870Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T19:03:48.881Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T19:03:48.882Z] > authorizing via signed-in user
+[debug] [2019-06-20T19:03:48.882Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T19:03:48.884Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T19:03:49.749Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T19:03:49.752Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T19:03:50.561Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T19:03:50.575Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T19:03:50.576Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T19:03:50.779Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T19:03:50.861Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T19:03:51.321Z] Functions runtime initialized.
+[debug] [2019-06-20T19:03:51.322Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T19:03:51.508Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-20T19:14:27.849Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T19:14:27.851Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T19:14:27.852Z] CLI Version:   7.0.1
+[debug] [2019-06-20T19:14:27.852Z] Platform:      win32
+[debug] [2019-06-20T19:14:27.852Z] Node Version:  v10.16.0
+[debug] [2019-06-20T19:14:27.853Z] Time:          Thu Jun 20 2019 21:14:27 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T19:14:27.853Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T19:14:27.862Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T19:14:27.863Z] > authorizing via signed-in user
+[debug] [2019-06-20T19:14:27.863Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T19:14:27.864Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T19:14:28.725Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T19:14:28.731Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T19:14:29.543Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T19:14:29.564Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T19:14:29.566Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T19:14:29.794Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T19:14:29.850Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T19:14:30.302Z] Functions runtime initialized.
+[debug] [2019-06-20T19:14:30.302Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T19:14:30.478Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-20T19:15:37.257Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T19:15:37.261Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T19:15:37.261Z] CLI Version:   7.0.1
+[debug] [2019-06-20T19:15:37.261Z] Platform:      win32
+[debug] [2019-06-20T19:15:37.261Z] Node Version:  v10.16.0
+[debug] [2019-06-20T19:15:37.263Z] Time:          Thu Jun 20 2019 21:15:37 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T19:15:37.263Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T19:15:37.275Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T19:15:37.276Z] > authorizing via signed-in user
+[debug] [2019-06-20T19:15:37.276Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T19:15:37.279Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T19:15:38.146Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T19:15:38.152Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T19:15:39.026Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T19:15:39.047Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T19:15:39.049Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T19:15:39.318Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T19:15:39.396Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T19:15:39.908Z] Functions runtime initialized.
+[debug] [2019-06-20T19:15:39.908Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T19:15:40.090Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-20T19:17:12.718Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T19:17:12.720Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T19:17:12.721Z] CLI Version:   7.0.1
+[debug] [2019-06-20T19:17:12.721Z] Platform:      win32
+[debug] [2019-06-20T19:17:12.721Z] Node Version:  v10.16.0
+[debug] [2019-06-20T19:17:12.722Z] Time:          Thu Jun 20 2019 21:17:12 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T19:17:12.722Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T19:17:12.732Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T19:17:12.733Z] > authorizing via signed-in user
+[debug] [2019-06-20T19:17:12.733Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T19:17:12.734Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T19:17:13.587Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T19:17:13.588Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T19:17:14.386Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T19:17:14.406Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T19:17:14.408Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T19:17:14.675Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T19:17:14.700Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T19:17:15.264Z] Functions runtime initialized.
+[debug] [2019-06-20T19:17:15.264Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T19:17:15.459Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-20T20:21:56.439Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T20:21:56.441Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T20:21:56.442Z] CLI Version:   7.0.1
+[debug] [2019-06-20T20:21:56.442Z] Platform:      win32
+[debug] [2019-06-20T20:21:56.442Z] Node Version:  v10.16.0
+[debug] [2019-06-20T20:21:56.446Z] Time:          Thu Jun 20 2019 22:21:56 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T20:21:56.446Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T20:21:56.468Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T20:21:56.469Z] > authorizing via signed-in user
+[debug] [2019-06-20T20:21:56.469Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T20:21:56.471Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-06-20T20:21:56.471Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-06-20T20:21:56.619Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T20:21:56.626Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T20:21:57.514Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T20:21:57.517Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T20:21:58.323Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T20:21:58.329Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T20:21:58.330Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T20:21:58.553Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T20:21:58.683Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T20:21:59.224Z] Functions runtime initialized.
+[debug] [2019-06-20T20:21:59.224Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T20:21:59.418Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-20T20:25:29.246Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T20:25:29.251Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T20:25:29.252Z] CLI Version:   7.0.1
+[debug] [2019-06-20T20:25:29.254Z] Platform:      win32
+[debug] [2019-06-20T20:25:29.255Z] Node Version:  v10.16.0
+[debug] [2019-06-20T20:25:29.258Z] Time:          Thu Jun 20 2019 22:25:29 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T20:25:29.258Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T20:25:29.309Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T20:25:29.319Z] > authorizing via signed-in user
+[debug] [2019-06-20T20:25:29.319Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T20:25:29.322Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T20:25:30.275Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T20:25:30.278Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T20:25:31.086Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T20:25:31.094Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T20:25:31.095Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T20:25:31.309Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T20:25:31.370Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T20:25:32.236Z] Functions runtime initialized.
+[debug] [2019-06-20T20:25:32.236Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T20:25:32.473Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-20T20:27:15.425Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T20:27:15.427Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T20:27:15.428Z] CLI Version:   7.0.1
+[debug] [2019-06-20T20:27:15.428Z] Platform:      win32
+[debug] [2019-06-20T20:27:15.428Z] Node Version:  v10.16.0
+[debug] [2019-06-20T20:27:15.429Z] Time:          Thu Jun 20 2019 22:27:15 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T20:27:15.429Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T20:27:15.444Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T20:27:15.445Z] > authorizing via signed-in user
+[debug] [2019-06-20T20:27:15.445Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T20:27:15.446Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T20:27:16.325Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T20:27:16.331Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T20:27:17.150Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T20:27:17.164Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T20:27:17.166Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T20:27:17.391Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T20:27:17.454Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T20:27:18.021Z] Functions runtime initialized.
+[debug] [2019-06-20T20:27:18.021Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T20:27:18.231Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-20T20:39:02.591Z] ----------------------------------------------------------------------
+[debug] [2019-06-20T20:39:02.593Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-20T20:39:02.594Z] CLI Version:   7.0.1
+[debug] [2019-06-20T20:39:02.594Z] Platform:      win32
+[debug] [2019-06-20T20:39:02.594Z] Node Version:  v10.16.0
+[debug] [2019-06-20T20:39:02.595Z] Time:          Thu Jun 20 2019 22:39:02 GMT+0200 (GMT+02:00)
+[debug] [2019-06-20T20:39:02.595Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-20T20:39:02.603Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-20T20:39:02.604Z] > authorizing via signed-in user
+[debug] [2019-06-20T20:39:02.604Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-20T20:39:02.606Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-20T20:39:03.483Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-20T20:39:03.485Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-20T20:39:04.282Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-20T20:39:04.302Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-20T20:39:04.304Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-20T20:39:04.491Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-20T20:39:04.649Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-20T20:39:05.201Z] Functions runtime initialized.
+[debug] [2019-06-20T20:39:05.201Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-20T20:39:05.412Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-21T18:28:04.152Z] ----------------------------------------------------------------------
+[debug] [2019-06-21T18:28:04.154Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-21T18:28:04.155Z] CLI Version:   7.0.1
+[debug] [2019-06-21T18:28:04.155Z] Platform:      win32
+[debug] [2019-06-21T18:28:04.155Z] Node Version:  v10.16.0
+[debug] [2019-06-21T18:28:04.156Z] Time:          Fri Jun 21 2019 20:28:04 GMT+0200 (GMT+02:00)
+[debug] [2019-06-21T18:28:04.156Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-21T18:28:04.172Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-21T18:28:04.173Z] > authorizing via signed-in user
+[debug] [2019-06-21T18:28:04.173Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-21T18:28:04.175Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-06-21T18:28:04.175Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-06-21T18:28:04.314Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-21T18:28:04.321Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-21T18:28:05.168Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-21T18:28:05.169Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-21T18:28:05.972Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-21T18:28:05.983Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-21T18:28:05.984Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-21T18:28:06.227Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-21T18:28:06.499Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-21T18:28:07.144Z] Functions runtime initialized.
+[debug] [2019-06-21T18:28:07.145Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-21T18:28:07.506Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
+[debug] [2019-06-21T18:29:22.735Z] ----------------------------------------------------------------------
+[debug] [2019-06-21T18:29:22.737Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rapha\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-06-21T18:29:22.737Z] CLI Version:   7.0.1
+[debug] [2019-06-21T18:29:22.737Z] Platform:      win32
+[debug] [2019-06-21T18:29:22.737Z] Node Version:  v10.16.0
+[debug] [2019-06-21T18:29:22.738Z] Time:          Fri Jun 21 2019 20:29:22 GMT+0200 (GMT+02:00)
+[debug] [2019-06-21T18:29:22.738Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-06-21T18:29:22.747Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-06-21T18:29:22.748Z] > authorizing via signed-in user
+[debug] [2019-06-21T18:29:22.748Z] [iam] checking project meinklassenzimmer-184820 for permissions ["firebase.projects.get"]
+[debug] [2019-06-21T18:29:22.751Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820:testIamPermissions  
+
+[debug] [2019-06-21T18:29:23.616Z] <<< HTTP RESPONSE 200
+[debug] [2019-06-21T18:29:23.623Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/meinklassenzimmer-184820  
+ 
+[debug] [2019-06-21T18:29:24.428Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer'...
+[info] 
+[warn] !  Your functions directory does not specify a Node version.
+   - Learn more at https://firebase.google.com/docs/functions/manage-functions#set_runtime_options
+[debug] [2019-06-21T18:29:24.440Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211/clients/_:getWebAppConfig  
+ 
+[debug] [2019-06-21T18:29:24.441Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/337756808211:getServerAppConfig  
+ 
+[debug] [2019-06-21T18:29:24.622Z] <<< HTTP RESPONSE 200
+[info] +  functions: Emulator started at http://localhost:5001
+[debug] [2019-06-21T18:29:24.770Z] <<< HTTP RESPONSE 200
+[info] i  functions: Watching "C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions" for Cloud Functions...
+[info] i  hosting: Serving hosting files from: client/dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-06-21T18:29:25.410Z] Functions runtime initialized.
+[debug] [2019-06-21T18:29:25.411Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-06-21T18:29:25.602Z] firebase-admin has been stubbed.
+[warn] !  Error: Cannot find module './server.js'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+    at Module.require (internal/modules/cjs/loader.js:690:17)
+    at require (internal/modules/cjs/helpers.js:25:18)
+    at Object.<anonymous> (C:\Users\rapha\Documents\GitRepositories\MeinKlassenzimmer\functions\lib\index.js:3:13)
+    at Module._compile (internal/modules/cjs/loader.js:776:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+[warn] !  We were unable to load your functions code. (see above)
+   - It appears your code is written in Typescript, which must be compiled before emulation.
+   - You may be able to run "npm run build" in your functions directory to resolve this.
