@@ -2,8 +2,8 @@ var mysql      = require('mysql');
 
 
 const connectionName = 'meinklassenzimmer-184820:us-central1:meinklassenzimmer-database';
-const dbUser = 'raphael';
-const dbPass = 'KLUA3vbduRtDTH9pn6G';
+const dbUser = '';
+const dbPass = '';
 const dbName = 'meinklassenzimmerdb';
 
 const pool = mysql.createPool({
