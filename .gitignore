@@ -1,3 +1,5 @@
 # compiled output
 meinKlassenzimmer/public/dist
 
+functions/keys/serviceAccountKey.json
+functions/src/dbconnection.js
