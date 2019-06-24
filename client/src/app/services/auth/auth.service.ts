@@ -3,11 +3,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/filter';
-import { AngularFireAuthModule, AngularFireAuth} from "@angular/fire/auth";
-import * as firebase from 'firebase/app';
+import {  AngularFireAuth} from "@angular/fire/auth";
+import { auth } from 'firebase/app';
 
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
+
+
+
 export class AuthService {
 
 
@@ -22,14 +25,13 @@ export class AuthService {
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth
     });
+  
     
   }
 
-
-
   login() {
     return this.afAuth.auth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()).then((result) => {
+      new auth.GoogleAuthProvider()).then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         this.authState = result.user;
         this.getToken();
@@ -42,16 +44,6 @@ export class AuthService {
   }
 
 
-
-  private getToken() {
-    this.afAuth.auth.currentUser.getIdToken(true)
-      .then(
-        (token) => localStorage.setItem('tokenId', token)).catch(function (error) {
-          throw new Error('Token cannot be fetched.');
-        });
-  }
-
-  
 
   public logout() {
     this.afAuth.auth.signOut();
@@ -66,14 +58,30 @@ export class AuthService {
     return this.authState !== null;
 
   }
-  get currentUser(): any {
+
+   private get currentUser(): any {
     console.log("Current User");
     console.log(this.authState);
     return this.isAuthenticated ? this.authState : null;
   }
-  get currentUserId(): string {
-    return this.isAuthenticated ? this.authState.uid : '';
+
+
+
+  private getToken() {
+    this.afAuth.auth.currentUser.getIdToken(true)
+      .then(
+        (token) => localStorage.setItem('tokenId', token)).catch(function (error) {
+          throw new Error('Token cannot be fetched.');
+        });
   }
+
+  
+
+
+ 
+  // get currentUserId(): string {
+  //   return this.isAuthenticated ? this.authState.uid : '';
+  // }
 
 
 
