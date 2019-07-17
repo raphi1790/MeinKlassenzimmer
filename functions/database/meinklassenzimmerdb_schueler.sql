@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 35.239.17.132    Database: meinklassenzimmerdb
+-- Host: 35.225.158.173    Database: meinklassenzimmerdb
 -- ------------------------------------------------------
 -- Server version	5.7.14-google
 
@@ -23,13 +23,15 @@ DROP TABLE IF EXISTS `schueler`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `schueler` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `SchulklassenId` int(11) NOT NULL,
+  `Id` varchar(255) NOT NULL,
+  `SchulklassenId` varchar(255) NOT NULL,
   `Name` varchar(200) DEFAULT NULL,
   `Vorname` varchar(200) DEFAULT NULL,
   `NameKurz` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`Id`),
+  KEY `SchulklasseId_idx` (`SchulklassenId`),
+  CONSTRAINT `SchulklassenId` FOREIGN KEY (`SchulklassenId`) REFERENCES `schulklasse` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -41,4 +43,4 @@ CREATE TABLE `schueler` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-27 16:11:32
+-- Dump completed on 2019-07-16 21:26:58

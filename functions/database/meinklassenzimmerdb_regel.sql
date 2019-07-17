@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 35.239.17.132    Database: meinklassenzimmerdb
+-- Host: 35.225.158.173    Database: meinklassenzimmerdb
 -- ------------------------------------------------------
 -- Server version	5.7.14-google
 
@@ -16,20 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `person`
+-- Table structure for table `regel`
 --
 
-DROP TABLE IF EXISTS `person`;
+DROP TABLE IF EXISTS `regel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `person` (
+CREATE TABLE `regel` (
+  `Id` varchar(255) NOT NULL,
   `PersonId` varchar(30) NOT NULL,
-  `Geschlecht` varchar(45) DEFAULT NULL,
-  `Name` varchar(100) DEFAULT NULL,
-  `Vorname` varchar(100) DEFAULT NULL,
-  `Nickname` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`PersonId`),
-  UNIQUE KEY `personid_UNIQUE` (`PersonId`)
+  `Type` varchar(45) NOT NULL,
+  `Beschreibung` varchar(100) DEFAULT NULL,
+  `TischId` varchar(255) DEFAULT NULL,
+  `Schueler1Id` varchar(255) DEFAULT NULL,
+  `Schueler2Id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `Schueler1Id_idx` (`Schueler1Id`),
+  KEY `Schueler2Id_idx` (`Schueler2Id`),
+  KEY `TischId_idx` (`TischId`),
+  CONSTRAINT `Schueler1Id` FOREIGN KEY (`Schueler1Id`) REFERENCES `schueler` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Schueler2Id` FOREIGN KEY (`Schueler2Id`) REFERENCES `schueler` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `TischId` FOREIGN KEY (`TischId`) REFERENCES `tisch` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -42,4 +49,4 @@ CREATE TABLE `person` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-27 16:11:24
+-- Dump completed on 2019-07-16 21:27:06

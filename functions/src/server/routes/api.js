@@ -76,8 +76,8 @@ router.get("/schulzimmer", validateFirebaseIdToken, function (req, res) {
   var sqlSchulzimmer = "SELECT * FROM ?? s WHERE ??=?";
   var tableSchulzimmer = ["schulzimmer", "s.PersonId", personId];
 
-  querySchulzimmer = mysql.format(sqlSchulzimmer, tableSchulzimmer);
-  queryTische = mysql.format(sqlTische, tableTisch)
+  var querySchulzimmer = mysql.format(sqlSchulzimmer, tableSchulzimmer);
+  var queryTische = mysql.format(sqlTische, tableTisch)
 
   var return_data = {};
 
@@ -117,8 +117,8 @@ router.post("/schulzimmer", validateFirebaseIdToken, function (req, res) {
   var sqlDeleteSchulzimmer = "DELETE FROM ?? where ?? = ?";
   var valuesDeleteSchulzimmer = ["schulzimmer", "PersonId", personId];
 
-  queryDeleteTische = mysql.format(sqlDeleteTisch, valuesDeleteTisch);
-  queryDeleteSchulzimmer = mysql.format(sqlDeleteSchulzimmer, valuesDeleteSchulzimmer)
+  var queryDeleteTische = mysql.format(sqlDeleteTisch, valuesDeleteTisch);
+  var queryDeleteSchulzimmer = mysql.format(sqlDeleteSchulzimmer, valuesDeleteSchulzimmer)
 
 
   var queryInsertSchulzimmer = "INSERT INTO schulzimmer (Id, PersonId, Name) VALUES ?";
@@ -137,7 +137,7 @@ router.post("/schulzimmer", validateFirebaseIdToken, function (req, res) {
     console.log(obj);
   }
 
-  return_data = {};
+  var return_data = {};
   async.parallel([
     function (parallel_done) {
       connection.query(queryDeleteTische, {}, function (err, results) {
@@ -174,8 +174,8 @@ router.get("/schulklasse", validateFirebaseIdToken, function (req, res) {
   var sqlSchulklasse = "SELECT s.Id, s.PersonId, s.Name FROM ?? s WHERE ??=?";
   var tableSchulklasse = ["schulklasse", "s.PersonId", personId];
 
-  querySchulklasse = mysql.format(sqlSchulklasse, tableSchulklasse);
-  querySchueler = mysql.format(sqlSchueler, tableSchueler)
+  var querySchulklasse = mysql.format(sqlSchulklasse, tableSchulklasse);
+  var querySchueler = mysql.format(sqlSchueler, tableSchueler)
 
   var return_data = {};
 
@@ -215,8 +215,8 @@ router.post("/schulklasse", validateFirebaseIdToken, function (req, res) {
   var sqlDeleteSchulklasse = "DELETE FROM ?? where ?? = ?";
   var valuesDeleteSchulklasse = ["schulklasse", "PersonId", personId];
 
-  queryDeleteSchueler = mysql.format(sqlDeleteSchueler, valuesDeleteSchueler);
-  queryDeleteSchulklasse = mysql.format(sqlDeleteSchulklasse, valuesDeleteSchulklasse)
+  var queryDeleteSchueler = mysql.format(sqlDeleteSchueler, valuesDeleteSchueler);
+  var queryDeleteSchulklasse = mysql.format(sqlDeleteSchulklasse, valuesDeleteSchulklasse)
 
 
   var queryInsertSchulklasse = "INSERT INTO schulklasse (Id, PersonId, Name) VALUES ?";
@@ -236,7 +236,7 @@ router.post("/schulklasse", validateFirebaseIdToken, function (req, res) {
     console.log(obj);
   }
 
-  return_data = {};
+  var return_data = {};
   async.parallel([
     function (parallel_done) {
       connection.query(queryDeleteSchueler, {}, function (err, results) {
@@ -271,8 +271,8 @@ router.get("/regel", validateFirebaseIdToken, function (req, res) {
   var sqlRegel = "SELECT r.Id, r.PersonId, r.Type, r.Beschreibung, r.TischId, r.Schueler1Id, r.Schueler2Id FROM ?? r WHERE ?? = ?";
   var tableRegel = ["regel", "r.PersonId", personId];
 
-  queryRegel = mysql.format(sqlRegel, tableRegel);
-  return_data = {};
+  var queryRegel = mysql.format(sqlRegel, tableRegel);
+  var return_data = {};
   connection.query(queryRegel, {}, function (error, results) {
     if(error){
       res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
@@ -294,7 +294,7 @@ router.post("/regel", validateFirebaseIdToken, function (req, res) {
   var sqlDeleteRegel = "DELETE FROM ??  WHERE ?? = ? ";
   var valuesDeleteRegel = ["regel","PersonId", personId];
 
-  queryDeleteRegel = mysql.format(sqlDeleteRegel, valuesDeleteRegel);
+  var queryDeleteRegel = mysql.format(sqlDeleteRegel, valuesDeleteRegel);
 
   var sqlInsertRegel = "INSERT INTO regel (Id, PersonId, Type, Beschreibung, TischId, Schueler1Id, Schueler2Id) VALUES ?";
   var valuesInsertRegel = [];
