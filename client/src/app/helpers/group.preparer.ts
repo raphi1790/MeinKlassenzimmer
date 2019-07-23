@@ -16,8 +16,9 @@ export class GroupPreparer extends Preparer {
     }
     
 
-    prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputTisch = null, inputGroupType? : string, inputGroupSize? : number): Gruppeneinteilung {
+    prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputTisch=null, inputGroupType? : string, inputGroupSize? : number): Gruppeneinteilung {
         debugger;
+        console.log("Start prepare TischSchuelerPreparer");
         if (inputSchueler.length == 0) {
             console.log("Abbruch, da keine Schueler übergeben wurden.")
         }

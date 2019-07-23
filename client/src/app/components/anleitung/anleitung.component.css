@@ -29,8 +29,6 @@ img{
 .contact-text{
     text-align: center;
 }
-.Sitzordnung{
-  width: 919px;
-  height: 375px;
-  background-image: url('../../../assets/images/Sitzordnung.jpg'); 
+.col-md-3{
+    padding-left: 0px;
 }

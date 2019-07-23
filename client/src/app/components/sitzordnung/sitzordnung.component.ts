@@ -103,7 +103,6 @@ export class SitzordnungComponent {
     
     var klasseAndZimmerSelected = false; 
     if (this.selectedSchulklasse != undefined && this.selectedSchulzimmer !=undefined){
-      debugger;
       klasseAndZimmerSelected = true;
       let relevantRegeln = this.filterRegel(this.selectedSchulklasse, this.selectedSchulzimmer);
       this.dataSource.data = relevantRegeln;  
@@ -173,12 +172,16 @@ export class SitzordnungComponent {
             .map(output => output.id).includes(item.id))  
       debugger;
       let calculatingEngine = new CalculatingEngine(); 
+      console.log(this.tischSchuelerPreparer);
+      console.log(this.outputSchulklasse.schueler);
+      console.log(outputRegelnActive);
+      console.log(this.outputSchulzimmer.tische);
       let resultOutput = calculatingEngine.calculate(this.tischSchuelerPreparer,this.outputSchulklasse.schueler,outputRegelnActive, this.outputSchulzimmer.tische)       
       if (typeof resultOutput === 'undefined'){
         this.showSitzordnung = false;
         this.einteilungInfoDialogRef = this.dialog.open(EinteilungInfoDialogComponent, {
-          height: '220px',
-          width: '350px',
+          height: '250px',
+          width: '400px',
         });
 
       }

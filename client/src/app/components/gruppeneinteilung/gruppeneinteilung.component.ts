@@ -208,8 +208,8 @@ export class GruppeneinteilungComponent implements OnInit {
     if (typeof resultOutput === 'undefined'){
       this.showGroups = false;
       this.einteilungInfoDialogRef = this.dialog.open(EinteilungInfoDialogComponent, {
-        height: '220px',
-        width: '350px',
+        height: '250px',
+        width: '400px',
       });
 
     }

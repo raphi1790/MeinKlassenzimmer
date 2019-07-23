@@ -13,20 +13,14 @@ export class CalculatingEngine{
         debugger;
         let countAttemp = 0;
         let maximalNumberOfAttemps = (<any>CONFIG).numberOfAttemps ;
+        console.log(maximalNumberOfAttemps);
+        
         let regelnPaarung = inputRegeln.filter(regel => regel.type == "Unmögliche Paarung")
         do {
             inputPreparer.initializeArrays();
-            if (inputPreparer.constructor.name === "TischSchuelerPreparer"){
-                console.log("TischSchuelerPreparer");
-                this.resultObject = inputPreparer.prepare(inputSchueler, inputRegeln,inputTisch)
-            }
-            if (inputPreparer.constructor.name === "GroupPreparer"){
-                debugger;
-                console.log("GroupPreparer");
-                this.resultObject = inputPreparer.prepare(inputSchueler, inputRegeln,null, inputGroupType, inputGroupSize);
-            }
-            
+            this.resultObject = inputPreparer.prepare(inputSchueler, inputRegeln,inputTisch,inputGroupType,inputGroupSize)           
             countAttemp++
+
         } while (countAttemp <= maximalNumberOfAttemps && !inputPreparer.paarungSatisfied(this.resultObject,regelnPaarung) );
 
         return (inputPreparer.paarungSatisfied(this.resultObject,regelnPaarung))? this.resultObject: undefined;

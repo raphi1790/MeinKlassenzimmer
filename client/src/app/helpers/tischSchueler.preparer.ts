@@ -35,6 +35,7 @@ export class TischSchuelerPreparer extends Preparer {
 
     prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputSelectedTische: Tisch[], inputGroupType = null, inputGroupSize = null ): any{
         debugger;
+        console.log("Start prepare TischSchuelerPreparer");
         var schuelerRandomizedPrepared: Schueler[];
         var indexSchueler = 0;
         let regelnSitzplatz = inputRegeln.filter(regel => regel.type == "Fester Sitzplatz");
@@ -83,6 +84,8 @@ export class TischSchuelerPreparer extends Preparer {
 
     paarungSatisfied(inputTischSchueler: TischSchueler[][], inputRegeln: Regel[]):boolean{
         debugger;
+        console.log("inputTischSchueler in paarungSatisfie");
+        console.log(inputTischSchueler)
         let tischSchuelerArray = this.to1DArray(inputTischSchueler);
         let paarungSatisfied = true;
         inputRegeln.forEach(regel => {

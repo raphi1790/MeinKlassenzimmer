@@ -96,8 +96,8 @@ export class SchulklassenComponent implements OnInit {
       this.savingIsActiv = true;
     }else{
       this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
-        height: '180px',
-        width: '510px',
+        height: '210px',
+        width: '550px',
       });
     }
     
