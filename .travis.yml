@@ -10,8 +10,5 @@ script:
   - cd client
   - npm install
   - npm run build
-  - cd ..
-  - cd functions
-  - npm install
-  - npm run build
+
 

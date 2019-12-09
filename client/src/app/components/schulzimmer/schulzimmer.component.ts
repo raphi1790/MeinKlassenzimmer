@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Schulzimmer } from '../../models/schulzimmer';
-import { SchulzimmerService } from "../../services/schulzimmer.service";
 import { Tisch } from '../../models/tisch';
 import { TischOutput } from '../../models/output.tisch';
 import { TischOutputPreparer } from '../../helpers/tischOutput.preparer';
@@ -9,11 +8,13 @@ import * as uuidv4 from 'uuid/v4';
 
 import * as CONFIG from '../../../config.json';
 import { Regel } from '../../models/regel';
-import { RegelService } from '../../services/regel.service';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { UserService } from 'src/app/services/user.service';
+import { map } from 'rxjs/operators';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -34,20 +35,20 @@ export class SchulzimmerComponent implements OnInit {
   preparedTischOutput: TischOutput[][];
   tischOutputPreparer: TischOutputPreparer;
   savingIsActiv : boolean;
-  isLoadingSchulzimmer: boolean;
-  isLoadingRegeln: boolean;
   neuesSchulzimmerName: string;
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   isSaving: boolean;
   currentTableNumber: number;
   regelChecker:RegelChecker;
   regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
+  myUser: User;
+  isLoadingData: boolean;
+  
+  @Input() personId: number
 
   
-  @Input() personid: number
-  
 
-  constructor(private schulzimmerService: SchulzimmerService, private regelService: RegelService, public dialog: MatDialog ) {
+  constructor(private userService: UserService, public dialog: MatDialog ) {
     this.currentTableNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
@@ -55,20 +56,23 @@ export class SchulzimmerComponent implements OnInit {
   }
 
   loadInputData() {
+    this.userService.getUser().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ uid: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(users => {
+      debugger;
+      this.myUser = new User(users[0])
+      this.schulzimmerToPerson = this.myUser.schulzimmer
+      this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
+      // console.log(this.myUser)
+      this.isLoadingData = false;
+    
+    });
 
-    this.schulzimmerService.getSchulzimmerAndTischeByPersonid().subscribe(
-      (data:Schulzimmer[]) => {
-        this.schulzimmerToPerson = data;
-        this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
-        this.isLoadingSchulzimmer = false;
-        this.regelService.getRegelByPersonid().subscribe(
-          (data:Regel[]) => {
-            debugger;
-            this.regelnToPerson = data;
-            this.isLoadingRegeln = false;
-          });
-      }
-    );
+  
   }
 
   getErrorMessageNeuesSchulzimmer() {
@@ -80,7 +84,7 @@ export class SchulzimmerComponent implements OnInit {
   onSelect(selectedId: Name): void {
     debugger;
     let schulzimmer = this.schulzimmerToPerson.filter(zimmer => zimmer.id == selectedId.id)[0];
-    console.log("table number (before findMaximalTableNumber): " + this.currentTableNumber);
+    // console.log("table number (before findMaximalTableNumber): " + this.currentTableNumber);
     this.selectedSchulzimmer = schulzimmer;
     this.tischOutputPreparer = new TischOutputPreparer();
     this.preparedTischOutput = this.tischOutputPreparer.prepareTischOutput(this.selectedSchulzimmer);
@@ -90,7 +94,7 @@ export class SchulzimmerComponent implements OnInit {
     else{
       this.currentTableNumber = 0;
     }
-    console.log("table number (after findMaximalTableNumber): " + this.currentTableNumber);
+    // console.log("table number (after findMaximalTableNumber): " + this.currentTableNumber);
 
   }
 
@@ -147,7 +151,7 @@ export class SchulzimmerComponent implements OnInit {
 
   }
   updateCurrentTableNumber(newNumber:number){
-    console.log("new Number: "+ newNumber);
+    // console.log("new Number: "+ newNumber);
     this.currentTableNumber = newNumber;
   }
   updateSchulzimmer(updatedTischOutput: TischOutput): void {
@@ -165,8 +169,8 @@ export class SchulzimmerComponent implements OnInit {
       this.schulzimmerToPerson.push(updatedZimmer);
     }
     this.savingIsActiv = true;
-    console.log("Updated SchulzimmerToPerson");
-    console.log(this.schulzimmerToPerson);
+    // console.log("Updated SchulzimmerToPerson");
+    // console.log(this.schulzimmerToPerson);
 
   
   }
@@ -176,11 +180,13 @@ export class SchulzimmerComponent implements OnInit {
   }
 
 
-  async saveSchulzimmerTische(): Promise<void> {
+  saveSchulzimmerTische() {
     debugger;
-    this.savingIsActiv = false;
-    this.isSaving = true; 
-    await this.schulzimmerService.updateSchulzimmerAndTische(this.schulzimmerToPerson).subscribe(() => this.isSaving = false);
+    this.savingIsActiv = false; 
+    this.isSaving = true;
+    this.myUser.schulzimmer = this.schulzimmerToPerson
+    this.userService.updateUser(this.myUser);
+    this.isSaving = false;
     this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;
     
   }
@@ -192,8 +198,7 @@ export class SchulzimmerComponent implements OnInit {
 
   ngOnInit() {
     debugger;
-    this.isLoadingSchulzimmer = true;
-    this.isLoadingRegeln = true;
+    this.isLoadingData = true;
     this.loadInputData();
 
   }

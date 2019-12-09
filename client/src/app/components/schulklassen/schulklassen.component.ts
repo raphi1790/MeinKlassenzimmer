@@ -3,16 +3,16 @@ import { Component, OnInit, Input , OnChanges, ViewChild} from '@angular/core';
 import {Schulklasse} from '../../models/schulklasse';
 import {Schueler} from '../../models/schueler';
 
-
-import {SchulklassenService} from '../../services/schulklassen.service';
 import { FormControl, Validators } from '@angular/forms';
 import * as uuidv4 from 'uuid/v4';
-import { RegelService } from '../../services/regel.service';
 import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -27,11 +27,10 @@ import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog
 export class SchulklassenComponent implements OnInit {
   
   savingIsActiv: boolean;
-  isLoadingSchulklasse: boolean;
   isSaving: boolean;
   klassenToPerson: Schulklasse[];
   klassenToPersonOriginal: Schulklasse[];
-  isLoadingRegeln: boolean;
+  isLoadingData: boolean;
   regelnToPerson: Regel[];
   selectedSchulklasse: Schulklasse;
   regelChecker: RegelChecker;
@@ -40,34 +39,41 @@ export class SchulklassenComponent implements OnInit {
   regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
 
 
-  @Input() personid: number
+
+
+  @Input() personId: string
   
   
 
-  constructor(private klassenService: SchulklassenService, private regelService: RegelService, public dialog: MatDialog) {
+  constructor( private userService:UserService,
+     public dialog: MatDialog) {
       this.regelChecker = new RegelChecker();
+
       
   }
+  myUser:User
 
  
 
 
   loadInputData() {
+    this.userService.getUser().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ uid: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(users => {
+      debugger;
+      this.myUser = new User(users[0])
+      this.klassenToPerson = this.myUser.schulklassen
+      this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
+      // console.log(this.myUser)
+      // console.log(this.klassenToPerson)
+      this.isLoadingData = false;
+    
+    });
 
-    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe(
-      (data:Schulklasse[]) => {
-        debugger;
-        this.klassenToPerson = data;
-        this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
-        this.isLoadingSchulklasse = false;
-        this.regelService.getRegelByPersonid().subscribe(
-          (data:Regel[]) => {
-            debugger;
-            this.regelnToPerson = data;
-            this.isLoadingRegeln = false;
-          });
-        }
-        );
   
   }
 
@@ -151,12 +157,15 @@ export class SchulklassenComponent implements OnInit {
   }
 
   
-  async saveSchulklasseSchueler(): Promise<void> {
+  saveSchulklasseSchueler() {
     debugger;
     this.savingIsActiv = false; 
     this.isSaving = true;
-    await this.klassenService.updateKlassenAndSchueler(this.klassenToPerson).subscribe(() => this.isSaving = false);
+    this.myUser.schulklassen = this.klassenToPerson
+    this.userService.updateUser(this.myUser);
+    this.isSaving = false;
     this.klassenToPersonOriginal = this.klassenToPerson;
+    
   }
   cancel(){
     debugger;
@@ -166,8 +175,7 @@ export class SchulklassenComponent implements OnInit {
 
   ngOnInit(){
     debugger;
-    this.isLoadingRegeln = true;
-    this.isLoadingSchulklasse = true;
+    this.isLoadingData = true;
     this.loadInputData();
 
   }

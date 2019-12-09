@@ -2,20 +2,19 @@ import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
 
 import { Schulklasse } from '../../models/schulklasse';
 import { TischSchueler } from '../../models/tisch.schueler';
-import { SchulklassenService } from '../../services/schulklassen.service';
-import { SchulzimmerService } from '../../services/schulzimmer.service';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { TischSchuelerPreparer } from '../../helpers/tischSchueler.preparer';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
-
 import * as CONFIG from '../../../config.json';
-import { RegelService } from '../../services/regel.service';
 import { Regel } from '../../models/regel';
 import { MatTable, MatPaginator, MatTableDataSource, MAT_CHECKBOX_CLICK_ACTION, MatDialog, MatDialogRef } from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
 import { CalculatingEngine } from '../../helpers/calculating.engine';
+import { UserService } from 'src/app/services/user.service';
+import { map } from 'rxjs/operators';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-sitzordnung',
@@ -39,23 +38,22 @@ export class SitzordnungComponent {
   columnSchulzimmer: number[];
   preparedTischSchueler: TischSchueler[][];
   zuvieleSchuelerInSchulzimmer: boolean;
-  isLoadingSchulklasse: boolean;
-  isLoadingSchulzimmer: boolean;
-  isLoadingRegeln: boolean;
+  isLoadingData: boolean;
   displayedColumns = ['select','type' ,'beschreibung'   ];
   selection = new SelectionModel<Regel>(true, []);
   einteilungInfoDialogRef: MatDialogRef<EinteilungInfoDialogComponent>;
+  myUser: User;
 
 
   
 
-  constructor(private klassenService: SchulklassenService, private zimmerService: SchulzimmerService, private regelService: RegelService, public dialog: MatDialog) { 
+  constructor(private userService: UserService, public dialog: MatDialog) { 
     this.showSitzordnung = false;
     this.zuvieleSchuelerInSchulzimmer = false;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
   }
-  @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChild(MatTable, { static: false }) table: MatTable<any>;
 
 
   dataSource = new MatTableDataSource<Regel>();
@@ -80,24 +78,25 @@ export class SitzordnungComponent {
   }
 
   loadInputData() {
-    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((
-      data: Schulklasse[]) => { 
-        this.klassenToPerson = data; this.isLoadingSchulklasse = false;
-        this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => 
-          { this.zimmerToPerson = data; this.isLoadingSchulzimmer = false; 
-            this.regelService.getRegelByPersonid().subscribe(
-              (data:Regel[]) => {
-                this.regelnToPerson = data;
-                this.isLoadingRegeln = false;
-              });
-          })
-       }
-      
-      
-      );
+    this.userService.getUser().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ uid: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(users => {
+      debugger;
+      this.myUser = new User(users[0])
+      this.klassenToPerson = this.myUser.schulklassen
+      this.zimmerToPerson = this.myUser.schulzimmer
+      this.regelnToPerson = this.myUser.regeln
+      // console.log(this.myUser)
+      this.isLoadingData = false;
+    
+    });
 
   
-    }
+  }
 
   klasseAndZimmerSelected(): boolean{
     
@@ -172,10 +171,10 @@ export class SitzordnungComponent {
             .map(output => output.id).includes(item.id))  
       debugger;
       let calculatingEngine = new CalculatingEngine(); 
-      console.log(this.tischSchuelerPreparer);
-      console.log(this.outputSchulklasse.schueler);
-      console.log(outputRegelnActive);
-      console.log(this.outputSchulzimmer.tische);
+      // console.log(this.tischSchuelerPreparer);
+      // console.log(this.outputSchulklasse.schueler);
+      // console.log(outputRegelnActive);
+      // console.log(this.outputSchulzimmer.tische);
       let resultOutput = calculatingEngine.calculate(this.tischSchuelerPreparer,this.outputSchulklasse.schueler,outputRegelnActive, this.outputSchulzimmer.tische)       
       if (typeof resultOutput === 'undefined'){
         this.showSitzordnung = false;
@@ -188,8 +187,8 @@ export class SitzordnungComponent {
       else{
         this.showSitzordnung = true;
         this.preparedTischSchueler = resultOutput;
-        console.log("Randomized SchuelerTischArray");
-        console.log(this.preparedTischSchueler);
+        // console.log("Randomized SchuelerTischArray");
+        // console.log(this.preparedTischSchueler);
       }
       
 
@@ -211,9 +210,7 @@ export class SitzordnungComponent {
   }
 
   ngOnInit() {
-    this.isLoadingSchulklasse = true;
-    this.isLoadingSchulzimmer = true;
-    this.isLoadingRegeln = true;
+    this.isLoadingData = true;
     this.loadInputData();
 
   }

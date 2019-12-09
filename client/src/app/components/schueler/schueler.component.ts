@@ -30,8 +30,8 @@ export class SchuelerComponent implements OnChanges{
   @Input('selectedSchulklasse')  selectedSchulklasse: Schulklasse;
   @Input('regelnToPerson') regelnToPerson: Regel[];
   @Output() noteSchulklasse: EventEmitter<Schulklasse> = new EventEmitter<Schulklasse>();
-  @ViewChild(MatTable) table: MatTable<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   
   schulklasse = new Schulklasse();
@@ -57,8 +57,8 @@ export class SchuelerComponent implements OnChanges{
         item => item.id != deletedSchueler.id
       );
   
-      console.log("Klasse nach Update (Delete):");
-      console.log(this.schulklasse);
+      // console.log("Klasse nach Update (Delete):");
+      // console.log(this.schulklasse);
       this.dataSource.data = this.schulklasse.schueler;
       this.noteSchulklasse.emit(this.schulklasse);
       this.anzahlSchueler--;
@@ -76,19 +76,19 @@ export class SchuelerComponent implements OnChanges{
 
   addSchueler():void {
     debugger;
-    var schuelerTmp = new Schueler();
-    schuelerTmp.id = uuidv4();
-    schuelerTmp.schulklassenId = this.schulklasse.id;
-    schuelerTmp.vorname = this.neuerSchuelerVorname;
-    schuelerTmp.name = this.neuerSchuelerName;
-
+    var schuelerTmp = new Schueler({
+      id: uuidv4(),
+      schulklassenId:this.schulklasse.id,
+      name:this.neuerSchuelerName,
+      vorname:this.neuerSchuelerVorname
+    });
     this.schulklasse.schueler.push(schuelerTmp);
     this.anzahlSchueler++;
     
     this.dataSource.data = this.schulklasse.schueler;
 
-    console.log("Klasse nach Update (Adding):");
-    console.log(this.schulklasse);
+    // console.log("Klasse nach Update (Adding):");
+    // console.log(this.schulklasse);
 
  
     this.noteSchulklasse.emit(this.schulklasse);
@@ -106,8 +106,8 @@ export class SchuelerComponent implements OnChanges{
     this.schulklasse = this.selectedSchulklasse;
     this.dataSource.data = this.schulklasse.schueler;
     this.anzahlSchueler = this.selectedSchulklasse.schueler.length;
-    console.log("Schulklasse beim Laden");
-    console.log(this.schulklasse);
+    // console.log("Schulklasse beim Laden");
+    // console.log(this.schulklasse);
     
     
     

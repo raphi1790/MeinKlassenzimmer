@@ -39,9 +39,9 @@ export class TischComponent implements OnChanges {
   getTisch():void{
 
     debugger;
-    console.log("Get Tisch")
+    // console.log("Get Tisch")
     this.tableNumber = this.tischOutput.tableNumber;
-      console.log("tableNumber: " + this.tableNumber );
+      // console.log("tableNumber: " + this.tableNumber );
     if(this.tischOutput.selected){
       this.tischStyle = 'selectedTischStyle';
       if(this.tischOutput.active){
@@ -66,7 +66,7 @@ export class TischComponent implements OnChanges {
     
   selectTisch(): void {
     debugger;
-    console.log("Selektieren Tisch")
+    // console.log("Selektieren Tisch")
     if (this.tischOutput.selected) {
       if(!this.regelChecker.regelExistsToTischId(this.tischOutput.tischId, this.regelnToPerson)){
         this.tischStyle = 'unselectedTischStyle';

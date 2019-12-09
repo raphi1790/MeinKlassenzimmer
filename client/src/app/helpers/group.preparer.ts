@@ -54,8 +54,8 @@ export class GroupPreparer extends Preparer {
             
             
             
-            console.log("Gruppeneinteilung");
-            console.log(this.gruppenEinteilung);
+            // console.log("Gruppeneinteilung");
+            // console.log(this.gruppenEinteilung);
 
         }
         return this.gruppenEinteilung;

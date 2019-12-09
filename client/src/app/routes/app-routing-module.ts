@@ -7,6 +7,7 @@ import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.compon
 import {StartseiteComponent} from '../components/startseite/startseite.component';
 import { GruppeneinteilungComponent } from '../components/gruppeneinteilung/gruppeneinteilung.component';
 import { UnsavedGuard} from '../helpers/guards/unsaved.guard'
+import { AuthGuard} from '../helpers/guards/auth.guard'
 import { AnleitungComponent } from '../components/anleitung/anleitung.component';
 import { RegelnComponent } from '../components/regeln/regeln.component';
 
@@ -16,12 +17,14 @@ const routes: Routes = [
       {
           path: 'verwaltung/klassen',
           component: SchulklassenComponent,
-          canDeactivate: [UnsavedGuard]
+          canDeactivate: [UnsavedGuard],
+          canActivate: [AuthGuard]
       },
       {
           path: 'verwaltung/schulzimmer',
           component: SchulzimmerComponent,
-          canDeactivate: [UnsavedGuard]
+          canDeactivate: [UnsavedGuard],
+          canActivate: [AuthGuard]
       },
       {
           path: 'home',
@@ -34,11 +37,13 @@ const routes: Routes = [
       },
       { 
           path: 'sitzordnung',
-          component: SitzordnungComponent
+          component: SitzordnungComponent,
+          canActivate: [AuthGuard]
       },
       {
         path: 'gruppeneinteilung',
-        component: GruppeneinteilungComponent   
+        component: GruppeneinteilungComponent  ,
+        canActivate: [AuthGuard] 
       },
       {
           path: 'anleitung',
@@ -47,7 +52,8 @@ const routes: Routes = [
       {
         path: 'verwaltung/regeln',
         component: RegelnComponent,
-        canDeactivate: [UnsavedGuard]
+        canDeactivate: [UnsavedGuard],
+        canActivate: [AuthGuard]
     }
      
 

@@ -2,7 +2,7 @@ import { Schueler } from "./schueler";
 
 export class Schulklasse{
     id: string;
-    personid: string;
+    personId: string;
     name: string;
     schueler: Schueler[];
     

@@ -1,6 +1,6 @@
 { 	
 	"numberOfRows" : 10,
 	"numberOfColumns": 12,
-	"numberOfAttemps": 30,
-	"api": "https://us-central1-meinklassenzimmer.cloudfunctions.net/myfirebasefunction"
+	"numberOfAttemps": 30
+
 }

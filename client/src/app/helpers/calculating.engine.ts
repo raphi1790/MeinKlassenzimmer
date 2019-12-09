@@ -13,7 +13,7 @@ export class CalculatingEngine{
         debugger;
         let countAttemp = 0;
         let maximalNumberOfAttemps = (<any>CONFIG).numberOfAttemps ;
-        console.log(maximalNumberOfAttemps);
+        // console.log(maximalNumberOfAttemps);
         
         let regelnPaarung = inputRegeln.filter(regel => regel.type == "Unmögliche Paarung")
         do {

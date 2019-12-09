@@ -1,11 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { RegelService } from '../../services/regel.service';
-
 import { Regel } from '../../models/regel';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Schulklasse } from '../../models/schulklasse';
-import { SchulklassenService } from '../../services/schulklassen.service';
-import { SchulzimmerService } from '../../services/schulzimmer.service';
 import { Schueler } from '../../models/schueler';
 import { Tisch } from '../../models/tisch';
 import { MatTable, MatPaginator, MatTableDataSource } from '@angular/material';
@@ -15,6 +11,9 @@ import { OutputRegelTisch } from '../../models/output.regel.sitzordnung';
 import * as uuidv4 from 'uuid/v4';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { OutputRegelPaarung } from '../../models/output.regel.paarung';
+import { UserService } from 'src/app/services/user.service';
+import { map } from 'rxjs/operators';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-regeln',
@@ -32,10 +31,7 @@ export class RegelnComponent implements OnInit {
   klassenToPerson: Schulklasse[];
   zimmerToPerson: Schulzimmer[];
   savingIsActiv: boolean;
-  isLoadingRegeln: boolean;
   isSaving: boolean;
-  isLoadingSchulklasse: boolean;
-  isLoadingSchulzimmer: boolean;
   regelnToPerson: Regel[];
   regelnToPersonOriginal: Regel[];
   regelTypes = ['Fester Sitzplatz', 'Unmögliche Paarung']
@@ -62,51 +58,49 @@ export class RegelnComponent implements OnInit {
   schueler2: FormControl;
   tisch: FormControl;
   formSubmitAttempt: boolean;
+  isLoadingData: boolean;
+  myUser: User;
 
 
 
-  constructor(private regelService: RegelService, private klassenService: SchulklassenService 
-         ,private zimmerService : SchulzimmerService  
-             ) 
+  constructor(private userService:UserService) 
   {
      this.regelEnricher = new RegelEnricher();
 
   }
-  @ViewChild(MatTable) tableSitzplatz: MatTable<any>;
-  @ViewChild(MatTable) tablePaarung: MatTable<any>;
+  @ViewChild(MatTable, { static: true }) tableSitzplatz: MatTable<any>;
+  @ViewChild(MatTable, { static: true }) tablePaarung: MatTable<any>;
   
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   dataSourceSitzplatz = new MatTableDataSource<OutputRegelTisch>();
   dataSourcePaarung = new MatTableDataSource<OutputRegelPaarung>();
 
  
 
-loadInputData() {
+  loadInputData() {
+    this.userService.getUser().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ uid: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(users => {
+      debugger;
+      this.myUser = new User(users[0])
+      this.regelnToPerson = this.myUser.regeln
+      this.regelnToPerson = JSON.parse(JSON.stringify(this.regelnToPerson));
+      this.klassenToPerson = this.myUser.schulklassen
+      this.zimmerToPerson = this.myUser.schulzimmer
+      this.enrichRegeln(this.regelnToPerson)
+      // console.log(this.myUser)
+      // console.log(this.regelnToPerson)
+      this.isLoadingData = false;
     
-     this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((
-        data: Schulklasse[]) => { 
-          this.klassenToPerson = data; this.isLoadingSchulklasse = false;
-          this.zimmerService.getSchulzimmerAndTischeByPersonid().subscribe((data: Schulzimmer[]) => 
-            { this.zimmerToPerson = data; this.isLoadingSchulzimmer = false; 
-              this.regelService.getRegelByPersonid().subscribe(
-                (data:Regel[]) => {
-                  debugger;
-                  this.regelnToPerson = data;
-                  this.regelnToPersonOriginal = JSON.parse(JSON.stringify(this.regelnToPerson));
-                  this.enrichRegeln(this.regelnToPerson);
-                  console.log("Enriched Regeln");
-                  console.log(this.dataSourceSitzplatz);
-                  console.log(this.dataSourcePaarung);
-                  this.isLoadingRegeln = false;
-                });
-            })
-         }
-        
-        
-        );
+    });
 
-    }
+  
+  }
       
 
 showDetailConfigurationFesterSitzplatz(): boolean {
@@ -134,6 +128,7 @@ showDetailConfigurationUnpassendePaarung(): boolean {
 
 }
   enrichRegeln(regeln:Regel[]){
+    debugger;
     let regelnTypeSitzplatz = regeln.filter(regel => regel.type == "Fester Sitzplatz");
     let regelnTypePaarung = regeln.filter(regel => regel.type == "Unmögliche Paarung");
     this.dataSourceSitzplatz.data = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, regelnTypeSitzplatz);
@@ -209,13 +204,16 @@ showDetailConfigurationUnpassendePaarung(): boolean {
     );
   }
   
-  
-  async saveRegeln(): Promise<void> {
+
+  saveRegeln() {
     debugger;
     this.savingIsActiv = false; 
     this.isSaving = true;
-    await this.regelService.updateRegeln(this.regelnToPerson).subscribe(() => this.isSaving = false);
+    this.myUser.regeln = this.regelnToPerson
+    this.userService.updateUser(this.myUser);
+    this.isSaving = false;
     this.regelnToPersonOriginal = this.regelnToPerson;
+    
   }
 
   cancel(){
@@ -235,9 +233,7 @@ showDetailConfigurationUnpassendePaarung(): boolean {
     debugger;
     this.createFormControls();
     this.createForm();
-    this.isLoadingSchulklasse = true;
-    this.isLoadingSchulzimmer = true;
-    this.isLoadingRegeln = true;
+    this.isLoadingData = true;
     this.loadInputData();
 
   }

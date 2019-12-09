@@ -25,7 +25,7 @@ export class TischSchuelerPreparer extends Preparer {
                 this.preparedTischSchueler[row][column].tischOutput.selected = false;
                 this.preparedTischSchueler[row][column].tischOutput.active = false;
                 this.preparedTischSchueler[row][column].tischOutput.position = new PositionTisch(row,column);
-                this.preparedTischSchueler[row][column].schueler = new Schueler();
+                
                 
             }
         }
@@ -35,7 +35,7 @@ export class TischSchuelerPreparer extends Preparer {
 
     prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputSelectedTische: Tisch[], inputGroupType = null, inputGroupSize = null ): any{
         debugger;
-        console.log("Start prepare TischSchuelerPreparer");
+        // console.log("Start prepare TischSchuelerPreparer");
         var schuelerRandomizedPrepared: Schueler[];
         var indexSchueler = 0;
         let regelnSitzplatz = inputRegeln.filter(regel => regel.type == "Fester Sitzplatz");
@@ -59,15 +59,20 @@ export class TischSchuelerPreparer extends Preparer {
                 if(checkTischFixedExists(inputSelectedTische[index].id)){
                     let regelToFixedTisch = regelnSitzplatz.filter(item => item.tischId == inputSelectedTische[index].id)[0];
                     let fixedSchueler = inputSchueler.filter(item => item.id == regelToFixedTisch.schueler1Id  )[0];
-                    this.preparedTischSchueler[row][column].schueler.id = fixedSchueler.id;
-                    this.preparedTischSchueler[row][column].schueler.nameKurz = fixedSchueler.nameKurz
-                    this.preparedTischSchueler[row][column].schueler.vorname = fixedSchueler.vorname;
-
+                    this.preparedTischSchueler[row][column].schueler = new Schueler({
+                        id:fixedSchueler.id,
+                        vorname:fixedSchueler.vorname,
+                        name: fixedSchueler.name,
+                        schulklassenId: fixedSchueler.schulklassenId
+                    })
                 }else{
                     if(typeof schuelerRandomizedPrepared[indexSchueler] !== 'undefined' ){
-                        this.preparedTischSchueler[row][column].schueler.id = schuelerRandomizedPrepared[indexSchueler].id ;
-                        this.preparedTischSchueler[row][column].schueler.nameKurz = schuelerRandomizedPrepared[indexSchueler].nameKurz;
-                        this.preparedTischSchueler[row][column].schueler.vorname = schuelerRandomizedPrepared[indexSchueler].vorname;
+                        this.preparedTischSchueler[row][column].schueler = new Schueler({
+                            id:schuelerRandomizedPrepared[indexSchueler].id,
+                            vorname:schuelerRandomizedPrepared[indexSchueler].vorname,
+                            name: schuelerRandomizedPrepared[indexSchueler].name,
+                            schulklassenId: schuelerRandomizedPrepared[indexSchueler].schulklassenId
+                        })
                     }
                     indexSchueler++;
 
@@ -84,8 +89,8 @@ export class TischSchuelerPreparer extends Preparer {
 
     paarungSatisfied(inputTischSchueler: TischSchueler[][], inputRegeln: Regel[]):boolean{
         debugger;
-        console.log("inputTischSchueler in paarungSatisfie");
-        console.log(inputTischSchueler)
+        // console.log("inputTischSchueler in paarungSatisfied");
+        // console.log(inputTischSchueler)
         let tischSchuelerArray = this.to1DArray(inputTischSchueler);
         let paarungSatisfied = true;
         inputRegeln.forEach(regel => {

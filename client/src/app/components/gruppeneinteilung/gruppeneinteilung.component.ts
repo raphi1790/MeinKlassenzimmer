@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SchulklassenService } from '../../services/schulklassen.service';
 import { Schulklasse } from '../../models/schulklasse';
 import { GroupPreparer } from '../../helpers/group.preparer';
 import { MatTable, MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
-import { RegelService } from '../../services/regel.service';
 import { Regel } from '../../models/regel';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CalculatingEngine } from '../../helpers/calculating.engine';
 import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
 import { GroupEnricher } from '../../helpers/group.enricher';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-gruppeneinteilung',
@@ -20,6 +21,7 @@ import { GroupEnricher } from '../../helpers/group.enricher';
 export class GruppeneinteilungComponent implements OnInit {
 
   selectedSchulklasse: Schulklasse;
+  myUser:User;
   klassenToPerson: Schulklasse[];
   regelnToPerson: Regel[];
   groupSizes = [2, 3, 4, 5, 6];
@@ -30,9 +32,8 @@ export class GruppeneinteilungComponent implements OnInit {
   outputSchulklasse: Schulklasse
   outputGroupSize: number;
   outputGroupType: string;
-  isLoadingSchulklasse: boolean;
   gruppeneinteilungTitle: string;
-  isLoadingRegeln: boolean;
+  isLoadingData: boolean;
   selection = new SelectionModel<Regel>(true, []);
   einteilungInfoDialogRef: MatDialogRef<EinteilungInfoDialogComponent>;
 
@@ -62,26 +63,34 @@ export class GruppeneinteilungComponent implements OnInit {
   displayedColumns = [];
   displayedColumnsRegel = ['select','type' ,'beschreibung'   ];
 
-  @ViewChild(MatTable) table: MatTable<any>;
-  @ViewChild(MatTable) tableRegel: MatTable<any>;
+  @ViewChild(MatTable, { static: false }) table: MatTable<any>;
+  @ViewChild(MatTable, { static: false }) tableRegel: MatTable<any>;
 
   dataSource: any;
   dataSourceRegel = new MatTableDataSource<Regel>();
 
 
-  constructor(private klassenService: SchulklassenService, private regelService: RegelService, public dialog: MatDialog) {
+  constructor( private userService: UserService, public dialog: MatDialog) {
   }
 
   loadInputData() {
-    this.klassenService.getKlassenAndSchuelerByPersonid().subscribe((
-      data: Schulklasse[]) => { 
-        this.klassenToPerson = data; this.isLoadingSchulklasse = false;
-            this.regelService.getRegelByPersonid().subscribe(
-              (data:Regel[]) => {
-                this.regelnToPerson = data;
-                this.isLoadingRegeln = false;
-              });
-          })
+    this.userService.getUser().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ uid: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(users => {
+      debugger;
+      this.myUser = new User(users[0])
+      this.klassenToPerson = this.myUser.schulklassen
+      this.regelnToPerson = this.myUser.regeln
+      // console.log(this.myUser)
+      this.isLoadingData = false;
+    
+    });
+
+  
   }
   klasseSelecteAndEnrichmentDone(): boolean{
     
@@ -217,8 +226,8 @@ export class GruppeneinteilungComponent implements OnInit {
       this.showGroups = true;
       let groupEnricher = new GroupEnricher();
       this.dataSource = groupEnricher.enrichGroupBasedOnType(resultOutput, this.outputGroupType, this.outputGroupSize)
-      console.log("Randomized Gruppeneinteilung");
-      console.log(this.dataSource);
+      // console.log("Randomized Gruppeneinteilung");
+      // console.log(this.dataSource);
     }
 
 
@@ -244,7 +253,7 @@ export class GruppeneinteilungComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLoadingSchulklasse = true;
+    this.isLoadingData = true;
     this.loadInputData();
 
   }
