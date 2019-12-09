@@ -1,12 +1,12 @@
 export const environment = {
   production: true,
-  firebase: {
+  firebaseConfig: {
     apiKey: "",
     authDomain: "meinklassenzimmer.firebaseapp.com",
     databaseURL: "https://meinklassenzimmer.firebaseio.com",
     projectId: "meinklassenzimmer",
     storageBucket: "meinklassenzimmer.appspot.com",
-    messagingSenderId: "",
+    messagingSenderId: "946677335646",
     appId: ""
   }
   };
