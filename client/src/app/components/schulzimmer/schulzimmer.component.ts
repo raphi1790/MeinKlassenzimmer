@@ -11,7 +11,7 @@ import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from 'src/app/models/user';

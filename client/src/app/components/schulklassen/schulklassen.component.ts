@@ -8,7 +8,7 @@ import * as uuidv4 from 'uuid/v4';
 import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';

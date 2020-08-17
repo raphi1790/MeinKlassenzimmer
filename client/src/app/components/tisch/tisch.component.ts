@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { TischOutput } from '../../models/output.tisch';
-import { MAT_CHECKBOX_CLICK_ACTION, MatDialogRef, MatDialog } from '@angular/material';
+import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material/checkbox';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';

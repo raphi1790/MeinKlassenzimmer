@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Schulklasse } from '../../models/schulklasse';
 import { GroupPreparer } from '../../helpers/group.preparer';
-import { MatTable, MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import { Regel } from '../../models/regel';

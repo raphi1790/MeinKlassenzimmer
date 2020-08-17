@@ -2,7 +2,9 @@ import { Component, OnInit,  Input, OnChanges, EventEmitter, Output, ViewChild, 
 
 import {Schulklasse} from '../../models/schulklasse';
 import {Schueler} from '../../models/schueler';
-import { MatTable,MatPaginator, MatTableDataSource, MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 import * as uuidv4 from 'uuid/v4';
 import { Regel } from '../../models/regel';
