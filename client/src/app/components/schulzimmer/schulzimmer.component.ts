@@ -38,7 +38,7 @@ export class SchulzimmerComponent implements OnInit {
   neuesSchulzimmerName: string;
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   isSaving: boolean;
-  currentTableNumber: number;
+  currentTischNumber: number;
   regelChecker:RegelChecker;
   regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
   myUser: User;
@@ -49,7 +49,7 @@ export class SchulzimmerComponent implements OnInit {
   
 
   constructor(private userService: UserService, public dialog: MatDialog ) {
-    this.currentTableNumber = 0;
+    this.currentTischNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
     this.regelChecker = new  RegelChecker();
@@ -66,6 +66,7 @@ export class SchulzimmerComponent implements OnInit {
       debugger;
       this.myUser = new User(users[0])
       this.schulzimmerToPerson = this.myUser.schulzimmer
+      this.regelnToPerson = this.myUser.regeln
       this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
       // console.log(this.myUser)
       this.isLoadingData = false;
@@ -84,25 +85,25 @@ export class SchulzimmerComponent implements OnInit {
   onSelect(selectedId: Name): void {
     debugger;
     let schulzimmer = this.schulzimmerToPerson.filter(zimmer => zimmer.id == selectedId.id)[0];
-    // console.log("table number (before findMaximalTableNumber): " + this.currentTableNumber);
+    // console.log("table number (before findMaximalTischNumber): " + this.currentTischNumber);
     this.selectedSchulzimmer = schulzimmer;
     this.tischOutputPreparer = new TischOutputPreparer();
     this.preparedTischOutput = this.tischOutputPreparer.prepareTischOutput(this.selectedSchulzimmer);
      if (this.selectedSchulzimmer.tische != null){
-      this.currentTableNumber = this.findMaximalTableNumber(this.selectedSchulzimmer.tische);
+      this.currentTischNumber = this.findMaximalTischNumber(this.selectedSchulzimmer.tische);
     }
     else{
-      this.currentTableNumber = 0;
+      this.currentTischNumber = 0;
     }
-    // console.log("table number (after findMaximalTableNumber): " + this.currentTableNumber);
+    // console.log("table number (after findMaximalTischNumber): " + this.currentTischNumber);
 
   }
 
-  private findMaximalTableNumber(tische: Tisch[]):number{
+  private findMaximalTischNumber(tische: Tisch[]):number{
     debugger;
-    let allTableNumbers = tische.map(a => a.tableNumber); 
-    var maximalTableNumber = Math.max.apply(null, allTableNumbers) ;
-    return Math.max(maximalTableNumber,0); 
+    let allTischNumbers = tische.map(a => a.tischNumber); 
+    var maximalTischNumber = Math.max.apply(null, allTischNumbers) ;
+    return Math.max(maximalTischNumber,0); 
 };
 
   deleteSchulzimmer(selectedId: Name):void{
@@ -150,9 +151,9 @@ export class SchulzimmerComponent implements OnInit {
     this.neuesSchulzimmerForm.updateValueAndValidity();
 
   }
-  updateCurrentTableNumber(newNumber:number){
+  updateCurrentTischNumber(newNumber:number){
     // console.log("new Number: "+ newNumber);
-    this.currentTableNumber = newNumber;
+    this.currentTischNumber = newNumber;
   }
   updateSchulzimmer(updatedTischOutput: TischOutput): void {
     debugger;

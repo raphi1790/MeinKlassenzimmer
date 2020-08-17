@@ -67,6 +67,7 @@ export class SchulklassenComponent implements OnInit {
       debugger;
       this.myUser = new User(users[0])
       this.klassenToPerson = this.myUser.schulklassen
+      this.regelnToPerson = this.myUser.regeln
       this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
       // console.log(this.myUser)
       // console.log(this.klassenToPerson)

@@ -5,5 +5,5 @@ export class Tisch{
     schulzimmerId: string;
     position: PositionTisch;
     active: boolean;
-    tableNumber: number;
+    tischNumber: number;
 }

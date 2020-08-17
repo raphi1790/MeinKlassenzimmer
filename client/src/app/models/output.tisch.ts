@@ -6,7 +6,7 @@ export class TischOutput{
     position: PositionTisch;
     selected: boolean;
     active: boolean;
-    tableNumber: number;
+    tischNumber: number;
     tischId: string;
 
 

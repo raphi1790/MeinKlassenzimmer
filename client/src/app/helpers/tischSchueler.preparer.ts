@@ -25,6 +25,11 @@ export class TischSchuelerPreparer extends Preparer {
                 this.preparedTischSchueler[row][column].tischOutput.selected = false;
                 this.preparedTischSchueler[row][column].tischOutput.active = false;
                 this.preparedTischSchueler[row][column].tischOutput.position = new PositionTisch(row,column);
+                this.preparedTischSchueler[row][column].schueler = new Schueler({
+                    id: undefined,
+                    schulklassenId: undefined,
+                    name:undefined,
+                    vorname:undefined})
                 
                 
             }

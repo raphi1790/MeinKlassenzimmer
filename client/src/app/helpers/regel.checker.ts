@@ -23,7 +23,11 @@ export class RegelChecker{
     }
     regelExistsToTischId(inputTischId: string, inputRegeln: Regel[]): boolean{
         debugger;
-        return inputRegeln.some(regel => regel.tischId === inputTischId)
+        let boolVariable = false
+        if(inputTischId){
+            boolVariable = inputRegeln.some(regel => regel.tischId === inputTischId)
+        }
+        return  boolVariable
     }
     regelExistsToSchulzimmer(inputZimmer: Schulzimmer, inputRegeln: Regel[]): boolean{
         debugger;

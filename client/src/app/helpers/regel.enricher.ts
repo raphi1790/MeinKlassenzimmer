@@ -45,7 +45,7 @@ export class RegelEnricher {
             }else{
                 regelnOutputTisch[indexRegel].schueler = chosenSchueler[0][0].vorname + ' ' + chosenSchueler[0][0].nameKurz ;
             }
-            regelnOutputTisch[indexRegel].tischNumber = chosenTisch[0][0].tableNumber;
+            regelnOutputTisch[indexRegel].tischNumber = chosenTisch[0][0].tischNumber;
             regelnOutputTisch[indexRegel].zimmer = chosenZimmer[0].name;
             
             

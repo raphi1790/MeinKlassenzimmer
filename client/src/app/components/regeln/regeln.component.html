@@ -62,7 +62,7 @@
 
                     <mat-form-field  >
                       <mat-select placeholder="Tisch" [(ngModel)]="selectedTisch" required formControlName="tisch">
-                        <mat-option *ngFor="let tisch of tischeToZimmer" [value]="tisch">{{tisch.tableNumber}}</mat-option>
+                        <mat-option *ngFor="let tisch of tischeToZimmer" [value]="tisch">{{tisch.tischNumber}}</mat-option>
                       </mat-select>
                       <mat-error *ngIf="isFieldValid(this.myFormFesterSitzplatz, 'tisch')">Tisch erforderlich </mat-error>
                     </mat-form-field>

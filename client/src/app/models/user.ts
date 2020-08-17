@@ -66,7 +66,7 @@ export class User {
               singleTisch.position = new PositionTisch(user.schulzimmer[zimmerIndex].tische[tischIndex].position.row,
                                                         user.schulzimmer[zimmerIndex].tische[tischIndex].position.column) ;
               singleTisch.active = user.schulzimmer[zimmerIndex].tische[tischIndex].active;
-              singleTisch.tableNumber = user.schulzimmer[zimmerIndex].tische[tischIndex].tableNumber;
+              singleTisch.tischNumber = user.schulzimmer[zimmerIndex].tische[tischIndex].tischNumber;
               singleTisch.schulzimmerId = zimmer.id;
               return singleTisch
             
@@ -84,6 +84,7 @@ export class User {
       }
        //prepare regel-array
        if (user.hasOwnProperty("regeln") && user.regeln != null && user.regeln != undefined){
+        debugger;
         this.regeln = Object.keys(user.regeln).map(function(regelIndex){
           let regel = new Regel()
           regel.id =  user.regeln[regelIndex].id;

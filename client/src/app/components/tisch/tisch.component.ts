@@ -23,16 +23,16 @@ export class TischComponent implements OnChanges {
 
 
   @Input('TischOutput') tischOutput: TischOutput;
-  @Input('currentTableNumber') currentTableNumber: number;
+  @Input('currentTischNumber') currentTischNumber: number;
   @Input('regelnToPerson') regelnToPerson: Regel[];
 
   @Output() noteSchulzimmer: EventEmitter<TischOutput> = new EventEmitter<TischOutput>();
-  @Output() noteSchulzimmerTableNumber: EventEmitter<number> = new EventEmitter<number>();
+  @Output() noteSchulzimmerTischNumber: EventEmitter<number> = new EventEmitter<number>();
 
   tischStyle : string
   tischActive: boolean;
   tischDisabled: boolean;
-  tableNumber: number;
+  tischNumber: number;
   regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
 
 
@@ -40,8 +40,8 @@ export class TischComponent implements OnChanges {
 
     debugger;
     // console.log("Get Tisch")
-    this.tableNumber = this.tischOutput.tableNumber;
-      // console.log("tableNumber: " + this.tableNumber );
+    this.tischNumber = this.tischOutput.tischNumber;
+      // console.log("tischNumber: " + this.tischNumber );
     if(this.tischOutput.selected){
       this.tischStyle = 'selectedTischStyle';
       if(this.tischOutput.active){
@@ -57,7 +57,7 @@ export class TischComponent implements OnChanges {
       this.tischStyle = 'unselectedTischStyle';
       this.tischActive = false;
       this.tischDisabled = true;
-      this.tableNumber = null;
+      this.tischNumber = null;
     }
 
 
@@ -73,11 +73,11 @@ export class TischComponent implements OnChanges {
         this.tischOutput.selected = false;
         this.tischActive = false;
         this.tischDisabled = true;
-        this.tischOutput.tableNumber = null; 
-        this.tableNumber = null;
+        this.tischOutput.tischNumber = null; 
+        this.tischNumber = null;
         this.tischOutput.active = this.tischActive;
         this.noteSchulzimmer.emit(this.tischOutput);
-        this.noteSchulzimmerTableNumber.emit(this.currentTableNumber);
+        this.noteSchulzimmerTischNumber.emit(this.currentTischNumber);
       }
       else{
         this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
@@ -91,11 +91,11 @@ export class TischComponent implements OnChanges {
       this.tischOutput.selected = true;
       this.tischActive = true;
       this.tischDisabled = false;
-      this.currentTableNumber++ ;
-      this.tischOutput.tableNumber = this.currentTableNumber; 
+      this.currentTischNumber++ ;
+      this.tischOutput.tischNumber = this.currentTischNumber; 
       this.tischOutput.active = this.tischActive;
       this.noteSchulzimmer.emit(this.tischOutput);
-      this.noteSchulzimmerTableNumber.emit(this.currentTableNumber);
+      this.noteSchulzimmerTischNumber.emit(this.currentTischNumber);
 
 
     }

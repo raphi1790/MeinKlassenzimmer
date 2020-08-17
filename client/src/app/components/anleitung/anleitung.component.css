@@ -32,3 +32,8 @@ img{
 .col-md-3{
     padding-left: 0px;
 }
+.responsive {
+  width: 100%;
+  max-width: 1500;
+  height: auto;
+}
