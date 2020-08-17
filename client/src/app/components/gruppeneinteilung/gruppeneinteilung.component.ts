@@ -63,8 +63,8 @@ export class GruppeneinteilungComponent implements OnInit {
   displayedColumns = [];
   displayedColumnsRegel = ['select','type' ,'beschreibung'   ];
 
-  @ViewChild(MatTable, { static: false }) table: MatTable<any>;
-  @ViewChild(MatTable, { static: false }) tableRegel: MatTable<any>;
+  @ViewChild(MatTable) table: MatTable<any>;
+  @ViewChild(MatTable) tableRegel: MatTable<any>;
 
   dataSource: any;
   dataSourceRegel = new MatTableDataSource<Regel>();
