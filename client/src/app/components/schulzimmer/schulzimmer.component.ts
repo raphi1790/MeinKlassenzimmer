@@ -12,9 +12,11 @@ import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
-import { User } from 'src/app/models/user';
+import { User } from '../../models/user';
+import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -48,7 +50,7 @@ export class SchulzimmerComponent implements OnInit {
 
   
 
-  constructor(private userService: UserService, public dialog: MatDialog ) {
+  constructor(private userService: UserService, public dialog: MatDialog,private _snackBar: MatSnackBar ) {
     this.currentTischNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
@@ -180,6 +182,12 @@ export class SchulzimmerComponent implements OnInit {
     return !this.savingIsActiv;
   }
 
+  openSavingSnackBar(){
+    this._snackBar.openFromComponent(SaveSnackBarComponent, {
+      duration: 2000,
+    });
+
+  }
 
   saveSchulzimmerTische() {
     debugger;
@@ -189,6 +197,7 @@ export class SchulzimmerComponent implements OnInit {
     this.userService.updateUser(this.myUser);
     this.isSaving = false;
     this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;
+    this.openSavingSnackBar()
     
   }
   cancel(){

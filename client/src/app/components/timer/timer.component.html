@@ -1,0 +1,90 @@
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-md-5" class="responsive">
+      <div class="column1">
+
+
+        <div class="input-form-container">
+
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Timer einstellen</h4>
+                </mat-card-title>
+              </mat-card-title-group>
+
+            </mat-card-header>
+            <mat-card-content>
+              <mat-form-field>
+                <input matInput placeholder="Anzahl Sekunden" type="number" [(ngModel)]="selectedSecondsInput">
+
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Anzahl Minuten" type="number" [(ngModel)]="selectedMinutesInput">
+
+              </mat-form-field>
+
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="accent" (click)="setTime()">Timer stellen</button>
+
+
+
+
+            </mat-card-actions>
+            <mat-card-footer>
+              <mat-chip-list aria-label="Predefined selection">
+                <mat-chip color="primary" selected (click)="setOneMinuteCountdown()">1 Minute</mat-chip>
+                <mat-chip color="primary" (click)="setTwoMinutesCountdown()" selected>2 Minuten</mat-chip>
+                <mat-chip color="primary" (click)="setFiveMinutesCountdown()" selected>5 Minuten</mat-chip>
+              </mat-chip-list>
+            </mat-card-footer>
+          </mat-card>
+        </div>
+      </div>
+
+
+
+
+    </div>
+    <div class="col-md-7">
+      <div class="column2">
+        <div class="timer">
+          <div class="schuelerListe">
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title>
+                    <h4>Timer</h4>
+                  </mat-card-title>
+                </mat-card-title-group>
+
+              </mat-card-header>
+              <mat-card-content>
+                <h1 class="timer-detail" >
+                  <countdown #countdown [config]="config">$!m!:$!s!</countdown>
+             
+                </h1>
+
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="start()">Start</button>
+                <button mat-raised-button (click)="pause()">Pause</button>
+                <button mat-raised-button (click)="resetTimer()">Zurücksetzen</button>
+
+
+              </mat-card-actions>
+
+            </mat-card>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

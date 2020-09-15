@@ -46,6 +46,16 @@ body {
     height: 15px !important;
     width: 15px !important;
   }
+
+  .responsive {
+    width: 100%;
+    max-width: 400px;
+
+  }
+  .responsive-wide {
+    width: 100%;
+    max-width: 950px;
+  }
   
 
 

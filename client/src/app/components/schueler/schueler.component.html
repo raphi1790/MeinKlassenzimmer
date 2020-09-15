@@ -1,6 +1,6 @@
 <div>
 
-  <mat-card class="second-column-card">
+  <mat-card class="second-column-card" class="responsive-wide">
     <mat-card-header>
       <mat-card-title-group>
         <mat-card-title>
@@ -37,13 +37,13 @@
 </div>
 
 <div>
-  <mat-card class="second-column-card">
+  <mat-card class="second-column-card" class="responsive-wide">
     <mat-card-header>
       <mat-card-title-group>
         <mat-card-title>
           <div style="clear: both">
               <h4 style="float:left">Schülerliste</h4>
-              <p style ="float: right; margin-top: 10px; margin-left:400px" >Anzahl Schüler: {{anzahlSchueler}}</p>
+              <p class="number-students" style ="float: right; margin-top: 10px; margin-left:400px" >Anzahl Schüler: {{anzahlSchueler}}</p>
           </div>          
         </mat-card-title>
       </mat-card-title-group>
@@ -63,7 +63,7 @@
         </ng-container>
 
 
-        <ng-container matColumnDef="symbol">
+        <ng-container matColumnDef="symbol" class="align-column-right">
           <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
           <mat-cell *matCellDef="let schueler">
             <span>

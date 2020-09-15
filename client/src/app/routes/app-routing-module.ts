@@ -10,6 +10,8 @@ import { UnsavedGuard} from '../helpers/guards/unsaved.guard'
 import { AuthGuard} from '../helpers/guards/auth.guard'
 import { AnleitungComponent } from '../components/anleitung/anleitung.component';
 import { RegelnComponent } from '../components/regeln/regeln.component';
+import { TimerComponent } from '../components/timer/timer.component';
+import { ZufallsgeneratorComponent } from '../components/zufallsgenerator/zufallsgenerator.component';
 
 
 const routes: Routes = [
@@ -54,6 +56,14 @@ const routes: Routes = [
         component: RegelnComponent,
         canDeactivate: [UnsavedGuard],
         canActivate: [AuthGuard]
+    },
+    {
+        path: 'werkzeugkasten/timer',
+        component: TimerComponent  
+      },
+    {
+      path: 'werkzeugkasten/Zufallsgenerator',
+      component: ZufallsgeneratorComponent
     }
      
 

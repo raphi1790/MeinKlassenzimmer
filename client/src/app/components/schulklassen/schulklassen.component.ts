@@ -10,9 +10,11 @@ import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
-import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
+import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
+import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -46,7 +48,8 @@ export class SchulklassenComponent implements OnInit {
   
 
   constructor( private userService:UserService,
-     public dialog: MatDialog) {
+     public dialog: MatDialog,
+     private _snackBar: MatSnackBar) {
       this.regelChecker = new RegelChecker();
 
       
@@ -157,6 +160,13 @@ export class SchulklassenComponent implements OnInit {
     return !this.savingIsActiv;
   }
 
+  openSavingSnackBar(){
+    this._snackBar.openFromComponent(SaveSnackBarComponent, {
+      duration: 2000,
+    });
+
+  }
+
   
   saveSchulklasseSchueler() {
     debugger;
@@ -166,6 +176,7 @@ export class SchulklassenComponent implements OnInit {
     this.userService.updateUser(this.myUser);
     this.isSaving = false;
     this.klassenToPersonOriginal = this.klassenToPerson;
+    this.openSavingSnackBar()
     
   }
   cancel(){

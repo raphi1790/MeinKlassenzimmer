@@ -10,8 +10,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { CalculatingEngine } from '../../helpers/calculating.engine';
 import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
 import { GroupEnricher } from '../../helpers/group.enricher';
-import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/models/user';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user';
 import { map } from 'rxjs/operators';
 
 @Component({

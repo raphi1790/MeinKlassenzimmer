@@ -20,6 +20,13 @@
 .table-spacer {
   flex: 1 1 auto;
 }
+p.number-students{
+  font-size: 14px;
+}
+.cdk-column-symbol{
+  justify-content: flex-end;
+
+}
 
   
  

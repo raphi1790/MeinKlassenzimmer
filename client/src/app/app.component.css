@@ -43,6 +43,24 @@
 .mat-list-item.active{
   background-color: var(--accent-color);
 }
+.submenu-spacer {
+  display: block;
+  padding: 15px
+}
+a.header{
+  font-weight: bold;
+}
+mat-icon.notranslate.mat-list-icon.werkzeugkasten.material-icons.mat-icon-no-color{
+  padding:0px;
+}
+
+mat-icon.notranslate.mat-list-icon.verwaltung.material-icons.mat-icon-no-color{
+  padding:0px;
+}
+
+
+
+
 
 
 

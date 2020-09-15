@@ -6,7 +6,7 @@ import 'rxjs/add/operator/filter';
 import {  AngularFireAuth} from "@angular/fire/auth";
 import { auth } from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { User } from 'src/app/models/user';
+import { User } from '../../models/user';
 import { Observable, of } from 'rxjs';
 import { switchMap} from 'rxjs/operators';
 

@@ -30,8 +30,11 @@ import { EinteilungInfoDialogComponent} from './components/einteilung-info-dialo
 import { RegelInfoDialogComponent} from './components/regel-info-dialog/regel-info-dialog.component';
 import { AuthGuard } from './helpers/guards/auth.guard';
 import { UserService } from './services/user.service';
-
-
+import { TimerComponent } from './components/timer/timer.component';
+import {ZufallsgeneratorComponent} from './components/zufallsgenerator/zufallsgenerator.component';
+import {SaveSnackBarComponent} from './components/save-snack-bar/save-snack-bar.component';
+import { CountdownModule } from 'ngx-countdown';
+import { DummyService } from './services/dummy.service';
 
 
 @NgModule({
@@ -52,22 +55,25 @@ import { UserService } from './services/user.service';
     SpeichernComponent,
     SpeichernInfoDialogComponent,
     InlineEditComponent,
-    RegelInfoDialogComponent
+    RegelInfoDialogComponent,
+    TimerComponent,
+    ZufallsgeneratorComponent,
+    SaveSnackBarComponent
     
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AppRoutingModule,
     FormsModule,
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,// imports firebase/auth, only needed for auth features
-    AngularFirestoreModule 
+    AngularFirestoreModule,
+    CountdownModule
 
   ],
-  providers: [ AuthService,UserService,
+  providers: [ AuthService,UserService,DummyService,
     UnsavedGuard,
     AuthGuard,
     {
@@ -75,6 +81,8 @@ import { UserService } from './services/user.service';
       useClass:  AuthInterceptor,
       multi: true,
    }
+
+
   ],
   bootstrap: [AppComponent],
   entryComponents: [EinteilungInfoDialogComponent, SpeichernInfoDialogComponent, RegelInfoDialogComponent]

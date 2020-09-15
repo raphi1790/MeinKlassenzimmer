@@ -15,6 +15,11 @@ export class AppComponent {
       
   }
 
+  opened: boolean;
+  showTools = false;
+  showVerwaltung = false;
+
+
   login() {
 
     this.auth.login();
@@ -22,6 +27,13 @@ export class AppComponent {
   logout() {
     this.auth.logout();
   }
+
+  toggleToolsMenu() {
+    this.showTools = !this.showTools;
+ }
+ toggleVerwaltungMenu(){
+  this.showVerwaltung = !this.showVerwaltung;
+ }
 
   title = 'app';
 

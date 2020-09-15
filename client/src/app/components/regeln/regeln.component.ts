@@ -12,9 +12,11 @@ import { OutputRegelTisch } from '../../models/output.regel.sitzordnung';
 import * as uuidv4 from 'uuid/v4';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { OutputRegelPaarung } from '../../models/output.regel.paarung';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
-import { User } from 'src/app/models/user';
+import { User } from '../../models/user';
+import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-regeln',
@@ -64,7 +66,7 @@ export class RegelnComponent implements OnInit {
 
 
 
-  constructor(private userService:UserService) 
+  constructor(private userService:UserService,  private _snackBar: MatSnackBar) 
   {
      this.regelEnricher = new RegelEnricher();
 
@@ -204,6 +206,13 @@ showDetailConfigurationUnpassendePaarung(): boolean {
  
     );
   }
+
+  openSavingSnackBar(){
+    this._snackBar.openFromComponent(SaveSnackBarComponent, {
+      duration: 2000,
+    });
+
+  }
   
 
   saveRegeln() {
@@ -214,6 +223,7 @@ showDetailConfigurationUnpassendePaarung(): boolean {
     this.userService.updateUser(this.myUser);
     this.isSaving = false;
     this.regelnToPersonOriginal = this.regelnToPerson;
+    this.openSavingSnackBar()
     
   }
 

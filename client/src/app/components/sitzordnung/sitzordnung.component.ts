@@ -15,9 +15,9 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
 import { CalculatingEngine } from '../../helpers/calculating.engine';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
-import { User } from 'src/app/models/user';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-sitzordnung',

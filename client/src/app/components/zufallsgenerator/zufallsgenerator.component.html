@@ -1,0 +1,107 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-5" class="responsive">
+        <div class="column1">
+          <div class="input-form-container">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title>
+                    <h4>Schulklasse und Anzahl Schüler auswählen</h4>
+                  </mat-card-title>
+                </mat-card-title-group>
+  
+              </mat-card-header>
+              <mat-card-content>
+                <div class="input-form-field">
+                  <mat-form-field>
+                    <mat-select placeholder="Schulklasse" [(ngModel)]="selectedSchulklasse" required>
+                      <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
+  
+                    </mat-select>
+  
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Anzahl Schüler"   type="number" [(ngModel)]="selectedNumberSchuelerInput">
+    
+                  </mat-form-field>
+
+                </div>
+                <mat-card-actions>
+                    <button mat-raised-button color="accent" (click)="selectInputNumberSchueler()">Schüler auswählen</button>
+      
+      
+      
+      
+                  </mat-card-actions>
+  
+  
+              </mat-card-content>
+              <mat-card-footer>
+                <mat-chip-list aria-label="Predefined selection">
+                  <mat-chip color="primary" selected (click)="selectOneSchueler()">1 Schüler</mat-chip>
+                  <mat-chip color="primary" (click)="selectTwoSchueler()" selected>2 Schüler</mat-chip>
+                  <mat-chip color="primary" (click)="selectFiveSchueler()" selected>5 Schüler</mat-chip>
+                </mat-chip-list>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+  
+         
+  
+        </div>
+      </div>
+  
+  
+  
+  
+      <div class="col-md-7" >
+        <div class="column2" >
+          <div class="schulzimmer">
+            <mat-card class="second-column-card" class="responsive-wide" >
+              <mat-card-header>
+  
+                <mat-card-title-group>
+                  <mat-card-title>
+                    <h4>Ausgewählte Schüler</h4>
+                  </mat-card-title>
+                </mat-card-title-group>
+  
+              </mat-card-header>
+              <mat-card-content>
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="vorname">
+                      <mat-header-cell *matHeaderCellDef> Vorname </mat-header-cell>
+                      <mat-cell *matCellDef="let schueler"> {{schueler.vorname}} </mat-cell>
+                    </ng-container>
+            
+            
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                      <mat-cell *matCellDef="let schueler"> {{schueler.name}} </mat-cell>
+                    </ng-container>
+            
+            
+
+            
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    
+                  </mat-table>
+                  <mat-paginator #paginator
+                        [pageSize]="5"
+                        [pageSizeOptions]="[5, 10]"
+                        [showFirstLastButtons]="true">
+            </mat-paginator>
+
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+  
+  
+  
+    </div>
+  
