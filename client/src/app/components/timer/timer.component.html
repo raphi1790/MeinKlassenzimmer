@@ -65,7 +65,7 @@
               </mat-card-header>
               <mat-card-content>
                 <h1 class="timer-detail" >
-                  <countdown #countdown [config]="config">$!m!:$!s!</countdown>
+                  <countdown #countdown [config]="config" (event)="timesUp($event)">$!m!:$!s!</countdown>
              
                 </h1>
 

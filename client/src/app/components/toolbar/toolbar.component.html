@@ -1,18 +1,11 @@
-<mat-toolbar color="primary">
-  <!-- <button mat-icon-button (click)="snav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button> -->
-  <span routerLink="/">
-    <h1>MeinKlassenzimmer
-    </h1>
-  </span>
-  <span class="toolbar-spacer"></span>
+<div>
+
+
   <button mat-button *ngIf="!auth.isAuthenticated()" (click)="auth.login()">
-    Login
+    Log In
   </button>
-  <button mat-button *ngIf="auth.isAuthenticated()" (click)="auth.logout()">
-    Logout
-  </button>
-
-
-</mat-toolbar>
+  <button mat-button *ngIf="auth.isAuthenticated()" [matMenuTriggerFor]="menu">{{showEmail()}}</button>
+  <mat-menu #menu="matMenu" xPosition="after">
+    <button mat-button (click)="auth.logout()">Log Out</button>
+  </mat-menu>
+</div>

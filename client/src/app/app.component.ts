@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
+import { User } from './models/user';
 
 
 
@@ -19,14 +20,6 @@ export class AppComponent {
   showTools = false;
   showVerwaltung = false;
 
-
-  login() {
-
-    this.auth.login();
-  }
-  logout() {
-    this.auth.logout();
-  }
 
   toggleToolsMenu() {
     this.showTools = !this.showTools;

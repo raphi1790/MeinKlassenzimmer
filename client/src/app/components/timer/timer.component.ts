@@ -14,9 +14,10 @@ import { FormControl, Validators } from '@angular/forms';
 export class TimerComponent implements OnInit, OnChanges {
 
   status = 'ready';
-  config : any;
+  config: any;
   selectedMinutesInput = 0
   selectedSecondsInput = 0
+  timesUpReady = false
 
 
   @ViewChild('countdown') counter: CountdownComponent;
@@ -36,14 +37,14 @@ export class TimerComponent implements OnInit, OnChanges {
     this.counter.pause()
   }
 
-  setTwoMinutesCountdown(){
+  setTwoMinutesCountdown() {
     this.changeLeftime(120)
   }
 
-  setOneMinuteCountdown(){
+  setOneMinuteCountdown() {
     this.changeLeftime(60)
   }
-  setFiveMinutesCountdown(){
+  setFiveMinutesCountdown() {
     this.changeLeftime(300)
   }
 
@@ -51,20 +52,43 @@ export class TimerComponent implements OnInit, OnChanges {
 
 
   private changeLeftime(inputLeftTime: number) {
-    this.config = {leftTime: inputLeftTime, demand:true, format: `mm:ss`};
-}
+    this.config = { leftTime: inputLeftTime, demand: true, format: `mm:ss` };
+  }
 
-  setTime(){
+  private playAudio(){
+    let audio = new Audio();
+    audio.src = "assets/audio/ringtone_minimal.wav";
+    audio.load();
+    audio.play();
+  }
+  private validateEvent(event){
 
-    
-    let totalSeconds = this.selectedSecondsInput + 60*this.selectedMinutesInput
+    if ((event.action == 'start' || event.action == 'restart') && event.left > 0){
+      this.timesUpReady = true
+    }
+
+  }
+  timesUp(event) {
+    debugger;
+    this.validateEvent(event)
+    // this.playAudio();
+    if (event.action == "done" && this.timesUpReady == true) {
+      this.playAudio()
+      this.timesUpReady = false;
+        
+    } 
+  }
+
+  setTime() {
+
+
+    let totalSeconds = this.selectedSecondsInput + 60 * this.selectedMinutesInput
     this.changeLeftime(totalSeconds)
 
   }
 
   ngOnInit() {
-    this.config = {format: `mm:ss`}
-
+    this.config = { format: `mm:ss` }
   }
   ngOnChanges() {
 

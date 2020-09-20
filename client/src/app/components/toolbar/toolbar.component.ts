@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
+import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -7,13 +9,27 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./toolbar.component.css'],
   providers: [AuthService]
 })
-export class ToolbarComponent {
+export class ToolbarComponent{
+  
   constructor(public auth: AuthService) {}
+
+  showEmail(){
+    if (this.auth.authState !== undefined){
+      return this.auth.authState.email
+    }
+    else{
+      return "Log In"
+    }
+    
+
+  }
   login() {
     this.auth.login();
   }
+
   logout() {
     this.auth.logout();
   }
+
 
 }
