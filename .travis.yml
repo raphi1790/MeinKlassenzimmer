@@ -8,8 +8,10 @@ node_js:
 
 script:
   - cd client
-  - npm install grpc@1.24.1 --build-from-source
+  - npm install grpc@1.20.0 --build-from-source
   - npm install
   - npm run build
 
+after_failure:
+  - cat MSBuild_*.failure.txt
 
