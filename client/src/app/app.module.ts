@@ -35,6 +35,7 @@ import {ZufallsgeneratorComponent} from './components/zufallsgenerator/zufallsge
 import {SaveSnackBarComponent} from './components/save-snack-bar/save-snack-bar.component';
 import { CountdownModule } from 'ngx-countdown';
 import { DummyService } from './services/dummy.service';
+import {ListenverwaltungComponent} from './components/listenverwaltung/listenverwaltung.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { DummyService } from './services/dummy.service';
     RegelInfoDialogComponent,
     TimerComponent,
     ZufallsgeneratorComponent,
-    SaveSnackBarComponent
+    SaveSnackBarComponent,
+    ListenverwaltungComponent
     
   ],
   imports: [

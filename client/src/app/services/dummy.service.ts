@@ -13,7 +13,9 @@ import * as uuidv4 from 'uuid/v4';
 @Injectable()
 export class DummyService {
 
-    schulklasse:Schulklasse
+    schulklasse1:Schulklasse
+    schulklasse2:Schulklasse
+    schulklassen: Schulklasse[]
     
 
 
@@ -22,14 +24,14 @@ export class DummyService {
   }
 
 
-   getSchulklassen(): Schulklasse {
-    this.schulklasse =  new Schulklasse()
-    this.schulklasse.id = '1'
-    this.schulklasse.personId = 'raphisId'
-    this.schulklasse.name = 'Test Dummy Service'
-    this.schulklasse.schueler = new Array<Schueler>(5)
+   getSchulklassen(): Schulklasse[] {
+    this.schulklasse1 =  new Schulklasse()
+    this.schulklasse1.id = '1'
+    this.schulklasse1.personId = 'raphisId'
+    this.schulklasse1.name = 'Test Dummy Service Klasse 1'
+    this.schulklasse1.schueler = new Array<Schueler>(5)
     for (let index = 0; index < 5; index++) {
-        this.schulklasse.schueler[index] =  new Schueler({
+        this.schulklasse1.schueler[index] =  new Schueler({
                                                         id: uuidv4(),
                                                         schulklassenId:'1',
                                                         name:'test',
@@ -39,7 +41,27 @@ export class DummyService {
 
 
         }
-    return this.schulklasse;
+    this.schulklasse2 =  new Schulklasse()
+    this.schulklasse2.id = '1'
+    this.schulklasse2.personId = 'raphisId'
+    this.schulklasse2.name = 'Test Dummy Service Klasse 2'
+    this.schulklasse2.schueler = new Array<Schueler>(7)
+    for (let index = 0; index < 5; index++) {
+        this.schulklasse2.schueler[index] =  new Schueler({
+                                                        id: uuidv4(),
+                                                        schulklassenId:'2',
+                                                        name:'test',
+                                                        vorname:'schueler' + index
+        
+            })
+
+
+        }
+    debugger;
+    this.schulklassen = new Array<Schulklasse>(2)
+    this.schulklassen[0] = this.schulklasse1
+    this.schulklassen[1] = this.schulklasse2
+    return this.schulklassen;
     }       
 
 

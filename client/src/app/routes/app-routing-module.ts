@@ -12,6 +12,7 @@ import { AnleitungComponent } from '../components/anleitung/anleitung.component'
 import { RegelnComponent } from '../components/regeln/regeln.component';
 import { TimerComponent } from '../components/timer/timer.component';
 import { ZufallsgeneratorComponent } from '../components/zufallsgenerator/zufallsgenerator.component';
+import { ListenverwaltungComponent } from '../components/listenverwaltung/listenverwaltung.component';
 
 
 const routes: Routes = [
@@ -46,6 +47,11 @@ const routes: Routes = [
         path: 'gruppeneinteilung',
         component: GruppeneinteilungComponent  ,
         canActivate: [AuthGuard] 
+      },
+      {
+        path: 'listenverwaltung',
+        component: ListenverwaltungComponent  ,
+        
       },
       {
           path: 'anleitung',
