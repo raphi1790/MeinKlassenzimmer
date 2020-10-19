@@ -36,6 +36,8 @@ import {SaveSnackBarComponent} from './components/save-snack-bar/save-snack-bar.
 import { CountdownModule } from 'ngx-countdown';
 import { DummyService } from './services/dummy.service';
 import {ListenverwaltungComponent} from './components/listenverwaltung/listenverwaltung.component';
+import {KlassenlisteComponent} from './components/klassenliste/klassenliste.component';
+import {DragDropModule} from '@angular/cdk/drag-drop'
 
 
 @NgModule({
@@ -60,7 +62,8 @@ import {ListenverwaltungComponent} from './components/listenverwaltung/listenver
     TimerComponent,
     ZufallsgeneratorComponent,
     SaveSnackBarComponent,
-    ListenverwaltungComponent
+    ListenverwaltungComponent,
+    KlassenlisteComponent
     
   ],
   imports: [
@@ -72,7 +75,8 @@ import {ListenverwaltungComponent} from './components/listenverwaltung/listenver
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,// imports firebase/auth, only needed for auth features
     AngularFirestoreModule,
-    CountdownModule
+    CountdownModule,
+    DragDropModule
 
   ],
   providers: [ AuthService,UserService,DummyService,

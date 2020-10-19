@@ -1,0 +1,132 @@
+<mat-card class="second-column-card" class="responsive-wide" >
+    <mat-card-header>
+
+      <mat-card-title-group>
+        <mat-card-title>
+          <h4>Ausgewählte Schüler</h4>
+        </mat-card-title>
+      </mat-card-title-group>
+
+    </mat-card-header>
+    <mat-card-content>
+        <!-- <div class="row">
+            <div class="col-md-5">
+        <mat-nav-list>
+            <mat-list-item *ngFor="let index of [1,2,3];last as last" >
+               {{index}}
+              <mat-divider [inset]="true" *ngIf="!last"></mat-divider> 
+            </mat-list-item>
+          </mat-nav-list>
+        </div>
+        <div class="col-md-7">
+      <mat-table #table [dataSource]="dataSource">
+
+          <ng-container matColumnDef="vorname">
+            <mat-header-cell *matHeaderCellDef> Vorname </mat-header-cell>
+            <mat-cell *matCellDef="let schueler"> {{schueler.vorname}} </mat-cell>
+          </ng-container>
+  
+  
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let schueler"> {{schueler.name}} </mat-cell>
+          </ng-container>
+  
+  
+
+  
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          
+        </mat-table>
+        <mat-paginator #paginator
+              [pageSize]="5"
+              [pageSizeOptions]="[5, 10]"
+              [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>
+</div> -->
+<div class="example-container">
+
+  <div cdkDropListGroup>
+  <div   *ngFor="let gruppe of selectedKlassenliste.gruppen"  >
+    <h5>{{gruppe.name}}</h5>
+     <div
+    cdkDropList
+    [cdkDropListData]="gruppe.schueler"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let schueler of gruppe.schueler" cdkDrag>{{schueler.vorname}}{{schueler.name}}</div>
+  </div>
+  </div>
+    <!-- <div
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="gruppe.schueler"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let schueler of gruppe.schueler" cdkDrag>{{schueler.vorname}}{{schueler.name}}</div>
+  </div> -->
+ 
+<!-- </div> -->
+</div>
+  </div>
+  <!-- <h5>Freie Schüler</h5>
+
+
+  <div
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="relevantSchulklasse.schueler"
+    [cdkDropListConnectedTo]="[doneList]"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let schueler of relevantSchulklasse.schueler" cdkDrag>{{schueler.vorname}}{{schueler.name}}</div>
+  </div>
+</div>
+
+<div class="example-container">
+  <h5>Done</h5>
+
+  <div
+    cdkDropList
+    #doneList="cdkDropList"
+    [cdkDropListData]="group1.schueler"
+    [cdkDropListConnectedTo]="[todoList]"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let schueler of group1.schueler" cdkDrag>{{schueler.vorname}}{{schueler.name}}</div>
+  </div>
+</div> -->
+
+
+<!-- <div class="example-container">
+    <h5>Freie Schüler</h5>
+  
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="relevantSchulklasse.schueler"
+      [cdkDropListConnectedTo]="[doneList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let schueler of relevantSchulklasse.schueler" cdkDrag>{{schueler.vorname}}{{schueler.name}}</div>
+    </div>
+  </div>
+  
+  <div class="example-container">
+    <h5>Done</h5>
+  
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="group1.schueler"
+      [cdkDropListConnectedTo]="[todoList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let schueler of group1.schueler" cdkDrag>{{schueler.vorname}}{{schueler.name}}</div>
+    </div>
+  </div> -->
+
+    </mat-card-content>
+  </mat-card>

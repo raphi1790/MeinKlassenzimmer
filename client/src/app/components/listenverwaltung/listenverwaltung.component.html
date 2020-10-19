@@ -14,25 +14,29 @@
               </mat-card-header>
               <mat-card-content>
                 <div class="input-form-field">
+                  <form  [formGroup]="myListForm">
                   <mat-form-field>
-                    <input matInput placeholder="Name der Liste"   type="string" [(ngModel)]="selectedListNameInput">
+                    <input matInput placeholder="Name der Liste"  type="string"  required [(ngModel)]="selectedListNameInput"  formControlName="name">
+                    <mat-error *ngIf="isFieldValid( this.myListForm, 'name')">Name erforderlich </mat-error>
     
                   </mat-form-field>
+                 
                   <mat-form-field>
-                    <mat-select placeholder="Schulklasse" [(ngModel)]="selectedSchulklasse" required>
+                    <mat-select placeholder="Schulklasse" required [(ngModel)]="selectedSchulklasse" required  formControlName="klasse">
                       <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
-  
+                      
                     </mat-select>
-  
+                    <mat-error *ngIf="isFieldValid(this.myListForm,'klasse')">Klasse erforderlich </mat-error>
                   </mat-form-field>
                   <mat-form-field>
-                    <input matInput placeholder="Anzahl Gruppen"   type="number" [(ngModel)]="selectedGroupNumberInput">
-    
+                    <input matInput placeholder="Anzahl Gruppen" required  type="number" [(ngModel)]="selectedGroupNumberInput"  formControlName="groups">
+                    <mat-error *ngIf="isFieldValid(this.myListForm, 'groups')">Anzahl erforderlich </mat-error>
                   </mat-form-field>
+                </form>
 
                 </div>
                 <mat-card-actions>
-                    <button mat-raised-button color="accent" (click)="addKlassenliste()">Liste erstellen</button>
+                    <button mat-raised-button color="accent" [disabled]="!createButtonActive()"  (click)="createKlassenliste()">Liste eröffnen</button>
 
                   </mat-card-actions>
   
@@ -44,7 +48,7 @@
             </mat-card>
           </div>
   
-          <div class="klassenlisteList">
+          <div class="klassenlisteLists">
             <mat-card>
               <mat-card-header>
                 <mat-card-title-group>
@@ -58,7 +62,7 @@
               <mat-card-content>
                 <mat-nav-list>
                   <mat-list-item *ngFor="let list of klassenlistenToPerson;last as last" [class.highlighted]="list === selectedKlassenliste">
-                      <app-inline-edit [text]="list.name" [id]="list.id" 
+                      <app-inline-edit [text]="list.name" [id]="list.id"  (select)="onSelect($event)" 
                      >
                     </app-inline-edit>
 
@@ -79,8 +83,11 @@
   
       <div class="col-md-7" >
         <div class="column2" >
-          <div class="schulzimmer">
-            <mat-card class="second-column-card" class="responsive-wide" >
+          <div class="selectionKlassenlist" *ngIf="selectedKlassenliste">
+            <div class="schuelerListe">
+              <app-klassenliste [selectedKlassenliste]="selectedKlassenliste" [relevantSchulklasse]="relevantSchulklasse" ></app-klassenliste>
+            </div>
+            <!-- <mat-card class="second-column-card" class="responsive-wide" >
               <mat-card-header>
   
                 <mat-card-title-group>
@@ -118,7 +125,7 @@
             </mat-paginator>
 
               </mat-card-content>
-            </mat-card>
+            </mat-card> -->
           </div>
         </div>
       </div>
