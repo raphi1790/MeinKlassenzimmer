@@ -13,6 +13,9 @@ import * as uuidv4 from 'uuid/v4';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Name } from 'src/app/models/name';
 import { Gruppe } from 'src/app/models/gruppe';
+import { Regel } from 'src/app/models/regel';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 
 @Component({
   selector: 'app-listenverwaltung',
@@ -22,13 +25,16 @@ import { Gruppe } from 'src/app/models/gruppe';
 export class ListenverwaltungComponent implements OnInit {
   
 
-  constructor(private dummyService:DummyService) {
+  constructor(private dummyService:DummyService, private userService:UserService, private _snackBar: MatSnackBar) {
    }
   
   myUser:User
   klassenToPerson: Schulklasse[];
   klassenlistenToPerson: Klassenliste[]
+  klassenlistenToPersonOriginal: Klassenliste[]
   isLoadingData: boolean;
+  isSaving: boolean;
+  regelnToPerson: Regel[];
   selectedSchulklasse: Schulklasse;
   selectedListNameInput: string;
   selectedGroupNumberInput: number;
@@ -36,38 +42,37 @@ export class ListenverwaltungComponent implements OnInit {
   selectedKlassenliste: Klassenliste;
   relevantSchulklasse: Schulklasse;
   savingIsActiv: boolean;
-  displayedColumns = ['vorname', 'name'];
-  dataSource = new MatTableDataSource<Schueler>();
-  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
 
   myListForm: FormGroup
   name: FormControl;
   klasse: FormControl;
   groups: FormControl;
   formSubmitAttempt: boolean;
-     
+
   loadInputData() {
-    this.klassenToPerson = this.dummyService.getSchulklassen()
-    this.klassenlistenToPerson = new Array<Klassenliste>()
-    this.isLoadingData = false
+    this.userService.getUser().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ uid: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(users => {
+      debugger;
+      this.myUser = new User(users[0])
+      this.klassenToPerson = this.myUser.schulklassen
+      this.regelnToPerson = this.myUser.regeln
+      this.klassenlistenToPerson = this.myUser.klassenlisten
+      this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
+      // console.log(this.myUser)
+      // console.log(this.klassenToPerson)
+      this.isLoadingData = false;
     
+    });
+
   
   }
-
-  // selectOneSchueler(){
-    
-  //   this.selectSchueler(1)
-
-  // }
-  // selectTwoSchueler(){
-  //   this.selectSchueler(2)
-
-  // }
-  // selectFiveSchueler(){
-  //   this.selectSchueler(5)
-
-  // }
+     
 
   createKlassenliste(): void {
     debugger;
@@ -90,7 +95,8 @@ export class ListenverwaltungComponent implements OnInit {
 
   private initializeGroups(inputGroupNumber: number, schulklassenId: string):Gruppe[]  {
     debugger;
-    let numberOfGroups = this.calculateNumberGroups(inputGroupNumber)
+    // let numberOfGroups = this.calculateNumberGroups(inputGroupNumber)
+    let numberOfGroups =  Math.round(inputGroupNumber)
     let gruppen = new Array<Gruppe>(numberOfGroups)
     // Set id and name of each group
     for (var i = 0; i < gruppen.length; i++) {
@@ -100,29 +106,18 @@ export class ListenverwaltungComponent implements OnInit {
       gruppen[i].name = 'Gruppe '+ (i+1)
       gruppen[i].schueler = new Array<Schueler>()
     }
-    // add all schueler to last group
-    gruppen[numberOfGroups - 1 ].schueler = this.selectSchuelerToSchulklasse(schulklassenId)
+
 
     return gruppen
 
   }
-
-  private calculateNumberGroups(inputGroupNumber): number {
-    let numberOfGroups = Math.round(inputGroupNumber) + 1
-    return numberOfGroups 
-  }
-
-  private selectSchuelerToSchulklasse(schulklassenId: string): Schueler[] {
-    let schueler = this.klassenToPerson.filter(klasse => klasse.id == schulklassenId )[0].schueler
-    return schueler
-
-  }
+  
 
   onSelect(selectedId: Name): void {
     debugger;
     this.selectedKlassenliste = this.klassenlistenToPerson.filter(liste => liste.id == selectedId.id)[0];
     this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == this.selectedKlassenliste.schulklassenId )[0]
-
+    
 
   }
 
@@ -130,6 +125,20 @@ export class ListenverwaltungComponent implements OnInit {
     return(
       this.myListForm.valid
     )
+  }
+
+  updateKlassenliste(updatedKlassenliste: Klassenliste): void {
+    debugger;
+    this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
+      item =>
+        item.id !== updatedKlassenliste.id)
+    if (typeof this.klassenlistenToPerson == 'undefined') {
+      console.log("klassenlistenToPerson is undefined");
+    }
+    else {
+      this.klassenlistenToPerson.push(updatedKlassenliste);
+    }
+    this.savingIsActiv = true;
   }
 
   isFieldValid(form: FormGroup, field: string) {
@@ -156,16 +165,30 @@ export class ListenverwaltungComponent implements OnInit {
     });
   }
 
- 
+  openSavingSnackBar(){
+    this._snackBar.openFromComponent(SaveSnackBarComponent, {
+      duration: 2000,
+    });
 
-  // private selectSchueler(numberSelectedSchueler: number){
-  //     let randomizer = new Randomizer()
-  //     let randomizedSchueler = randomizer.shuffle(this.selectedSchulklasse.schueler)
-  //     this.selectedSchueler = randomizedSchueler.slice(0, numberSelectedSchueler)
+  }
 
-  //     this.dataSource.data = this.selectedSchueler;
+  saveKlassenlisten(): void {
+    debugger;
+    this.savingIsActiv = false; 
+    this.isSaving = true;
+    this.myUser.klassenlisten = this.klassenlistenToPerson
+    this.userService.updateUser(this.myUser);
+    this.isSaving = false;
+    this.klassenlistenToPersonOriginal = this.klassenlistenToPerson;
+    this.openSavingSnackBar()
 
-  // }
+  }
+  cancel(){
+    debugger;
+    this.klassenlistenToPerson = JSON.parse(JSON.stringify(this.klassenlistenToPersonOriginal));
+    this.savingIsActiv = false;
+  }
+
 
 
   ngOnInit(): void {
@@ -175,8 +198,6 @@ export class ListenverwaltungComponent implements OnInit {
     this.loadInputData();
 
   }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Klassenliste } from 'src/app/models/klassenliste';
@@ -14,24 +14,20 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
   templateUrl: './klassenliste.component.html',
   styleUrls: ['./klassenliste.component.css']
 })
-export class KlassenlisteComponent implements OnInit {
+export class KlassenlisteComponent implements OnChanges {
 
   constructor() { 
-    this.group1 = new Gruppe()
-    this.group1.schueler = new Array<Schueler>()
+    this.defaultGroup = new Gruppe
+    this.defaultGroup.schueler = new Array<Schueler>()
+    
+
 
   }
   @Input('selectedKlassenliste')  selectedKlassenliste : Klassenliste;
   @Input('relevantSchulklasse')  relevantSchulklasse : Schulklasse;
+  @Output() noteListenverwaltung: EventEmitter<Klassenliste> = new EventEmitter<Klassenliste>();
 
-  displayedColumns = ['vorname', 'name'];
-  group1: Gruppe
-
-  // displayedColumns = ['vorname', 'name'];
-  // dataSource = new MatTableDataSource<Schueler>();
-  // @ViewChild(MatTable, { static: true }) table: MatTable<any>;
-  // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
+  defaultGroup : Gruppe
 
 
   drop(event: CdkDragDrop<string[]>) {
@@ -45,11 +41,27 @@ export class KlassenlisteComponent implements OnInit {
                         event.currentIndex);
     }
     console.log(this.selectedKlassenliste)
+    this.noteListenverwaltung.emit(this.selectedKlassenliste);
+  }
+
+  private updateRemainingSchueler(schuelerTotal:Schueler[], klassenliste:Klassenliste): Schueler[]{
+    debugger;
+    var fixedSchueler = new Array<Schueler>()
+    for (let index = 0; index < klassenliste.gruppen.length; index++) {
+      fixedSchueler.push(...klassenliste.gruppen[index].schueler)
+      
+    }
+    let remainingSchueler = schuelerTotal.filter(({ id: id1 }) => !fixedSchueler.some(({ id: id2 }) => id2 === id1));
+    return remainingSchueler
+
   }
 
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    debugger;
+    this.defaultGroup.schueler = this.updateRemainingSchueler(this.relevantSchulklasse.schueler, this.selectedKlassenliste)
 
+    
     
   }
 
