@@ -5,7 +5,6 @@ import {SchulklassenComponent} from '../components/schulklassen/schulklassen.com
 import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.component';
 import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
 import {StartseiteComponent} from '../components/startseite/startseite.component';
-import { GruppeneinteilungComponent } from '../components/gruppeneinteilung/gruppeneinteilung.component';
 import { UnsavedGuard} from '../helpers/guards/unsaved.guard'
 import { AuthGuard} from '../helpers/guards/auth.guard'
 import { AnleitungComponent } from '../components/anleitung/anleitung.component';
@@ -44,13 +43,10 @@ const routes: Routes = [
           canActivate: [AuthGuard]
       },
       {
-        path: 'gruppeneinteilung',
-        component: GruppeneinteilungComponent  ,
-        canActivate: [AuthGuard] 
-      },
-      {
         path: 'listenverwaltung',
         component: ListenverwaltungComponent  ,
+        canDeactivate: [UnsavedGuard],
+        canActivate: [AuthGuard]
         
       },
       {

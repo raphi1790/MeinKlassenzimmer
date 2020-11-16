@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegelInfoDialogComponent } from './regel-info-dialog.component';
+import { InlineEditSmallComponent } from './inline-edit-small.component';
 
-describe('RegelInfoDialogComponent', () => {
-  let component: RegelInfoDialogComponent;
-  let fixture: ComponentFixture<RegelInfoDialogComponent>;
+describe('InlineEditComponent', () => {
+  let component: InlineEditSmallComponent;
+  let fixture: ComponentFixture<InlineEditSmallComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegelInfoDialogComponent ]
+      declarations: [ InlineEditSmallComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegelInfoDialogComponent);
+    fixture = TestBed.createComponent(InlineEditSmallComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

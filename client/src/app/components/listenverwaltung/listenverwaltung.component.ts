@@ -16,6 +16,7 @@ import { Gruppe } from 'src/app/models/gruppe';
 import { Regel } from 'src/app/models/regel';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
+import { RegelFilter } from 'src/app/helpers/regel.filter';
 
 @Component({
   selector: 'app-listenverwaltung',
@@ -23,11 +24,8 @@ import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.componen
   styleUrls: ['./listenverwaltung.component.css']
 })
 export class ListenverwaltungComponent implements OnInit {
-  
+  relevantRegeln: Regel[];
 
-  constructor(private dummyService:DummyService, private userService:UserService, private _snackBar: MatSnackBar) {
-   }
-  
   myUser:User
   klassenToPerson: Schulklasse[];
   klassenlistenToPerson: Klassenliste[]
@@ -50,6 +48,19 @@ export class ListenverwaltungComponent implements OnInit {
   groups: FormControl;
   formSubmitAttempt: boolean;
 
+  regelFilter: RegelFilter;
+  
+
+  constructor(
+    // private dummyService:DummyService, 
+     private userService:UserService,
+     private _snackBar: MatSnackBar) {
+
+      this.regelFilter = new RegelFilter()
+   }
+  
+ 
+
   loadInputData() {
     this.userService.getUser().snapshotChanges().pipe(
       map(changes =>
@@ -64,14 +75,19 @@ export class ListenverwaltungComponent implements OnInit {
       this.regelnToPerson = this.myUser.regeln
       this.klassenlistenToPerson = this.myUser.klassenlisten
       this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
-      // console.log(this.myUser)
-      // console.log(this.klassenToPerson)
+      console.log(this.myUser)
+      console.log(this.klassenToPerson)
       this.isLoadingData = false;
     
     });
-
-  
   }
+
+  // loadInputData() {
+  //   this.klassenToPerson = this.dummyService.getSchulklassen()
+  //   this.klassenlistenToPerson = new Array<Klassenliste>()
+  //   this.isLoadingData = false
+
+  // }
      
 
   createKlassenliste(): void {
@@ -117,7 +133,29 @@ export class ListenverwaltungComponent implements OnInit {
     debugger;
     this.selectedKlassenliste = this.klassenlistenToPerson.filter(liste => liste.id == selectedId.id)[0];
     this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == this.selectedKlassenliste.schulklassenId )[0]
+    this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson, 
+                          this.klassenToPerson , this.relevantSchulklasse )
+
     
+
+  }
+  onNameChange(newName : Name):void{
+    debugger;
+    let oldName = this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == newName.id)[0].name;
+    if(oldName != newName.text){
+      this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == newName.id)[0].name = newName.text;
+      this.savingIsActiv = true;
+    }
+  
+  }
+  deleteKlassenliste(selectedId: Name):void{
+    debugger;
+    let klassenliste = this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == selectedId.id)[0];
+    this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
+      item =>
+        item.id !== klassenliste.id);
+    this.selectedKlassenliste = null;
+    this.savingIsActiv = true;
 
   }
 
@@ -126,6 +164,7 @@ export class ListenverwaltungComponent implements OnInit {
       this.myListForm.valid
     )
   }
+
 
   updateKlassenliste(updatedKlassenliste: Klassenliste): void {
     debugger;
@@ -170,6 +209,11 @@ export class ListenverwaltungComponent implements OnInit {
       duration: 2000,
     });
 
+  }
+
+  canDeactivate(){
+    debugger;
+    return !this.savingIsActiv;
   }
 
   saveKlassenlisten(): void {

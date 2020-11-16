@@ -1,0 +1,26 @@
+<div class="inline-edit-small">
+
+  
+  <div [hidden]="!isDisplay" class="button-element">
+      {{ text }}
+      <span class="icons">
+      <mat-icon matListIcon title="Edit" (click)="beginEdit(editText)">edit</mat-icon>
+    </span>
+       
+
+
+
+  </div>
+
+  <div [hidden]="isDisplay" class="button-element">
+
+        <input class="input-element" matInput #editText type="text" [value]="text" (keyup.enter)="editDone(editText.value)">
+
+
+      <span class="icons">
+        <mat-icon matListIcon title="Save" (click)="editDone(editText.value)">done</mat-icon>
+      </span>
+
+
+  </div>
+</div>

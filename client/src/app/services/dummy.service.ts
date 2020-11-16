@@ -29,8 +29,8 @@ export class DummyService {
     this.schulklasse1.id = '1'
     this.schulklasse1.personId = 'raphisId'
     this.schulklasse1.name = 'Test Dummy Service Klasse 1'
-    this.schulklasse1.schueler = new Array<Schueler>(5)
-    for (let index = 0; index < 5; index++) {
+    this.schulklasse1.schueler = new Array<Schueler>(25)
+    for (let index = 0; index < this.schulklasse1.schueler.length; index++) {
         this.schulklasse1.schueler[index] =  new Schueler({
                                                         id: uuidv4(),
                                                         schulklassenId:'1',

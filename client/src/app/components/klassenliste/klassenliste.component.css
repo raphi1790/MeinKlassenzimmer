@@ -4,12 +4,8 @@
 .mat-card-header-text {
   margin: 0 0px;
 }
-.mat-table {
-  overflow: auto;
-  max-height: 500px;
-}
 
-.example-container {
+.dragdrop-container {
     width: 400px;
     max-width: 100%;
     margin: 0 25px 25px 0;
@@ -17,17 +13,17 @@
     vertical-align: top;
   }
   
-  .example-list {
+  .dragdrop-list {
     border: solid 1px #ccc;
-    min-height: 60px;
+    min-height: 40px;
     background: white;
     border-radius: 4px;
     overflow: hidden;
     display: block;
   }
   
-  .example-box {
-    padding: 20px 10px;
+  .dragdrop-box {
+    padding: 10px 10px;
     border-bottom: solid 1px #ccc;
     color: rgba(0, 0, 0, 0.87);
     display: flex;

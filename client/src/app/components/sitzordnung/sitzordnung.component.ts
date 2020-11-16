@@ -15,6 +15,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
 import { CalculatingEngine } from '../../helpers/calculating.engine';
+import { RegelFilter } from '../../helpers/regel.filter';
 import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
@@ -46,15 +47,18 @@ export class SitzordnungComponent {
   selection = new SelectionModel<Regel>(true, []);
   einteilungInfoDialogRef: MatDialogRef<EinteilungInfoDialogComponent>;
   myUser: User;
+  regelFilter: RegelFilter;
 
 
   
 
-  constructor(private userService: UserService, public dialog: MatDialog) { 
+  constructor(private userService: UserService, public dialog: MatDialog,
+    ) { 
     this.showSitzordnung = false;
     this.zuvieleSchuelerInSchulzimmer = false;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
+    this.regelFilter = new RegelFilter()
   }
   @ViewChild(MatTable) table: MatTable<any>;
 
@@ -106,53 +110,12 @@ export class SitzordnungComponent {
     var klasseAndZimmerSelected = false; 
     if (this.selectedSchulklasse != undefined && this.selectedSchulzimmer !=undefined){
       klasseAndZimmerSelected = true;
-      let relevantRegeln = this.filterRegel(this.selectedSchulklasse, this.selectedSchulzimmer);
+      let relevantRegeln = this.regelFilter.filterRegelBySchulklasseAndSchulzimmer(this.regelnToPerson, this.klassenToPerson, this.zimmerToPerson,
+         this.selectedSchulklasse, this.selectedSchulzimmer);
       this.dataSource.data = relevantRegeln;  
        
     }
     return klasseAndZimmerSelected;
-  }
-
-  filterRegel(selectedSchulklasse: Schulklasse, selectedSchulzimmer: Schulzimmer): Regel[]{
-    let relevantRegeln = new Array<Regel>();
-    let inputRegeln = this.regelnToPerson;
-
-    for (let index = 0; index < inputRegeln.length; index++) {
-      let chosenSchueler = this.klassenToPerson.filter(klasse => 
-        klasse.schueler.some(x => x.id== inputRegeln[index].schueler1Id)).map(element => {
-            let newElt = Object.assign({}, element);
-            return newElt.schueler.filter(x => x.id== inputRegeln[index].schueler1Id)
-        });
-        let chosenTisch = this.zimmerToPerson.filter(klasse => 
-          klasse.tische.some(x => x.id== inputRegeln[index].tischId)).map(element => {
-              let newElt = Object.assign({}, element);
-              return newElt.tische.filter(x => x.id== inputRegeln[index].tischId) ;
-          }); 
-          switch (inputRegeln[index].type) {
-            case "Fester Sitzplatz":
-                if( chosenSchueler[0][0].schulklassenId == selectedSchulklasse.id 
-                      && chosenTisch[0][0].schulzimmerId == selectedSchulzimmer.id){
-                        relevantRegeln.push(inputRegeln[index]);
-                      }
-                  
-              break;
-            case "Unmögliche Paarung":
-              if( chosenSchueler[0][0].schulklassenId == selectedSchulklasse.id){
-                  relevantRegeln.push(inputRegeln[index]);
-                }
-              break;  
-          
-            default:
-              console.log("Kein gültiger Regel-Typ")
-              break;
-          }   
-      
-      
-    }
-   
-     
-    return relevantRegeln
-
   }
  
 
@@ -182,8 +145,7 @@ export class SitzordnungComponent {
       if (typeof resultOutput === 'undefined'){
         this.showSitzordnung = false;
         this.einteilungInfoDialogRef = this.dialog.open(EinteilungInfoDialogComponent, {
-          height: '250px',
-          width: '400px',
+          width: '550px',
         });
 
       }

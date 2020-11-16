@@ -7,7 +7,7 @@
               <mat-card-header>
                 <mat-card-title-group>
                   <mat-card-title>
-                    <h4>Listen-Parameter definieren</h4>
+                    <h4>Klassenliste erstellen</h4>
                   </mat-card-title>
                 </mat-card-title-group>
   
@@ -53,7 +53,7 @@
               <mat-card-header>
                 <mat-card-title-group>
                   <mat-card-title>
-                    <h4>Erfasste Listen</h4>
+                    <h4>Erfasste Klassenlisten</h4>
   
                   </mat-card-title>
                 </mat-card-title-group>
@@ -63,6 +63,7 @@
                 <mat-nav-list>
                   <mat-list-item *ngFor="let list of klassenlistenToPerson;last as last" [class.highlighted]="list === selectedKlassenliste">
                       <app-inline-edit [text]="list.name" [id]="list.id"  (select)="onSelect($event)" 
+                      (edit)="onNameChange($event)" (delete) ="deleteKlassenliste($event)"
                      >
                     </app-inline-edit>
 
@@ -86,14 +87,17 @@
         <div class="column2" >
           <div class="selectionKlassenlist" *ngIf="selectedKlassenliste">
             <div class="schuelerListe">
-              <app-klassenliste [selectedKlassenliste]="selectedKlassenliste" [relevantSchulklasse]="relevantSchulklasse" (noteListenverwaltung)="updateKlassenliste($event)"></app-klassenliste>
+              <app-klassenliste [selectedKlassenliste]="selectedKlassenliste"  [relevantSchulklasse]="relevantSchulklasse" 
+                [relevantRegeln]="relevantRegeln" (noteListenverwaltung)="updateKlassenliste($event)">
+              </app-klassenliste>
             </div>
 
           </div>
         </div>
       </div>
   
-  
+      <div id ="center" style="position:fixed;top:50%;left:50%">
+        <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner></div>
   
     </div>
   

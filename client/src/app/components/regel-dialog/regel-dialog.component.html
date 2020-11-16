@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Regeln auswählen</h2>
+<mat-dialog-content>
+
+  <div class="table-container">
+    <mat-table #table [dataSource]="data.input">
+
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef> Typ der Regel </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="beschreibung">
+        <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.beschreibung}} </mat-cell>
+      </ng-container>
+
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>
+    </mat-table>
+  </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button  (click)="onNoClick()">Abbruch</button>
+  <button mat-raised-button type="button" color="primary" (click) = "saveMessage()">Einteilung erstellen</button>
+
+</mat-dialog-actions>
