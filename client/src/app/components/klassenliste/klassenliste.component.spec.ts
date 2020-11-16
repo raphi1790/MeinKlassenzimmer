@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegelInfoDialogComponent } from './regel-info-dialog.component';
+import { KlassenlisteComponent } from './klassenliste.component';
 
-describe('RegelInfoDialogComponent', () => {
-  let component: RegelInfoDialogComponent;
-  let fixture: ComponentFixture<RegelInfoDialogComponent>;
+describe('KlassenlisteComponent', () => {
+  let component: KlassenlisteComponent;
+  let fixture: ComponentFixture<KlassenlisteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegelInfoDialogComponent ]
+      declarations: [ KlassenlisteComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegelInfoDialogComponent);
+    fixture = TestBed.createComponent(KlassenlisteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

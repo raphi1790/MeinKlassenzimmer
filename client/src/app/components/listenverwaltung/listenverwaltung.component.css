@@ -6,22 +6,15 @@
     display: block;
     width: 100%
 }  
-.mat-table {
-  overflow: auto;
-  max-height: 500px;
-}
 .mat-card-header {
   display: grid;
 }  
 .mat-card-header-text {
   margin: 0 0px;
 }
-
-.regel-container{
-margin-top: 20px;
-margin-bottom: 15px;
-margin-left:15px;
-margin-right: 20px;
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
 }
 .mat-column-select {
   overflow: visible;
@@ -29,5 +22,17 @@ margin-right: 20px;
 .mat-checkbox  {
   position: relative;
 }
-
-
+.second-column-card{
+  width: 950px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 20px;
+}
+.col-md-7{
+    padding-left: 0px;
+}
+.mat-card-footer{
+    margin-left: -8px;
+    margin-bottom: -8px;
+}

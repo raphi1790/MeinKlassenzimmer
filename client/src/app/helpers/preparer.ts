@@ -6,7 +6,7 @@ export abstract class Preparer{
     initializeArrays(){
         console.log("Nothing to initialize");
     }
-    prepare(inputSchueler: Schueler[], inputRegeln: Regel[], inputTisch?: Tisch[], inputGroupType? : string, inputGroupSize?: number ){
+    prepare(inputSchueler: Schueler[], inputRegeln: Regel[], inputTisch?: Tisch[], inputGroupNumber?: number ){
         console.log("Nothing to prepare or calculate");
     }
 

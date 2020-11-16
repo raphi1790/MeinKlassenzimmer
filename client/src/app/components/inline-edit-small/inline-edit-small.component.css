@@ -1,0 +1,17 @@
+.inline-edit-small{
+    width: 100%;
+}
+
+.button-element{
+    width: 100%;
+    position: relative
+
+}
+
+.mat-input-element{
+    width: 90%;
+}
+.icons{
+    position: absolute;
+    right: 0px;
+}

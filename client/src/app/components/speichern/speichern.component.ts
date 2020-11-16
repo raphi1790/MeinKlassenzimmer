@@ -15,7 +15,7 @@ export class SpeichernComponent implements OnInit, OnChanges {
   @Output() cancelData: EventEmitter<null> = new EventEmitter();
   @Input('savingIsActive')  savingIsActive: boolean;
 
-  saveActionIsNotNecessary = false;
+  saveActionIsNotNecessary=true;
   speichernInfoDialogRef: MatDialogRef<SpeichernInfoDialogComponent>;
 
 

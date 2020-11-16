@@ -9,7 +9,9 @@ import { FormControl, Validators } from '@angular/forms';
 import * as uuidv4 from 'uuid/v4';
 import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
-import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
+import { Klassenliste } from 'src/app/models/klassenliste';
+import { KlassenlistenRemover } from '../../helpers/klassenlisten.remover';
+import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 
 
 
@@ -31,7 +33,9 @@ export class SchuelerComponent implements OnChanges{
   }
   @Input('selectedSchulklasse')  selectedSchulklasse: Schulklasse;
   @Input('regelnToPerson') regelnToPerson: Regel[];
+  @Input('klassenlistenToPerson') klassenlistenToPerson: Klassenliste[];
   @Output() noteSchulklasse: EventEmitter<Schulklasse> = new EventEmitter<Schulklasse>();
+  @Output() noteKlassenlisten: EventEmitter<Klassenliste[]> = new EventEmitter<Klassenliste[]>();
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -43,7 +47,7 @@ export class SchuelerComponent implements OnChanges{
   neuerSchuelerName: string;
   neuerSchuelerVornameForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   anzahlSchueler: number;
-  regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
+  infoDialogRef: MatDialogRef<InfoDialogComponent>;
 
   getErrorMessageNeuerSchuelerVorname() {
     return this.neuerSchuelerVornameForm.hasError('required') ? 'Wert erforderlich' :
@@ -58,16 +62,20 @@ export class SchuelerComponent implements OnChanges{
       this.schulklasse.schueler = this.schulklasse.schueler.filter(
         item => item.id != deletedSchueler.id
       );
-  
+      // remove Schueler from Klassenlisten
+      let klassenlistenRemover = new KlassenlistenRemover()
+      this.klassenlistenToPerson = klassenlistenRemover.removeSchuelerFromKlassenlisten(deletedSchueler, this.klassenlistenToPerson)
       // console.log("Klasse nach Update (Delete):");
       // console.log(this.schulklasse);
       this.dataSource.data = this.schulklasse.schueler;
       this.noteSchulklasse.emit(this.schulklasse);
+      this.noteKlassenlisten.emit(this.klassenlistenToPerson)
       this.anzahlSchueler--;
     }else{
-      this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
-        height: '180px',
-        width: '510px',
+      this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '550px',
+        data: {text: "Es existieren noch Regeln zu diesem Objekt, weshalb es nicht gelöscht werden kann. Bitte lösche zuerst die entsprechenden Regeln."}
+        
       });
 
     }

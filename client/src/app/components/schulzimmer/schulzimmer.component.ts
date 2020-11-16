@@ -10,13 +10,13 @@ import * as CONFIG from '../../../config.json';
 import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
-import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -42,7 +42,7 @@ export class SchulzimmerComponent implements OnInit {
   isSaving: boolean;
   currentTischNumber: number;
   regelChecker:RegelChecker;
-  regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
+  infoDialogRef: MatDialogRef<InfoDialogComponent>;
   myUser: User;
   isLoadingData: boolean;
   
@@ -117,9 +117,9 @@ export class SchulzimmerComponent implements OnInit {
       this.selectedSchulzimmer = null;    
       this.savingIsActiv = true; 
     }else{
-      this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
-        height: '210px',
+      this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
         width: '550px',
+        data: {text: "Es existieren noch Regeln zu diesem Objekt, weshalb es nicht gelöscht werden kann. Bitte lösche zuerst die entsprechenden Regeln."}
       });
 
     }

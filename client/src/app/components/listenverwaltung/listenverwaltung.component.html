@@ -1,0 +1,103 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3" class="responsive">
+        <div class="column1">
+          <div class="input-form-container">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title>
+                    <h4>Klassenliste erstellen</h4>
+                  </mat-card-title>
+                </mat-card-title-group>
+  
+              </mat-card-header>
+              <mat-card-content>
+                <div class="input-form-field">
+                  <form  [formGroup]="myListForm">
+                  <mat-form-field>
+                    <input matInput placeholder="Name der Liste"  type="string"  required [(ngModel)]="selectedListNameInput"  formControlName="name">
+                    <mat-error *ngIf="isFieldValid( this.myListForm, 'name')">Name erforderlich </mat-error>
+    
+                  </mat-form-field>
+                 
+                  <mat-form-field>
+                    <mat-select placeholder="Schulklasse" required [(ngModel)]="selectedSchulklasse" required  formControlName="klasse">
+                      <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
+                      
+                    </mat-select>
+                    <mat-error *ngIf="isFieldValid(this.myListForm,'klasse')">Klasse erforderlich </mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput placeholder="Anzahl Gruppen" required  type="number" [(ngModel)]="selectedGroupNumberInput"  formControlName="groups">
+                    <mat-error *ngIf="isFieldValid(this.myListForm, 'groups')">Anzahl erforderlich </mat-error>
+                  </mat-form-field>
+                </form>
+
+                </div>
+                <mat-card-actions>
+                    <button mat-raised-button color="accent" [disabled]="!createButtonActive()"  (click)="createKlassenliste()">Liste eröffnen</button>
+
+                  </mat-card-actions>
+  
+  
+              </mat-card-content>
+              <mat-card-footer>
+               
+              </mat-card-footer>
+            </mat-card>
+          </div>
+  
+          <div class="klassenlisteLists">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title>
+                    <h4>Erfasste Klassenlisten</h4>
+  
+                  </mat-card-title>
+                </mat-card-title-group>
+  
+              </mat-card-header>
+              <mat-card-content>
+                <mat-nav-list>
+                  <mat-list-item *ngFor="let list of klassenlistenToPerson;last as last" [class.highlighted]="list === selectedKlassenliste">
+                      <app-inline-edit [text]="list.name" [id]="list.id"  (select)="onSelect($event)" 
+                      (edit)="onNameChange($event)" (delete) ="deleteKlassenliste($event)"
+                     >
+                    </app-inline-edit>
+
+                    <mat-divider [inset]="true" *ngIf="!last"></mat-divider> 
+                  </mat-list-item>
+                </mat-nav-list>
+              </mat-card-content>
+  
+            </mat-card>
+            <app-speichern (saveData)="saveKlassenlisten()" (cancelData) ="cancel()" [savingIsActive] ="savingIsActiv"></app-speichern>
+           
+          </div>
+  
+        </div>
+      </div>
+  
+  
+  
+  
+      <div class="col-md-7" >
+        <div class="column2" >
+          <div class="selectionKlassenlist" *ngIf="selectedKlassenliste">
+            <div class="schuelerListe">
+              <app-klassenliste [selectedKlassenliste]="selectedKlassenliste"  [relevantSchulklasse]="relevantSchulklasse" 
+                [relevantRegeln]="relevantRegeln" (noteListenverwaltung)="updateKlassenliste($event)">
+              </app-klassenliste>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  
+      <div id ="center" style="position:fixed;top:50%;left:50%">
+        <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner></div>
+  
+    </div>
+  

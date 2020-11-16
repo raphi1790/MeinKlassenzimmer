@@ -9,12 +9,15 @@ import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RegelInfoDialogComponent } from '../regel-info-dialog/regel-info-dialog.component';
+import { KlassenlistenInfoDialogComponent } from '../klassenlisten-info-dialog/klassenlisten-info-dialog.component';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Klassenliste } from 'src/app/models/klassenliste';
+import { KlassenlistenRemover } from 'src/app/helpers/klassenlisten.remover';
+import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 
 
 @Component({
@@ -32,18 +35,24 @@ export class SchulklassenComponent implements OnInit {
   isSaving: boolean;
   klassenToPerson: Schulklasse[];
   klassenToPersonOriginal: Schulklasse[];
+  klassenlistenToPerson : Klassenliste[];
+  klassenlistenToPersonOriginal: Klassenliste[];
   isLoadingData: boolean;
   regelnToPerson: Regel[];
   selectedSchulklasse: Schulklasse;
   regelChecker: RegelChecker;
   neueSchulklasseName: string
   neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
-  regelInfoDialogRef: MatDialogRef<RegelInfoDialogComponent>;
+  infoDialogRef: MatDialogRef<InfoDialogComponent>;
+  klassenlistenInfoDialogRef: MatDialogRef<KlassenlistenInfoDialogComponent>;
 
 
 
 
   @Input() personId: string
+
+  
+ 
   
   
 
@@ -72,6 +81,8 @@ export class SchulklassenComponent implements OnInit {
       this.klassenToPerson = this.myUser.schulklassen
       this.regelnToPerson = this.myUser.regeln
       this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
+      this.klassenlistenToPerson = this.myUser.klassenlisten
+      this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
       // console.log(this.myUser)
       // console.log(this.klassenToPerson)
       this.isLoadingData = false;
@@ -102,12 +113,23 @@ export class SchulklassenComponent implements OnInit {
       this.klassenToPerson = this.klassenToPerson.filter(
         item =>
           item.id !== klasse.id);
-      this.selectedSchulklasse = null;
+      // remove klassenlisten based on selected klasse
+      let klassenlistenRemover = new KlassenlistenRemover()
+      let returnValues =  klassenlistenRemover.removeKlassenlistenContainingSchulklasse(klasse, this.klassenlistenToPerson)
+      this.klassenlistenToPerson = returnValues[0]
+      let numFiltered = returnValues[1]
+      if (numFiltered > 0){
+        this.klassenlistenInfoDialogRef = this.dialog.open(KlassenlistenInfoDialogComponent, {
+          width: '550px',
+          data: numFiltered
+        });
+      }
       this.savingIsActiv = true;
+      
     }else{
-      this.regelInfoDialogRef = this.dialog.open(RegelInfoDialogComponent, {
-        height: '210px',
+      this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
         width: '550px',
+        data: {text: "Es existieren noch Regeln zu diesem Objekt, weshalb es nicht gelöscht werden kann. Bitte lösche zuerst die entsprechenden Regeln."}
       });
     }
     
@@ -145,6 +167,13 @@ export class SchulklassenComponent implements OnInit {
     }
     this.savingIsActiv = true;
   }
+
+  updateKlassenlisten(updatedKlasselisten: Klassenliste[]): void {
+    debugger;
+    this.klassenlistenToPerson = updatedKlasselisten
+    this.savingIsActiv = true;
+  }
+
   onNameChange(newName : Name):void{
     debugger;
     let oldName = this.klassenToPerson.filter(klasse => klasse.id == newName.id)[0].name;
@@ -182,6 +211,7 @@ export class SchulklassenComponent implements OnInit {
   cancel(){
     debugger;
     this.klassenToPerson = JSON.parse(JSON.stringify(this.klassenToPersonOriginal));
+    this.klassenlistenToPerson = JSON.parse(JSON.stringify(this.klassenlistenToPersonOriginal));
     this.savingIsActiv = false;
   }
 

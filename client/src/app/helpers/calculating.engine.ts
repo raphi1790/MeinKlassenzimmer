@@ -9,7 +9,7 @@ export class CalculatingEngine{
     resultObject : any;
     
 
-    calculate(inputPreparer : Preparer, inputSchueler: Schueler[], inputRegeln: Regel[], inputTisch?: Tisch[], inputGroupType? : string, inputGroupSize?: number ): any{
+    calculate(inputPreparer : Preparer, inputSchueler: Schueler[], inputRegeln: Regel[], inputTisch?: Tisch[],  inputGroupNumber?: number ): any{
         debugger;
         let countAttemp = 0;
         let maximalNumberOfAttemps = (<any>CONFIG).numberOfAttemps ;
@@ -18,7 +18,7 @@ export class CalculatingEngine{
         let regelnPaarung = inputRegeln.filter(regel => regel.type == "Unmögliche Paarung")
         do {
             inputPreparer.initializeArrays();
-            this.resultObject = inputPreparer.prepare(inputSchueler, inputRegeln,inputTisch,inputGroupType,inputGroupSize)           
+            this.resultObject = inputPreparer.prepare(inputSchueler, inputRegeln,inputTisch,inputGroupNumber)           
             countAttemp++
 
         } while (countAttemp <= maximalNumberOfAttemps && !inputPreparer.paarungSatisfied(this.resultObject,regelnPaarung) );

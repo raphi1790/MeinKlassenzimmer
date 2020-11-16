@@ -10,11 +10,11 @@ import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.compo
 import { SpeichernComponent} from './components/speichern/speichern.component';
 import { SpeichernInfoDialogComponent} from './components/speichern-info-dialog/speichern-info-dialog.component'
 import { StartseiteComponent } from './components/startseite/startseite.component'
-import { GruppeneinteilungComponent } from  './components/gruppeneinteilung/gruppeneinteilung.component';
 import { AuthService} from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { AnleitungComponent } from './components/anleitung/anleitung.component';
 import { InlineEditComponent} from './components/inline-edit/inline-edit.component';
+import { InlineEditSmallComponent} from './components/inline-edit-small/inline-edit-small.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
@@ -27,7 +27,9 @@ import { UnsavedGuard } from './helpers/guards/unsaved.guard';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { RegelnComponent } from './components/regeln/regeln.component';
 import { EinteilungInfoDialogComponent} from './components/einteilung-info-dialog/einteilung-info-dialog.component';
-import { RegelInfoDialogComponent} from './components/regel-info-dialog/regel-info-dialog.component';
+import { KlassenlistenInfoDialogComponent} from './components/klassenlisten-info-dialog/klassenlisten-info-dialog.component';
+import { RegelDialogComponent} from './components/regel-dialog/regel-dialog.component';
+import { InfoDialogComponent} from './components/info-dialog/info-dialog.component';
 import { AuthGuard } from './helpers/guards/auth.guard';
 import { UserService } from './services/user.service';
 import { TimerComponent } from './components/timer/timer.component';
@@ -35,6 +37,9 @@ import {ZufallsgeneratorComponent} from './components/zufallsgenerator/zufallsge
 import {SaveSnackBarComponent} from './components/save-snack-bar/save-snack-bar.component';
 import { CountdownModule } from 'ngx-countdown';
 import { DummyService } from './services/dummy.service';
+import {ListenverwaltungComponent} from './components/listenverwaltung/listenverwaltung.component';
+import {KlassenlisteComponent} from './components/klassenliste/klassenliste.component';
+import {DragDropModule} from '@angular/cdk/drag-drop'
 
 
 @NgModule({
@@ -49,16 +54,20 @@ import { DummyService } from './services/dummy.service';
     TischComponent,
     AnleitungComponent,
     TischSchuelerComponent,
-    GruppeneinteilungComponent,
     RegelnComponent,
     EinteilungInfoDialogComponent,
     SpeichernComponent,
     SpeichernInfoDialogComponent,
     InlineEditComponent,
-    RegelInfoDialogComponent,
+    RegelDialogComponent,
     TimerComponent,
     ZufallsgeneratorComponent,
-    SaveSnackBarComponent
+    SaveSnackBarComponent,
+    ListenverwaltungComponent,
+    KlassenlisteComponent,
+    KlassenlistenInfoDialogComponent,
+    InlineEditSmallComponent,
+    InfoDialogComponent
     
   ],
   imports: [
@@ -70,7 +79,8 @@ import { DummyService } from './services/dummy.service';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,// imports firebase/auth, only needed for auth features
     AngularFirestoreModule,
-    CountdownModule
+    CountdownModule,
+    DragDropModule
 
   ],
   providers: [ AuthService,UserService,DummyService,
@@ -85,6 +95,8 @@ import { DummyService } from './services/dummy.service';
 
   ],
   bootstrap: [AppComponent],
-  entryComponents: [EinteilungInfoDialogComponent, SpeichernInfoDialogComponent, RegelInfoDialogComponent]
+  entryComponents: [EinteilungInfoDialogComponent, SpeichernInfoDialogComponent,
+      RegelDialogComponent, 
+      KlassenlistenInfoDialogComponent,InfoDialogComponent]
 })
 export class AppModule { }

@@ -5,13 +5,13 @@ import {SchulklassenComponent} from '../components/schulklassen/schulklassen.com
 import {SchulzimmerComponent} from'../components/schulzimmer/schulzimmer.component';
 import {SitzordnungComponent} from '../components/sitzordnung/sitzordnung.component'
 import {StartseiteComponent} from '../components/startseite/startseite.component';
-import { GruppeneinteilungComponent } from '../components/gruppeneinteilung/gruppeneinteilung.component';
 import { UnsavedGuard} from '../helpers/guards/unsaved.guard'
 import { AuthGuard} from '../helpers/guards/auth.guard'
 import { AnleitungComponent } from '../components/anleitung/anleitung.component';
 import { RegelnComponent } from '../components/regeln/regeln.component';
 import { TimerComponent } from '../components/timer/timer.component';
 import { ZufallsgeneratorComponent } from '../components/zufallsgenerator/zufallsgenerator.component';
+import { ListenverwaltungComponent } from '../components/listenverwaltung/listenverwaltung.component';
 
 
 const routes: Routes = [
@@ -43,9 +43,11 @@ const routes: Routes = [
           canActivate: [AuthGuard]
       },
       {
-        path: 'gruppeneinteilung',
-        component: GruppeneinteilungComponent  ,
-        canActivate: [AuthGuard] 
+        path: 'listenverwaltung',
+        component: ListenverwaltungComponent  ,
+        canDeactivate: [UnsavedGuard],
+        canActivate: [AuthGuard]
+        
       },
       {
           path: 'anleitung',
