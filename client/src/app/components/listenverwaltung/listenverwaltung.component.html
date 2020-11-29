@@ -60,17 +60,56 @@
   
               </mat-card-header>
               <mat-card-content>
-                <mat-nav-list>
-                  <mat-list-item *ngFor="let list of klassenlistenToPerson;last as last" [class.highlighted]="list === selectedKlassenliste">
-                      <app-inline-edit [text]="list.name" [id]="list.id"  (select)="onSelect($event)" 
-                      (edit)="onNameChange($event)" (delete) ="deleteKlassenliste($event)"
-                     >
-                    </app-inline-edit>
+              
+              
 
-                    <mat-divider [inset]="true" *ngIf="!last"></mat-divider> 
-                  </mat-list-item>
-                </mat-nav-list>
-              </mat-card-content>
+              <mat-form-field>
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+              </mat-form-field>
+              
+              <div >
+                <table mat-table [dataSource]="dataSource" matSort>
+              
+                  <!-- ID Column -->
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                    <mat-cell *matCellDef="let klassenliste"> 	<mat-form-field floatLabel="never" (click)="onSelect(klassenliste)">
+                      <input matInput placeholder="Name" (change)="savingIsActiv = true" [value]="klassenliste.name" [(ngModel)]="klassenliste.name" >
+                    </mat-form-field> </mat-cell>
+                  </ng-container>
+                  
+                  <ng-container matColumnDef="klasse">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Klasse </mat-header-cell>
+                    <mat-cell *matCellDef="let klassenliste" (click)="onSelect(klassenliste)" > {{klassenliste.schulklassenName}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="groups">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Anzahl Gruppen </mat-header-cell>
+                    <mat-cell *matCellDef="let klassenliste" (click)="onSelect(klassenliste)" > {{klassenliste.gruppen.length}} </mat-cell>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="action" class="align-column-right">
+                    <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
+                    <mat-cell *matCellDef="let klassenliste">
+                      <span>
+                        <mat-icon matListIcon (click)="deleteKlassenliste(klassenliste)">delete</mat-icon>
+                      </span>
+                    </mat-cell>
+                  </ng-container>
+                            
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              
+                  <!-- Row shown when there is no matching data. -->
+                  <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data</td>
+                  </tr>
+                </table>
+              
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+              </div>
+            </mat-card-content>
   
             </mat-card>
             <app-speichern (saveData)="saveKlassenlisten()" (cancelData) ="cancel()" [savingIsActive] ="savingIsActiv"></app-speichern>

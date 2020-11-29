@@ -17,15 +17,15 @@ export class Randomizer {
 
 
 
-    shuffle(a) {
-        var j, x, i;
-        for (i = a.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            x = a[i];
-            a[i] = a[j];
-            a[j] = x;
+    shuffle(array) {
+        // shuffle without fixpoint; sattolo's algorithm
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * i); // no +1 here!
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
         }
-        return a;
+        return array;
     }
 
     

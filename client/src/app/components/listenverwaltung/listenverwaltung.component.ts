@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { DummyService } from '../../services/dummy.service';
 import { Schulklasse } from '../../models/schulklasse';
 import { Schueler } from '../../models/schueler';
@@ -17,13 +17,14 @@ import { Regel } from 'src/app/models/regel';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { RegelFilter } from 'src/app/helpers/regel.filter';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-listenverwaltung',
   templateUrl: './listenverwaltung.component.html',
   styleUrls: ['./listenverwaltung.component.css']
 })
-export class ListenverwaltungComponent implements OnInit {
+export class ListenverwaltungComponent implements OnInit   {
   relevantRegeln: Regel[];
 
   myUser:User
@@ -40,6 +41,12 @@ export class ListenverwaltungComponent implements OnInit {
   selectedKlassenliste: Klassenliste;
   relevantSchulklasse: Schulklasse;
   savingIsActiv: boolean;
+
+  displayedColumns: string[] = ['name',"klasse", 'groups', 'action'];
+  dataSource: MatTableDataSource<Klassenliste>;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
 
   myListForm: FormGroup
@@ -76,8 +83,11 @@ export class ListenverwaltungComponent implements OnInit {
       this.klassenlistenToPerson = this.myUser.klassenlisten
       this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
       console.log(this.myUser)
-      console.log(this.klassenToPerson)
+      console.log(this.klassenlistenToPerson)
       this.isLoadingData = false;
+      this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     
     });
   }
@@ -85,6 +95,7 @@ export class ListenverwaltungComponent implements OnInit {
   // loadInputData() {
   //   this.klassenToPerson = this.dummyService.getSchulklassen()
   //   this.klassenlistenToPerson = new Array<Klassenliste>()
+  //   this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
   //   this.isLoadingData = false
 
   // }
@@ -96,16 +107,21 @@ export class ListenverwaltungComponent implements OnInit {
     klasselisteTmp.name = this.selectedListNameInput;
     klasselisteTmp.id = uuidv4();
     klasselisteTmp.schulklassenId = this.klassenToPerson.filter(klasse => klasse.id == this.selectedSchulklasse.id)[0].id
+    klasselisteTmp.schulklassenName = this.klassenToPerson.filter(klasse => klasse.id == this.selectedSchulklasse.id)[0].name
     klasselisteTmp.gruppen = this.initializeGroups(this.selectedGroupNumberInput, klasselisteTmp.schulklassenId)
     this.klassenlistenToPerson.push(klasselisteTmp);
     klasselisteTmp = null;
     this.selectedSchulklasse = null;
+    this.selectedGroupNumberInput = null;
     this.savingIsActiv = true;
     this.selectedListNameInput = null;
 
     this.myListForm.markAsPristine();
     this.myListForm.markAsUntouched();
     this.myListForm.updateValueAndValidity();
+
+    this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
+
 
   }
 
@@ -129,12 +145,15 @@ export class ListenverwaltungComponent implements OnInit {
   }
   
 
-  onSelect(selectedId: Name): void {
+  onSelect(klassenliste: Klassenliste): void {
     debugger;
-    this.selectedKlassenliste = this.klassenlistenToPerson.filter(liste => liste.id == selectedId.id)[0];
+    this.selectedKlassenliste = this.klassenlistenToPerson.filter(liste => liste.id == klassenliste.id)[0];
     this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == this.selectedKlassenliste.schulklassenId )[0]
     this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson, 
                           this.klassenToPerson , this.relevantSchulklasse )
+  
+
+
 
     
 
@@ -148,14 +167,23 @@ export class ListenverwaltungComponent implements OnInit {
     }
   
   }
-  deleteKlassenliste(selectedId: Name):void{
+  deleteKlassenliste(klassenliste: Klassenliste):void{
     debugger;
-    let klassenliste = this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == selectedId.id)[0];
+    // let klassenliste = this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == selectedId.id)[0];
+    // this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
+    //   item =>
+    //     item.id !== klassenliste.id);
+    // this.selectedKlassenliste = null;
+    // this.savingIsActiv = true;
     this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
-      item =>
-        item.id !== klassenliste.id);
+        item =>
+          item.id !== klassenliste.id);
     this.selectedKlassenliste = null;
     this.savingIsActiv = true;
+    this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
+
+
+    
 
   }
 
@@ -230,18 +258,32 @@ export class ListenverwaltungComponent implements OnInit {
   cancel(){
     debugger;
     this.klassenlistenToPerson = JSON.parse(JSON.stringify(this.klassenlistenToPersonOriginal));
+    this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
     this.savingIsActiv = false;
   }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
 
 
 
   ngOnInit(): void {
+    debugger;
     this.createFormControls();
     this.createForm();
     this.isLoadingData = true;
     this.loadInputData();
+    
 
   }
+
 
 
 }
