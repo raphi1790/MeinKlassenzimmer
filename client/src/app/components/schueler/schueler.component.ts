@@ -1,4 +1,4 @@
-import { Component, OnInit,  Input, OnChanges, EventEmitter, Output, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit,  Input, OnChanges, EventEmitter, Output, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 
 import {Schulklasse} from '../../models/schulklasse';
 import {Schueler} from '../../models/schueler';
@@ -21,7 +21,7 @@ import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
   templateUrl: './schueler.component.html',
   styleUrls: ['./schueler.component.css']
 })
-export class SchuelerComponent implements OnChanges{
+export class SchuelerComponent implements OnChanges, AfterViewInit {
   regelChecker: RegelChecker;
 
 
