@@ -3,12 +3,11 @@ before_install:
 
 language: node_js
 node_js:
-  - 12.16
+  - 15
 
 
 script:
   - cd client
-  - npm install grpc@1.20.0 --build-from-source
   - npm install
   - npm run build
 
