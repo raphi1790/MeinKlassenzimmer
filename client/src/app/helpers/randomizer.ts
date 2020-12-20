@@ -12,7 +12,6 @@ export class Randomizer {
         }
         randomizeSchueler = this.shuffle(extendedSchueler);
         return randomizeSchueler;
-        
     }
 
 
