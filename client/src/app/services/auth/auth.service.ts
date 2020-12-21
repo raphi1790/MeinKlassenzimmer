@@ -3,12 +3,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/filter';
-import {  AngularFireAuth} from "@angular/fire/auth";
-import { auth } from 'firebase/app';
+import { AngularFireAuth} from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from '../../models/user';
 import { Observable, of } from 'rxjs';
 import { switchMap} from 'rxjs/operators';
+import firebase from 'firebase/app';
 
 
 @Injectable({ providedIn: 'root' })
@@ -44,12 +44,13 @@ export class AuthService {
   }
 
   login() {
-    return this.afAuth.auth.signInWithPopup(
-      new auth.GoogleAuthProvider()).then((result) => {
+    return this.afAuth.signInWithPopup(
+      new firebase.auth.GoogleAuthProvider()).then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
+        debugger;
         this.updateUserData(result.user);
         this.authState = result.user;
-        this.getToken();
+        this.getToken(result);
         this.currentUser();
         
         return true;
@@ -62,7 +63,7 @@ export class AuthService {
 
 
   public logout() {
-    this.afAuth.auth.signOut();
+    this.afAuth.signOut();
     this.router.navigate(['/'])
     localStorage.clear();
 
@@ -83,12 +84,10 @@ export class AuthService {
 
 
 
-  private getToken() {
-    this.afAuth.auth.currentUser.getIdToken(true)
-      .then(
-        (token) => localStorage.setItem('tokenId', token)).catch(function (error) {
-          throw new Error('Token cannot be fetched.');
-        });
+  private getToken(result:any) {
+    debugger;
+    var token = result.credential.accessToken;
+    localStorage.setItem('tokenId', token);
   }
 
   private updateUserData(user) {

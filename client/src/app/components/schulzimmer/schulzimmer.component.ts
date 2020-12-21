@@ -61,7 +61,7 @@ export class SchulzimmerComponent implements OnInit {
     this.userService.getUser().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
-          ({ uid: c.payload.doc.id, ...c.payload.doc.data() })
+          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
         )
       )
     ).subscribe(users => {

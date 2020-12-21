@@ -2,3 +2,4 @@
 meinKlassenzimmer/public/dist
 
 .firebase/*
+client/firebase-debug.log
