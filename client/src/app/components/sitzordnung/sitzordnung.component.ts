@@ -19,6 +19,7 @@ import { RegelFilter } from '../../helpers/regel.filter';
 import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
+import { DummyService } from 'src/app/services/dummy.service';
 
 @Component({
   selector: 'app-sitzordnung',
@@ -52,7 +53,10 @@ export class SitzordnungComponent {
 
   
 
-  constructor(private userService: UserService, public dialog: MatDialog,
+  constructor(
+    // private userService: UserService, 
+    private dummyService: DummyService,
+    public dialog: MatDialog,
     ) { 
     this.showSitzordnung = false;
     this.zuvieleSchuelerInSchulzimmer = false;
@@ -84,23 +88,36 @@ export class SitzordnungComponent {
      return "Es gibt nicht genug aktive Tische für die Anzahl Schüler!"
   }
 
-  loadInputData() {
-    this.userService.getUser().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(users => {
-      debugger;
-      this.myUser = new User(users[0])
-      this.klassenToPerson = this.myUser.schulklassen
-      this.zimmerToPerson = this.myUser.schulzimmer
-      this.regelnToPerson = this.myUser.regeln
-      // console.log(this.myUser)
-      this.isLoadingData = false;
+  // loadInputData() {
+  //   this.userService.getUser().snapshotChanges().pipe(
+  //     map(changes =>
+  //       changes.map(c =>
+  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
+  //       )
+  //     )
+  //   ).subscribe(users => {
+  //     debugger;
+  //     this.myUser = new User(users[0])
+  //     this.klassenToPerson = this.myUser.schulklassen
+  //     this.zimmerToPerson = this.myUser.schulzimmer
+  //     this.regelnToPerson = this.myUser.regeln
+  //     // console.log(this.myUser)
+  //     this.isLoadingData = false;
     
-    });
+  //   });
+
+  
+  // }
+  loadInputData() {
+    debugger;
+    this.myUser = this.dummyService.getUser()
+    this.klassenToPerson = this.myUser.schulklassen
+    this.zimmerToPerson = this.myUser.schulzimmer
+    this.regelnToPerson = this.myUser.regeln
+    console.log(this.myUser)
+    this.isLoadingData = false;
+    
+
 
   
   }

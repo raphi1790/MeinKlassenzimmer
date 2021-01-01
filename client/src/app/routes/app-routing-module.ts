@@ -40,7 +40,7 @@ const routes: Routes = [
       { 
           path: 'sitzordnung',
           component: SitzordnungComponent,
-          canActivate: [AuthGuard]
+          // canActivate: [AuthGuard]
       },
       {
         path: 'listenverwaltung',
