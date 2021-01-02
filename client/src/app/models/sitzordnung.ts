@@ -3,6 +3,8 @@ import { Seating } from "./seating";
 export class Sitzordnung{
     id: string;
     personId: string;
+    schulklassenId: string;
+    schulzimmerId: string;
     name: string;
     seatings: Seating[];
 

@@ -12,6 +12,7 @@ import { RegelnComponent } from '../components/regeln/regeln.component';
 import { TimerComponent } from '../components/timer/timer.component';
 import { ZufallsgeneratorComponent } from '../components/zufallsgenerator/zufallsgenerator.component';
 import { ListenverwaltungComponent } from '../components/listenverwaltung/listenverwaltung.component';
+import { SitzordnungManagementComponent } from '../components/sitzordnung-management/sitzordnung.management.component';
 
 
 const routes: Routes = [
@@ -39,7 +40,7 @@ const routes: Routes = [
       },
       { 
           path: 'sitzordnung',
-          component: SitzordnungComponent,
+          component: SitzordnungManagementComponent,
           // canActivate: [AuthGuard]
       },
       {

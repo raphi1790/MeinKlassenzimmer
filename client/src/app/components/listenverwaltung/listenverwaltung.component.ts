@@ -221,7 +221,7 @@ export class ListenverwaltungComponent implements OnInit   {
     this.name = new FormControl(null, [Validators.required, Validators.minLength(2)]);
     this.klasse = new FormControl(null, Validators.required);
     this.groups = new FormControl(null, Validators.required);
-  ;
+ 
 
   }
   createForm() {

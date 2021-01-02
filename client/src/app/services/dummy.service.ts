@@ -155,6 +155,8 @@ export class DummyService {
         this.sitzordnung1 = new Sitzordnung()
         this.sitzordnung1.id = '1',
         this.sitzordnung1.personId = 'abc'
+        this.sitzordnung1.schulklassenId = '1'
+        this.sitzordnung1.schulzimmerId = '1'
         this.sitzordnung1.name = 'Dummy Sitzordnung'
         this.sitzordnung1.seatings = new Array<Seating>(5)
         let tische = this.getTische()

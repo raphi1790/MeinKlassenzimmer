@@ -39,7 +39,8 @@ import { CountdownModule } from 'ngx-countdown';
 import { DummyService } from './services/dummy.service';
 import {ListenverwaltungComponent} from './components/listenverwaltung/listenverwaltung.component';
 import {KlassenlisteComponent} from './components/klassenliste/klassenliste.component';
-import {DragDropModule} from '@angular/cdk/drag-drop'
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { SitzordnungManagementComponent } from './components/sitzordnung-management/sitzordnung.management.component';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop'
     KlassenlisteComponent,
     KlassenlistenInfoDialogComponent,
     InlineEditSmallComponent,
-    InfoDialogComponent
+    InfoDialogComponent,
+    SitzordnungManagementComponent
     
   ],
   imports: [
