@@ -124,7 +124,19 @@
         </div>
       </div>
   
-  
+      <div class="col-md-7" >
+        <div class="column2" >
+          <div class="selectionSitzordnung" *ngIf="selectedSitzordnung">
+            
+            <div class="sitzordnung">
+              <app-sitzordnung [selectedSitzordnung]="selectedSitzordnung"  [relevantSchulklasse]="relevantSchulklasse"
+              [relevantSchulzimmer]="relevantSchulzimmer">
+              </app-sitzordnung>
+            </div>
+
+          </div>
+        </div>
+      </div>
 
   
       <div id ="center" style="position:fixed;top:50%;left:50%">

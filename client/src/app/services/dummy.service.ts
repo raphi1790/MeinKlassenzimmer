@@ -49,7 +49,7 @@ export class DummyService {
         return this.user
     }
     private getSchueler(): Schueler[]{
-        let schueler = new Array<Schueler>(3)
+        let schueler = new Array<Schueler>(5)
         for (let index = 0; index < schueler.length; index++) {
             schueler[index] = new Schueler({
                 id: String(index),
@@ -171,7 +171,7 @@ export class DummyService {
         this.sitzordnung1.seatings[1] = new Seating({
             id: '2',
             sitzordnungId: '1',
-            schueler: null,
+            schueler: schueler[4],
             tisch: tische[1]
 
         })
@@ -192,7 +192,7 @@ export class DummyService {
         this.sitzordnung1.seatings[4] = new Seating({
             id: '5',
             sitzordnungId: '1',
-            schueler: null,
+            schueler: schueler[3],
             tisch: tische[4]
 
        })

@@ -72,6 +72,7 @@ export class SitzordnungManagementComponent implements OnInit {
         // private userService: UserService, 
         private dummyService: DummyService,
     ) {
+        this.regelFilter = new RegelFilter()
 
     }
 
@@ -164,6 +165,12 @@ export class SitzordnungManagementComponent implements OnInit {
     }
 
     onSelect(selectedSitzordnung: Sitzordnung): void {
+        debugger;
+        this.selectedSitzordnung = selectedSitzordnung;
+        this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == selectedSitzordnung.schulklassenId )[0]
+        this.relevantSchulzimmer = this.zimmerToPerson.filter(zimmer => zimmer.id == selectedSitzordnung.schulzimmerId )[0]
+        // this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson, 
+        //                   this.klassenToPerson , this.relevantSchulklasse )
 
     }
 

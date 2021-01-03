@@ -18,7 +18,7 @@ import { InlineEditSmallComponent} from './components/inline-edit-small/inline-e
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
-import { TischSchuelerComponent } from './components/tisch-schueler/tisch-schueler.component';
+import { SeatingOutputComponent } from './components/seating-output/seating-output.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from "@angular/fire/firestore";
@@ -54,7 +54,7 @@ import { SitzordnungManagementComponent } from './components/sitzordnung-managem
     ToolbarComponent,
     TischComponent,
     AnleitungComponent,
-    TischSchuelerComponent,
+    SeatingOutputComponent,
     RegelnComponent,
     EinteilungInfoDialogComponent,
     SpeichernComponent,
