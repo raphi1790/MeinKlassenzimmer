@@ -21,43 +21,46 @@ export class SitzordnungDisplayer  {
    
     prepareSeatingOutput(inputSitzordnung: Sitzordnung, inputSchulzimmer: Schulzimmer ): SeatingOutput[][]{
         debugger;
-        var preparedSeatingOutput : SeatingOutput[][];
-        preparedSeatingOutput = [];
-        for(var row: number = 0; row < (<any>CONFIG).numberOfRows; row++) {
+
+        let numberOfRows = (<any>CONFIG).numberOfRows;
+        let numberOfColumns = (<any>CONFIG).numberOfColumns;
+
+        this.preparedSeatingOutput = [];
+        for(var row: number = 0; row < numberOfRows; row++) {
             this.preparedSeatingOutput[row] = [];
-            for(var column: number = 0; column< (<any>CONFIG).numberOfColumns; column++) {
+            for(var column: number = 0; column< numberOfColumns; column++) {
                 this.preparedSeatingOutput[row][column] = new SeatingOutput();
                 this.preparedSeatingOutput[row][column].selected = false;
                 this.preparedSeatingOutput[row][column].active = false;
-                preparedSeatingOutput[row][column].tischNumber = null;
+                this.preparedSeatingOutput[row][column].tischNumber = null;
                 this.preparedSeatingOutput[row][column].position = new PositionTisch(row,column);
-                this.preparedSeatingOutput[row][column].seating = new Seating({
-                    id : undefined,
-                    sitzordnungId: undefined,
-                    schueler : undefined,
-                    tisch : undefined
-                })
+                this.preparedSeatingOutput[row][column].seating = null;
                 
                 
             }
         }
+        debugger;
         for (let index = 0; index < inputSchulzimmer.tische.length; index++) {
-            debugger;
+            ;
             var row = inputSchulzimmer.tische[index].position.row;
             var column = inputSchulzimmer.tische[index].position.column;
-            preparedSeatingOutput[row][column].selected = true ;
-            preparedSeatingOutput[row][column].active = inputSchulzimmer.tische[index].active;
-            preparedSeatingOutput[row][column].tischNumber = inputSchulzimmer.tische[index].tischNumber
-            preparedSeatingOutput[row][column].tischId = inputSchulzimmer.tische[index].id;
+            this.preparedSeatingOutput[row][column].selected = true ;
+            this.preparedSeatingOutput[row][column].active = inputSchulzimmer.tische[index].active;
+            this.preparedSeatingOutput[row][column].tischNumber = inputSchulzimmer.tische[index].tischNumber
+            this.preparedSeatingOutput[row][column].tischId = inputSchulzimmer.tische[index].id;
         }
-        for (let index = 0; index < inputSitzordnung.seatings.length; index++) {
-            let currentSeating = inputSitzordnung.seatings[index]
-            var row = currentSeating.tisch.position.row;
-            var column = currentSeating.tisch.position.column;
-            preparedSeatingOutput[row][column].seating = currentSeating;
+        debugger;
+        if(inputSitzordnung.seatings != null){
+            for (let index = 0; index < inputSitzordnung.seatings.length; index++) {
+                let currentSeating = inputSitzordnung.seatings[index]
+                var row = currentSeating.tisch.position.row;
+                var column = currentSeating.tisch.position.column;
+                this.preparedSeatingOutput[row][column].seating = new Seating(currentSeating);
+            }
         }
-
-        return preparedSeatingOutput;
+       
+        debugger
+        return this.preparedSeatingOutput;
     }
 
   

@@ -133,8 +133,15 @@ export class DummyService {
             id: '5',
             schulzimmerId: '1',
             position: new PositionTisch(2, 8),
-            active: false,
+            active: true,
             tischNumber: 5
+        })
+        tische[5] = new Tisch({
+            id: '6',
+            schulzimmerId: '1',
+            position: new PositionTisch(0, 0),
+            active: false,
+            tischNumber: 6
         })
 
         return tische

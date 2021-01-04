@@ -32,7 +32,7 @@ import { SitzordnungDisplayer } from '../../helpers/sitzordnung.displayer';
   styleUrls: ['./sitzordnung.component.css']
 })
 
-export class SitzordnungComponent implements OnChanges, OnInit{
+export class SitzordnungComponent implements OnChanges{
 
   selectedSchulzimmer: Schulzimmer;
   selectedSchulklasse: Schulklasse;
@@ -227,11 +227,10 @@ export class SitzordnungComponent implements OnChanges, OnInit{
     return sitzordnungDisplayer.prepareSeatingOutput(inputSitzordnung, inputSchulzimmer );
   }
 
-  ngOnChanges(){
 
-  }
-  ngOnInit(){
-    this.preparedSeatingOutput = this.createSeatingOutput(this.selectedSitzordnung, this.selectedSchulzimmer)
+  ngOnChanges(){
+    debugger;
+    this.preparedSeatingOutput = this.createSeatingOutput(this.selectedSitzordnung, this.relevantSchulzimmer)
   }
   // ngOnInit() {
   //   this.isLoadingData = true;

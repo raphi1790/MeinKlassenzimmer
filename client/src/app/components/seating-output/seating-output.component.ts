@@ -19,9 +19,9 @@ export class SeatingOutputComponent implements OnChanges {
 
   private getTisch():void{
 
-
+    debugger;
     this.schuelerExists = false;
-    if (this.seatingOutput.seating !== null || typeof this.seatingOutput.seating !== 'undefined'){
+    if (this.seatingOutput.seating != null ){
       this.schuelerExists = true;
     }
       
