@@ -170,35 +170,30 @@ export class DummyService {
         let schueler = this.getSchueler()
         this.sitzordnung1.seatings[0] = new Seating({
             id: '1',
-            sitzordnungId: '1',
             schueler: schueler[0],
             tisch: tische[0]
 
         })
         this.sitzordnung1.seatings[1] = new Seating({
             id: '2',
-            sitzordnungId: '1',
             schueler: schueler[4],
             tisch: tische[1]
 
         })
         this.sitzordnung1.seatings[2] = new Seating({
             id: '3',
-            sitzordnungId: '1',
             schueler: schueler[2],
             tisch: tische[2]
 
         })
         this.sitzordnung1.seatings[3] = new Seating({
             id: '4',
-            sitzordnungId: '1',
             schueler: schueler[1],
             tisch: tische[3]
 
         })
         this.sitzordnung1.seatings[4] = new Seating({
             id: '5',
-            sitzordnungId: '1',
             schueler: schueler[3],
             tisch: tische[4]
 

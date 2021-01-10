@@ -13,13 +13,13 @@ import { Preparer } from "./preparer";
 import { SeatingOutput } from "../models/output.seating";
 import { Seating } from '../models/seating';
 
-export class SitzordnungDisplayer  {
+export class SitzordnungRenderer  {
 
     preparedSeatingOutput: SeatingOutput[][];
 
    
    
-    prepareSeatingOutput(inputSitzordnung: Sitzordnung, inputSchulzimmer: Schulzimmer ): SeatingOutput[][]{
+    renderSeatingOutput(inputSitzordnung: Sitzordnung, inputSchulzimmer: Schulzimmer ): SeatingOutput[][]{
         debugger;
 
         let numberOfRows = (<any>CONFIG).numberOfRows;
@@ -50,7 +50,7 @@ export class SitzordnungDisplayer  {
             this.preparedSeatingOutput[row][column].tischId = inputSchulzimmer.tische[index].id;
         }
         debugger;
-        if(inputSitzordnung.seatings != null){
+        if(inputSitzordnung != undefined && inputSitzordnung.seatings != (null || undefined)  ){
             for (let index = 0; index < inputSitzordnung.seatings.length; index++) {
                 let currentSeating = inputSitzordnung.seatings[index]
                 var row = currentSeating.tisch.position.row;

@@ -41,7 +41,7 @@ export class KlassenlisteComponent implements OnChanges {
   defaultGroup: Gruppe
   dataSource = new MatTableDataSource<Regel>()
   selection = new SelectionModel<Regel>(true, []);
-  animal: string;
+
 
 
   drop(event: CdkDragDrop<string[]>) {

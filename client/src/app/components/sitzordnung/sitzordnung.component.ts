@@ -4,7 +4,7 @@ import { Schulklasse } from '../../models/schulklasse';
 import { TischSchueler } from '../../models/tisch.schueler';
 import { SeatingOutput } from '../../models/output.seating';
 import { Schulzimmer } from '../../models/schulzimmer';
-import { TischSchuelerPreparer } from '../../helpers/tischSchueler.preparer';
+import { SitzordnungPreparer } from '../../helpers/sitzordnung.preparer';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import * as CONFIG from '../../../config.json';
@@ -24,7 +24,8 @@ import { DummyService } from 'src/app/services/dummy.service';
 import { Input } from '@angular/core';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { SitzordnungManagementComponent } from '../sitzordnung-management/sitzordnung.management.component';
-import { SitzordnungDisplayer } from '../../helpers/sitzordnung.displayer';
+import { SitzordnungRenderer } from '../../helpers/sitzordnung.renderer';
+import { RegelDialogComponent } from '../regel-dialog/regel-dialog.component';
 
 @Component({
   selector: 'app-sitzordnung',
@@ -44,32 +45,34 @@ export class SitzordnungComponent implements OnChanges{
   schulzimmerId: Number;
   schulklasseId: Number;
   showSitzordnung: boolean
-  tischSchuelerPreparer: TischSchuelerPreparer;
+  tischSchuelerPreparer: SitzordnungPreparer;
   rowSchulzimmer: number[];
   columnSchulzimmer: number[];
   preparedTischSchueler: TischSchueler[][];
   zuvieleSchuelerInSchulzimmer: boolean;
   isLoadingData: boolean;
   displayedColumns = ['select','type' ,'beschreibung'   ];
-  selection = new SelectionModel<Regel>(true, []);
   einteilungInfoDialogRef: MatDialogRef<EinteilungInfoDialogComponent>;
   myUser: User;
   regelFilter: RegelFilter;
 
   preparedSeatingOutput: SeatingOutput[][]
+  sitzordnungRenderer: SitzordnungRenderer;
   
 
-  constructor() { 
+  constructor(public dialog: MatDialog) { 
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
+    this.sitzordnungRenderer = new SitzordnungRenderer();
 
   }
   @Input('selectedSitzordnung') selectedSitzordnung: Sitzordnung;
   @Input('relevantSchulklasse') relevantSchulklasse: Schulklasse;
   @Input('relevantSchulzimmer') relevantSchulzimmer: Schulzimmer;
-  // @Input('relevantRegeln') relevantRegeln: Regel[];
+  @Input('relevantRegeln') relevantRegeln: Regel[];
   
-
+  dataSource = new MatTableDataSource<Regel>()
+  selection = new SelectionModel<Regel>(true, [])
 
   // dataSource = new MatTableDataSource<Regel>();
 
@@ -140,6 +143,7 @@ export class SitzordnungComponent implements OnChanges{
   // }
  
 
+
   // randomizePlaces(){
   //   debugger;
   //   var activeTische = this.selectedSchulzimmer.tische.filter(item => item.active == true);
@@ -150,7 +154,7 @@ export class SitzordnungComponent implements OnChanges{
   //   }
   //   else{
   //     this.zuvieleSchuelerInSchulzimmer = false;
-  //     this.tischSchuelerPreparer = new TischSchuelerPreparer();
+  //     this.tischSchuelerPreparer = new SitzordnungPreparer();
   //     this.outputSchulzimmer = this.selectedSchulzimmer;
   //     this.outputSchulklasse = this.selectedSchulklasse;
   //     let outputRegelnActive  = this.regelnToPerson
@@ -185,28 +189,58 @@ export class SitzordnungComponent implements OnChanges{
   // }
 
   openRegelDialog(): void {
-    // debugger;
-    // this.dataSource.data = this.relevantRegeln;
-    // const dialogRef = this.dialog.open(RegelDialogComponent, {
-    //   width: '550px',
-    //   data: { input: this.dataSource, output: this.selection }
-    // });
+    debugger;
+    this.dataSource.data = this.relevantRegeln;
+    const dialogRef = this.dialog.open(RegelDialogComponent, {
+      width: '550px',
+      data: { input: this.dataSource, output: this.selection }
+    });
 
 
-    // dialogRef.afterClosed().subscribe(result => {
-    // });
-    // debugger;
-    // const dialogSubmitSubscription =
-    //   dialogRef.componentInstance.submitClicked.subscribe(result => {
-    //     console.log("The dialog was closed.")
-    //     this.selection = result
-    //     let activeRegeln = this.relevantRegeln
-    //       .filter(item => this.selection.selected
-    //         .map(output => output.id).includes(item.id))
-    //     this.randomize(activeRegeln)
+    dialogRef.afterClosed().subscribe(result => {
+    });
+    debugger;
+    const dialogSubmitSubscription =
+      dialogRef.componentInstance.submitClicked.subscribe(result => {
+        // console.log("The dialog was closed.")
+        // this.selection = result
+        // let activeRegeln = this.relevantRegeln
+        //   .filter(item => this.selection.selected
+        //     .map(output => output.id).includes(item.id))
+        let regelTmp = new Regel()
+        this.randomize([regelTmp])
+        // console.log("active Regeln", activeRegeln)
 
-    //     dialogSubmitSubscription.unsubscribe();
-    //   })
+        dialogSubmitSubscription.unsubscribe();
+      })
+
+
+  }
+
+  randomize(activeRegeln: Regel[]): void {
+    debugger
+
+    let tischSchuelerPreparer = new SitzordnungPreparer();
+    let calculatingEngine = new CalculatingEngine();
+    debugger;
+    let activeTische = this.relevantSchulzimmer.tische.filter(tisch => tisch.active)
+    let resultOutput = calculatingEngine.calculate(tischSchuelerPreparer, this.relevantSchulklasse.schueler, activeRegeln, activeTische, null)
+    console.log("resultOutput", resultOutput)
+    this.preparedSeatingOutput = this.sitzordnungRenderer.renderSeatingOutput(resultOutput, this.relevantSchulzimmer) 
+    // if (typeof resultOutput === 'undefined') {
+    //   this.einteilungInfoDialogRef = this.dialog.open(EinteilungInfoDialogComponent, {
+    //     width: '550px',
+    //   });
+
+    // }
+    // else {
+    //   // Update only schueler in group
+    //   for (let groupIndex = 0; groupIndex < this.selectedKlassenliste.gruppen.length; groupIndex++) {
+    //     this.selectedKlassenliste.gruppen[groupIndex].schueler = resultOutput[groupIndex].schueler;
+    //   }
+    //   // this.defaultGroup.schueler = this.updateRemainingSchueler(this.relevantSchulklasse.schueler, this.selectedKlassenliste)
+    // }
+
 
   }
 
@@ -222,15 +256,12 @@ export class SitzordnungComponent implements OnChanges{
         
   }
 
-  private createSeatingOutput(inputSitzordnung: Sitzordnung, inputSchulzimmer: Schulzimmer):SeatingOutput[][]{
-    let sitzordnungDisplayer = new SitzordnungDisplayer()
-    return sitzordnungDisplayer.prepareSeatingOutput(inputSitzordnung, inputSchulzimmer );
-  }
+
 
 
   ngOnChanges(){
     debugger;
-    this.preparedSeatingOutput = this.createSeatingOutput(this.selectedSitzordnung, this.relevantSchulzimmer)
+    this.preparedSeatingOutput = this.sitzordnungRenderer.renderSeatingOutput(this.selectedSitzordnung, this.relevantSchulzimmer)
   }
   // ngOnInit() {
   //   this.isLoadingData = true;

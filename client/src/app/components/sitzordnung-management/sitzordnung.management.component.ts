@@ -3,7 +3,7 @@ import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { Schulklasse } from '../../models/schulklasse';
 import { TischSchueler } from '../../models/tisch.schueler';
 import { Schulzimmer } from '../../models/schulzimmer';
-import { TischSchuelerPreparer } from '../../helpers/tischSchueler.preparer';
+import { SitzordnungPreparer } from '../../helpers/sitzordnung.preparer';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import * as CONFIG from '../../../config.json';

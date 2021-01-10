@@ -3,10 +3,10 @@ import { Schueler } from "../models/schueler";
 import { Regel } from "../models/regel";
 
 export abstract class Preparer{
-    initializeArrays(){
+    initialize(){
         console.log("Nothing to initialize");
     }
-    prepare(inputSchueler: Schueler[], inputRegeln: Regel[], inputTisch?: Tisch[], inputGroupNumber?: number ){
+    prepare(inputSchueler: Schueler[], inputRegeln: Regel[], inputTischeActive?: Tisch[], inputGroupNumber?: number ){
         console.log("Nothing to prepare or calculate");
     }
 

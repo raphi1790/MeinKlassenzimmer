@@ -17,7 +17,7 @@ export class SeatingOutputComponent implements OnChanges {
   tischSelected: boolean
   schuelerExists: boolean
 
-  private getTisch():void{
+  private renderSeatingOutput():void{
 
     debugger;
     this.schuelerExists = false;
@@ -37,7 +37,7 @@ export class SeatingOutputComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.getTisch();
+    this.renderSeatingOutput();
   }
 
 
