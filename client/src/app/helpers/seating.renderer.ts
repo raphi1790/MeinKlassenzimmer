@@ -19,7 +19,7 @@ export class SitzordnungRenderer  {
 
    
    
-    renderSeatingOutput(inputSitzordnung: Sitzordnung, inputSchulzimmer: Schulzimmer ): SeatingOutput[][]{
+    renderSeatingOutput(inputSeatings: Seating[], inputSchulzimmer: Schulzimmer ): SeatingOutput[][]{
         debugger;
 
         let numberOfRows = (<any>CONFIG).numberOfRows;
@@ -50,9 +50,9 @@ export class SitzordnungRenderer  {
             this.preparedSeatingOutput[row][column].tischId = inputSchulzimmer.tische[index].id;
         }
         debugger;
-        if(inputSitzordnung != undefined && inputSitzordnung.seatings != (null || undefined)  ){
-            for (let index = 0; index < inputSitzordnung.seatings.length; index++) {
-                let currentSeating = inputSitzordnung.seatings[index]
+        if(inputSeatings != (null || undefined)  ){
+            for (let index = 0; index < inputSeatings.length; index++) {
+                let currentSeating = inputSeatings[index]
                 var row = currentSeating.tisch.position.row;
                 var column = currentSeating.tisch.position.column;
                 this.preparedSeatingOutput[row][column].seating = new Seating(currentSeating);

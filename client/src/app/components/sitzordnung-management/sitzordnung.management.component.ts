@@ -3,7 +3,6 @@ import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { Schulklasse } from '../../models/schulklasse';
 import { TischSchueler } from '../../models/tisch.schueler';
 import { Schulzimmer } from '../../models/schulzimmer';
-import { SitzordnungPreparer } from '../../helpers/sitzordnung.preparer';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import * as CONFIG from '../../../config.json';
@@ -85,7 +84,7 @@ export class SitzordnungManagementComponent implements OnInit {
         this.sitzordnungenToPerson = this.myUser.sitzordnungen
         this.klassenToPerson = this.myUser.schulklassen
         this.zimmerToPerson = this.myUser.schulzimmer
-        // this.regelnToPerson = this.myUser.regeln
+        this.regelnToPerson = this.myUser.regeln
         console.log(this.myUser)
         console.log(this.zimmerToPerson)
         this.isLoadingData = false;
@@ -169,8 +168,8 @@ export class SitzordnungManagementComponent implements OnInit {
         this.selectedSitzordnung = selectedSitzordnung;
         this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == selectedSitzordnung.schulklassenId )[0]
         this.relevantSchulzimmer = this.zimmerToPerson.filter(zimmer => zimmer.id == selectedSitzordnung.schulzimmerId )[0]
-        // this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson, 
-        //                   this.klassenToPerson , this.relevantSchulklasse )
+        this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson, 
+                          this.klassenToPerson , this.relevantSchulklasse )
 
     }
 

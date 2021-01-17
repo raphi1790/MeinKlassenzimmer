@@ -11,6 +11,7 @@ import { Tisch } from '../models/tisch';
 import { PositionTisch } from '../models/position.tisch';
 import { Sitzordnung } from '../models/sitzordnung';
 import { Seating } from '../models/seating';
+import { Regel } from '../models/regel';
 
 
 
@@ -42,7 +43,8 @@ export class DummyService {
             displayName : 'Dummy User',
             schulklassen : this.getSchulklassen(),
             schulzimmer : this.getSchulzimmer(),
-            sitzordnungen: this.getSitzordnungen()
+            sitzordnungen: this.getSitzordnungen(),
+            regeln: this.getRegeln()
         })
         
 
@@ -201,6 +203,22 @@ export class DummyService {
        this.sitzordnungen = [this.sitzordnung1]
        return this.sitzordnungen
 
+
+
+
+    }
+    getRegeln():Regel[]{
+        let regel1 = new Regel()
+        regel1.id = '1'
+        regel1.personId = 'abc'
+        regel1.beschreibung = "Test Regel"
+        regel1.active = true
+        regel1.type = "Unmögliche Paarung"
+        regel1.tischId = null
+        regel1.schueler1Id = '1'
+        regel1.schueler2Id = '3'
+
+        return [regel1]
 
 
 
