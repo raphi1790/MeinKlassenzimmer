@@ -130,7 +130,8 @@
             
             <div class="sitzordnung">
               <app-sitzordnung [selectedSitzordnung]="selectedSitzordnung"  [relevantSchulklasse]="relevantSchulklasse"
-              [relevantSchulzimmer]="relevantSchulzimmer" [relevantRegeln]="relevantRegeln">
+              [relevantSchulzimmer]="relevantSchulzimmer" [relevantRegeln]="relevantRegeln"
+              (noteSitzordnungManagement)="updateSitzordnung($event)">
               </app-sitzordnung>
             </div>
 

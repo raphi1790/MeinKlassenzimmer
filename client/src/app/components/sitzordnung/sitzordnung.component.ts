@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, EventEmitter, Output } from '@angular/core';
 
 import { Schulklasse } from '../../models/schulklasse';
 import { TischSchueler } from '../../models/tisch.schueler';
@@ -36,21 +36,10 @@ import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 
 export class SitzordnungComponent implements OnChanges{
 
-  selectedSchulzimmer: Schulzimmer;
-  selectedSchulklasse: Schulklasse;
-  outputSchulzimmer: Schulzimmer;
-  outputSchulklasse: Schulklasse;
-  klassenToPerson: Schulklasse[];
-  zimmerToPerson: Schulzimmer[];
+ 
   regelnToPerson: Regel[];
-  schulzimmerId: Number;
-  schulklasseId: Number;
-  showSitzordnung: boolean
-  tischSchuelerPreparer: SeatingPreparer;
   rowSchulzimmer: number[];
   columnSchulzimmer: number[];
-  preparedTischSchueler: TischSchueler[][];
-  zuvieleSchuelerInSchulzimmer: boolean;
   isLoadingData: boolean;
   displayedColumns = ['select','type' ,'beschreibung'   ];
   einteilungInfoDialogRef: MatDialogRef<EinteilungInfoDialogComponent>;
@@ -72,6 +61,7 @@ export class SitzordnungComponent implements OnChanges{
   @Input('relevantSchulklasse') relevantSchulklasse: Schulklasse;
   @Input('relevantSchulzimmer') relevantSchulzimmer: Schulzimmer;
   @Input('relevantRegeln') relevantRegeln: Regel[];
+  @Output() noteSitzordnungManagement: EventEmitter<Sitzordnung> = new EventEmitter<Sitzordnung>();
   
   dataSource = new MatTableDataSource<Regel>()
   selection = new SelectionModel<Regel>(true, [])
@@ -143,6 +133,8 @@ export class SitzordnungComponent implements OnChanges{
       }) }
     else {
       this.preparedSeatingOutput = this.seatingRenderer.renderSeatingOutput(resultOutput, this.relevantSchulzimmer) 
+      this.selectedSitzordnung.seatings = resultOutput // Update sitzordnung with randomized seatings
+      this.noteSitzordnungManagement.emit(this.selectedSitzordnung);
     }
 
 

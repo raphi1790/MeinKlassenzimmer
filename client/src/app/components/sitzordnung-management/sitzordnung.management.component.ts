@@ -176,6 +176,20 @@ export class SitzordnungManagementComponent implements OnInit {
     deleteSitzordnung(selectedSitzordnung: Sitzordnung): void {
 
     }
+    updateSitzordnung(updatedSitzordnung: Sitzordnung): void {
+        debugger;
+        this.sitzordnungenToPerson = this.sitzordnungenToPerson.filter(
+          item =>
+            item.id !== updatedSitzordnung.id)
+        if (typeof this.sitzordnungenToPerson == 'undefined') {
+          console.log("sitzordnungToPerson is undefined");
+        }
+        else {
+          this.sitzordnungenToPerson.push(updatedSitzordnung);
+        }
+        this.savingIsActiv = true;
+        console.log("this.sitzordnungenToPerson", this.sitzordnungenToPerson)
+    }
 
 
 
