@@ -22,6 +22,9 @@ import { DummyService } from 'src/app/services/dummy.service';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { MatSort } from '@angular/material/sort';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
+import { Name } from 'src/app/models/name';
 
 @Component({
     selector: 'app-sitzordnung-management',
@@ -70,6 +73,7 @@ export class SitzordnungManagementComponent implements OnInit {
     constructor(
         // private userService: UserService, 
         private dummyService: DummyService,
+        private _snackBar: MatSnackBar
     ) {
         this.regelFilter = new RegelFilter()
 
@@ -82,6 +86,7 @@ export class SitzordnungManagementComponent implements OnInit {
         debugger;
         this.myUser = this.dummyService.getUser()
         this.sitzordnungenToPerson = this.myUser.sitzordnungen
+        this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
         this.klassenToPerson = this.myUser.schulklassen
         this.zimmerToPerson = this.myUser.schulzimmer
         this.regelnToPerson = this.myUser.regeln
@@ -174,8 +179,26 @@ export class SitzordnungManagementComponent implements OnInit {
     }
 
     deleteSitzordnung(selectedSitzordnung: Sitzordnung): void {
+        debugger;
+        this.sitzordnungenToPerson = this.sitzordnungenToPerson.filter(
+            item =>
+              item.id !== selectedSitzordnung.id);
+        this.selectedSitzordnung = null;
+        this.savingIsActiv = true;
+        this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
 
     }
+
+    onNameChange(newName : Name):void{
+        debugger;
+        let oldName = this.sitzordnungenToPerson.filter(sitzordnung => sitzordnung.id == newName.id)[0].name;
+        if(oldName != newName.text){
+          this.sitzordnungenToPerson.filter(sitzordnung => sitzordnung.id == newName.id)[0].name = newName.text;
+          this.savingIsActiv = true;
+        }
+      
+      }
+      
     updateSitzordnung(updatedSitzordnung: Sitzordnung): void {
         debugger;
         this.sitzordnungenToPerson = this.sitzordnungenToPerson.filter(
@@ -202,8 +225,22 @@ export class SitzordnungManagementComponent implements OnInit {
     }
 
     saveSitzordnungen(): void {
+        // debugger;
+        // this.savingIsActiv = false; 
+        // this.isSaving = true;
+        // this.myUser.sitzordnungen = this.sitzordnungenToPerson
+        // this.userService.updateUser(this.myUser);
+        // this.isSaving = false;
+        // this.sitzordnungenToPersonOriginal = this.sitzordnungenToPerson;
+        // this.openSavingSnackBar()
 
     }
+    openSavingSnackBar(){
+        this._snackBar.openFromComponent(SaveSnackBarComponent, {
+          duration: 2000,
+        });
+    
+      }
 
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;

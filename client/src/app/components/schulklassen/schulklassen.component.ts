@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Klassenliste } from 'src/app/models/klassenliste';
 import { KlassenlistenRemover } from 'src/app/helpers/klassenlisten.remover';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
+import { Sitzordnung } from 'src/app/models/sitzordnung';
 
 
 @Component({
@@ -37,6 +38,8 @@ export class SchulklassenComponent implements OnInit {
   klassenToPersonOriginal: Schulklasse[];
   klassenlistenToPerson : Klassenliste[];
   klassenlistenToPersonOriginal: Klassenliste[];
+  sitzordnungenToPerson: Sitzordnung[];
+  sitzordnungenToPersonOriginal: Sitzordnung[];
   isLoadingData: boolean;
   regelnToPerson: Regel[];
   selectedSchulklasse: Schulklasse;
@@ -50,6 +53,7 @@ export class SchulklassenComponent implements OnInit {
 
 
   @Input() personId: string
+
 
   
  
@@ -83,6 +87,8 @@ export class SchulklassenComponent implements OnInit {
       this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
       this.klassenlistenToPerson = this.myUser.klassenlisten
       this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
+      this.sitzordnungenToPerson = this.myUser.sitzordnungen
+      this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
       // console.log(this.myUser)
       // console.log(this.klassenToPerson)
       this.isLoadingData = false;
@@ -173,6 +179,14 @@ export class SchulklassenComponent implements OnInit {
     this.klassenlistenToPerson = updatedKlasselisten
     this.savingIsActiv = true;
   }
+
+  updateSitzordnungen(updatedSitzordnungen: Sitzordnung[]): void {
+    debugger;
+    this.sitzordnungenToPerson = updatedSitzordnungen
+    this.savingIsActiv = true;
+  }
+
+
 
   onNameChange(newName : Name):void{
     debugger;

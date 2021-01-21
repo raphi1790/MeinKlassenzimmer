@@ -68,8 +68,11 @@
           <div class="schuelerListe">
             <app-schueler [selectedSchulklasse]="selectedSchulklasse" [klassenlistenToPerson] ="klassenlistenToPerson" 
                 [regelnToPerson] ="regelnToPerson" 
+                [sitzordnungenToPerson] ="sitzordnungenToPerson" 
                 (noteSchulklasse)="updateSchulklasse($event)"
-                (noteKlassenlisten)="updateKlassenlisten($event)"></app-schueler>
+                (noteKlassenlisten)="updateKlassenlisten($event)"
+                (noteSitzordnungen)="updateSitzordnungen($event)"
+                ></app-schueler>
           </div>
         </div>
       </div>
