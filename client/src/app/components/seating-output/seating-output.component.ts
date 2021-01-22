@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { SeatingOutput } from 'src/app/models/output.seating';
+import { Schueler } from 'src/app/models/schueler';
+import { Seating } from 'src/app/models/seating';
 import { TischSchueler } from '../../models/tisch.schueler';
 
 @Component({
@@ -9,7 +11,8 @@ import { TischSchueler } from '../../models/tisch.schueler';
 })
 export class SeatingOutputComponent implements OnChanges {
 
-  @Input('SeatingOutput') seatingOutput: SeatingOutput; 
+  @Input('seatingOutput') seatingOutput: SeatingOutput; 
+  @Input('relevantSchueler') relevantSchueler: Schueler[];
 
 
 
@@ -34,6 +37,16 @@ export class SeatingOutputComponent implements OnChanges {
       this.tischStyle = 'unselectedTischStyle';
     }
     
+  }
+
+  getSchuelerFirstName(seating: Seating):String{
+    let schuelerFirstName = this.relevantSchueler.filter(schueler => schueler.id == seating.schueler.id)[0].vorname
+    return schuelerFirstName
+  }
+
+  getSchuelerName(seating: Seating):String{
+    let schuelerName = this.relevantSchueler.filter(schueler => schueler.id == seating.schueler.id)[0].name
+    return schuelerName.substring(0,5)
   }
 
   ngOnChanges() {

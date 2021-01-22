@@ -1,8 +1,8 @@
 <div [className]="tischStyle" >
   <div class ="tisch" *ngIf ="seatingOutput.selected">
       <div class ="schueler" *ngIf ="schuelerExists">
-          <p>{{seatingOutput.seating.schueler.vorname}}</p>
-          <p>{{seatingOutput.seating.schueler.nameKurz}}</p>
+          <p>{{getSchuelerFirstName(seatingOutput.seating)}}</p>
+          <p>{{getSchuelerName(seatingOutput.seating)}}</p>
       </div>
   </div>
 </div>

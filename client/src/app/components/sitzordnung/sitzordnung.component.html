@@ -18,7 +18,8 @@
       <tbody>
         <tr *ngFor="let row of rowSchulzimmer; let r = index">
           <td *ngFor="let column of columnSchulzimmer; let c = index">
-            <app-seating-output [SeatingOutput]="preparedSeatingOutput[r][c]">
+            <app-seating-output [seatingOutput]="preparedSeatingOutput[r][c]" 
+                [relevantSchueler]="relevantSchulklasse.schueler">
             </app-seating-output>
           </td>
         </tr>
