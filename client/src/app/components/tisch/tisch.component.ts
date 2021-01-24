@@ -5,6 +5,8 @@ import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
+import { Sitzordnung } from 'src/app/models/sitzordnung';
+import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
 
 @Component({
   selector: 'app-tisch',
@@ -16,19 +18,23 @@ import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 })
 export class TischComponent implements OnChanges {
   regelChecker: RegelChecker;
+  sitzordnungRemover: SitzordnungenRemover;
 
 
   constructor(public dialog: MatDialog) {
     this.regelChecker = new RegelChecker();
+    let sitzordnungRemover = new SitzordnungenRemover()
    }
 
 
   @Input('TischOutput') tischOutput: TischOutput;
   @Input('currentTischNumber') currentTischNumber: number;
   @Input('regelnToPerson') regelnToPerson: Regel[];
+  @Input('sitzordnungenToPerson') sitzordnungenToPerson: Sitzordnung[]
 
   @Output() noteSchulzimmer: EventEmitter<TischOutput> = new EventEmitter<TischOutput>();
   @Output() noteSchulzimmerTischNumber: EventEmitter<number> = new EventEmitter<number>();
+  @Output() noteSitzordnungen: EventEmitter<Sitzordnung[]> = new EventEmitter<Sitzordnung[]>();
 
   tischStyle : string
   tischActive: boolean;
@@ -79,6 +85,11 @@ export class TischComponent implements OnChanges {
         this.tischOutput.active = this.tischActive;
         this.noteSchulzimmer.emit(this.tischOutput);
         this.noteSchulzimmerTischNumber.emit(this.currentTischNumber);
+        // remove Tisch from Sitzordnungen
+        
+        this.sitzordnungenToPerson = this.sitzordnungRemover.removeTischFromSeating(this.tischOutput, this.sitzordnungenToPerson)
+        this.noteSitzordnungen.emit(this.sitzordnungenToPerson)
+
       }
       else{
         this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
@@ -111,6 +122,9 @@ export class TischComponent implements OnChanges {
           this.tischActive = false;
           this.tischOutput.active = this.tischActive;
           this.noteSchulzimmer.emit(this.tischOutput);
+          // remove Tisch from Sitzordnungen
+          this.sitzordnungenToPerson = this.sitzordnungRemover.removeTischFromSeating(this.tischOutput, this.sitzordnungenToPerson)
+          this.noteSitzordnungen.emit(this.sitzordnungenToPerson)
         }else{
           this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
             height: '180px',

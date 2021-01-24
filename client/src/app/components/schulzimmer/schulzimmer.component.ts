@@ -17,6 +17,8 @@ import { User } from '../../models/user';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
+import { Sitzordnung } from 'src/app/models/sitzordnung';
+import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -31,6 +33,8 @@ export class SchulzimmerComponent implements OnInit {
   rowSchulzimmer: number[];
   schulzimmerToPerson :Schulzimmer[];
   schulzimmerToPersonOriginal: Schulzimmer[];
+  sitzordnungenToPerson: Sitzordnung[];
+  sitzordnungenToPersonOriginal: Sitzordnung[];
   regelnToPerson: Regel[];
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
@@ -70,6 +74,8 @@ export class SchulzimmerComponent implements OnInit {
       this.schulzimmerToPerson = this.myUser.schulzimmer
       this.regelnToPerson = this.myUser.regeln
       this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
+      this.sitzordnungenToPerson = this.myUser.sitzordnungen
+      this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
       // console.log(this.myUser)
       this.isLoadingData = false;
     
@@ -114,6 +120,19 @@ export class SchulzimmerComponent implements OnInit {
       this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
         item =>
           item.id !== schulzimmer.id);
+        let sitzordnungenRemover = new SitzordnungenRemover()
+        let returnValuesSitzordnung =  sitzordnungenRemover.removeSitzordnungenContainingSchulzimmer(schulzimmer, this.sitzordnungenToPerson)
+        this.sitzordnungenToPerson = returnValuesSitzordnung[0]
+        let numFilteredSitzordnung = returnValuesSitzordnung[1]
+  
+        if(numFilteredSitzordnung > 0  ){
+          let message = this.getRemovalMessage(0, numFilteredSitzordnung)
+          this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
+            width: '550px',
+            data: {text:message}
+          });
+
+        }
       this.selectedSchulzimmer = null;    
       this.savingIsActiv = true; 
     }else{
@@ -125,6 +144,11 @@ export class SchulzimmerComponent implements OnInit {
     }
 
    
+  }
+  private getRemovalMessage(numRemovedKlassenliste: number, numRemovedSitzordnungen: number):String{
+    let message = `Anzahl zusätzlich gelöschter Klassenlisten zur Klasse: <b> ${numRemovedKlassenliste} </b> <br />Anzahl zusätzlich gelöschter Sitzordnungen zur Klasse:<b> ${numRemovedSitzordnungen} </b> `
+    return message
+
   }
 
   onNameChange(newName : Name):void{
@@ -174,9 +198,15 @@ export class SchulzimmerComponent implements OnInit {
     this.savingIsActiv = true;
     // console.log("Updated SchulzimmerToPerson");
     // console.log(this.schulzimmerToPerson);
-
-  
   }
+
+  updateSitzordnungen(updatedSitzordnungen: Sitzordnung[]): void {
+    debugger;
+    this.sitzordnungenToPerson = updatedSitzordnungen
+    this.savingIsActiv = true;
+  }
+
+
   canDeactivate(){
     debugger;
     return !this.savingIsActiv;
@@ -203,6 +233,7 @@ export class SchulzimmerComponent implements OnInit {
   cancel(){
     debugger;
     this.schulzimmerToPerson = JSON.parse(JSON.stringify(this.schulzimmerToPersonOriginal));
+    this.sitzordnungenToPerson = JSON.parse(JSON.stringify(this.sitzordnungenToPersonOriginal));
     this.savingIsActiv = false;
   }
 

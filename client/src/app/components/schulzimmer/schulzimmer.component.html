@@ -82,8 +82,10 @@
                   <tbody>
                     <tr *ngFor="let row of rowSchulzimmer; let r = index">
                       <td *ngFor="let column of columnSchulzimmer; let c = index">
-                        <app-tisch [TischOutput]="preparedTischOutput[r][c]" [regelnToPerson]= "regelnToPerson" [currentTischNumber]="currentTischNumber"
-                          (noteSchulzimmer)="updateSchulzimmer($event)" (noteSchulzimmerTischNumber) = "updateCurrentTischNumber($event)">
+                        <app-tisch [TischOutput]="preparedTischOutput[r][c]" [regelnToPerson]= "regelnToPerson" 
+                          [sitzordnungenToPerson]="sitzordnungenToPerson" [currentTischNumber]="currentTischNumber"
+                          (noteSchulzimmer)="updateSchulzimmer($event)" (noteSchulzimmerTischNumber) = "updateCurrentTischNumber($event)"
+                          (noteSitzordnungen)="updateSitzordnungen($event)">
                         </app-tisch>
                       </td>
                     </tr>

@@ -27,7 +27,6 @@ import { UnsavedGuard } from './helpers/guards/unsaved.guard';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { RegelnComponent } from './components/regeln/regeln.component';
 import { EinteilungInfoDialogComponent} from './components/einteilung-info-dialog/einteilung-info-dialog.component';
-import { KlassenlistenInfoDialogComponent} from './components/klassenlisten-info-dialog/klassenlisten-info-dialog.component';
 import { RegelDialogComponent} from './components/regel-dialog/regel-dialog.component';
 import { InfoDialogComponent} from './components/info-dialog/info-dialog.component';
 import { AuthGuard } from './helpers/guards/auth.guard';
@@ -66,7 +65,6 @@ import { SitzordnungManagementComponent } from './components/sitzordnung-managem
     SaveSnackBarComponent,
     ListenverwaltungComponent,
     KlassenlisteComponent,
-    KlassenlistenInfoDialogComponent,
     InlineEditSmallComponent,
     InfoDialogComponent,
     SitzordnungManagementComponent
@@ -99,6 +97,6 @@ import { SitzordnungManagementComponent } from './components/sitzordnung-managem
   bootstrap: [AppComponent],
   entryComponents: [EinteilungInfoDialogComponent, SpeichernInfoDialogComponent,
       RegelDialogComponent, 
-      KlassenlistenInfoDialogComponent,InfoDialogComponent]
+      InfoDialogComponent]
 })
 export class AppModule { }
