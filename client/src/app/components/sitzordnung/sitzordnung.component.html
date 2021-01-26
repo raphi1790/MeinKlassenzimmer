@@ -1,4 +1,4 @@
-<mat-card class="second-column-card" id="contentToPdf" >
+<mat-card class="second-column-card" id="contentToPdf">
   <mat-card-header>
 
     <mat-card-title-group>
@@ -14,25 +14,49 @@
       <button mat-raised-button (click)="generatePdf()">Als PDF exportieren</button>
     </mat-card-actions>
 
+    <div class="dragdrop-container">
+    <div cdkDropListGroup>
     <table class="zimmer">
+      
       <tbody>
         <tr *ngFor="let row of rowSchulzimmer; let r = index">
           <td *ngFor="let column of columnSchulzimmer; let c = index">
-            <app-seating-output [seatingOutput]="preparedSeatingOutput[r][c]" 
+            <div *ngIf="preparedSeatingOutput[r][c].active">
+              <div cdkDropList [cdkDropListData]="preparedSeatingOutput[r][c]" class="active-tisch"
+                (cdkDropListDropped)="drop($event)">
+                <div *ngIf="preparedSeatingOutput[r][c].seating">
+                <div class="dragdrop-box" cdkDrag>
+
+                  {{preparedSeatingOutput[r][c].seating.schueler.vorname}}
+                  {{preparedSeatingOutput[r][c].seating.schueler.name}}</div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!preparedSeatingOutput[r][c].active">
+              <app-seating-output [seatingOutput]="preparedSeatingOutput[r][c]"
                 [relevantSchueler]="relevantSchulklasse.schueler">
-            </app-seating-output>
+              </app-seating-output>
+            </div>
+
           </td>
         </tr>
       </tbody>
     </table>
+    
+
+        <div class="col-md-6">
+          <h5>Restliche Schüler</h5>
+          <div cdkDropList [cdkDropListData]="remainingSchueler" class="dragdrop-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="dragdrop-box" *ngFor="let schueler of remainingSchueler" cdkDrag>
+              {{schueler.vorname}} {{schueler.name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
-   
 
 
   </mat-card-content>
 </mat-card>
-
-
-
-

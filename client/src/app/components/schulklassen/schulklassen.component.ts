@@ -18,7 +18,6 @@ import { Klassenliste } from 'src/app/models/klassenliste';
 import { KlassenlistenRemover } from 'src/app/helpers/klassenlisten.remover';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
-import { SitzordnungRenderer } from 'src/app/helpers/seating.renderer';
 import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
 
 

@@ -24,9 +24,11 @@ import { DummyService } from 'src/app/services/dummy.service';
 import { Input } from '@angular/core';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { SitzordnungManagementComponent } from '../sitzordnung-management/sitzordnung.management.component';
-import { SitzordnungRenderer as SeatingRenderer } from '../../helpers/seating.renderer';
+import {  SeatingRenderer } from '../../helpers/seating.renderer';
 import { RegelDialogComponent } from '../regel-dialog/regel-dialog.component';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Schueler } from 'src/app/models/schueler';
 
 @Component({
   selector: 'app-sitzordnung',
@@ -49,12 +51,14 @@ export class SitzordnungComponent implements OnChanges{
 
   preparedSeatingOutput: SeatingOutput[][]
   seatingRenderer: SeatingRenderer;
+  remainingSchueler: Schueler[]
   
 
   constructor(public dialog: MatDialog) { 
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
     this.seatingRenderer = new SeatingRenderer();
+
 
   }
   @Input('selectedSitzordnung') selectedSitzordnung: Sitzordnung;
@@ -66,7 +70,18 @@ export class SitzordnungComponent implements OnChanges{
   dataSource = new MatTableDataSource<Regel>()
   selection = new SelectionModel<Regel>(true, [])
 
- 
+  drop(event: CdkDragDrop<string[]>) {
+    debugger;
+    if (event.previousContainer === event.container) {
+      // moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
+    // this.noteListenverwaltung.emit(this.selectedKlassenliste);
+  }
 
   openRegelDialog(): void {
     debugger;
@@ -104,6 +119,17 @@ export class SitzordnungComponent implements OnChanges{
     }
     
 
+
+  }
+  private updateRemainingSchueler(schuelerTotal: Schueler[], sitzordnung: Sitzordnung): Schueler[] {
+    debugger;
+    var fixedSchueler = new Array<Schueler>()
+    for (let index = 0; index < sitzordnung.seatings.length; index++) {
+      fixedSchueler.push(sitzordnung.seatings[index].schueler)
+
+    }
+    let remainingSchueler = schuelerTotal.filter(({ id: id1 }) => !fixedSchueler.some(({ id: id2 }) => id2 === id1));
+    return remainingSchueler
 
   }
   private tooManyStudents():boolean{
@@ -158,11 +184,8 @@ export class SitzordnungComponent implements OnChanges{
   ngOnChanges(){
     debugger;
     this.preparedSeatingOutput = this.seatingRenderer.renderSeatingOutput(this.selectedSitzordnung.seatings, this.relevantSchulzimmer)
+    this.remainingSchueler = this.updateRemainingSchueler(this.relevantSchulklasse.schueler, this.selectedSitzordnung)
   }
-  // ngOnInit() {
-  //   this.isLoadingData = true;
-  //   this.loadInputData();
 
-  // }
 
 }

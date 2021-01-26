@@ -13,7 +13,7 @@ import { Preparer } from "./preparer";
 import { SeatingOutput } from "../models/output.seating";
 import { Seating } from '../models/seating';
 
-export class SitzordnungRenderer  {
+export class SeatingRenderer  {
 
     preparedSeatingOutput: SeatingOutput[][];
 
