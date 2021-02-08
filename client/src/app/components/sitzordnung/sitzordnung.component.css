@@ -39,7 +39,20 @@
   margin-left:15px;
   margin-right: 20px;
 }
+.unselected-tisch{
+  width: 75px; 
+  height: 75px;
+  border: 2px solid #cac7cc;
+  background-color:  #f7f7f7;
+} 
+.selected-tisch{
+  width: 75px; 
+  height: 75px;
+  border: 2px solid ;
+  background-color: #979599 ;
+  border-color: #cac7cc;
 
+}
 .active-tisch{
   width: 75px; 
   height: 75px;
@@ -72,13 +85,21 @@
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
-  flex-direction: row;
+  
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
   background: white;
   font-size: 14px; */
+  flex-direction: column;
+  orientation: horizontal;
+  width: 75px; 
+  height: 75px;
+  border: 2px solid ;
+  background-color: var(--primary-color);
+  border-color: var(--accent-color);
+  color: white
 }
 
 .cdk-drag-preview {

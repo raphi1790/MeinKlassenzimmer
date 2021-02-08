@@ -1,15 +1,12 @@
 import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
 
 import { Schulklasse } from '../../models/schulklasse';
-import { TischSchueler } from '../../models/tisch.schueler';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Regel } from '../../models/regel';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
-import { CalculatingEngine } from '../../helpers/calculating.engine';
 import { RegelFilter } from '../../helpers/regel.filter';
 import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
@@ -236,7 +233,7 @@ export class SitzordnungManagementComponent implements OnInit {
             this.sitzordnungenToPerson.push(updatedSitzordnung);
         }
         this.savingIsActiv = true;
-        console.log("this.sitzordnungenToPerson", this.sitzordnungenToPerson)
+        
     }
 
 
@@ -250,6 +247,7 @@ export class SitzordnungManagementComponent implements OnInit {
     }
 
     saveSitzordnungen(): void {
+        console.log("saving", this.sitzordnungenToPerson)
         // debugger;
         // this.savingIsActiv = false;
         // this.isSaving = true;

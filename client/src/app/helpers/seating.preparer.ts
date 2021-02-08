@@ -1,21 +1,14 @@
 import { Schueler } from "../models/schueler";
-import {TischOutput} from "../models/output.tisch";
-import {TischSchueler} from "../models/tisch.schueler";
 import {Tisch} from "../models/tisch";
 import { Randomizer } from './randomizer';
-import { PositionTisch } from "../models/position.tisch";
 
-import * as CONFIG from '../../config.json';
 import { Regel } from "../models/regel";
 import { Preparer } from "./preparer";
-import { Sitzordnung } from '../models/sitzordnung';
 import { Seating } from '../models/seating';
 import * as uuidv4 from 'uuid/v4';
 
 export class SeatingPreparer extends Preparer {
     seatings: Seating[]
-
-    preparedTischSchueler: TischSchueler[][];
     randomizer: Randomizer;
 
     initialize(){
@@ -26,12 +19,11 @@ export class SeatingPreparer extends Preparer {
     prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputTischeActive: Tisch[], inputGroupNumber=null ): Seating[]
      {
         
-        if(inputSchueler.length == 0){
+        if(inputSchueler === null || inputSchueler === undefined || inputSchueler.length == 0 ){
             console.log("Abbruch, da keine Schueler übergeben wurden.")
         }
         else{
             let fixedSeatingRules = inputRegeln.filter(regel => regel.type == "Fester Sitzplatz")
-            let pairingRules = inputRegeln.filter(regel => regel.type == "Unmögliche Paarung")
             let remainingSchueler = inputSchueler
             let remainingTische = inputTischeActive
             fixedSeatingRules.forEach(regel => {

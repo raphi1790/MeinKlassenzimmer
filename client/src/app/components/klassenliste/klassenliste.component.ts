@@ -8,14 +8,14 @@ import { GroupPreparer } from 'src/app/helpers/group.preparer';
 import { CalculatingEngine } from 'src/app/helpers/calculating.engine';
 import { Randomizer } from 'src/app/helpers/randomizer';
 import { RegelDialogComponent } from '../regel-dialog/regel-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Regel } from 'src/app/models/regel';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
 import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
 import { Name } from 'src/app/models/name';
+import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-klassenliste',
@@ -23,7 +23,6 @@ import { Name } from 'src/app/models/name';
   styleUrls: ['./klassenliste.component.css']
 })
 export class KlassenlisteComponent implements OnChanges {
-  einteilungInfoDialogRef: any;
 
   constructor(public dialog: MatDialog) {
     this.defaultGroup = new Gruppe
@@ -41,6 +40,7 @@ export class KlassenlisteComponent implements OnChanges {
   defaultGroup: Gruppe
   dataSource = new MatTableDataSource<Regel>()
   selection = new SelectionModel<Regel>(true, []);
+  infoDialogRef: MatDialogRef<InfoDialogComponent>;
 
 
 
@@ -113,8 +113,9 @@ export class KlassenlisteComponent implements OnChanges {
     debugger;
     let resultOutput = calculatingEngine.calculate(groupPreparer, this.relevantSchulklasse.schueler, activeRegeln, null, this.selectedKlassenliste.gruppen.length)
     if (typeof resultOutput === 'undefined') {
-      this.einteilungInfoDialogRef = this.dialog.open(EinteilungInfoDialogComponent, {
+      this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
         width: '550px',
+        data: {text: "Es gibt nicht genug aktive Tische für die Anzahl Schüler!"}
       });
 
     }

@@ -27,6 +27,9 @@ export class DummyService {
     sitzordnung1: Sitzordnung
     sitzordnungen: Sitzordnung[]
     user: User
+    schulklasse3: Schulklasse;
+    schulklasse4: any;
+    schulzimmer2: Schulzimmer;
 
 
 
@@ -56,7 +59,19 @@ export class DummyService {
             schueler[index] = new Schueler({
                 id: String(index),
                 schulklassenId: '1',
-                name: 'test',
+                name: 'tester',
+                vorname: 'schueler' + index
+            })
+        }
+        return schueler
+    }
+    private getSchuelerLong(): Schueler[]{
+        let schueler = new Array<Schueler>(27)
+        for (let index = 0; index < schueler.length; index++) {
+            schueler[index] = new Schueler({
+                id: String(index)+'a',
+                schulklassenId: '1',
+                name: 'tester',
                 vorname: 'schueler' + index
             })
         }
@@ -69,9 +84,11 @@ export class DummyService {
         this.schulklasse1.personId = 'abc'
         this.schulklasse1.name = 'Test Dummy Service Klasse 1'
         this.schulklasse1.schueler = this.getSchueler()
+
+        
        
         this.schulklasse2 = new Schulklasse()
-        this.schulklasse2.id = '1'
+        this.schulklasse2.id = '2'
         this.schulklasse2.personId = 'abc'
         this.schulklasse2.name = 'Test Dummy Service Klasse 2'
         this.schulklasse2.schueler = new Array<Schueler>(3)
@@ -96,10 +113,19 @@ export class DummyService {
             vorname: 'schueler' + ' c'
 
         })
-        this.schulklassen = new Array<Schulklasse>(2)
-        this.schulklassen[0] = this.schulklasse1
-        this.schulklassen[1] = this.schulklasse2
-        return this.schulklassen;
+        this.schulklasse3 = new Schulklasse()
+        this.schulklasse3.id = '3'
+        this.schulklasse3.personId = 'abc'
+        this.schulklasse3.name = 'Test Dummy Service Klasse 3'
+
+        this.schulklasse4 = new Schulklasse()
+        this.schulklasse4.id = '4'
+        this.schulklasse4.personId = 'abc'
+        this.schulklasse4.name = 'Test Dummy Service Klasse 4'
+        this.schulklasse4.schueler = this.getSchuelerLong()
+
+    
+        return [this.schulklasse1, this.schulklasse2, this.schulklasse3, this.schulklasse4];
     }
     private getTische(): Tisch[]{
         let tische = new Array<Tisch>(5)
@@ -148,6 +174,22 @@ export class DummyService {
 
         return tische
     }
+
+    getTischeLong(): Tisch[]{
+        let tische = new Array<Tisch>(28)
+        for (let index = 0; index < tische.length; index++) {
+            let column = index%12
+            let row = Math.floor(index/10)
+             tische[index] = new Tisch({
+                id: String(index)+'a',
+                schulzimmerId: '2',
+                position: new PositionTisch(row,column ),
+                active: true,
+                tischNumber: index
+            })
+        }
+        return tische
+    }
     getSchulzimmer(): Schulzimmer[] {
         debugger;
         this.schulzimmer1 = new Schulzimmer()
@@ -155,7 +197,16 @@ export class DummyService {
         this.schulzimmer1.personId = 'abc'
         this.schulzimmer1.name = 'Dummy Schulzimmer'
         this.schulzimmer1.tische= this.getTische()
-        this.schulzimmer = [this.schulzimmer1]
+
+        this.schulzimmer2 = new Schulzimmer()
+        this.schulzimmer2.id = '2'
+        this.schulzimmer2.personId = 'abc'
+        this.schulzimmer2.name = 'Dummy Schulzimmer 2'
+        this.schulzimmer2.tische= this.getTischeLong()
+
+
+
+        this.schulzimmer = [this.schulzimmer1, this.schulzimmer2]
         return this.schulzimmer
 
 
@@ -167,7 +218,7 @@ export class DummyService {
         this.sitzordnung1.schulklassenId = '1'
         this.sitzordnung1.schulzimmerId = '1'
         this.sitzordnung1.name = 'Dummy Sitzordnung'
-        this.sitzordnung1.seatings = new Array<Seating>(5)
+        this.sitzordnung1.seatings = new Array<Seating>(3)
         let tische = this.getTische()
         let schueler = this.getSchueler()
         this.sitzordnung1.seatings[0] = new Seating({
@@ -188,18 +239,13 @@ export class DummyService {
             tisch: tische[2]
 
         })
-        this.sitzordnung1.seatings[3] = new Seating({
-            id: '4',
-            schueler: schueler[1],
-            tisch: tische[3]
+        // this.sitzordnung1.seatings[3] = new Seating({
+        //     id: '4',
+        //     schueler: schueler[1],
+        //     tisch: tische[3]
 
-        })
-        this.sitzordnung1.seatings[4] = new Seating({
-            id: '5',
-            schueler: schueler[3],
-            tisch: tische[4]
-
-       })
+        // })
+    
        this.sitzordnungen = [this.sitzordnung1]
        return this.sitzordnungen
 
