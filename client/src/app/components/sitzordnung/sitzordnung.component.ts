@@ -21,7 +21,7 @@ import { Input } from '@angular/core';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { RegelDialogComponent } from '../regel-dialog/regel-dialog.component';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Schueler } from 'src/app/models/schueler';
 import { Seating } from 'src/app/models/seating';
 import { PositionTisch } from 'src/app/models/position.tisch';
@@ -216,13 +216,23 @@ export class SitzordnungComponent implements OnChanges{
 
 
   generatePdf(){
+    debugger;
+    var fileName = "Sitzordnung_" + this.selectedSitzordnung.name + ".pdf";
     var data = document.getElementById("contentToPdf");
-    html2canvas(data).then(function(canvas) {
-      var img = canvas.toDataURL("image/png");
-        var doc = new jsPDF('l');
-        doc.addImage(img,'JPEG',0,0,220,210);
-        doc.save('Sitzordnung.pdf');
-      });
+    var divWidth = data.offsetWidth;
+    var divHeight = data.offsetHeight;
+    html2canvas(data).then(function (canvas) {
+      debugger;
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l'); 
+      var width = pdf.internal.pageSize.getWidth();    
+      var height = pdf.internal.pageSize.getHeight();
+      var ratio = height/ divHeight;
+      var heightNew = height;
+      var widthNew = divWidth * ratio
+      pdf.addImage(imgData, 'PNG', 0, 0, widthNew, heightNew);
+      pdf.save(fileName);
+    });
         
   }
 

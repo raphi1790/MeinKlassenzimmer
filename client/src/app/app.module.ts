@@ -38,6 +38,7 @@ import {ListenverwaltungComponent} from './components/listenverwaltung/listenver
 import {KlassenlisteComponent} from './components/klassenliste/klassenliste.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { SitzordnungManagementComponent } from './components/sitzordnung-management/sitzordnung.management.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { SitzordnungManagementComponent } from './components/sitzordnung-managem
     AngularFireAuthModule,// imports firebase/auth, only needed for auth features
     AngularFirestoreModule,
     CountdownModule,
-    DragDropModule
+    DragDropModule,
+    ScrollingModule
 
   ],
   providers: [ AuthService,UserService,DummyService,

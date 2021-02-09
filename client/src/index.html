@@ -9,11 +9,29 @@
   <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico" >
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
 
 </head>
 <body>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+    <script>
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "var(--primary-color)"
+        },
+        "button": {
+          "background": "var(--accent-color-dark)"
+        }
+      },
+      "content": {
+        "message": "Diese Website verwendete Cookies um Ihnen das bestmögliche Erlebnis zu bieten."
+      }
+    });
+    </script>
   <app-root></app-root>
+
   
 </body>
 
