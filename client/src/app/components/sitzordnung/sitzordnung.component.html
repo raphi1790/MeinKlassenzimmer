@@ -1,139 +1,75 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-5" class="responsive">
-      <div class="column1">
-        <div class="input-form-container">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title-group>
-                <mat-card-title>
-                  <h4>Schulklasse und Zimmer auswählen</h4>
-                </mat-card-title>
-              </mat-card-title-group>
+<mat-card class="second-column-card" id="contentToPdf">
+  <mat-card-header>
 
-            </mat-card-header>
-            <mat-card-content>
-              <div class="input-form-field">
-                <mat-form-field>
-                  <mat-select placeholder="Schulklasse" [(ngModel)]="selectedSchulklasse" required>
-                    <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
+    <mat-card-title-group>
+      <mat-card-title>
+        <h4>Sitzordnung {{selectedSitzordnung.name}}</h4>
+      </mat-card-title>
+    </mat-card-title-group>
 
-                  </mat-select>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="openRegelDialog()">Zufällige Sitzordnung</button>
+      <button mat-raised-button (click)="generatePdf()">Als PDF exportieren</button>
+    </mat-card-actions>
 
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-select placeholder="Schulzimmer" [(ngModel)]="selectedSchulzimmer" required>
-                    <mat-option *ngFor="let zimmer of zimmerToPerson" [value]="zimmer">{{zimmer.name}}</mat-option>
-
-                  </mat-select>
-
-                </mat-form-field>
+    <div class="dragdrop-container">
+    <div cdkDropListGroup>
+    <table class="zimmer">
+      
+      <tbody>
+        <tr *ngFor="let row of rowSchulzimmer; let r = index">
+          <td *ngFor="let column of columnSchulzimmer; let c = index">
+           
+            <div  cdkDropList  id="activeCdkList" *ngIf="tischIsActive(r,c)" class="active-tisch"  
+              #activeGroup="cdkDropList"  (cdkDropListDropped)="drop($event)"
+              [cdkDropListData]="getDropListData(r,c)" >
+              
+              
+              <!-- <div cdkDropList  #activeGroup="cdkDropList"  [cdkDropListData]="getDropListData(r,c)"
+                (
+               > -->
+                
+              
+              <div *ngIf="getDropListData(r,c).schueler">
+                <div   cdkDrag [cdkDragData]="getDropListData(r,c).schueler" >
+                {{getDropListData(r,c).schueler.vorname}}
+                {{getShortName(getDropListData(r,c).schueler.name)}}
+              </div>
+              </div>
+            </div>
+            <!-- </div> -->
+            
+              <div *ngIf="!tischIsActive(r,c)" class="unselected-tisch">
+                <div *ngIf = "tischIsSelected(r,c)" class="selected-tisch"></div>
               </div>
 
-
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-raised-button [disabled]="!selectedSchulklasse || !selectedSchulzimmer" (click)="randomizePlaces()"
-                color="accent">Zuordnen
-              </button>
-              <mat-error *ngIf="zuvieleSchuelerInSchulzimmer">
-                {{getErrorMessageZuvieleSchuelerInSchulzimmer()}}
-              </mat-error>
-              <button mat-raised-button [disabled]="!showSitzordnung" (click)="generatePdf()">Als PDF exportieren</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-
-        <div class="regel-container">
-            <mat-expansion-panel *ngIf="klasseAndZimmerSelected()">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                      <h4>Aktive Regeln</h4>
-                  </mat-panel-title>
-                 
-                </mat-expansion-panel-header>
+           
             
-                <div class ="table-container">
-                    <mat-table #table [dataSource]="dataSource">
-  
-                        <ng-container matColumnDef="select">
-                            <mat-header-cell *matHeaderCellDef>
-                              <mat-checkbox (change)="$event ? masterToggle() : null"
-                                            [checked]="selection.hasValue() && isAllSelected()"
-                                            [indeterminate]="selection.hasValue() && !isAllSelected()">
-                              </mat-checkbox> 
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                              <mat-checkbox (click)="$event.stopPropagation()"
-                                            (change)="$event ? selection.toggle(row) : null"
-                                            [checked]="selection.isSelected(row)"
-                                            >
-                              </mat-checkbox>
-                            </mat-cell>
-                          </ng-container>
-                    
-                        <ng-container matColumnDef="type">
-                          <mat-header-cell *matHeaderCellDef> Typ der Regel </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
-                        </ng-container>    
-                      
-                      <ng-container matColumnDef="beschreibung">
-                        <mat-header-cell *matHeaderCellDef> Beschreibung </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.beschreibung}} </mat-cell>
-                      </ng-container>
-      
+           
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
     
-  
-      
-                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: displayedColumns;"
-                              (click)="selection.toggle(row)"></mat-row>
-                    </mat-table>
-                </div>
-              </mat-expansion-panel>
-        </div>
+
+
+          <h5>Restliche Schüler</h5>
+          <cdk-virtual-scroll-viewport itemSize="10" class="viewport">
+          <div cdkDropList cdkDropListOrientation="horizontal" id="defaultCdkList"  [cdkDropListData]="remainingSchueler" class="dragdrop-list" 
+            (cdkDropListDropped)="drop($event)">
+            <div class="dragdrop-box" *ngFor="let schueler of remainingSchueler" cdkDrag>
+              {{schueler.vorname}} {{getShortName(schueler.name)}} </div>
+          </div>
+        </cdk-virtual-scroll-viewport>
 
       </div>
     </div>
 
 
-    <div class="col-md-7">
-      <div class="column2">
-        <div class="schulzimmer" *ngIf="showSitzordnung">
-          <mat-card class="second-column-card" id="contentToPdf">
-            <mat-card-header>
-
-              <mat-card-title-group>
-                <mat-card-title>
-                  <h4>Schulklasse {{outputSchulklasse.name}} im Schulzimmer {{outputSchulzimmer.name}} </h4>
-                </mat-card-title>
-              </mat-card-title-group>
-
-            </mat-card-header>
-            <mat-card-content>
-
-              <table class="zimmer">
-                <tbody>
-                  <tr *ngFor="let row of rowSchulzimmer; let r = index">
-                    <td *ngFor="let column of columnSchulzimmer; let c = index">
-                      <app-tisch-schueler [TischSchuelerCombination]="preparedTischSchueler[r][c]">
-                      </app-tisch-schueler>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
 
 
-
-            </mat-card-content>
-          </mat-card>
-        </div>
-        <div id="center" style="position:fixed;top:50%;left:50%">
-          <mat-spinner *ngIf="isLoadingData "></mat-spinner>
-        </div>
-      </div>
-    </div>
-
-
-
-  </div>
+  </mat-card-content>
+</mat-card>

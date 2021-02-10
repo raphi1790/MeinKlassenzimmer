@@ -1,11 +1,9 @@
 import { Schulklasse } from './schulklasse';
 import { Schulzimmer } from './schulzimmer';
 import { Regel } from './regel';
-import { Schueler } from './schueler';
-import { Tisch } from './tisch';
-import { PositionTisch } from './position.tisch';
 import { Klassenliste } from './klassenliste';
-import { Gruppe } from './gruppe';
+import { Sitzordnung } from './sitzordnung';
+
 
 export class User {
 
@@ -17,6 +15,7 @@ export class User {
   klassenlisten?: Klassenliste[];
   schulzimmer?: Schulzimmer[];
   regeln?: Regel[];
+  sitzordnungen?: Sitzordnung[];
 
 
   constructor(user: User) {
@@ -29,6 +28,7 @@ export class User {
     user.schulklassen !== undefined ? this.schulklassen = user.schulklassen: this.schulklassen = new Array<Schulklasse>();
     user.schulzimmer !== undefined ? this.schulzimmer = user.schulzimmer: this.schulzimmer = new Array<Schulzimmer>();
     user.klassenlisten !== undefined ? this.klassenlisten = user.klassenlisten: this.klassenlisten = new Array<Klassenliste>()
+    user.sitzordnungen !== undefined ? this.sitzordnungen = user.sitzordnungen: this.sitzordnungen = new Array<Sitzordnung>()
  
   }
 }

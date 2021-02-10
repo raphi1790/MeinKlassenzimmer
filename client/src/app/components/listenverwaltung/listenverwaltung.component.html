@@ -1,94 +1,103 @@
 <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-3" class="responsive">
-        <div class="column1">
-          <div class="input-form-container">
-            <mat-card>
-              <mat-card-header>
-                <mat-card-title-group>
-                  <mat-card-title>
-                    <h4>Klassenliste erstellen</h4>
-                  </mat-card-title>
-                </mat-card-title-group>
-  
-              </mat-card-header>
-              <mat-card-content>
-                <div class="input-form-field">
-                  <form  [formGroup]="myListForm">
+  <div class="row">
+    <div class="col-md-3" class="responsive">
+      <div class="column1">
+        <div class="input-form-container">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Klassenliste erstellen</h4>
+                </mat-card-title>
+              </mat-card-title-group>
+
+            </mat-card-header>
+            <mat-card-content>
+              <div class="input-form-field">
+                <form [formGroup]="myListForm">
                   <mat-form-field>
-                    <input matInput placeholder="Name der Liste"  type="string"  required [(ngModel)]="selectedListNameInput"  formControlName="name">
+                    <input matInput placeholder="Name der Liste" type="string" required
+                      [(ngModel)]="selectedListNameInput" formControlName="name">
                     <mat-error *ngIf="isFieldValid( this.myListForm, 'name')">Name erforderlich </mat-error>
-    
+
                   </mat-form-field>
-                 
+
                   <mat-form-field>
-                    <mat-select placeholder="Schulklasse" required [(ngModel)]="selectedSchulklasse" required  formControlName="klasse">
+                    <mat-select placeholder="Schulklasse" required [(ngModel)]="selectedSchulklasse" required
+                      formControlName="klasse">
                       <mat-option *ngFor="let klasse of klassenToPerson" [value]="klasse">{{klasse.name}}</mat-option>
-                      
+
                     </mat-select>
                     <mat-error *ngIf="isFieldValid(this.myListForm,'klasse')">Klasse erforderlich </mat-error>
                   </mat-form-field>
                   <mat-form-field>
-                    <input matInput placeholder="Anzahl Gruppen" required  type="number" [(ngModel)]="selectedGroupNumberInput"  formControlName="groups">
+                    <input matInput placeholder="Anzahl Gruppen" required type="number"
+                      [(ngModel)]="selectedGroupNumberInput" formControlName="groups">
                     <mat-error *ngIf="isFieldValid(this.myListForm, 'groups')">Anzahl erforderlich </mat-error>
                   </mat-form-field>
                 </form>
 
-                </div>
-                <mat-card-actions>
-                    <button mat-raised-button color="accent" [disabled]="!createButtonActive()"  (click)="createKlassenliste()">Liste eröffnen</button>
+              </div>
+              <mat-card-actions>
+                <button mat-raised-button color="accent" [disabled]="!createButtonActive()"
+                  (click)="createKlassenliste()">Liste eröffnen</button>
 
-                  </mat-card-actions>
-  
-  
-              </mat-card-content>
-              <mat-card-footer>
-               
-              </mat-card-footer>
-            </mat-card>
-          </div>
-  
-          <div class="klassenlisteLists">
-            <mat-card>
-              <mat-card-header>
-                <mat-card-title-group>
-                  <mat-card-title>
-                    <h4>Erfasste Klassenlisten</h4>
-  
-                  </mat-card-title>
-                </mat-card-title-group>
-  
-              </mat-card-header>
-              <mat-card-content>
-              
-              
+              </mat-card-actions>
+
+
+            </mat-card-content>
+            <mat-card-footer>
+
+            </mat-card-footer>
+          </mat-card>
+        </div>
+
+        <div class="klassenlisteLists">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Erfasste Klassenlisten</h4>
+
+                </mat-card-title>
+              </mat-card-title-group>
+
+            </mat-card-header>
+            <mat-card-content>
+
+
 
               <mat-form-field>
                 <mat-label>Filter</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Geografie-Präsentation" #input>
               </mat-form-field>
-              
-              <div >
+
+              <div>
                 <table mat-table [dataSource]="dataSource" matSort>
-              
+
                   <!-- ID Column -->
                   <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                    <mat-cell *matCellDef="let klassenliste"> 	<mat-form-field floatLabel="never" (click)="onSelect(klassenliste)">
-                      <input matInput placeholder="Name" (change)="savingIsActiv = true" [value]="klassenliste.name" [(ngModel)]="klassenliste.name" >
-                    </mat-form-field> </mat-cell>
+                    <mat-cell *matCellDef="let klassenliste">
+                      <mat-form-field floatLabel="never" (click)="onSelect(klassenliste)">
+                        <input matInput placeholder="Name" (change)="savingIsActiv = true" [value]="klassenliste.name"
+                          [(ngModel)]="klassenliste.name">
+                      </mat-form-field>
+                    </mat-cell>
                   </ng-container>
-                  
+
                   <ng-container matColumnDef="klasse">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Klasse </mat-header-cell>
-                    <mat-cell *matCellDef="let klassenliste" (click)="onSelect(klassenliste)" > {{klassenliste.schulklassenName}} </mat-cell>
+                    <mat-cell *matCellDef="let klassenliste" (click)="onSelect(klassenliste)">
+                      {{klassenliste.schulklassenName}} </mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="groups">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Anzahl Gruppen </mat-header-cell>
-                    <mat-cell *matCellDef="let klassenliste" (click)="onSelect(klassenliste)" > {{klassenliste.gruppen.length}} </mat-cell>
+                    <mat-cell *matCellDef="let klassenliste" (click)="onSelect(klassenliste)">
+                      {{klassenliste.gruppen.length}} </mat-cell>
                   </ng-container>
-              
+
                   <ng-container matColumnDef="action" class="align-column-right">
                     <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
                     <mat-cell *matCellDef="let klassenliste">
@@ -97,46 +106,47 @@
                       </span>
                     </mat-cell>
                   </ng-container>
-                            
+
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-              
+
                   <!-- Row shown when there is no matching data. -->
                   <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="4">No data</td>
                   </tr>
                 </table>
-              
+
                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
               </div>
             </mat-card-content>
-  
-            </mat-card>
-            <app-speichern (saveData)="saveKlassenlisten()" (cancelData) ="cancel()" [savingIsActive] ="savingIsActiv"></app-speichern>
-           
-          </div>
-  
-        </div>
-      </div>
-  
-  
-  
-  
-      <div class="col-md-7" >
-        <div class="column2" >
-          <div class="selectionKlassenlist" *ngIf="selectedKlassenliste">
-            <div class="schuelerListe">
-              <app-klassenliste [selectedKlassenliste]="selectedKlassenliste"  [relevantSchulklasse]="relevantSchulklasse" 
-                [relevantRegeln]="relevantRegeln" (noteListenverwaltung)="updateKlassenliste($event)">
-              </app-klassenliste>
-            </div>
 
+          </mat-card>
+          <app-speichern (saveData)="saveKlassenlisten()" (cancelData)="cancel()" [savingIsActive]="savingIsActiv">
+          </app-speichern>
+
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <div class="col-md-7">
+      <div class="column2">
+        <div class="selectionKlassenlist" *ngIf="selectedKlassenliste">
+          <div class="schuelerListe">
+            <app-klassenliste [selectedKlassenliste]="selectedKlassenliste" [relevantSchulklasse]="relevantSchulklasse"
+              [relevantRegeln]="relevantRegeln" (noteListenverwaltung)="updateKlassenliste($event)">
+            </app-klassenliste>
           </div>
+
         </div>
       </div>
-  
-      <div id ="center" style="position:fixed;top:50%;left:50%">
-        <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner></div>
-  
     </div>
-  
+
+    <div id="center" style="position:fixed;top:50%;left:50%">
+      <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner>
+    </div>
+
+  </div>

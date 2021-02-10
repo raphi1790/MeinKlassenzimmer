@@ -169,21 +169,12 @@ export class ListenverwaltungComponent implements OnInit   {
   }
   deleteKlassenliste(klassenliste: Klassenliste):void{
     debugger;
-    // let klassenliste = this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == selectedId.id)[0];
-    // this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
-    //   item =>
-    //     item.id !== klassenliste.id);
-    // this.selectedKlassenliste = null;
-    // this.savingIsActiv = true;
     this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
         item =>
           item.id !== klassenliste.id);
     this.selectedKlassenliste = null;
     this.savingIsActiv = true;
     this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
-
-
-    
 
   }
 
@@ -221,7 +212,7 @@ export class ListenverwaltungComponent implements OnInit   {
     this.name = new FormControl(null, [Validators.required, Validators.minLength(2)]);
     this.klasse = new FormControl(null, Validators.required);
     this.groups = new FormControl(null, Validators.required);
-  ;
+ 
 
   }
   createForm() {

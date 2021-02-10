@@ -11,7 +11,9 @@ import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Klassenliste } from 'src/app/models/klassenliste';
 import { KlassenlistenRemover } from '../../helpers/klassenlisten.remover';
+import { SitzordnungenRemover } from '../../helpers/sitzordnungen.remover';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
+import { Sitzordnung } from 'src/app/models/sitzordnung';
 
 
 
@@ -34,8 +36,10 @@ export class SchuelerComponent implements OnChanges, AfterViewInit {
   @Input('selectedSchulklasse')  selectedSchulklasse: Schulklasse;
   @Input('regelnToPerson') regelnToPerson: Regel[];
   @Input('klassenlistenToPerson') klassenlistenToPerson: Klassenliste[];
+  @Input('sitzordnungenToPerson') sitzordnungenToPerson: Sitzordnung[];
   @Output() noteSchulklasse: EventEmitter<Schulklasse> = new EventEmitter<Schulklasse>();
   @Output() noteKlassenlisten: EventEmitter<Klassenliste[]> = new EventEmitter<Klassenliste[]>();
+  @Output() noteSitzordnungen: EventEmitter<Sitzordnung[]> = new EventEmitter<Sitzordnung[]>();
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -65,11 +69,15 @@ export class SchuelerComponent implements OnChanges, AfterViewInit {
       // remove Schueler from Klassenlisten
       let klassenlistenRemover = new KlassenlistenRemover()
       this.klassenlistenToPerson = klassenlistenRemover.removeSchuelerFromKlassenlisten(deletedSchueler, this.klassenlistenToPerson)
+      // remove Schueler from Seatings
+      let sitzordnungenRemover = new SitzordnungenRemover()
+      this.sitzordnungenToPerson = sitzordnungenRemover.removeSchuelerFromSeating(deletedSchueler, this.sitzordnungenToPerson)
       // console.log("Klasse nach Update (Delete):");
       // console.log(this.schulklasse);
       this.dataSource.data = this.schulklasse.schueler;
       this.noteSchulklasse.emit(this.schulklasse);
       this.noteKlassenlisten.emit(this.klassenlistenToPerson)
+      this.noteSitzordnungen.emit(this.sitzordnungenToPerson)
       this.anzahlSchueler--;
     }else{
       this.infoDialogRef = this.dialog.open(InfoDialogComponent, {

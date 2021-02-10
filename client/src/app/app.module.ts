@@ -18,7 +18,6 @@ import { InlineEditSmallComponent} from './components/inline-edit-small/inline-e
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TischComponent } from './components/tisch/tisch.component';
-import { TischSchuelerComponent } from './components/tisch-schueler/tisch-schueler.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from "@angular/fire/firestore";
@@ -26,8 +25,6 @@ import { environment } from '../environments/environment';
 import { UnsavedGuard } from './helpers/guards/unsaved.guard';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { RegelnComponent } from './components/regeln/regeln.component';
-import { EinteilungInfoDialogComponent} from './components/einteilung-info-dialog/einteilung-info-dialog.component';
-import { KlassenlistenInfoDialogComponent} from './components/klassenlisten-info-dialog/klassenlisten-info-dialog.component';
 import { RegelDialogComponent} from './components/regel-dialog/regel-dialog.component';
 import { InfoDialogComponent} from './components/info-dialog/info-dialog.component';
 import { AuthGuard } from './helpers/guards/auth.guard';
@@ -39,7 +36,9 @@ import { CountdownModule } from 'ngx-countdown';
 import { DummyService } from './services/dummy.service';
 import {ListenverwaltungComponent} from './components/listenverwaltung/listenverwaltung.component';
 import {KlassenlisteComponent} from './components/klassenliste/klassenliste.component';
-import {DragDropModule} from '@angular/cdk/drag-drop'
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { SitzordnungManagementComponent } from './components/sitzordnung-management/sitzordnung.management.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 
 @NgModule({
@@ -53,9 +52,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop'
     ToolbarComponent,
     TischComponent,
     AnleitungComponent,
-    TischSchuelerComponent,
     RegelnComponent,
-    EinteilungInfoDialogComponent,
     SpeichernComponent,
     SpeichernInfoDialogComponent,
     InlineEditComponent,
@@ -65,9 +62,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop'
     SaveSnackBarComponent,
     ListenverwaltungComponent,
     KlassenlisteComponent,
-    KlassenlistenInfoDialogComponent,
     InlineEditSmallComponent,
-    InfoDialogComponent
+    InfoDialogComponent,
+    SitzordnungManagementComponent
     
   ],
   imports: [
@@ -80,7 +77,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop'
     AngularFireAuthModule,// imports firebase/auth, only needed for auth features
     AngularFirestoreModule,
     CountdownModule,
-    DragDropModule
+    DragDropModule,
+    ScrollingModule
 
   ],
   providers: [ AuthService,UserService,DummyService,
@@ -95,8 +93,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop'
 
   ],
   bootstrap: [AppComponent],
-  entryComponents: [EinteilungInfoDialogComponent, SpeichernInfoDialogComponent,
+  entryComponents: [SpeichernInfoDialogComponent,
       RegelDialogComponent, 
-      KlassenlistenInfoDialogComponent,InfoDialogComponent]
+      InfoDialogComponent]
 })
 export class AppModule { }

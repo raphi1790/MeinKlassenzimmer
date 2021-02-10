@@ -10,12 +10,12 @@ export class GroupPreparer extends Preparer {
     gruppen: Gruppe[]
 
 
-    initializeArrays(){
+    initialize(){
        this.gruppen = new Array<Gruppe>();
     }
     
 
-    prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputTisch=null,  inputGroupNumber? : number): Gruppe[] {
+    prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputTischeActive=null,  inputGroupNumber? : number): Gruppe[] {
         debugger;
         console.log("Start prepare GroupPreparer");
         if (inputSchueler.length == 0) {

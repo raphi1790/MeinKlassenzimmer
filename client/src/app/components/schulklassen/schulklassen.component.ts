@@ -9,7 +9,6 @@ import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { KlassenlistenInfoDialogComponent } from '../klassenlisten-info-dialog/klassenlisten-info-dialog.component';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
@@ -18,6 +17,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Klassenliste } from 'src/app/models/klassenliste';
 import { KlassenlistenRemover } from 'src/app/helpers/klassenlisten.remover';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
+import { Sitzordnung } from 'src/app/models/sitzordnung';
+import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
 
 
 @Component({
@@ -37,6 +38,8 @@ export class SchulklassenComponent implements OnInit {
   klassenToPersonOriginal: Schulklasse[];
   klassenlistenToPerson : Klassenliste[];
   klassenlistenToPersonOriginal: Klassenliste[];
+  sitzordnungenToPerson: Sitzordnung[];
+  sitzordnungenToPersonOriginal: Sitzordnung[];
   isLoadingData: boolean;
   regelnToPerson: Regel[];
   selectedSchulklasse: Schulklasse;
@@ -44,12 +47,12 @@ export class SchulklassenComponent implements OnInit {
   neueSchulklasseName: string
   neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   infoDialogRef: MatDialogRef<InfoDialogComponent>;
-  klassenlistenInfoDialogRef: MatDialogRef<KlassenlistenInfoDialogComponent>;
 
 
 
 
   @Input() personId: string
+
 
   
  
@@ -83,6 +86,8 @@ export class SchulklassenComponent implements OnInit {
       this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
       this.klassenlistenToPerson = this.myUser.klassenlisten
       this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
+      this.sitzordnungenToPerson = this.myUser.sitzordnungen
+      this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
       // console.log(this.myUser)
       // console.log(this.klassenToPerson)
       this.isLoadingData = false;
@@ -115,17 +120,25 @@ export class SchulklassenComponent implements OnInit {
           item.id !== klasse.id);
       // remove klassenlisten based on selected klasse
       let klassenlistenRemover = new KlassenlistenRemover()
-      let returnValues =  klassenlistenRemover.removeKlassenlistenContainingSchulklasse(klasse, this.klassenlistenToPerson)
-      this.klassenlistenToPerson = returnValues[0]
-      let numFiltered = returnValues[1]
-      if (numFiltered > 0){
-        this.klassenlistenInfoDialogRef = this.dialog.open(KlassenlistenInfoDialogComponent, {
+      let returnValuesKlassenliste =  klassenlistenRemover.removeKlassenlistenContainingSchulklasse(klasse, this.klassenlistenToPerson)
+      this.klassenlistenToPerson = returnValuesKlassenliste[0]
+      let numFilteredKlassenliste = returnValuesKlassenliste[1]
+      // remove sitzordnungen based on selected klasse
+      let sitzordnungenRemover = new SitzordnungenRemover()
+      let returnValuesSitzordnung =  sitzordnungenRemover.removeSitzordnungenContainingSchulklasse(klasse, this.sitzordnungenToPerson)
+      this.sitzordnungenToPerson = returnValuesSitzordnung[0]
+      let numFilteredSitzordnung = returnValuesSitzordnung[1]
+
+      if (numFilteredKlassenliste > 0 || numFilteredSitzordnung > 0  ){
+        let message = this.getRemovalMessage(numFilteredKlassenliste, numFilteredSitzordnung)
+        this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
           width: '550px',
-          data: numFiltered
+          data: {text:message}
         });
+        
       }
       this.savingIsActiv = true;
-      
+      this.selectedSchulklasse = null;
     }else{
       this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
         width: '550px',
@@ -133,6 +146,11 @@ export class SchulklassenComponent implements OnInit {
       });
     }
     
+
+  }
+  private getRemovalMessage(numRemovedKlassenliste: number, numRemovedSitzordnungen: number):String{
+    let message = `Anzahl zusätzlich gelöschter Klassenlisten zur Klasse: <b> ${numRemovedKlassenliste} </b> <br />Anzahl zusätzlich gelöschter Sitzordnungen zur Klasse:<b> ${numRemovedSitzordnungen} </b> `
+    return message
 
   }
 
@@ -174,6 +192,14 @@ export class SchulklassenComponent implements OnInit {
     this.savingIsActiv = true;
   }
 
+  updateSitzordnungen(updatedSitzordnungen: Sitzordnung[]): void {
+    debugger;
+    this.sitzordnungenToPerson = updatedSitzordnungen
+    this.savingIsActiv = true;
+  }
+
+
+
   onNameChange(newName : Name):void{
     debugger;
     let oldName = this.klassenToPerson.filter(klasse => klasse.id == newName.id)[0].name;
@@ -212,6 +238,7 @@ export class SchulklassenComponent implements OnInit {
     debugger;
     this.klassenToPerson = JSON.parse(JSON.stringify(this.klassenToPersonOriginal));
     this.klassenlistenToPerson = JSON.parse(JSON.stringify(this.klassenlistenToPersonOriginal));
+    this.sitzordnungenToPerson = JSON.parse(JSON.stringify(this.sitzordnungenToPersonOriginal));
     this.savingIsActiv = false;
   }
 

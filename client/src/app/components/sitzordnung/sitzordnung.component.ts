@@ -1,9 +1,8 @@
-import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, EventEmitter, Output } from '@angular/core';
 
 import { Schulklasse } from '../../models/schulklasse';
-import { TischSchueler } from '../../models/tisch.schueler';
 import { Schulzimmer } from '../../models/schulzimmer';
-import { TischSchuelerPreparer } from '../../helpers/tischSchueler.preparer';
+import { SeatingPreparer } from '../../helpers/seating.preparer';
 import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import * as CONFIG from '../../../config.json';
@@ -13,171 +12,272 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
-import { EinteilungInfoDialogComponent } from '../einteilung-info-dialog/einteilung-info-dialog.component';
 import { CalculatingEngine } from '../../helpers/calculating.engine';
 import { RegelFilter } from '../../helpers/regel.filter';
-import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
-
+import { DummyService } from 'src/app/services/dummy.service';
+import { Input } from '@angular/core';
+import { Sitzordnung } from 'src/app/models/sitzordnung';
+import { RegelDialogComponent } from '../regel-dialog/regel-dialog.component';
+import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { Schueler } from 'src/app/models/schueler';
+import { Seating } from 'src/app/models/seating';
+import { PositionTisch } from 'src/app/models/position.tisch';
+import { Tisch } from 'src/app/models/tisch';
+import * as uuidv4 from 'uuid/v4';
 @Component({
   selector: 'app-sitzordnung',
   templateUrl: './sitzordnung.component.html',
   styleUrls: ['./sitzordnung.component.css']
 })
-export class SitzordnungComponent {
 
-  selectedSchulzimmer: Schulzimmer;
-  selectedSchulklasse: Schulklasse;
-  outputSchulzimmer: Schulzimmer;
-  outputSchulklasse: Schulklasse;
-  klassenToPerson: Schulklasse[];
-  zimmerToPerson: Schulzimmer[];
+export class SitzordnungComponent implements OnChanges{
+
+ 
   regelnToPerson: Regel[];
-  schulzimmerId: Number;
-  schulklasseId: Number;
-  showSitzordnung: boolean
-  tischSchuelerPreparer: TischSchuelerPreparer;
   rowSchulzimmer: number[];
   columnSchulzimmer: number[];
-  preparedTischSchueler: TischSchueler[][];
-  zuvieleSchuelerInSchulzimmer: boolean;
   isLoadingData: boolean;
   displayedColumns = ['select','type' ,'beschreibung'   ];
-  selection = new SelectionModel<Regel>(true, []);
-  einteilungInfoDialogRef: MatDialogRef<EinteilungInfoDialogComponent>;
+  infoDialogRef: MatDialogRef<InfoDialogComponent>;
   myUser: User;
   regelFilter: RegelFilter;
 
-
+  remainingSchueler: Schueler[]
+  workingSeatings: Seating[];
   
 
-  constructor(private userService: UserService, public dialog: MatDialog,
-    ) { 
-    this.showSitzordnung = false;
-    this.zuvieleSchuelerInSchulzimmer = false;
+  constructor(public dialog: MatDialog) { 
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
-    this.regelFilter = new RegelFilter()
+
+
   }
-  @ViewChild(MatTable) table: MatTable<any>;
-
-
-  dataSource = new MatTableDataSource<Regel>();
-
-
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  getErrorMessageZuvieleSchuelerInSchulzimmer(){
-     return "Es gibt nicht genug aktive Tische für die Anzahl Schüler!"
-  }
-
-  loadInputData() {
-    this.userService.getUser().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(users => {
-      debugger;
-      this.myUser = new User(users[0])
-      this.klassenToPerson = this.myUser.schulklassen
-      this.zimmerToPerson = this.myUser.schulzimmer
-      this.regelnToPerson = this.myUser.regeln
-      // console.log(this.myUser)
-      this.isLoadingData = false;
-    
-    });
-
+  @Input('selectedSitzordnung') selectedSitzordnung: Sitzordnung;
+  @Input('relevantSchulklasse') relevantSchulklasse: Schulklasse;
+  @Input('relevantSchulzimmer') relevantSchulzimmer: Schulzimmer;
+  @Input('relevantRegeln') relevantRegeln: Regel[];
+  @Output() noteSitzordnungManagement: EventEmitter<Sitzordnung> = new EventEmitter<Sitzordnung>();
   
-  }
+  dataSource = new MatTableDataSource<Regel>()
+  selection = new SelectionModel<Regel>(true, [])
 
-  klasseAndZimmerSelected(): boolean{
-    
-    var klasseAndZimmerSelected = false; 
-    if (this.selectedSchulklasse != undefined && this.selectedSchulzimmer !=undefined){
-      klasseAndZimmerSelected = true;
-      let relevantRegeln = this.regelFilter.filterRegelBySchulklasseAndSchulzimmer(this.regelnToPerson, this.klassenToPerson, this.zimmerToPerson,
-         this.selectedSchulklasse, this.selectedSchulzimmer);
-      this.dataSource.data = relevantRegeln;  
-       
+  drop(event: CdkDragDrop<string[]>) {
+    debugger
+    if(event.container.id === 'activeCdkList' && event.previousContainer.id === 'defaultCdkList' ){
+      event.container.data['schueler'] = event.previousContainer.data[event.previousIndex]
     }
-    return klasseAndZimmerSelected;
-  }
- 
+    if(event.container.id === 'defaultCdkList' && event.previousContainer.id === 'activeCdkList' ){
+      event.previousContainer.data['schueler'] = null
+    
+    }
+    if(event.container.id === 'activeCdkList' && event.previousContainer.id === 'activeCdkList' ){
+       event.container.data['schueler'] = event.previousContainer.data['schueler']
+       event.previousContainer.data['schueler'] = null
+    
+    }
+    this.selectedSitzordnung.seatings = this.updateSeatingsToSitzordnung(this.workingSeatings)
+    this.noteSitzordnungManagement.emit(this.selectedSitzordnung);
+    this.remainingSchueler = this.updateRemainingSchueler(this.relevantSchulklasse.schueler, this.selectedSitzordnung)
 
-  randomizePlaces(){
+    
+  }
+  tischIsActive(row: number, column: number):boolean {
+    let currentTisch = this.relevantSchulzimmer.tische.filter(tisch => tisch.position.row == row && tisch.position.column ==column)[0]
+    if(currentTisch !== undefined && currentTisch.active){
+      return true
+    }
+    return false
+  }
+  tischIsSelected(row: number, column: number):boolean {
+    let currentTisch = this.relevantSchulzimmer.tische.filter(tisch => tisch.position.row == row && tisch.position.column ==column)[0]
+    if(currentTisch !== undefined && !currentTisch.active){
+      return true
+    }
+    return false
+  }
+
+  getDropListData(row: number, column: number):any{
+    // debugger;
+    let currentSeating = this.workingSeatings.filter(seating => seating.tisch.position.row == row && seating.tisch.position.column ==column)[0]
+    return currentSeating
+  }
+  getShortName(name: string):string{
+    if(name.length > 4){
+      return name.substring(0,4) + "."
+    }
+    return name
+  }
+  openRegelDialog(): void {
     debugger;
-    var activeTische = this.selectedSchulzimmer.tische.filter(item => item.active == true);
-    if(activeTische.length < this.selectedSchulklasse.schueler.length){
-      this.zuvieleSchuelerInSchulzimmer = true;
-      this.showSitzordnung = false;
+    if (!this.tooManyStudents()){
+      // console.log("this.relevantRegeln", this.relevantRegeln)
+      this.dataSource.data = this.relevantRegeln;
+      const dialogRef = this.dialog.open(RegelDialogComponent, {
+        width: '550px',
+        data: { input: this.dataSource, output: this.selection }
+      });
 
-    }
-    else{
-      this.zuvieleSchuelerInSchulzimmer = false;
-      this.tischSchuelerPreparer = new TischSchuelerPreparer();
-      this.outputSchulzimmer = this.selectedSchulzimmer;
-      this.outputSchulklasse = this.selectedSchulklasse;
-      let outputRegelnActive  = this.regelnToPerson
-      .filter(item => this.selection.selected
-            .map(output => output.id).includes(item.id))  
+
+      dialogRef.afterClosed().subscribe(result => {
+      });
       debugger;
-      let calculatingEngine = new CalculatingEngine(); 
-      // console.log(this.tischSchuelerPreparer);
-      // console.log(this.outputSchulklasse.schueler);
-      // console.log(outputRegelnActive);
-      // console.log(this.outputSchulzimmer.tische);
-      let resultOutput = calculatingEngine.calculate(this.tischSchuelerPreparer,this.outputSchulklasse.schueler,outputRegelnActive, this.outputSchulzimmer.tische)       
-      if (typeof resultOutput === 'undefined'){
-        this.showSitzordnung = false;
-        this.einteilungInfoDialogRef = this.dialog.open(EinteilungInfoDialogComponent, {
-          width: '550px',
-        });
+      const dialogSubmitSubscription =
+        dialogRef.componentInstance.submitClicked.subscribe(result => {
+          console.log("The dialog was closed.")
+          this.selection = result
+          let activeRegeln = this.relevantRegeln
+            .filter(item => this.selection.selected
+              .map(output => output.id).includes(item.id))
+          this.randomizeSeating(activeRegeln)
+          dialogSubmitSubscription.unsubscribe();
+        })
 
-      }
-      else{
-        this.showSitzordnung = true;
-        this.preparedTischSchueler = resultOutput;
-        // console.log("Randomized SchuelerTischArray");
-        // console.log(this.preparedTischSchueler);
-      }
-      
-
+    }else{
+      this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '550px',
+        data: {text: "Es gibt nicht genug aktive Tische für die Anzahl Schüler!"}
+      });
     }
-  
     
 
+
   }
+  private updateRemainingSchueler(schuelerTotal: Schueler[], sitzordnung: Sitzordnung): Schueler[] {
+    debugger;
+    if (schuelerTotal === null || schuelerTotal === undefined){
+      return null
+    }
+    if(sitzordnung.seatings === null || sitzordnung.seatings === undefined){
+      return schuelerTotal
+    }
+    var fixedSchueler = new Array<Schueler>()
+    for (let index = 0; index < sitzordnung.seatings.length; index++) {
+      fixedSchueler.push(sitzordnung.seatings[index].schueler)
+
+    }
+    let remainingSchueler = schuelerTotal.filter(({ id: id1 }) => !fixedSchueler.some(({ id: id2 }) => id2 === id1));
+    return remainingSchueler
+
+  }
+  private updateSeatingsToSitzordnung(inputSeatings: Seating[]):Seating[]{
+    debugger;
+    let filteredSeatings = inputSeatings.filter(seating => seating.schueler !== null && seating.schueler !== undefined)
+    console.log("filteredSeatings", filteredSeatings)
+    return filteredSeatings
+
+  }
+
+  private tooManyStudents():boolean{
+    // Check if the number of active tables matches the number of incoming students
+    let tooManyStudents = false;
+    if(this.relevantSchulklasse.schueler === undefined ||this.relevantSchulklasse.schueler === null){
+      return tooManyStudents
+    }
+    let numSchueler = this.relevantSchulklasse.schueler.length
+    let numActiveTische = this.relevantSchulzimmer.tische.filter(tisch => tisch.active).length
+    if( numActiveTische < numSchueler){
+      tooManyStudents = true
+    }
+    return tooManyStudents
+  }
+
+  randomizeSeating(activeRegeln: Regel[]): void {
+    debugger
+
+    let seatingPreparer = new SeatingPreparer();
+    let calculatingEngine = new CalculatingEngine();
+    debugger;
+    let activeTische = this.relevantSchulzimmer.tische.filter(tisch => tisch.active)
+    let resultOutput = calculatingEngine.calculate(seatingPreparer, this.relevantSchulklasse.schueler, activeRegeln, activeTische, null)
+    console.log("resultOutput", resultOutput)
+    
+    if (typeof resultOutput === 'undefined' || resultOutput.length === 0) {
+      this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
+        width: '550px',
+        data: {text: "Es konnte keine zufällige Sitzordnung erstellt werden."}
+      }); }
+    else {
+      
+      
+      this.selectedSitzordnung.seatings = this.updateSeatingsToSitzordnung(resultOutput)
+      this.noteSitzordnungManagement.emit(this.selectedSitzordnung);
+      // Update view
+      this.workingSeatings = this.getWorkingSeatings(this.selectedSitzordnung, this.relevantSchulzimmer)
+      this.remainingSchueler = this.updateRemainingSchueler(this.relevantSchulklasse.schueler,this.selectedSitzordnung)
+      
+    }
+
+
+
+  }
+
 
   generatePdf(){
+    debugger;
+    var fileName = "Sitzordnung_" + this.selectedSitzordnung.name + ".pdf";
     var data = document.getElementById("contentToPdf");
-    html2canvas(data).then(function(canvas) {
-      var img = canvas.toDataURL("image/png");
-        var doc = new jsPDF('l');
-        doc.addImage(img,'JPEG',0,0,220,210);
-        doc.save('Sitzordnung.pdf');
-      });
+    var divWidth = data.offsetWidth;
+    var divHeight = data.offsetHeight;
+    html2canvas(data).then(function (canvas) {
+      debugger;
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l'); 
+      var width = pdf.internal.pageSize.getWidth();    
+      var height = pdf.internal.pageSize.getHeight();
+      var ratio = height/ divHeight;
+      var heightNew = height;
+      var widthNew = divWidth * ratio
+      pdf.addImage(imgData, 'PNG', 0, 0, widthNew, heightNew);
+      pdf.save(fileName);
+    });
         
   }
 
-  ngOnInit() {
-    this.isLoadingData = true;
-    this.loadInputData();
+  getWorkingSeatings(sitzordnung: Sitzordnung, schulzimmer: Schulzimmer):Seating[]{
+    debugger;
+    let sitzordnungCopy = JSON.parse(JSON.stringify(sitzordnung)); //deep copy of sitzordnung; otherwise it overwrites the original element
+    var fixedTische= new Array<Tisch>()
+    if(sitzordnungCopy.seatings !== null ){
+      sitzordnungCopy.seatings.forEach(seating => fixedTische.push(seating.tisch))
+    }
+   
+    let activeTische = schulzimmer.tische.filter(tisch => tisch.active)
+    let remainingTische = activeTische.filter(({ id: id1 }) => !fixedTische.some(({ id: id2 }) => id2 === id1));
 
+
+    if(typeof sitzordnungCopy.seatings === 'undefined' || sitzordnungCopy.seatings === null){
+      let seatings = new Array<Seating>()
+      remainingTische.forEach(element => {
+        let seatingTmp = new Seating({"id": uuidv4(), "schueler": null, "tisch": element})
+        seatings.push(seatingTmp)
+        
+      });
+      return seatings
+    }
+    else{
+      let seatings = sitzordnungCopy.seatings
+      remainingTische.forEach(element => {
+        let seatingTmp = new Seating({"id": uuidv4(), "schueler": null, "tisch": element})
+        seatings.push(seatingTmp)
+        
+      });
+      return seatings
+    }
+    
   }
+
+
+
+  ngOnChanges(){
+    debugger;
+    this.remainingSchueler = this.updateRemainingSchueler(this.relevantSchulklasse.schueler, this.selectedSitzordnung)
+    this.workingSeatings = this.getWorkingSeatings(this.selectedSitzordnung, this.relevantSchulzimmer)
+   
+  }
+ 
+
 
 }

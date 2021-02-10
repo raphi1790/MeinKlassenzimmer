@@ -58,12 +58,14 @@ export class TischOutputPreparer {
               !(item.position.row == tischOutput.position.row && item.position.column == tischOutput.position.column))
         
         if(tischOutput.selected){
-            var tischTmp = new Tisch();
-            tischTmp.id = uuidv4();
-            tischTmp.schulzimmerId = this.updatedSchulzimmer.id;
-            tischTmp.position = new PositionTisch(tischOutput.position.row,tischOutput.position.column);
-            tischTmp.active = tischOutput.active;
-            tischTmp.tischNumber = tischOutput.tischNumber;
+            var tischTmp = new Tisch({
+                id : uuidv4(),
+                schulzimmerId : this.updatedSchulzimmer.id,
+                position : new PositionTisch(tischOutput.position.row,tischOutput.position.column),
+                active : tischOutput.active,
+                tischNumber : tischOutput.tischNumber
+            });
+            ;
             this.updatedSchulzimmer.tische.push(tischTmp);
         }
 

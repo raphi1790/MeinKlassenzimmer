@@ -49,9 +49,14 @@ export class RegelFilter{
          klassenToPerson: Schulklasse[], selectedSchulklasse: Schulklasse){
             let relevantRegeln = new Array<Regel>();
             let inputRegeln = regelnToPerson;
-        
+            if(selectedSchulklasse.schueler === null || selectedSchulklasse.schueler === undefined){
+              return []
+            }
+            let relevantSchulklassen = klassenToPerson.filter(klasse => klasse.schueler !== null && klasse.schueler !== undefined)
             for (let index = 0; index < inputRegeln.length; index++) {
-              let chosenSchueler = klassenToPerson.filter(klasse => 
+              let chosenSchueler = relevantSchulklassen.filter(klasse => 
+
+                
                 klasse.schueler.some(x => x.id== inputRegeln[index].schueler1Id)).map(element => {
                     let newElt = Object.assign({}, element);
                     return newElt.schueler.filter(x => x.id== inputRegeln[index].schueler1Id)
