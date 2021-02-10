@@ -37,7 +37,7 @@
               <span class="submenu-spacer"></span>
                 <mat-icon>filter_list </mat-icon><span class="item-spacer"></span>Regeln</a>  
           </mat-nav-list>
-          <a mat-list-item  routerLink="/sitzordnung"  routerLinkActive="active">
+          <a mat-list-item  routerLink="/sitzordnung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
             <mat-icon>autorenew</mat-icon><span class="item-spacer"></span>Sitzordnung</a>
           <a mat-list-item  routerLink="/listenverwaltung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
             <mat-icon>reorder</mat-icon><span class="item-spacer"></span>Gruppeneinteilung</a>   

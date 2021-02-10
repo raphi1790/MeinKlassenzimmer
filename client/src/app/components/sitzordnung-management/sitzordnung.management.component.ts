@@ -65,8 +65,8 @@ export class SitzordnungManagementComponent implements OnInit {
 
 
     constructor(
-        // private userService: UserService,
-        private dummyService: DummyService,
+        private userService: UserService,
+        // private dummyService: DummyService,
         private _snackBar: MatSnackBar
     ) {
         this.regelFilter = new RegelFilter()
@@ -76,51 +76,51 @@ export class SitzordnungManagementComponent implements OnInit {
 
 
 
-    loadInputData() {
-        debugger;
-        this.myUser = this.dummyService.getUser()
-        this.sitzordnungenToPerson = this.myUser.sitzordnungen
-        this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-        this.klassenToPerson = this.myUser.schulklassen
-        this.zimmerToPerson = this.myUser.schulzimmer
-        this.regelnToPerson = this.myUser.regeln
-        console.log(this.myUser)
-        console.log(this.zimmerToPerson)
-        this.isLoadingData = false;
-
-        this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-
-
-    }
     // loadInputData() {
-    //     this.userService.getUser().snapshotChanges().pipe(
-    //         map(changes =>
-    //             changes.map(c =>
-    //                 ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-    //             )
-    //         )
-    //     ).subscribe(users => {
-    //         debugger;
-    //         this.myUser = new User(users[0])
-    //         this.klassenToPerson = this.myUser.schulklassen
-    //         this.regelnToPerson = this.myUser.regeln
-    //         this.zimmerToPerson = this.myUser.schulzimmer
-    //         this.sitzordnungenToPerson = this.myUser.sitzordnungen
-    //         this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-    //         // console.log(this.myUser)
-    //         // console.log(this.klassenToPerson)
-    //         this.isLoadingData = false;
-    //         this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
-    //         this.dataSource.paginator = this.paginator;
-    //         this.dataSource.sort = this.sort;
+    //     debugger;
+    //     this.myUser = this.dummyService.getUser()
+    //     this.sitzordnungenToPerson = this.myUser.sitzordnungen
+    //     this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+    //     this.klassenToPerson = this.myUser.schulklassen
+    //     this.zimmerToPerson = this.myUser.schulzimmer
+    //     this.regelnToPerson = this.myUser.regeln
+    //     console.log(this.myUser)
+    //     console.log(this.zimmerToPerson)
+    //     this.isLoadingData = false;
 
-
-    //     });
+    //     this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
 
 
     // }
+    loadInputData() {
+        this.userService.getUser().snapshotChanges().pipe(
+            map(changes =>
+                changes.map(c =>
+                    ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
+                )
+            )
+        ).subscribe(users => {
+            debugger;
+            this.myUser = new User(users[0])
+            this.klassenToPerson = this.myUser.schulklassen
+            this.regelnToPerson = this.myUser.regeln
+            this.zimmerToPerson = this.myUser.schulzimmer
+            this.sitzordnungenToPerson = this.myUser.sitzordnungen
+            this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+            // console.log(this.myUser)
+            // console.log(this.klassenToPerson)
+            this.isLoadingData = false;
+            this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+
+
+        });
+
+
+    }
 
     getSchulzimmerName(sitzordnung: Sitzordnung): string {
 
@@ -247,15 +247,15 @@ export class SitzordnungManagementComponent implements OnInit {
     }
 
     saveSitzordnungen(): void {
-        console.log("saving", this.sitzordnungenToPerson)
+        // console.log("saving", this.sitzordnungenToPerson)
         // debugger;
-        // this.savingIsActiv = false;
-        // this.isSaving = true;
-        // this.myUser.sitzordnungen = this.sitzordnungenToPerson
-        // this.userService.updateUser(this.myUser);
-        // this.isSaving = false;
-        // this.sitzordnungenToPersonOriginal = this.sitzordnungenToPerson;
-        // this.openSavingSnackBar()
+        this.savingIsActiv = false;
+        this.isSaving = true;
+        this.myUser.sitzordnungen = this.sitzordnungenToPerson
+        this.userService.updateUser(this.myUser);
+        this.isSaving = false;
+        this.sitzordnungenToPersonOriginal = this.sitzordnungenToPerson;
+        this.openSavingSnackBar()
 
     }
     openSavingSnackBar() {
