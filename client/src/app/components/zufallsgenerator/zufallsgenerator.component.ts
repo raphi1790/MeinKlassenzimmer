@@ -17,7 +17,9 @@ import { map } from 'rxjs/operators';
 export class ZufallsgeneratorComponent implements OnInit {
   
 
-  constructor(private userService:UserService) {
+  constructor(
+    // rivate userService:UserService
+    private dummyService: DummyService) {
    }
   
   myUser:User
@@ -32,24 +34,32 @@ export class ZufallsgeneratorComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
      
-  loadInputData() {
-    this.userService.getUser().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(users => {
-      debugger;
-      this.myUser = new User(users[0])
-      this.klassenToPerson = this.myUser.schulklassen
-      // console.log(this.myUser)
-      // console.log(this.klassenToPerson)
-      this.isLoadingData = false;
+  // loadInputData() {
+  //   this.userService.getUser().snapshotChanges().pipe(
+  //     map(changes =>
+  //       changes.map(c =>
+  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
+  //       )
+  //     )
+  //   ).subscribe(users => {
+  //     debugger;
+  //     this.myUser = new User(users[0])
+  //     this.klassenToPerson = this.myUser.schulklassen
+  //     // console.log(this.myUser)
+  //     // console.log(this.klassenToPerson)
+  //     this.isLoadingData = false;
     
-    });
+  //   });
 
   
+  // }
+  loadInputData() {
+    this.myUser = this.dummyService.getUser()
+    this.klassenToPerson = this.myUser.schulklassen
+    console.log(this.myUser)
+    // console.log(this.schulzimmerToPerson)
+    this.isLoadingData = false;
+
   }
 
   selectOneSchueler(){
