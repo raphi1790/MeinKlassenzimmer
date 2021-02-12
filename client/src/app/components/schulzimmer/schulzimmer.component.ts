@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Tisch } from '../../models/tisch';
 import { TischOutput } from '../../models/output.tisch';
@@ -19,6 +19,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
+import { DummyService } from 'src/app/services/dummy.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -49,40 +53,70 @@ export class SchulzimmerComponent implements OnInit {
   infoDialogRef: MatDialogRef<InfoDialogComponent>;
   myUser: User;
   isLoadingData: boolean;
+  displayedColumns: string[] = ['name', 'action'];
+  dataSource: MatTableDataSource<Schulzimmer>;
   
-  @Input() personId: number
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   
 
-  constructor(private userService: UserService, public dialog: MatDialog,private _snackBar: MatSnackBar ) {
+  constructor(
+      // private userService: UserService,
+     private dummyService: DummyService,
+     public dialog: MatDialog,private _snackBar: MatSnackBar
+      ) {
     this.currentTischNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
     this.regelChecker = new  RegelChecker();
   }
 
-  loadInputData() {
-    this.userService.getUser().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(users => {
-      debugger;
-      this.myUser = new User(users[0])
-      this.schulzimmerToPerson = this.myUser.schulzimmer
-      this.regelnToPerson = this.myUser.regeln
-      this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
-      this.sitzordnungenToPerson = this.myUser.sitzordnungen
-      this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-      // console.log(this.myUser)
-      this.isLoadingData = false;
+  // loadInputData() {
+  //   this.userService.getUser().snapshotChanges().pipe(
+  //     map(changes =>
+  //       changes.map(c =>
+  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
+  //       )
+  //     )
+  //   ).subscribe(users => {
+  //     debugger;
+  //     this.myUser = new User(users[0])
+  //     this.schulzimmerToPerson = this.myUser.schulzimmer
+  //     this.regelnToPerson = this.myUser.regeln
+  //     this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
+  //     this.sitzordnungenToPerson = this.myUser.sitzordnungen
+  //     this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+  //     // console.log(this.myUser)
+  //     this.isLoadingData = false;
+        // this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
+        // this.dataSource.paginator = this.paginator;
+        // this.dataSource.sort = this.sort;
     
-    });
+  //   });
 
   
-  }
+  // }
+
+   loadInputData() {
+        debugger;
+        this.myUser = this.dummyService.getUser()
+        this.sitzordnungenToPerson = this.myUser.sitzordnungen
+        this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+        // this.klassenToPerson = this.myUser.schulklassen
+        this.schulzimmerToPerson = this.myUser.schulzimmer
+        this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
+        this.regelnToPerson = this.myUser.regeln
+        console.log(this.myUser)
+        // console.log(this.schulzimmerToPerson)
+        this.isLoadingData = false;
+
+        this.dataSource = new MatTableDataSource(this.schulzimmerToPerson);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+
+    }
 
   getErrorMessageNeuesSchulzimmer() {
     return this.neuesSchulzimmerForm.hasError('required') ? 'Wert erforderlich' :
@@ -90,11 +124,10 @@ export class SchulzimmerComponent implements OnInit {
             '';
   }
 
-  onSelect(selectedId: Name): void {
+  onSelect(selectedSchulzimmer: Schulzimmer): void {
     debugger;
-    let schulzimmer = this.schulzimmerToPerson.filter(zimmer => zimmer.id == selectedId.id)[0];
     // console.log("table number (before findMaximalTischNumber): " + this.currentTischNumber);
-    this.selectedSchulzimmer = schulzimmer;
+    this.selectedSchulzimmer = selectedSchulzimmer;
     this.tischOutputPreparer = new TischOutputPreparer();
     this.preparedTischOutput = this.tischOutputPreparer.prepareTischOutput(this.selectedSchulzimmer);
      if (this.selectedSchulzimmer.tische != null){
@@ -114,14 +147,13 @@ export class SchulzimmerComponent implements OnInit {
     return Math.max(maximalTischNumber,0); 
 };
 
-  deleteSchulzimmer(selectedId: Name):void{
-    let schulzimmer = this.schulzimmerToPerson.filter(zimmer => zimmer.id == selectedId.id)[0];
-    if(!this.regelChecker.regelExistsToSchulzimmer(schulzimmer,this.regelnToPerson)){
+  deleteSchulzimmer(selectedSchulzimmer: Schulzimmer):void{
+    if(!this.regelChecker.regelExistsToSchulzimmer(selectedSchulzimmer,this.regelnToPerson)){
       this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
         item =>
-          item.id !== schulzimmer.id);
+          item.id !== selectedSchulzimmer.id);
         let sitzordnungenRemover = new SitzordnungenRemover()
-        let returnValuesSitzordnung =  sitzordnungenRemover.removeSitzordnungenContainingSchulzimmer(schulzimmer, this.sitzordnungenToPerson)
+        let returnValuesSitzordnung =  sitzordnungenRemover.removeSitzordnungenContainingSchulzimmer(selectedSchulzimmer, this.sitzordnungenToPerson)
         this.sitzordnungenToPerson = returnValuesSitzordnung[0]
         let numFilteredSitzordnung = returnValuesSitzordnung[1]
   
@@ -135,6 +167,8 @@ export class SchulzimmerComponent implements OnInit {
         }
       this.selectedSchulzimmer = null;    
       this.savingIsActiv = true; 
+      this.dataSource = new MatTableDataSource(this.schulzimmerToPerson);
+
     }else{
       this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
         width: '550px',
@@ -175,6 +209,7 @@ export class SchulzimmerComponent implements OnInit {
     this.neuesSchulzimmerForm.markAsPristine();
     this.neuesSchulzimmerForm.markAsUntouched();
     this.neuesSchulzimmerForm.updateValueAndValidity();
+    this.dataSource = new MatTableDataSource(this.schulzimmerToPerson);
 
   }
   updateCurrentTischNumber(newNumber:number){
@@ -219,15 +254,25 @@ export class SchulzimmerComponent implements OnInit {
 
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+    }
+}
+
   saveSchulzimmerTische() {
     debugger;
-    this.savingIsActiv = false; 
-    this.isSaving = true;
-    this.myUser.schulzimmer = this.schulzimmerToPerson
-    this.userService.updateUser(this.myUser);
-    this.isSaving = false;
-    this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;
-    this.openSavingSnackBar()
+    console.log("saving",this.schulzimmerToPerson )
+    // this.savingIsActiv = false; 
+    // this.isSaving = true;
+    // this.myUser.schulzimmer = this.schulzimmerToPerson
+    // this.userService.updateUser(this.myUser);
+    // this.isSaving = false;
+    // this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;
+    // this.openSavingSnackBar()
     
   }
   cancel(){

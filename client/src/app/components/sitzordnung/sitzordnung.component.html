@@ -27,10 +27,8 @@
               [cdkDropListData]="getDropListData(r,c)" >
               
               
-              <!-- <div cdkDropList  #activeGroup="cdkDropList"  [cdkDropListData]="getDropListData(r,c)"
-                (
-               > -->
-                
+      
+    
               
               <div *ngIf="getDropListData(r,c).schueler">
                 <div   cdkDrag [cdkDragData]="getDropListData(r,c).schueler" >
@@ -39,7 +37,7 @@
               </div>
               </div>
             </div>
-            <!-- </div> -->
+         
             
               <div *ngIf="!tischIsActive(r,c)" class="unselected-tisch">
                 <div *ngIf = "tischIsSelected(r,c)" class="selected-tisch"></div>
