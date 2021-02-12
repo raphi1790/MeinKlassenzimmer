@@ -27,19 +27,19 @@
             <mat-icon *ngIf="showVerwaltung">expand_more</mat-icon>
           </a>
           <mat-nav-list class="sidenav-submenu" *ngIf="showVerwaltung">
-            <a mat-list-item  routerLink="/verwaltung/klassen" routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
+            <a mat-list-item  routerLink="/verwaltung/klassen" routerLinkActive="active" >
               <span class="submenu-spacer"></span>
               <mat-icon>school</mat-icon><span class="item-spacer"></span> Schulklassen</a>
-            <a mat-list-item routerLink="/verwaltung/schulzimmer"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
+            <a mat-list-item routerLink="/verwaltung/schulzimmer"  routerLinkActive="active" >
               <span class="submenu-spacer"></span>
               <mat-icon>build </mat-icon><span class="item-spacer"></span>Schulzimmer</a>
-            <a mat-list-item routerLink="/verwaltung/regeln"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
+            <a mat-list-item routerLink="/verwaltung/regeln"  routerLinkActive="active" >
               <span class="submenu-spacer"></span>
                 <mat-icon>filter_list </mat-icon><span class="item-spacer"></span>Regeln</a>  
           </mat-nav-list>
-          <a mat-list-item  routerLink="/sitzordnung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
+          <a mat-list-item  routerLink="/sitzordnung"  routerLinkActive="active" >
             <mat-icon>autorenew</mat-icon><span class="item-spacer"></span>Sitzordnung</a>
-          <a mat-list-item  routerLink="/listenverwaltung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
+          <a mat-list-item  routerLink="/listenverwaltung"  routerLinkActive="active"  >
             <mat-icon>reorder</mat-icon><span class="item-spacer"></span>Gruppeneinteilung</a>   
             <a mat-list-item  class="header" (click)="toggleToolsMenu()">
               <mat-icon mat-list-icon class="werkzeugkasten">business</mat-icon><span class="item-spacer"></span>Werkzeugkasten 
@@ -48,7 +48,7 @@
             </a>
             <mat-nav-list class="sidenav-submenu" *ngIf="showTools">
               <a mat-list-item routerLink="/werkzeugkasten/timer" routerLinkActive="active"><span class="submenu-spacer"></span><mat-icon>av_timer</mat-icon><span class="item-spacer"></span>Timer</a>
-              <a mat-list-item routerLink="/werkzeugkasten/Zufallsgenerator" routerLinkActive="active" *ngIf="auth.isAuthenticated()"><span class="submenu-spacer"></span><mat-icon>shuffle</mat-icon><span class="item-spacer" ></span>Zufallsgenerator</a>  
+              <a mat-list-item routerLink="/werkzeugkasten/Zufallsgenerator" routerLinkActive="active"><span class="submenu-spacer"></span><mat-icon>shuffle</mat-icon><span class="item-spacer" ></span>Zufallsgenerator</a>  
             </mat-nav-list>
         </mat-nav-list>
       </mat-sidenav>

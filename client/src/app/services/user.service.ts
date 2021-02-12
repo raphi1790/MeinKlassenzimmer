@@ -5,12 +5,12 @@ import 'rxjs/Rx';
 import { User } from '../models/user';
 import { AuthService } from '../services/auth/auth.service';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "@angular/fire/firestore";
-
+import { DataService } from "./data.service";
 
 
 
 @Injectable()
-export class UserService {
+export class UserService implements DataService{
 
     private dbPath = '/users';
     usersRef: AngularFirestoreCollection<User> = null

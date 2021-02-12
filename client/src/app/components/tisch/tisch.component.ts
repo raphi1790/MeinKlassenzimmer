@@ -23,7 +23,8 @@ export class TischComponent implements OnChanges {
 
   constructor(public dialog: MatDialog) {
     this.regelChecker = new RegelChecker();
-    let sitzordnungRemover = new SitzordnungenRemover()
+    this.sitzordnungRemover = new SitzordnungenRemover()
+   
    }
 
 

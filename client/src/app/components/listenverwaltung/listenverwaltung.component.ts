@@ -59,8 +59,8 @@ export class ListenverwaltungComponent implements OnInit   {
   
 
   constructor(
-    // private dummyService:DummyService, 
-     private userService:UserService,
+    private dummyService:DummyService, 
+    //  private userService:UserService,
      private _snackBar: MatSnackBar) {
 
       this.regelFilter = new RegelFilter()
@@ -68,37 +68,42 @@ export class ListenverwaltungComponent implements OnInit   {
   
  
 
-  loadInputData() {
-    this.userService.getUser().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(users => {
-      debugger;
-      this.myUser = new User(users[0])
-      this.klassenToPerson = this.myUser.schulklassen
-      this.regelnToPerson = this.myUser.regeln
-      this.klassenlistenToPerson = this.myUser.klassenlisten
-      this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
-      console.log(this.myUser)
-      console.log(this.klassenlistenToPerson)
-      this.isLoadingData = false;
-      this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    
-    });
-  }
-
   // loadInputData() {
-  //   this.klassenToPerson = this.dummyService.getSchulklassen()
-  //   this.klassenlistenToPerson = new Array<Klassenliste>()
-  //   this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
-  //   this.isLoadingData = false
-
+  //   this.userService.getUser().snapshotChanges().pipe(
+  //     map(changes =>
+  //       changes.map(c =>
+  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
+  //       )
+  //     )
+  //   ).subscribe(users => {
+  //     debugger;
+  //     this.myUser = new User(users[0])
+  //     this.klassenToPerson = this.myUser.schulklassen
+  //     this.regelnToPerson = this.myUser.regeln
+  //     this.klassenlistenToPerson = this.myUser.klassenlisten
+  //     this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
+  //     console.log(this.myUser)
+  //     console.log(this.klassenlistenToPerson)
+  //     this.isLoadingData = false;
+  //     this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;
+    
+  //   });
   // }
+
+  loadInputData() {
+    this.myUser = this.dummyService.getUser()
+    this.klassenToPerson = this.myUser.schulklassen
+    this.klassenlistenToPerson = this.myUser.klassenlisten
+    this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
+    this.regelnToPerson = this.myUser.regeln
+    console.log(this.myUser)
+    // console.log(this.schulzimmerToPerson)
+    this.isLoadingData = false;
+    this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
+
+  }
      
 
   createKlassenliste(): void {
@@ -237,13 +242,14 @@ export class ListenverwaltungComponent implements OnInit   {
 
   saveKlassenlisten(): void {
     debugger;
-    this.savingIsActiv = false; 
-    this.isSaving = true;
-    this.myUser.klassenlisten = this.klassenlistenToPerson
-    this.userService.updateUser(this.myUser);
-    this.isSaving = false;
-    this.klassenlistenToPersonOriginal = this.klassenlistenToPerson;
-    this.openSavingSnackBar()
+    console.log("saving", this.klassenlistenToPerson)
+    // this.savingIsActiv = false; 
+    // this.isSaving = true;
+    // this.myUser.klassenlisten = this.klassenlistenToPerson
+    // this.userService.updateUser(this.myUser);
+    // this.isSaving = false;
+    // this.klassenlistenToPersonOriginal = this.klassenlistenToPerson;
+    // this.openSavingSnackBar()
 
   }
   cancel(){

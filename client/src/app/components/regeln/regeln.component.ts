@@ -17,6 +17,7 @@ import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DummyService } from 'src/app/services/dummy.service';
 
 @Component({
   selector: 'app-regeln',
@@ -66,7 +67,10 @@ export class RegelnComponent implements OnInit {
 
 
 
-  constructor(private userService:UserService,  private _snackBar: MatSnackBar) 
+  constructor(
+        // private userService:UserService,
+        private dummyService: DummyService,
+        private _snackBar: MatSnackBar) 
   {
      this.regelEnricher = new RegelEnricher();
 
@@ -81,29 +85,51 @@ export class RegelnComponent implements OnInit {
 
  
 
-  loadInputData() {
-    this.userService.getUser().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(users => {
-      debugger;
-      this.myUser = new User(users[0])
-      this.regelnToPerson = this.myUser.regeln
-      this.regelnToPerson = JSON.parse(JSON.stringify(this.regelnToPerson));
-      this.klassenToPerson = this.myUser.schulklassen
-      this.zimmerToPerson = this.myUser.schulzimmer
-      this.enrichRegeln(this.regelnToPerson)
-      // console.log(this.myUser)
-      // console.log(this.regelnToPerson)
-      this.isLoadingData = false;
+  // loadInputData() {
+  //   this.userService.getUser().snapshotChanges().pipe(
+  //     map(changes =>
+  //       changes.map(c =>
+  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
+  //       )
+  //     )
+  //   ).subscribe(users => {
+  //     debugger;
+  //     this.myUser = new User(users[0])
+  //     this.regelnToPerson = this.myUser.regeln
+  //     this.regelnToPerson = JSON.parse(JSON.stringify(this.regelnToPerson));
+  //     this.klassenToPerson = this.myUser.schulklassen
+  //     this.zimmerToPerson = this.myUser.schulzimmer
+  //     this.enrichRegeln(this.regelnToPerson)
+  //     // console.log(this.myUser)
+  //     // console.log(this.regelnToPerson)
+  //     this.isLoadingData = false;
     
-    });
+  //   });
 
   
-  }
+  // }
+
+  loadInputData() {
+    debugger;
+    // this.myUser = this.serviceBuilder.getService().getUser()
+    
+    this.myUser = this.dummyService.getUser()
+   
+    this.klassenToPerson = this.myUser.schulklassen
+    this.regelnToPerson = this.myUser.regeln
+    this.regelnToPerson = JSON.parse(JSON.stringify(this.regelnToPerson));
+    this.zimmerToPerson = this.myUser.schulzimmer
+    this.enrichRegeln(this.regelnToPerson)
+
+    console.log(this.myUser)
+    this.isLoadingData = false;
+
+    // this.dataSource = new MatTableDataSource(this.klassenToPerson);
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+
+
+}
       
 
 showDetailConfigurationFesterSitzplatz(): boolean {
@@ -217,13 +243,14 @@ showDetailConfigurationUnpassendePaarung(): boolean {
 
   saveRegeln() {
     debugger;
-    this.savingIsActiv = false; 
-    this.isSaving = true;
-    this.myUser.regeln = this.regelnToPerson
-    this.userService.updateUser(this.myUser);
-    this.isSaving = false;
-    this.regelnToPersonOriginal = this.regelnToPerson;
-    this.openSavingSnackBar()
+    console.log("saving", this.regelnToPerson)
+    // this.savingIsActiv = false; 
+    // this.isSaving = true;
+    // this.myUser.regeln = this.regelnToPerson
+    // this.userService.updateUser(this.myUser);
+    // this.isSaving = false;
+    // this.regelnToPersonOriginal = this.regelnToPerson;
+    // this.openSavingSnackBar()
     
   }
 

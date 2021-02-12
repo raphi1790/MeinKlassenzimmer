@@ -11,6 +11,7 @@ import { Name } from '../../models/name';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import { ServiceBuilder } from '../../services/service.builder';
 import { map } from 'rxjs/operators';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +20,10 @@ import { KlassenlistenRemover } from 'src/app/helpers/klassenlisten.remover';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
+import { DummyService } from 'src/app/services/dummy.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 
 @Component({
@@ -47,19 +52,20 @@ export class SchulklassenComponent implements OnInit {
   neueSchulklasseName: string
   neueSchulklasseForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   infoDialogRef: MatDialogRef<InfoDialogComponent>;
+  displayedColumns: string[] = ['name', 'action'];
+  dataSource: MatTableDataSource<Schulklasse>;
 
-
-
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   @Input() personId: string
 
 
   
- 
-  
-  
-
-  constructor( private userService:UserService,
+  constructor(
+    //  private serviceBuilder: ServiceBuilder,
+    // private userService:UserService,
+    private dummyService : DummyService,
      public dialog: MatDialog,
      private _snackBar: MatSnackBar) {
       this.regelChecker = new RegelChecker();
@@ -71,31 +77,56 @@ export class SchulklassenComponent implements OnInit {
  
 
 
-  loadInputData() {
-    this.userService.getUser().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(users => {
-      debugger;
-      this.myUser = new User(users[0])
-      this.klassenToPerson = this.myUser.schulklassen
-      this.regelnToPerson = this.myUser.regeln
-      this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
-      this.klassenlistenToPerson = this.myUser.klassenlisten
-      this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
-      this.sitzordnungenToPerson = this.myUser.sitzordnungen
-      this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-      // console.log(this.myUser)
-      // console.log(this.klassenToPerson)
-      this.isLoadingData = false;
+  // loadInputData() {
+  //   this.userService.getUser().snapshotChanges().pipe(
+  //     map(changes =>
+  //       changes.map(c =>
+  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
+  //       )
+  //     )
+  //   ).subscribe(users => {
+  //     debugger;
+  //     this.myUser = new User(users[0])
+  //     this.klassenToPerson = this.myUser.schulklassen
+  //     this.regelnToPerson = this.myUser.regeln
+  //     this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
+  //     this.klassenlistenToPerson = this.myUser.klassenlisten
+  //     this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
+  //     this.sitzordnungenToPerson = this.myUser.sitzordnungen
+  //     this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+  //     // console.log(this.myUser)
+  //     // console.log(this.klassenToPerson)
+  //     this.isLoadingData = false;
+        // this.dataSource = new MatTableDataSource(this.klassenToPerson);
+        // this.dataSource.paginator = this.paginator;
+        // this.dataSource.sort = this.sort;
     
-    });
+  //   });
 
   
-  }
+  // }
+
+  loadInputData() {
+    debugger;
+    // this.myUser = this.serviceBuilder.getService().getUser()
+    
+    this.myUser = this.dummyService.getUser()
+    this.sitzordnungenToPerson = this.myUser.sitzordnungen
+    this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+    this.klassenToPerson = this.myUser.schulklassen
+    this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
+    this.klassenlistenToPerson = this.myUser.klassenlisten
+    this.regelnToPerson = this.myUser.regeln
+    console.log(this.myUser)
+    // console.log(this.schulzimmerToPerson)
+    this.isLoadingData = false;
+
+    this.dataSource = new MatTableDataSource(this.klassenToPerson);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+
+}
 
 
   getErrorMessageNeueSchulklasse() {
@@ -105,27 +136,26 @@ export class SchulklassenComponent implements OnInit {
   }
 
 
-  onSelect(selectedId: Name): void {
+  onSelect(selectedSchulklasse: Schulklasse): void {
     debugger;
-    this.selectedSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == selectedId.id)[0];
+    this.selectedSchulklasse = selectedSchulklasse;
 
 
   }
-  deleteSchulklasse(selectedId: Name):void{
+  deleteSchulklasse(selectedSchulklasse: Schulklasse):void{
     debugger;
-    let klasse = this.klassenToPerson.filter(klasse => klasse.id == selectedId.id)[0];
-    if(!this.regelChecker.regelExistsToSchulklasse(klasse, this.regelnToPerson)){
+    if(!this.regelChecker.regelExistsToSchulklasse(selectedSchulklasse, this.regelnToPerson)){
       this.klassenToPerson = this.klassenToPerson.filter(
         item =>
-          item.id !== klasse.id);
+          item.id !== selectedSchulklasse.id);
       // remove klassenlisten based on selected klasse
       let klassenlistenRemover = new KlassenlistenRemover()
-      let returnValuesKlassenliste =  klassenlistenRemover.removeKlassenlistenContainingSchulklasse(klasse, this.klassenlistenToPerson)
+      let returnValuesKlassenliste =  klassenlistenRemover.removeKlassenlistenContainingSchulklasse(selectedSchulklasse, this.klassenlistenToPerson)
       this.klassenlistenToPerson = returnValuesKlassenliste[0]
       let numFilteredKlassenliste = returnValuesKlassenliste[1]
       // remove sitzordnungen based on selected klasse
       let sitzordnungenRemover = new SitzordnungenRemover()
-      let returnValuesSitzordnung =  sitzordnungenRemover.removeSitzordnungenContainingSchulklasse(klasse, this.sitzordnungenToPerson)
+      let returnValuesSitzordnung =  sitzordnungenRemover.removeSitzordnungenContainingSchulklasse(selectedSchulklasse, this.sitzordnungenToPerson)
       this.sitzordnungenToPerson = returnValuesSitzordnung[0]
       let numFilteredSitzordnung = returnValuesSitzordnung[1]
 
@@ -139,6 +169,7 @@ export class SchulklassenComponent implements OnInit {
       }
       this.savingIsActiv = true;
       this.selectedSchulklasse = null;
+      this.dataSource = new MatTableDataSource(this.klassenToPerson);
     }else{
       this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
         width: '550px',
@@ -169,6 +200,7 @@ export class SchulklassenComponent implements OnInit {
     this.neueSchulklasseForm.markAsPristine();
     this.neueSchulklasseForm.markAsUntouched();
     this.neueSchulklasseForm.updateValueAndValidity();
+    this.dataSource = new MatTableDataSource(this.klassenToPerson);
 
   }
 
@@ -221,17 +253,26 @@ export class SchulklassenComponent implements OnInit {
     });
 
   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+    }
+}
 
   
   saveSchulklasseSchueler() {
     debugger;
-    this.savingIsActiv = false; 
-    this.isSaving = true;
-    this.myUser.schulklassen = this.klassenToPerson
-    this.userService.updateUser(this.myUser);
-    this.isSaving = false;
-    this.klassenToPersonOriginal = this.klassenToPerson;
-    this.openSavingSnackBar()
+    console.log("saving",this.klassenToPerson )
+    // this.savingIsActiv = false; 
+    // this.isSaving = true;
+    // this.myUser.schulklassen = this.klassenToPerson
+    // this.userService.updateUser(this.myUser);
+    // this.isSaving = false;
+    // this.klassenToPersonOriginal = this.klassenToPerson;
+    // this.openSavingSnackBar()
     
   }
   cancel(){

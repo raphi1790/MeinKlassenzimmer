@@ -141,9 +141,9 @@ export class KlassenlisteComponent implements OnChanges {
       const pdf = new jsPDF();
       var width = pdf.internal.pageSize.getWidth();    
       var height = pdf.internal.pageSize.getHeight();
-      var ratio = divHeight/ height;
+      var ratio = height/ divHeight;
       var heightNew = height;
-      var widthNew = width / ratio
+      var widthNew = divWidth * ratio
       pdf.addImage(imgData, 'PNG', 0, 0, widthNew, heightNew);
       pdf.save(fileName);
     });

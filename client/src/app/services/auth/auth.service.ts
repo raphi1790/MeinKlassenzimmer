@@ -77,8 +77,6 @@ export class AuthService {
   }
 
    private get currentUser(): any {
-    // console.log("Current User");
-    // console.log(this.authState);
     return this.isAuthenticated ? this.authState : null;
   }
 
@@ -107,12 +105,6 @@ export class AuthService {
   }
 
   
-
-
- 
-  // get currentUserId(): string {
-  //   return this.isAuthenticated ? this.authState.uid : '';
-  // }
 
 
 

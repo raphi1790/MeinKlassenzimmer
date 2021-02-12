@@ -12,12 +12,12 @@ import { PositionTisch } from '../models/position.tisch';
 import { Sitzordnung } from '../models/sitzordnung';
 import { Seating } from '../models/seating';
 import { Regel } from '../models/regel';
+import { DataService } from "./data.service";
 
 
 
-
-@Injectable()
-export class DummyService {
+@Injectable({ providedIn: 'root' })
+export class DummyService implements DataService {
 
     schulklasse1: Schulklasse
     schulklasse2: Schulklasse
@@ -52,6 +52,9 @@ export class DummyService {
         
 
         return this.user
+    }
+    updateUser(user:User):void{
+        console.log(user)
     }
     private getSchueler(): Schueler[]{
         let schueler = new Array<Schueler>(5)
@@ -117,6 +120,7 @@ export class DummyService {
         this.schulklasse3.id = '3'
         this.schulklasse3.personId = 'abc'
         this.schulklasse3.name = 'Test Dummy Service Klasse 3'
+        this.schulklasse3.schueler = new Array<Schueler>()
 
         this.schulklasse4 = new Schulklasse()
         this.schulklasse4.id = '4'

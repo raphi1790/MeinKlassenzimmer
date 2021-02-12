@@ -39,6 +39,7 @@ import {KlassenlisteComponent} from './components/klassenliste/klassenliste.comp
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { SitzordnungManagementComponent } from './components/sitzordnung-management/sitzordnung.management.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { DataService } from './services/data.service';
 
 
 @NgModule({
