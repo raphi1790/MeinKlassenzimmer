@@ -2,16 +2,17 @@ import { Schulklasse } from '../models/schulklasse';
 import { Schueler } from '../models/schueler';
 import { Sitzordnung } from '../models/sitzordnung';
 import { Schulzimmer } from '../models/schulzimmer';
-import { TischOutput } from '../models/output.tisch';
+import { Tisch } from '../models/tisch';
+
 
 export class SitzordnungenRemover {
   constructor() { }
 
-  removeTischFromSeating(removedTischOutput: TischOutput, sitzordnungenToPerson: Sitzordnung[]  ): Sitzordnung[]{
+  removeTischFromSeating(removedTisch: Tisch, sitzordnungenToPerson: Sitzordnung[]  ): Sitzordnung[]{
     debugger;
     if (typeof sitzordnungenToPerson !== 'undefined') {
       sitzordnungenToPerson.forEach(function (o) {
-        o.seatings = o.seatings.filter(seating => seating.tisch.position != removedTischOutput.position )
+        o.seatings = o.seatings.filter(seating => !(seating.tisch.position.column === removedTisch.position.column && seating.tisch.position.row === removedTisch.position.row ))
         });
       return sitzordnungenToPerson
 

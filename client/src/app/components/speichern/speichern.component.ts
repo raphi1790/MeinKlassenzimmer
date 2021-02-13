@@ -34,8 +34,7 @@ export class SpeichernComponent implements OnInit, OnChanges {
   cancel(){
     debugger;
      this.speichernInfoDialogRef = this.dialog.open(SpeichernInfoDialogComponent, {
-        height: '180px',
-        width: '430px',
+        width: '550px',
       });
       this.speichernInfoDialogRef.afterClosed().subscribe(result => {
         if(result){
