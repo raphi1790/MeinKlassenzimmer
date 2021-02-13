@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Tisch } from '../../models/tisch';
-import { TischOutput } from '../../models/output.tisch';
-import { TischOutputPreparer } from '../../helpers/tischOutput.preparer';
 import { FormControl, Validators } from '@angular/forms';
 import * as uuidv4 from 'uuid/v4';
 
@@ -42,13 +40,11 @@ export class SchulzimmerComponent implements OnInit {
   regelnToPerson: Regel[];
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
-  preparedTischOutput: TischOutput[][];
-  tischOutputPreparer: TischOutputPreparer;
   savingIsActiv : boolean;
   neuesSchulzimmerName: string;
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
   isSaving: boolean;
-  currentTischNumber: number;
+  maximalTischNumber: number;
   regelChecker:RegelChecker;
   infoDialogRef: MatDialogRef<InfoDialogComponent>;
   myUser: User;
@@ -66,7 +62,7 @@ export class SchulzimmerComponent implements OnInit {
      private dummyService: DummyService,
      public dialog: MatDialog,private _snackBar: MatSnackBar
       ) {
-    this.currentTischNumber = 0;
+    this.maximalTischNumber = 0;
     this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
     this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
     this.regelChecker = new  RegelChecker();
@@ -128,19 +124,17 @@ export class SchulzimmerComponent implements OnInit {
     debugger;
     // console.log("table number (before findMaximalTischNumber): " + this.currentTischNumber);
     this.selectedSchulzimmer = selectedSchulzimmer;
-    this.tischOutputPreparer = new TischOutputPreparer();
-    this.preparedTischOutput = this.tischOutputPreparer.prepareTischOutput(this.selectedSchulzimmer);
      if (this.selectedSchulzimmer.tische != null){
-      this.currentTischNumber = this.findMaximalTischNumber(this.selectedSchulzimmer.tische);
+      this.maximalTischNumber = this.findMaximalTischNumber(this.selectedSchulzimmer.tische);
     }
     else{
-      this.currentTischNumber = 0;
+      this.maximalTischNumber = 0;
     }
     // console.log("table number (after findMaximalTischNumber): " + this.currentTischNumber);
 
   }
 
-  private findMaximalTischNumber(tische: Tisch[]):number{
+  findMaximalTischNumber(tische: Tisch[]):number{
     debugger;
     let allTischNumbers = tische.map(a => a.tischNumber); 
     var maximalTischNumber = Math.max.apply(null, allTischNumbers) ;
@@ -212,32 +206,31 @@ export class SchulzimmerComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.schulzimmerToPerson);
 
   }
-  updateCurrentTischNumber(newNumber:number){
+  updateMaximalTischNumber(newNumber:number){
     // console.log("new Number: "+ newNumber);
-    this.currentTischNumber = newNumber;
-  }
-  updateSchulzimmer(updatedTischOutput: TischOutput): void {
     debugger;
-    var updatedZimmer = new Schulzimmer;
-    this.tischOutputPreparer = new TischOutputPreparer();
-    updatedZimmer = this.tischOutputPreparer.extractTischOfTischOutput(updatedTischOutput, this.selectedSchulzimmer);
+    this.maximalTischNumber = Math.max(newNumber, this.maximalTischNumber)
+  }
+  updateSchulzimmer(updatedSchulzimmer: Schulzimmer): void {
+    debugger;
     this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
       item =>
-        item.id !== updatedZimmer.id)
+        item.id !== updatedSchulzimmer.id)
     if (typeof this.schulzimmerToPerson == 'undefined') {
       console.log("SchulzimmerToPerson is undefined");
     }
     else {
-      this.schulzimmerToPerson.push(updatedZimmer);
+      this.schulzimmerToPerson.push(updatedSchulzimmer);
     }
     this.savingIsActiv = true;
-    // console.log("Updated SchulzimmerToPerson");
-    // console.log(this.schulzimmerToPerson);
+    console.log("Updated SchulzimmerToPerson");
+    console.log(this.schulzimmerToPerson);
   }
 
   updateSitzordnungen(updatedSitzordnungen: Sitzordnung[]): void {
     debugger;
     this.sitzordnungenToPerson = updatedSitzordnungen
+    console.log("this.sitzordnungenToPerson ", this.sitzordnungenToPerson)
     this.savingIsActiv = true;
   }
 
