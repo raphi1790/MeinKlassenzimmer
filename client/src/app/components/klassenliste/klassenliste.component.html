@@ -1,54 +1,70 @@
-<mat-card class="second-column-card" class="responsive-wide" id="contentToPdf" >
+<mat-card class="second-column-card responsive-wide" id="contentToPdf">
   <mat-card-header>
-
     <mat-card-title-group>
       <mat-card-title>
-        <h4>Klassenliste {{selectedKlassenliste.name}}</h4>
+        <h4>Klassenliste {{ selectedKlassenliste.name }}</h4>
       </mat-card-title>
     </mat-card-title-group>
-
   </mat-card-header>
   <mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="accent" (click)="openRegelDialog()">Zufällige Einteilung</button>
-      <button mat-raised-button (click)="generatePdf()">Als PDF exportieren</button>
+      <button mat-raised-button color="accent" (click)="openRegelDialog()">
+        Zufällige Einteilung
+      </button>
+      <button mat-raised-button (click)="generatePdf()">
+        Als PDF exportieren
+      </button>
     </mat-card-actions>
 
-
     <div class="dragdrop-container">
-
       <div cdkDropListGroup>
         <div class="row">
-          <div class="col-md-6" >
-
-
+          <div class="col-md-6">
             <div *ngFor="let gruppe of selectedKlassenliste.gruppen">
-
               <h5>
-              <app-inline-edit-small [text]="gruppe.name" [id]="gruppe.id" (edit)="onNameChange($event)"
+                <app-inline-edit-small
+                  [text]="gruppe.name"
+                  [id]="gruppe.id"
+                  (edit)="onNameChange($event)"
                 >
-              </app-inline-edit-small>
-            </h5>
-              <div cdkDropList [cdkDropListData]="gruppe.schueler" class="dragdrop-list"
-                (cdkDropListDropped)="drop($event)">
-                <div class="dragdrop-box" *ngFor="let schueler of gruppe.schueler" cdkDrag>
-                  {{schueler.vorname}} {{schueler.name}}</div>
-              </div><br>
+                </app-inline-edit-small>
+              </h5>
+              <div
+                cdkDropList
+                [cdkDropListData]="gruppe.schueler"
+                class="dragdrop-list"
+                (cdkDropListDropped)="drop($event)"
+              >
+                <div
+                  class="dragdrop-box"
+                  *ngFor="let schueler of gruppe.schueler"
+                  cdkDrag
+                >
+                  {{ schueler.vorname }} {{ schueler.name }}
+                </div>
+              </div>
+              <br />
             </div>
           </div>
           <div class="col-md-6">
             <h5>Restliche Schüler</h5>
-            <div cdkDropList [cdkDropListData]="defaultGroup.schueler" class="dragdrop-list"
-              (cdkDropListDropped)="drop($event)">
-              <div class="dragdrop-box" *ngFor="let schueler of defaultGroup.schueler" cdkDrag>
-                {{schueler.vorname}} {{schueler.name}}</div>
+            <div
+              cdkDropList
+              [cdkDropListData]="defaultGroup.schueler"
+              class="dragdrop-list"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div
+                class="dragdrop-box"
+                *ngFor="let schueler of defaultGroup.schueler"
+                cdkDrag
+              >
+                {{ schueler.vorname }} {{ schueler.name }}
+              </div>
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
-
   </mat-card-content>
 </mat-card>

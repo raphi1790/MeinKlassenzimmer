@@ -1,12 +1,8 @@
 <div class="container-fluid">
-
   <div class="row">
-    <div class="col-md-5" class="responsive">
+    <div class="col-md-5 responsive">
       <div class="column1">
-
-
         <div class="input-form-container">
-
           <mat-card>
             <mat-card-header>
               <mat-card-title-group>
@@ -14,21 +10,37 @@
                   <h4>Schulklasse hinzufügen</h4>
                 </mat-card-title>
               </mat-card-title-group>
-
             </mat-card-header>
             <mat-card-content>
               <mat-form-field>
-                <input matInput placeholder="Name der Klasse" required [(ngModel)]="neueSchulklasseName" [formControl]="neueSchulklasseForm">
-                <mat-error *ngIf="neueSchulklasseForm.invalid && (neueSchulklasseForm.dirty || neueSchulklasseForm.touched)">{{getErrorMessageNeueSchulklasse()}}</mat-error>
-
+                <input
+                  matInput
+                  placeholder="Name der Klasse"
+                  required
+                  [(ngModel)]="neueSchulklasseName"
+                  [formControl]="neueSchulklasseForm"
+                />
+                <mat-error
+                  *ngIf="
+                    neueSchulklasseForm.invalid &&
+                    (neueSchulklasseForm.dirty || neueSchulklasseForm.touched)
+                  "
+                  >{{ getErrorMessageNeueSchulklasse() }}</mat-error
+                >
               </mat-form-field>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-raised-button color="accent" [disabled]="!neueSchulklasseForm.valid" (click)="addSchulklasse()">Hinzufügen</button>
+              <button
+                mat-raised-button
+                color="accent"
+                [disabled]="!neueSchulklasseForm.valid"
+                (click)="addSchulklasse()"
+              >
+                Hinzufügen
+              </button>
             </mat-card-actions>
           </mat-card>
         </div>
-
 
         <div class="klassenListe">
           <mat-card>
@@ -36,48 +48,77 @@
               <mat-card-title-group>
                 <mat-card-title>
                   <h4>Erfasste Schulklassen</h4>
-
                 </mat-card-title>
               </mat-card-title-group>
-
             </mat-card-header>
             <mat-card-content>
               <mat-form-field>
                 <mat-label>Filter</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Schulklasse 1a" #input>
+                <input
+                  matInput
+                  (keyup)="applyFilter($event)"
+                  placeholder="Ex. Schulklasse 1a"
+                  #input
+                />
               </mat-form-field>
 
-              <div >
+              <div>
                 <table mat-table [dataSource]="dataSource" matSort>
-              
-                
-                <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                  <mat-cell *matCellDef="let schulklasse"> 	<mat-form-field floatLabel="never" (click)="onSelect(schulklasse)">
-                    <input matInput placeholder="Name" (change)="savingIsActiv = true" [value]="schulklasse.name" [(ngModel)]="schulklasse.name" >
-                  </mat-form-field> </mat-cell>
-                </ng-container>
-            
-                <ng-container matColumnDef="action" class="align-column-right">
-                  <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
-                  <mat-cell *matCellDef="let schulklasse">
-                    <span>
-                      <mat-icon matListIcon (click)="deleteSchulklasse(schulklasse)">delete</mat-icon>
-                    </span>
-                  </mat-cell>
-                </ng-container>
-                          
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            
-                <!-- Row shown when there is no matching data. -->
-                <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="1">No data</td>
-                </tr>
-              </table>
-            
-              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-            </div>
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let schulklasse">
+                      <mat-form-field
+                        floatLabel="never"
+                        (click)="onSelect(schulklasse)"
+                      >
+                        <input
+                          matInput
+                          placeholder="Name"
+                          (change)="savingIsActiv = true"
+                          [value]="schulklasse.name"
+                          [(ngModel)]="schulklasse.name"
+                        />
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container
+                    matColumnDef="action"
+                    class="align-column-right"
+                  >
+                    <mat-header-cell *matHeaderCellDef>
+                      Löschen
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let schulklasse">
+                      <span>
+                        <mat-icon
+                          matListIcon
+                          (click)="deleteSchulklasse(schulklasse)"
+                          >delete</mat-icon
+                        >
+                      </span>
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row
+                    *matHeaderRowDef="displayedColumns"
+                  ></mat-header-row>
+                  <mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                  ></mat-row>
+
+                  <!-- Row shown when there is no matching data. -->
+                  <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="1">No data</td>
+                  </tr>
+                </table>
+
+                <mat-paginator
+                  [pageSizeOptions]="[5, 10, 25, 100]"
+                ></mat-paginator>
+              </div>
               <!-- <mat-nav-list>
                 <mat-list-item *ngFor="let klasse of klassenToPerson;last as last" [class.highlighted]="klasse === selectedSchulklasse">
 
@@ -88,33 +129,34 @@
                 </mat-list-item>
               </mat-nav-list> -->
             </mat-card-content>
-
           </mat-card>
-          <app-speichern (saveData)="saveSchulklasseSchueler()" (cancelData) ="cancel()" [savingIsActive] ="savingIsActiv"></app-speichern>
-         
+          <app-speichern
+            (saveData)="saveSchulklasseSchueler()"
+            (cancelData)="cancel()"
+            [savingIsActive]="savingIsActiv"
+          ></app-speichern>
         </div>
       </div>
-
-
-
     </div>
     <div class="col-md-7">
       <div class="column2">
         <div class="schueler" *ngIf="selectedSchulklasse">
           <div class="schuelerListe">
-            <app-schueler [selectedSchulklasse]="selectedSchulklasse" [klassenlistenToPerson] ="klassenlistenToPerson" 
-                [regelnToPerson] ="regelnToPerson" 
-                [sitzordnungenToPerson] ="sitzordnungenToPerson" 
-                (noteSchulklasse)="updateSchulklasse($event)"
-                (noteKlassenlisten)="updateKlassenlisten($event)"
-                (noteSitzordnungen)="updateSitzordnungen($event)"
-                ></app-schueler>
+            <app-schueler
+              [selectedSchulklasse]="selectedSchulklasse"
+              [klassenlistenToPerson]="klassenlistenToPerson"
+              [regelnToPerson]="regelnToPerson"
+              [sitzordnungenToPerson]="sitzordnungenToPerson"
+              (noteSchulklasse)="updateSchulklasse($event)"
+              (noteKlassenlisten)="updateKlassenlisten($event)"
+              (noteSitzordnungen)="updateSitzordnungen($event)"
+            ></app-schueler>
           </div>
         </div>
       </div>
-     
     </div>
   </div>
-  <div id ="center" style="position:fixed;top:50%;left:50%">
-      <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner></div>
+  <div id="center" style="position: fixed; top: 50%; left: 50%">
+    <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner>
+  </div>
 </div>
