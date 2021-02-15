@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient} from '@angular/common/http';
 import 'rxjs/Rx';
 import { User } from '../models/user';
+import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "@angular/fire/firestore";
 import { DataService } from "./data.service";
@@ -31,6 +32,16 @@ export class UserService implements DataService{
    getUser(): AngularFirestoreCollection<User> {
     return this.usersRef;
   }
+
+  mapUser(apply){
+    this.getUser().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(apply);
+  } 
 
   updateUser(data:User) {
       // console.log(JSON.parse(JSON.stringify(data)))

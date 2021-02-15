@@ -82,7 +82,12 @@ import { BoxComponent } from './components/box/box.component';
     ScrollingModule
 
   ],
-  providers: [ AuthService,UserService,DummyService,
+  providers: [ AuthService,
+    {
+      provide: DataService, 
+      useClass: environment.production? UserService: DummyService
+    },
+    ,
     UnsavedGuard,
     AuthGuard,
     {

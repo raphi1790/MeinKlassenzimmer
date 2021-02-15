@@ -13,6 +13,7 @@ import { Sitzordnung } from '../models/sitzordnung';
 import { Seating } from '../models/seating';
 import { Regel } from '../models/regel';
 import { DataService } from "./data.service";
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
 
 
 
@@ -36,10 +37,8 @@ export class DummyService implements DataService {
     constructor() {
 
     }
-
-    getUser(): User{
-        debugger;
-        this.user = new User({
+    getUser():User{
+        return new User({
             uid: 'abc',
             email: "raphael.schoenenberger@test.ch",
             photoURL: null,
@@ -49,9 +48,23 @@ export class DummyService implements DataService {
             sitzordnungen: this.getSitzordnungen(),
             regeln: this.getRegeln()
         })
+
+    }
+    mapUser(apply):void{
+        apply([new User({
+            uid: 'abc',
+            email: "raphael.schoenenberger@test.ch",
+            photoURL: null,
+            displayName : 'Dummy User',
+            schulklassen : this.getSchulklassen(),
+            schulzimmer : this.getSchulzimmer(),
+            sitzordnungen: this.getSitzordnungen(),
+            regeln: this.getRegeln()
+        })])
+        debugger;
+        
         
 
-        return this.user
     }
     updateUser(user:User):void{
         console.log(user)

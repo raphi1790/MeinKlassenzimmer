@@ -24,6 +24,7 @@ import { DummyService } from 'src/app/services/dummy.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { DataService } from 'src/app/services/data.service';
 
 
 @Component({
@@ -63,9 +64,10 @@ export class SchulklassenComponent implements OnInit {
 
   
   constructor(
+    private dataService: DataService,
     //  private serviceBuilder: ServiceBuilder,
     // private userService:UserService,
-    private dummyService : DummyService,
+    // private dummyService : DummyService,
      public dialog: MatDialog,
      private _snackBar: MatSnackBar) {
       this.regelChecker = new RegelChecker();
@@ -77,56 +79,54 @@ export class SchulklassenComponent implements OnInit {
  
 
 
-  // loadInputData() {
-  //   this.userService.getUser().snapshotChanges().pipe(
-  //     map(changes =>
-  //       changes.map(c =>
-  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-  //       )
-  //     )
-  //   ).subscribe(users => {
-  //     debugger;
-  //     this.myUser = new User(users[0])
-  //     this.klassenToPerson = this.myUser.schulklassen
-  //     this.regelnToPerson = this.myUser.regeln
-  //     this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
-  //     this.klassenlistenToPerson = this.myUser.klassenlisten
-  //     this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
-  //     this.sitzordnungenToPerson = this.myUser.sitzordnungen
-  //     this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-  //     // console.log(this.myUser)
-  //     // console.log(this.klassenToPerson)
-  //     this.isLoadingData = false;
-        // this.dataSource = new MatTableDataSource(this.klassenToPerson);
-        // this.dataSource.paginator = this.paginator;
-        // this.dataSource.sort = this.sort;
-    
-  //   });
+  loadInputData() {
+    this.dataService.mapUser(user => this.applyUser(user))
 
   
-  // }
+  }
 
-  loadInputData() {
-    debugger;
-    // this.myUser = this.serviceBuilder.getService().getUser()
+  applyUser(users){
+      debugger;
+      this.myUser = new User(users[0])
+      debugger;
+      this.klassenToPerson = this.myUser.schulklassen
+      this.regelnToPerson = this.myUser.regeln
+      this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
+      this.klassenlistenToPerson = this.myUser.klassenlisten
+      this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
+      this.sitzordnungenToPerson = this.myUser.sitzordnungen
+      this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+      // console.log(this.myUser)
+      // console.log(this.klassenToPerson)
+      this.isLoadingData = false;
+      //   this.dataSource = new MatTableDataSource(this.klassenToPerson);
+      //   this.dataSource.paginator = this.paginator;
+      //   this.dataSource.sort = this.sort;
     
-    this.myUser = this.dummyService.getUser()
-    this.sitzordnungenToPerson = this.myUser.sitzordnungen
-    this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-    this.klassenToPerson = this.myUser.schulklassen
-    this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
-    this.klassenlistenToPerson = this.myUser.klassenlisten
-    this.regelnToPerson = this.myUser.regeln
-    console.log(this.myUser)
-    // console.log(this.schulzimmerToPerson)
-    this.isLoadingData = false;
+  }
 
-    this.dataSource = new MatTableDataSource(this.klassenToPerson);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+//   loadInputData() {
+//     debugger;
+//     // this.myUser = this.serviceBuilder.getService().getUser()
+    
+//     this.myUser = this.dataService.getUser()
+//     console.log("this.myUser", this.myUser)
+//     this.sitzordnungenToPerson = this.myUser.sitzordnungen
+//     this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+//     this.klassenToPerson = this.myUser.schulklassen
+//     this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
+//     this.klassenlistenToPerson = this.myUser.klassenlisten
+//     this.regelnToPerson = this.myUser.regeln
+//     console.log(this.myUser)
+//     // console.log(this.schulzimmerToPerson)
+//     this.isLoadingData = false;
+
+//     this.dataSource = new MatTableDataSource(this.klassenToPerson);
+//     this.dataSource.paginator = this.paginator;
+//     this.dataSource.sort = this.sort;
 
 
-}
+// }
 
 
   getErrorMessageNeueSchulklasse() {
