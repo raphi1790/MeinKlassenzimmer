@@ -78,15 +78,6 @@
             
               <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
             </div>
-              <!-- <mat-nav-list>
-                <mat-list-item *ngFor="let klasse of klassenToPerson;last as last" [class.highlighted]="klasse === selectedSchulklasse">
-
-                  <app-inline-edit [text]="klasse.name" [id]="klasse.id" 
-                    (edit)="onNameChange($event)" (select)="onSelect($event)" (delete) ="deleteSchulklasse($event)">
-                  </app-inline-edit>
-                  <mat-divider [inset]="true" *ngIf="!last"></mat-divider> 
-                </mat-list-item>
-              </mat-nav-list> -->
             </mat-card-content>
 
           </mat-card>
