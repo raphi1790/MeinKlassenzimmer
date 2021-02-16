@@ -9,6 +9,7 @@ import { User } from '../../models/user';
 import { Observable, of } from 'rxjs';
 import { switchMap} from 'rxjs/operators';
 import firebase from 'firebase/app';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({ providedIn: 'root' })
@@ -71,8 +72,8 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-
-    return this.authState !== null;
+    // always authenticated if in develop-mode
+    return environment.production ? this.authState !== null: true;
 
   }
 

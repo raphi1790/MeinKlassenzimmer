@@ -13,6 +13,7 @@ import { Sitzordnung } from '../models/sitzordnung';
 import { Seating } from '../models/seating';
 import { Regel } from '../models/regel';
 import { DataService } from "./data.service";
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
 
 
 
@@ -36,10 +37,8 @@ export class DummyService implements DataService {
     constructor() {
 
     }
-
-    getUser(): User{
-        debugger;
-        this.user = new User({
+    mapUser(apply):void{
+        apply([new User({
             uid: 'abc',
             email: "raphael.schoenenberger@test.ch",
             photoURL: null,
@@ -48,13 +47,14 @@ export class DummyService implements DataService {
             schulzimmer : this.getSchulzimmer(),
             sitzordnungen: this.getSitzordnungen(),
             regeln: this.getRegeln()
-        })
+        })])
+        debugger;
+        
         
 
-        return this.user
     }
     updateUser(user:User):void{
-        console.log(user)
+        console.log("saved on dummy-service:", user)
     }
     private getSchueler(): Schueler[]{
         let schueler = new Array<Schueler>(5)
@@ -268,7 +268,17 @@ export class DummyService implements DataService {
         regel1.schueler1Id = '1'
         regel1.schueler2Id = '3'
 
-        return [regel1]
+        let regel2 = new Regel()
+        regel2.id = '1'
+        regel2.personId = 'abc'
+        regel2.beschreibung = "Test Regel 2"
+        regel2.active = true
+        regel2.type = "Fester Sitzplatz"
+        regel2.tischId = '3'
+        regel2.schueler1Id = '1'
+        regel2.schueler2Id = null
+
+        return [regel1, regel2]
 
 
 

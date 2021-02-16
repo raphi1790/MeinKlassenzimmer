@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
 import { User } from './models/user';
+import {environment} from '../environments/environment'
 
 
 
@@ -12,6 +13,7 @@ import { User } from './models/user';
 export class AppComponent {
 
   constructor(public auth: AuthService) {
+    console.log(environment.production? "production": "dev")
     
       
   }

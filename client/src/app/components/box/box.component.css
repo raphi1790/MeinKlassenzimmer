@@ -15,6 +15,12 @@
     position: relative;
     
 }
+.tischNumber{
+    color: white;
+    text-align: center;
+    
+    
+}
 .checkboxActiveTisch .mat-checkbox-inner-container {
     position: absolute;
     bottom: 0;
@@ -31,12 +37,3 @@
     height: 15px;
     width: 15px;
   }
-  .tischNumber{
-      color: white;
-      text-align: center;
-      
-      
-  }
-
-  
-

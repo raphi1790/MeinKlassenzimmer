@@ -6,12 +6,9 @@ import { Regel } from '../../models/regel';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
 import { RegelFilter } from '../../helpers/regel.filter';
-import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
-import { DummyService } from 'src/app/services/dummy.service';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { MatSort } from '@angular/material/sort';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -19,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { Name } from 'src/app/models/name';
 import * as uuidv4 from 'uuid/v4';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
     selector: 'app-sitzordnung-management',
@@ -65,20 +63,21 @@ export class SitzordnungManagementComponent implements OnInit {
 
 
     constructor(
-        // private userService: UserService,
-        private dummyService: DummyService,
+        private dataService: DataService,
         private _snackBar: MatSnackBar
     ) {
         this.regelFilter = new RegelFilter()
 
     }
-
-
-
-
     loadInputData() {
+        this.dataService.mapUser(user => this.applyUser(user))
+    
+    
+      }
+    
+      applyUser(users) {
         debugger;
-        this.myUser = this.dummyService.getUser()
+        this.myUser = new User(users[0])
         this.sitzordnungenToPerson = this.myUser.sitzordnungen
         this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
         this.klassenToPerson = this.myUser.schulklassen
@@ -91,36 +90,10 @@ export class SitzordnungManagementComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      
+    
+      }
 
-
-    }
-    // loadInputData() {
-    //     this.userService.getUser().snapshotChanges().pipe(
-    //         map(changes =>
-    //             changes.map(c =>
-    //                 ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-    //             )
-    //         )
-    //     ).subscribe(users => {
-    //         debugger;
-    //         this.myUser = new User(users[0])
-    //         this.klassenToPerson = this.myUser.schulklassen
-    //         this.regelnToPerson = this.myUser.regeln
-    //         this.zimmerToPerson = this.myUser.schulzimmer
-    //         this.sitzordnungenToPerson = this.myUser.sitzordnungen
-    //         this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-    //         // console.log(this.myUser)
-    //         // console.log(this.klassenToPerson)
-    //         this.isLoadingData = false;
-    //         this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
-    //         this.dataSource.paginator = this.paginator;
-    //         this.dataSource.sort = this.sort;
-
-
-    //     });
-
-
-    // }
 
     getSchulzimmerName(sitzordnung: Sitzordnung): string {
 
@@ -247,15 +220,14 @@ export class SitzordnungManagementComponent implements OnInit {
     }
 
     saveSitzordnungen(): void {
-        console.log("saving", this.sitzordnungenToPerson)
-        // debugger;
-        // this.savingIsActiv = false;
-        // this.isSaving = true;
-        // this.myUser.sitzordnungen = this.sitzordnungenToPerson
-        // this.userService.updateUser(this.myUser);
-        // this.isSaving = false;
-        // this.sitzordnungenToPersonOriginal = this.sitzordnungenToPerson;
-        // this.openSavingSnackBar()
+        debugger;
+        this.savingIsActiv = false;
+        this.isSaving = true;
+        this.myUser.sitzordnungen = this.sitzordnungenToPerson
+        this.dataService.updateUser(this.myUser);
+        this.isSaving = false;
+        this.sitzordnungenToPersonOriginal = this.sitzordnungenToPerson;
+        this.openSavingSnackBar()
 
     }
     openSavingSnackBar() {

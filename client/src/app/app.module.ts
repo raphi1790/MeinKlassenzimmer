@@ -13,11 +13,9 @@ import { StartseiteComponent } from './components/startseite/startseite.componen
 import { AuthService} from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { AnleitungComponent } from './components/anleitung/anleitung.component';
-import { InlineEditComponent} from './components/inline-edit/inline-edit.component';
 import { InlineEditSmallComponent} from './components/inline-edit-small/inline-edit-small.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TischComponent } from './components/tisch/tisch.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from "@angular/fire/firestore";
@@ -40,6 +38,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { SitzordnungManagementComponent } from './components/sitzordnung-management/sitzordnung.management.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { DataService } from './services/data.service';
+import { BoxComponent } from './components/box/box.component';
 
 
 @NgModule({
@@ -51,12 +50,10 @@ import { DataService } from './services/data.service';
     StartseiteComponent,
     SchuelerComponent,
     ToolbarComponent,
-    TischComponent,
     AnleitungComponent,
     RegelnComponent,
     SpeichernComponent,
     SpeichernInfoDialogComponent,
-    InlineEditComponent,
     RegelDialogComponent,
     TimerComponent,
     ZufallsgeneratorComponent,
@@ -65,7 +62,8 @@ import { DataService } from './services/data.service';
     KlassenlisteComponent,
     InlineEditSmallComponent,
     InfoDialogComponent,
-    SitzordnungManagementComponent
+    SitzordnungManagementComponent,
+    BoxComponent,
     
   ],
   imports: [
@@ -82,7 +80,12 @@ import { DataService } from './services/data.service';
     ScrollingModule
 
   ],
-  providers: [ AuthService,UserService,DummyService,
+  providers: [ AuthService,
+    {
+      provide: DataService, 
+      useClass: environment.production? UserService: DummyService
+    },
+    ,
     UnsavedGuard,
     AuthGuard,
     {

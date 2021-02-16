@@ -24,7 +24,6 @@ import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Schueler } from 'src/app/models/schueler';
 import { Seating } from 'src/app/models/seating';
-import { PositionTisch } from 'src/app/models/position.tisch';
 import { Tisch } from 'src/app/models/tisch';
 import * as uuidv4 from 'uuid/v4';
 @Component({

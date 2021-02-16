@@ -1,13 +1,10 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { DummyService } from '../../services/dummy.service';
 import { Schulklasse } from '../../models/schulklasse';
 import { Schueler } from '../../models/schueler';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { Randomizer } from '../../helpers/randomizer';
 import { User } from '../../models/user';
 import { Klassenliste } from '../../models/klassenliste';
-import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
 import * as uuidv4 from 'uuid/v4';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -18,16 +15,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { RegelFilter } from 'src/app/helpers/regel.filter';
 import { MatSort } from '@angular/material/sort';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-listenverwaltung',
   templateUrl: './listenverwaltung.component.html',
   styleUrls: ['./listenverwaltung.component.css']
 })
-export class ListenverwaltungComponent implements OnInit   {
+export class ListenverwaltungComponent implements OnInit {
   relevantRegeln: Regel[];
 
-  myUser:User
+  myUser: User
   klassenToPerson: Schulklasse[];
   klassenlistenToPerson: Klassenliste[]
   klassenlistenToPersonOriginal: Klassenliste[]
@@ -42,7 +40,7 @@ export class ListenverwaltungComponent implements OnInit   {
   relevantSchulklasse: Schulklasse;
   savingIsActiv: boolean;
 
-  displayedColumns: string[] = ['name',"klasse", 'groups', 'action'];
+  displayedColumns: string[] = ['name', "klasse", 'groups', 'action'];
   dataSource: MatTableDataSource<Klassenliste>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -56,55 +54,42 @@ export class ListenverwaltungComponent implements OnInit   {
   formSubmitAttempt: boolean;
 
   regelFilter: RegelFilter;
-  
+
 
   constructor(
-    private dummyService:DummyService, 
-    //  private userService:UserService,
-     private _snackBar: MatSnackBar) {
+    private dataService: DataService,
+    private _snackBar: MatSnackBar) {
 
-      this.regelFilter = new RegelFilter()
-   }
-  
- 
+    this.regelFilter = new RegelFilter()
+  }
 
-  // loadInputData() {
-  //   this.userService.getUser().snapshotChanges().pipe(
-  //     map(changes =>
-  //       changes.map(c =>
-  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-  //       )
-  //     )
-  //   ).subscribe(users => {
-  //     debugger;
-  //     this.myUser = new User(users[0])
-  //     this.klassenToPerson = this.myUser.schulklassen
-  //     this.regelnToPerson = this.myUser.regeln
-  //     this.klassenlistenToPerson = this.myUser.klassenlisten
-  //     this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
-  //     console.log(this.myUser)
-  //     console.log(this.klassenlistenToPerson)
-  //     this.isLoadingData = false;
-  //     this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
-  //     this.dataSource.paginator = this.paginator;
-  //     this.dataSource.sort = this.sort;
-    
-  //   });
-  // }
+
+
 
   loadInputData() {
-    this.myUser = this.dummyService.getUser()
-    this.klassenToPerson = this.myUser.schulklassen
-    this.klassenlistenToPerson = this.myUser.klassenlisten
-    this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
-    this.regelnToPerson = this.myUser.regeln
-    console.log(this.myUser)
-    // console.log(this.schulzimmerToPerson)
-    this.isLoadingData = false;
-    this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
+    this.dataService.mapUser(user => this.applyUser(user))
+
 
   }
-     
+
+  applyUser(users) {
+    debugger;
+    this.myUser = new User(users[0])
+    this.klassenToPerson = this.myUser.schulklassen
+    this.regelnToPerson = this.myUser.regeln
+    this.klassenlistenToPerson = this.myUser.klassenlisten
+    this.klassenlistenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenlistenToPerson));
+    console.log(this.myUser)
+    console.log(this.klassenlistenToPerson)
+    this.isLoadingData = false;
+    this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+
+  }
+
+
 
   createKlassenliste(): void {
     debugger;
@@ -130,17 +115,17 @@ export class ListenverwaltungComponent implements OnInit   {
 
   }
 
-  private initializeGroups(inputGroupNumber: number, schulklassenId: string):Gruppe[]  {
+  private initializeGroups(inputGroupNumber: number, schulklassenId: string): Gruppe[] {
     debugger;
     // let numberOfGroups = this.calculateNumberGroups(inputGroupNumber)
-    let numberOfGroups =  Math.round(inputGroupNumber)
+    let numberOfGroups = Math.round(inputGroupNumber)
     let gruppen = new Array<Gruppe>(numberOfGroups)
     // Set id and name of each group
     for (var i = 0; i < gruppen.length; i++) {
       debugger;
       gruppen[i] = new Gruppe()
       gruppen[i].id = i;
-      gruppen[i].name = 'Gruppe '+ (i+1)
+      gruppen[i].name = 'Gruppe ' + (i + 1)
       gruppen[i].schueler = new Array<Schueler>()
     }
 
@@ -148,43 +133,43 @@ export class ListenverwaltungComponent implements OnInit   {
     return gruppen
 
   }
-  
+
 
   onSelect(klassenliste: Klassenliste): void {
     debugger;
     this.selectedKlassenliste = this.klassenlistenToPerson.filter(liste => liste.id == klassenliste.id)[0];
-    this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == this.selectedKlassenliste.schulklassenId )[0]
-    this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson, 
-                          this.klassenToPerson , this.relevantSchulklasse )
-  
+    this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == this.selectedKlassenliste.schulklassenId)[0]
+    this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson,
+      this.klassenToPerson, this.relevantSchulklasse)
 
 
 
-    
+
+
 
   }
-  onNameChange(newName : Name):void{
+  onNameChange(newName: Name): void {
     debugger;
     let oldName = this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == newName.id)[0].name;
-    if(oldName != newName.text){
+    if (oldName != newName.text) {
       this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == newName.id)[0].name = newName.text;
       this.savingIsActiv = true;
     }
-  
+
   }
-  deleteKlassenliste(klassenliste: Klassenliste):void{
+  deleteKlassenliste(klassenliste: Klassenliste): void {
     debugger;
     this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
-        item =>
-          item.id !== klassenliste.id);
+      item =>
+        item.id !== klassenliste.id);
     this.selectedKlassenliste = null;
     this.savingIsActiv = true;
     this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
 
   }
 
-  createButtonActive(): boolean{
-    return(
+  createButtonActive(): boolean {
+    return (
       this.myListForm.valid
     )
   }
@@ -206,10 +191,10 @@ export class ListenverwaltungComponent implements OnInit   {
 
   isFieldValid(form: FormGroup, field: string) {
     return (
-      (!form.get(field).valid && (form.get(field).touched 
+      (!form.get(field).valid && (form.get(field).touched
         || form.get(field).dirty)) ||
       (form.get(field).untouched && this.formSubmitAttempt)
- 
+
     );
   }
 
@@ -217,42 +202,41 @@ export class ListenverwaltungComponent implements OnInit   {
     this.name = new FormControl(null, [Validators.required, Validators.minLength(2)]);
     this.klasse = new FormControl(null, Validators.required);
     this.groups = new FormControl(null, Validators.required);
- 
+
 
   }
   createForm() {
     this.myListForm = new FormGroup({
       name: this.name,
-      klasse : this.klasse,
-      groups : this.groups
+      klasse: this.klasse,
+      groups: this.groups
     });
   }
 
-  openSavingSnackBar(){
+  openSavingSnackBar() {
     this._snackBar.openFromComponent(SaveSnackBarComponent, {
       duration: 2000,
     });
 
   }
 
-  canDeactivate(){
+  canDeactivate() {
     debugger;
     return !this.savingIsActiv;
   }
 
   saveKlassenlisten(): void {
     debugger;
-    console.log("saving", this.klassenlistenToPerson)
-    // this.savingIsActiv = false; 
-    // this.isSaving = true;
-    // this.myUser.klassenlisten = this.klassenlistenToPerson
-    // this.userService.updateUser(this.myUser);
-    // this.isSaving = false;
-    // this.klassenlistenToPersonOriginal = this.klassenlistenToPerson;
-    // this.openSavingSnackBar()
+    this.savingIsActiv = false; 
+    this.isSaving = true;
+    this.myUser.klassenlisten = this.klassenlistenToPerson
+    this.dataService.updateUser(this.myUser);
+    this.isSaving = false;
+    this.klassenlistenToPersonOriginal = this.klassenlistenToPerson;
+    this.openSavingSnackBar()
 
   }
-  cancel(){
+  cancel() {
     debugger;
     this.klassenlistenToPerson = JSON.parse(JSON.stringify(this.klassenlistenToPersonOriginal));
     this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
@@ -277,7 +261,7 @@ export class ListenverwaltungComponent implements OnInit   {
     this.createForm();
     this.isLoadingData = true;
     this.loadInputData();
-    
+
 
   }
 
