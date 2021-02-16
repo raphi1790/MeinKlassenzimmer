@@ -1,58 +1,54 @@
 .mat-form-field {
-    display: block;
-}  
-.button-list{
-    width: 100%;
-    height: 100%;
-    padding-top: 10px;
+  display: block;
+}
+.button-list {
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
 }
 
-.mat-list-item.highlighted{
-    background-color: var(--accent-color);
+.mat-list-item.highlighted {
+  background-color: var(--accent-color);
 }
 .mat-card-header {
-    display: grid;
-  }  
-  .mat-card-header-text {
-    margin: 0 0px;
-  }
-  .mat-table {
-    overflow: auto;
-    max-height: 500px;
-  }
-  .mat-column-name {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 80% !important;
-    width: 80% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  
-    word-break: break-word;
-  
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-    margin-right: 20px;
-  }
-  
-  .mat-column-action {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 20% !important;
-    width: 20% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  
-    word-break: break-word;
-  
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
+  display: grid;
+}
+.mat-card-header-text {
+  margin: 0 0px;
+}
+.mat-table {
+  overflow: auto;
+  width: 100%;
+}
+.mat-column-name {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 80% !important;
+  width: 80% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
+  word-break: break-word;
 
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  margin-right: 20px;
+}
 
-  
+.mat-column-action {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}

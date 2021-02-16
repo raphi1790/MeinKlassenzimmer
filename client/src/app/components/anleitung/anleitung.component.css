@@ -1,39 +1,45 @@
 .mat-card-header {
-    display: grid;
-  }  
-  .mat-card{
-      margin-left: auto;
-      margin-right: auto;
-      width: 80%;
-  }
-  
-img{
-    border:2px solid #979599;
+  display: grid;
 }
- .avatar-image{
-     width: 75px;
-     height: 75px;
-     margin-top: 15px;
- }
- .contact-card{
-     width: 360px;
- }
- address {
-    font-style: normal;
-    display:block;
-    font-style: italic;
+.mat-card {
+  margin-left: auto;
+  margin-right: auto;
 }
-.adresse{
-    text-align: center;
+
+img {
+  border: 2px solid #979599;
 }
-.contact-text{
-    text-align: center;
+.space-between {
+  justify-content: space-between;
 }
-.col-md-3{
-    padding-left: 0px;
+.avatar-image {
+  width: 75px;
+  height: 75px;
+  margin-top: 15px;
+}
+.contact-card {
+  max-width: 360px;
+}
+address {
+  font-style: normal;
+  display: block;
+  font-style: italic;
+}
+.adresse {
+  text-align: center;
+}
+.contact-text {
+  text-align: center;
+}
+.col-md-3 {
+  padding-left: 0px;
 }
 .responsive {
   width: 100%;
   max-width: 1500;
   height: auto;
+}
+
+.container-fluid .row {
+  justify-content: space-around;
 }
