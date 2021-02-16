@@ -37,19 +37,6 @@ export class DummyService implements DataService {
     constructor() {
 
     }
-    getUser():User{
-        return new User({
-            uid: 'abc',
-            email: "raphael.schoenenberger@test.ch",
-            photoURL: null,
-            displayName : 'Dummy User',
-            schulklassen : this.getSchulklassen(),
-            schulzimmer : this.getSchulzimmer(),
-            sitzordnungen: this.getSitzordnungen(),
-            regeln: this.getRegeln()
-        })
-
-    }
     mapUser(apply):void{
         apply([new User({
             uid: 'abc',
@@ -67,7 +54,7 @@ export class DummyService implements DataService {
 
     }
     updateUser(user:User):void{
-        console.log(user)
+        console.log("saved on dummy-service:", user)
     }
     private getSchueler(): Schueler[]{
         let schueler = new Array<Schueler>(5)

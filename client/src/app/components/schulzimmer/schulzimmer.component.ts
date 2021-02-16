@@ -9,7 +9,6 @@ import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
@@ -17,10 +16,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
-import { DummyService } from 'src/app/services/dummy.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-schulzimmer',
@@ -58,8 +57,7 @@ export class SchulzimmerComponent implements OnInit {
   
 
   constructor(
-      // private userService: UserService,
-     private dummyService: DummyService,
+    private dataService: DataService,
      public dialog: MatDialog,private _snackBar: MatSnackBar
       ) {
     this.maximalTischNumber = 0;
@@ -68,51 +66,30 @@ export class SchulzimmerComponent implements OnInit {
     this.regelChecker = new  RegelChecker();
   }
 
-  // loadInputData() {
-  //   this.userService.getUser().snapshotChanges().pipe(
-  //     map(changes =>
-  //       changes.map(c =>
-  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-  //       )
-  //     )
-  //   ).subscribe(users => {
-  //     debugger;
-  //     this.myUser = new User(users[0])
-  //     this.schulzimmerToPerson = this.myUser.schulzimmer
-  //     this.regelnToPerson = this.myUser.regeln
-  //     this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
-  //     this.sitzordnungenToPerson = this.myUser.sitzordnungen
-  //     this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-  //     // console.log(this.myUser)
-  //     this.isLoadingData = false;
-        // this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
-        // this.dataSource.paginator = this.paginator;
-        // this.dataSource.sort = this.sort;
-    
-  //   });
+
+  loadInputData() {
+    this.dataService.mapUser(user => this.applyUser(user))
 
   
-  // }
+  }
 
-   loadInputData() {
-        debugger;
-        this.myUser = this.dummyService.getUser()
-        this.sitzordnungenToPerson = this.myUser.sitzordnungen
-        this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-        // this.klassenToPerson = this.myUser.schulklassen
-        this.schulzimmerToPerson = this.myUser.schulzimmer
-        this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
-        this.regelnToPerson = this.myUser.regeln
-        console.log(this.myUser)
-        // console.log(this.schulzimmerToPerson)
-        this.isLoadingData = false;
+  applyUser(users){
+      debugger;
+      this.myUser = new User(users[0])
+      this.schulzimmerToPerson = this.myUser.schulzimmer
+      this.regelnToPerson = this.myUser.regeln
+      this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));
+      this.sitzordnungenToPerson = this.myUser.sitzordnungen
+      this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
+      // console.log(this.myUser)
+      this.isLoadingData = false;
+      this.dataSource = new MatTableDataSource(this.schulzimmerToPerson);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    
+  }
 
-        this.dataSource = new MatTableDataSource(this.schulzimmerToPerson);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
 
-
-    }
 
   getErrorMessageNeuesSchulzimmer() {
     return this.neuesSchulzimmerForm.hasError('required') ? 'Wert erforderlich' :
@@ -258,14 +235,13 @@ export class SchulzimmerComponent implements OnInit {
 
   saveSchulzimmerTische() {
     debugger;
-    console.log("saving",this.schulzimmerToPerson )
-    // this.savingIsActiv = false; 
-    // this.isSaving = true;
-    // this.myUser.schulzimmer = this.schulzimmerToPerson
-    // this.userService.updateUser(this.myUser);
-    // this.isSaving = false;
-    // this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;
-    // this.openSavingSnackBar()
+    this.savingIsActiv = false; 
+    this.isSaving = true;
+    this.myUser.schulzimmer = this.schulzimmerToPerson
+    this.dataService.updateUser(this.myUser);
+    this.isSaving = false;
+    this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;
+    this.openSavingSnackBar()
     
   }
   cancel(){

@@ -10,8 +10,6 @@ import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../models/user';
-import { UserService } from '../../services/user.service';
-import { ServiceBuilder } from '../../services/service.builder';
 import { map } from 'rxjs/operators';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,7 +18,6 @@ import { KlassenlistenRemover } from 'src/app/helpers/klassenlisten.remover';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
-import { DummyService } from 'src/app/services/dummy.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -65,9 +62,6 @@ export class SchulklassenComponent implements OnInit {
   
   constructor(
     private dataService: DataService,
-    //  private serviceBuilder: ServiceBuilder,
-    // private userService:UserService,
-    // private dummyService : DummyService,
      public dialog: MatDialog,
      private _snackBar: MatSnackBar) {
       this.regelChecker = new RegelChecker();
@@ -99,34 +93,11 @@ export class SchulklassenComponent implements OnInit {
       // console.log(this.myUser)
       // console.log(this.klassenToPerson)
       this.isLoadingData = false;
-      //   this.dataSource = new MatTableDataSource(this.klassenToPerson);
-      //   this.dataSource.paginator = this.paginator;
-      //   this.dataSource.sort = this.sort;
+      this.dataSource = new MatTableDataSource(this.klassenToPerson);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     
   }
-
-//   loadInputData() {
-//     debugger;
-//     // this.myUser = this.serviceBuilder.getService().getUser()
-    
-//     this.myUser = this.dataService.getUser()
-//     console.log("this.myUser", this.myUser)
-//     this.sitzordnungenToPerson = this.myUser.sitzordnungen
-//     this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
-//     this.klassenToPerson = this.myUser.schulklassen
-//     this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
-//     this.klassenlistenToPerson = this.myUser.klassenlisten
-//     this.regelnToPerson = this.myUser.regeln
-//     console.log(this.myUser)
-//     // console.log(this.schulzimmerToPerson)
-//     this.isLoadingData = false;
-
-//     this.dataSource = new MatTableDataSource(this.klassenToPerson);
-//     this.dataSource.paginator = this.paginator;
-//     this.dataSource.sort = this.sort;
-
-
-// }
 
 
   getErrorMessageNeueSchulklasse() {
@@ -265,14 +236,13 @@ export class SchulklassenComponent implements OnInit {
   
   saveSchulklasseSchueler() {
     debugger;
-    console.log("saving",this.klassenToPerson )
-    // this.savingIsActiv = false; 
-    // this.isSaving = true;
-    // this.myUser.schulklassen = this.klassenToPerson
-    // this.userService.updateUser(this.myUser);
-    // this.isSaving = false;
-    // this.klassenToPersonOriginal = this.klassenToPerson;
-    // this.openSavingSnackBar()
+    this.savingIsActiv = false; 
+    this.isSaving = true;
+    this.myUser.schulklassen = this.klassenToPerson
+    this.dataService.updateUser(this.myUser);
+    this.isSaving = false;
+    this.klassenToPersonOriginal = this.klassenToPerson;
+    this.openSavingSnackBar()
     
   }
   cancel(){
