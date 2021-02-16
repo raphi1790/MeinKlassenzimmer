@@ -22,16 +22,7 @@
 .mat-checkbox  {
   position: relative;
 }
-.second-column-card{
-  width: 950px;
-  margin-top: 20px;
-  margin-bottom: 0px;
-  margin-left: 0px;
-  margin-right: 20px;
-}
-.col-md-7{
-    padding-left: 0px;
-}
+
 .mat-card-footer{
     margin-left: -8px;
     margin-bottom: -8px;
