@@ -51,33 +51,61 @@
                 <table mat-table [dataSource]="dataSource" matSort>
               
                 
-                <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                  <mat-cell *matCellDef="let schulklasse"> 	<mat-form-field floatLabel="never" (click)="onSelect(schulklasse)">
-                    <input matInput placeholder="Name" (change)="savingIsActiv = true" [value]="schulklasse.name" [(ngModel)]="schulklasse.name" >
-                  </mat-form-field> </mat-cell>
-                </ng-container>
-            
-                <ng-container matColumnDef="action" class="align-column-right">
-                  <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
-                  <mat-cell *matCellDef="let schulklasse">
-                    <span>
-                      <mat-icon matListIcon (click)="deleteSchulklasse(schulklasse)">delete</mat-icon>
-                    </span>
-                  </mat-cell>
-                </ng-container>
-                          
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            
-                <!-- Row shown when there is no matching data. -->
-                <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="1">No data</td>
-                </tr>
-              </table>
-            
-              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-            </div>
+                  <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let schulklasse">
+                      <mat-form-field
+                        floatLabel="never"
+                        (click)="onSelect(schulklasse)"
+                      >
+                        <input
+                          matInput
+                          placeholder="Name"
+                          (change)="savingIsActiv = true"
+                          [value]="schulklasse.name"
+                          [(ngModel)]="schulklasse.name"
+                        />
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container
+                    matColumnDef="action"
+                    class="align-column-right"
+                  >
+                    <mat-header-cell *matHeaderCellDef>
+                      Löschen
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let schulklasse">
+                      <span>
+                        <mat-icon
+                          matListIcon
+                          (click)="deleteSchulklasse(schulklasse)"
+                          >delete</mat-icon
+                        >
+                      </span>
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row
+                    *matHeaderRowDef="displayedColumns"
+                  ></mat-header-row>
+                  <mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                  ></mat-row>
+
+                  <!-- Row shown when there is no matching data. -->
+                  <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="1">No data</td>
+                  </tr>
+                </table>
+
+                <mat-paginator
+                  [pageSizeOptions]="[5, 10, 25, 100]"
+                ></mat-paginator>
+              </div>
             </mat-card-content>
 
           </mat-card>
