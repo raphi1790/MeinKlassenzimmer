@@ -8,6 +8,7 @@ import { Randomizer } from '../../helpers/randomizer';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { map } from 'rxjs/operators';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-zufallsgenerator',
@@ -15,14 +16,13 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./zufallsgenerator.component.css']
 })
 export class ZufallsgeneratorComponent implements OnInit {
-  
+
 
   constructor(
-    // rivate userService:UserService
-    private dummyService: DummyService) {
-   }
-  
-  myUser:User
+    private dataService: DataService) {
+  }
+
+  myUser: User
   klassenToPerson: Schulklasse[];
   isLoadingData: boolean;
   selectedSchulklasse: Schulklasse;
@@ -33,58 +33,47 @@ export class ZufallsgeneratorComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-     
-  // loadInputData() {
-  //   this.userService.getUser().snapshotChanges().pipe(
-  //     map(changes =>
-  //       changes.map(c =>
-  //         ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-  //       )
-  //     )
-  //   ).subscribe(users => {
-  //     debugger;
-  //     this.myUser = new User(users[0])
-  //     this.klassenToPerson = this.myUser.schulklassen
-  //     // console.log(this.myUser)
-  //     // console.log(this.klassenToPerson)
-  //     this.isLoadingData = false;
-    
-  //   });
 
-  
-  // }
   loadInputData() {
-    this.myUser = this.dummyService.getUser()
+    this.dataService.mapUser(user => this.applyUser(user))
+
+
+  }
+
+  applyUser(users) {
+    debugger;
+    this.myUser = new User(users[0])
     this.klassenToPerson = this.myUser.schulklassen
-    console.log(this.myUser)
-    // console.log(this.schulzimmerToPerson)
+    // console.log(this.myUser)
+    // console.log(this.klassenToPerson)
     this.isLoadingData = false;
 
   }
+ 
 
-  selectOneSchueler(){
-    
+  selectOneSchueler() {
+
     this.selectSchueler(1)
 
   }
-  selectTwoSchueler(){
+  selectTwoSchueler() {
     this.selectSchueler(2)
 
   }
-  selectFiveSchueler(){
+  selectFiveSchueler() {
     this.selectSchueler(5)
 
   }
-  selectInputNumberSchueler(){
+  selectInputNumberSchueler() {
     this.selectSchueler(this.selectedNumberSchuelerInput)
   }
 
-  private selectSchueler(numberSelectedSchueler: number){
-      let randomizer = new Randomizer()
-      let randomizedSchueler = randomizer.shuffle(this.selectedSchulklasse.schueler)
-      this.selectedSchueler = randomizedSchueler.slice(0, numberSelectedSchueler)
+  private selectSchueler(numberSelectedSchueler: number) {
+    let randomizer = new Randomizer()
+    let randomizedSchueler = randomizer.shuffle(this.selectedSchulklasse.schueler)
+    this.selectedSchueler = randomizedSchueler.slice(0, numberSelectedSchueler)
 
-      this.dataSource.data = this.selectedSchueler;
+    this.dataSource.data = this.selectedSchueler;
 
 
 

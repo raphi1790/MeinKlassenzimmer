@@ -21,13 +21,13 @@ const routes: Routes = [
           path: 'verwaltung/klassen',
           component: SchulklassenComponent,
           canDeactivate: [UnsavedGuard],
-          // canActivate: [AuthGuard]
+          canActivate: [AuthGuard]
       },
       {
           path: 'verwaltung/schulzimmer',
           component: SchulzimmerComponent,
           canDeactivate: [UnsavedGuard],
-          // canActivate: [AuthGuard]
+          canActivate: [AuthGuard]
       },
       {
           path: 'home',
@@ -42,13 +42,13 @@ const routes: Routes = [
           path: 'sitzordnung',
           component: SitzordnungManagementComponent,
           canDeactivate: [UnsavedGuard],
-          // canActivate: [AuthGuard]
+          canActivate: [AuthGuard]
       },
       {
         path: 'listenverwaltung',
         component: ListenverwaltungComponent  ,
         canDeactivate: [UnsavedGuard],
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
         
       },
       {
@@ -59,7 +59,7 @@ const routes: Routes = [
         path: 'verwaltung/regeln',
         component: RegelnComponent,
         canDeactivate: [UnsavedGuard],
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
     },
     {
         path: 'werkzeugkasten/timer',

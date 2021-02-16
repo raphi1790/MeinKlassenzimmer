@@ -13,7 +13,6 @@ import { StartseiteComponent } from './components/startseite/startseite.componen
 import { AuthService} from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { AnleitungComponent } from './components/anleitung/anleitung.component';
-import { InlineEditComponent} from './components/inline-edit/inline-edit.component';
 import { InlineEditSmallComponent} from './components/inline-edit-small/inline-edit-small.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -55,7 +54,6 @@ import { BoxComponent } from './components/box/box.component';
     RegelnComponent,
     SpeichernComponent,
     SpeichernInfoDialogComponent,
-    InlineEditComponent,
     RegelDialogComponent,
     TimerComponent,
     ZufallsgeneratorComponent,
