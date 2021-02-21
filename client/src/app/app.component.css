@@ -1,70 +1,69 @@
-
 .app-toolbar-icon {
-    padding: 0 14px;
-  }
-  
-  .toolbar-spacer {
-    flex: 1 1 auto;
-  }
-  .item-spacer {
-    display: block;
-    padding: 3px
-  }
-  h1.app-name {
-    margin-left: 8px;
-  }
-
-  .sidenav-container {
-    /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
-       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
-    flex: 1;
-    height: 100%;
-  }
-
-  .app-container {
-    position: absolute;
-    top: 60px;
-    bottom: 0px;
-    left: 0;
-    right: 0;
-    min-height: 100% - 60px;;
-
-  }
-  
-
-  mat-sidenav {
-    width: 250px;
-    height: 100%;
-  }
-  .mat-sidenav-content {
-    background-image: linear-gradient(to bottom, #cac7cc 0%, #cac7cc 35%, #f7f7f7 35%,#f7f7f7 100%);
+  padding: 0 14px;
 }
 
-.mat-list-item.active{
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+.item-spacer {
+  display: block;
+  padding: 3px;
+}
+h1.app-name {
+  margin-left: 8px;
+}
+
+.sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+  height: 100%;
+}
+
+.app-container {
+  position: absolute;
+  top: 60px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  min-height: 100% - 60px;
+}
+
+mat-sidenav {
+  width: 250px;
+  height: 100%;
+}
+/* .mat-sidenav-content {
+  background-image: linear-gradient(
+    to bottom,
+    #cac7cc 0%,
+    #cac7cc 35%,
+    #f7f7f7 35%,
+    #f7f7f7 100%
+  );
+} */
+
+.mat-list-item.active {
   background-color: var(--accent-color);
 }
 .submenu-spacer {
   display: block;
-  padding: 15px
+  padding: 15px;
 }
-a.header{
+a.header {
   font-weight: bold;
 }
-mat-icon.notranslate.mat-list-icon.werkzeugkasten.material-icons.mat-icon-no-color{
-  padding:0px;
+mat-icon.notranslate.mat-list-icon.werkzeugkasten.material-icons.mat-icon-no-color {
+  padding: 0px;
 }
 
-mat-icon.notranslate.mat-list-icon.verwaltung.material-icons.mat-icon-no-color{
-  padding:0px;
+mat-icon.notranslate.mat-list-icon.verwaltung.material-icons.mat-icon-no-color {
+  padding: 0px;
 }
-
-
-
-
-
-
-
-
-
-  
-  
+.dark-theme {
+  background: #121212 !important;
+}
+.dark-theme mat-sidenav {
+  background: #202020;
+  color: white;
+}

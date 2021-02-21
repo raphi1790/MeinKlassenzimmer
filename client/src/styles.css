@@ -56,3 +56,61 @@ body {
 .row {
   width: 100% !important;
 }
+
+.dark-theme .mat-card,
+.dark-theme .mat-table,
+.dark-theme .mat-paginator,
+.dark-theme input,
+.dark-theme .mat-dialog-container {
+  background: #1f1f1f !important;
+  color: white !important;
+}
+
+.dark-theme button .mat-raised-button,
+.dark-theme .mat-select-panel {
+  background: gray !important;
+  color: white !important;
+}
+.dark-theme .mat-form-field-label-wrapper {
+  background: transparent !important;
+}
+
+.dark-theme .mat-list-item-content,
+.dark-theme .mat-input-element,
+.dark-theme .mat-cell,
+.dark-theme .mat-footer-cell,
+.dark-theme .mat-header-cell,
+.dark-theme .mat-select-value,
+.dark-theme .mat-paginator,
+.dark-theme .mat-paginator-page-size .mat-select-trigger,
+.dark-theme .mat-select-arrow,
+.dark-theme .mat-icon-button .mat-button-wrapper,
+.dark-theme .mat-form-field-appearance-legacy .mat-form-field-label,
+.dark-theme .mat-option-text {
+  color: white !important;
+}
+
+.dark-theme .dragdrop-list,
+.dark-theme .dragdrop-box {
+  background: #4a4949 !important;
+  color: white !important;
+}
+
+.dark-theme .unselected-tisch {
+  background: transparent !important;
+}
+.dark-theme .mat-list-item.active .mat-list-item-content {
+  color: black !important;
+}
+.dark-theme .mat-toolbar.mat-primary {
+  /* background: #bb86fc; */
+}
+
+.dark-theme.mat-list-item.active {
+  color: black !important;
+}
+@media print {
+  .mat-card {
+    background: white;
+  }
+}

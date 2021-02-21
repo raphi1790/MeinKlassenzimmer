@@ -1,61 +1,124 @@
-<div class="app">
+<div class="app" [class.dark-theme]="isDarkTheme">
   <mat-toolbar color="primary">
     <button mat-icon-button (click)="snav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
     <span routerLink="/">
-      
       <h1 class="app-name">
-          <img id ="logo" src="../assets/images/logo-transparent.png" width="50" height="50" alt="logo">
-          MeinKlassenzimmer
+        <img
+          id="logo"
+          src="../assets/images/logo-transparent.png"
+          width="50"
+          height="50"
+          alt="logo"
+        />
+        MeinKlassenzimmer
       </h1>
     </span>
     <span class="toolbar-spacer"></span>
     <app-toolbar></app-toolbar>
+
+    <mat-slide-toggle (click)="changeTheme()"
+      ><small>Dark mode</small></mat-slide-toggle
+    >
   </mat-toolbar>
   <div class="app-container">
-
-
     <mat-sidenav-container fullscreen class="app-sidenav-container">
-      <mat-sidenav #snav class="app-sidenav" [mode]="'side'" opened="true" [fixedInViewport]="false">
+      <mat-sidenav
+        #snav
+        class="app-sidenav"
+        [mode]="'side'"
+        opened="true"
+        [fixedInViewport]="false"
+      >
         <mat-nav-list>
-          <a mat-list-item  routerLink="/anleitung" routerLinkActive="active" >
-            <mat-icon>info</mat-icon><span class="item-spacer"></span>Erste Schritte</a>
-          <a mat-list-item  class="header" (click)="toggleVerwaltungMenu()">
-            <mat-icon mat-list-icon  class="verwaltung">settings</mat-icon><span class="item-spacer"></span>Verwaltung 
+          <a mat-list-item routerLink="/anleitung" routerLinkActive="active">
+            <mat-icon>info</mat-icon><span class="item-spacer"></span>Erste
+            Schritte</a
+          >
+          <a mat-list-item class="header" (click)="toggleVerwaltungMenu()">
+            <mat-icon mat-list-icon class="verwaltung">settings</mat-icon
+            ><span class="item-spacer"></span>Verwaltung
             <mat-icon *ngIf="!showVerwaltung">chevron_right</mat-icon>
             <mat-icon *ngIf="showVerwaltung">expand_more</mat-icon>
           </a>
           <mat-nav-list class="sidenav-submenu" *ngIf="showVerwaltung">
-            <a mat-list-item  routerLink="/verwaltung/klassen" routerLinkActive="active" *ngIf="auth.isAuthenticated()">
+            <a
+              mat-list-item
+              routerLink="/verwaltung/klassen"
+              routerLinkActive="active"
+              *ngIf="auth.isAuthenticated()"
+            >
               <span class="submenu-spacer"></span>
-              <mat-icon>school</mat-icon><span class="item-spacer"></span> Schulklassen</a>
-            <a mat-list-item routerLink="/verwaltung/schulzimmer"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
+              <mat-icon>school</mat-icon
+              ><span class="item-spacer"></span> Schulklassen</a
+            >
+            <a
+              mat-list-item
+              routerLink="/verwaltung/schulzimmer"
+              routerLinkActive="active"
+              *ngIf="auth.isAuthenticated()"
+            >
               <span class="submenu-spacer"></span>
-              <mat-icon>build </mat-icon><span class="item-spacer"></span>Schulzimmer</a>
-            <a mat-list-item routerLink="/verwaltung/regeln"  routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
+              <mat-icon>build </mat-icon
+              ><span class="item-spacer"></span>Schulzimmer</a
+            >
+            <a
+              mat-list-item
+              routerLink="/verwaltung/regeln"
+              routerLinkActive="active"
+              *ngIf="auth.isAuthenticated()"
+            >
               <span class="submenu-spacer"></span>
-                <mat-icon>filter_list </mat-icon><span class="item-spacer"></span>Regeln</a>  
+              <mat-icon>filter_list </mat-icon
+              ><span class="item-spacer"></span>Regeln</a
+            >
           </mat-nav-list>
-          <a mat-list-item  routerLink="/sitzordnung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()">
-            <mat-icon>autorenew</mat-icon><span class="item-spacer"></span>Sitzordnung</a>
-          <a mat-list-item  routerLink="/listenverwaltung"  routerLinkActive="active" *ngIf="auth.isAuthenticated()" >
-            <mat-icon>reorder</mat-icon><span class="item-spacer"></span>Gruppeneinteilung</a>   
-            <a mat-list-item  class="header" (click)="toggleToolsMenu()">
-              <mat-icon mat-list-icon class="werkzeugkasten">business</mat-icon><span class="item-spacer"></span>Werkzeugkasten 
-              <mat-icon *ngIf="!showTools">chevron_right</mat-icon>
-              <mat-icon *ngIf="showTools">expand_more</mat-icon>
-            </a>
-            <mat-nav-list class="sidenav-submenu" *ngIf="showTools">
-              <a mat-list-item routerLink="/werkzeugkasten/timer" routerLinkActive="active"><span class="submenu-spacer"></span><mat-icon>av_timer</mat-icon><span class="item-spacer"></span>Timer</a>
-              <a mat-list-item routerLink="/werkzeugkasten/Zufallsgenerator" routerLinkActive="active" *ngIf="auth.isAuthenticated()"><span class="submenu-spacer"></span><mat-icon>shuffle</mat-icon><span class="item-spacer" ></span>Zufallsgenerator</a>  
-            </mat-nav-list>
+          <a
+            mat-list-item
+            routerLink="/sitzordnung"
+            routerLinkActive="active"
+            *ngIf="auth.isAuthenticated()"
+          >
+            <mat-icon>autorenew</mat-icon
+            ><span class="item-spacer"></span>Sitzordnung</a
+          >
+          <a
+            mat-list-item
+            routerLink="/listenverwaltung"
+            routerLinkActive="active"
+            *ngIf="auth.isAuthenticated()"
+          >
+            <mat-icon>reorder</mat-icon
+            ><span class="item-spacer"></span>Gruppeneinteilung</a
+          >
+          <a mat-list-item class="header" (click)="toggleToolsMenu()">
+            <mat-icon mat-list-icon class="werkzeugkasten">business</mat-icon
+            ><span class="item-spacer"></span>Werkzeugkasten
+            <mat-icon *ngIf="!showTools">chevron_right</mat-icon>
+            <mat-icon *ngIf="showTools">expand_more</mat-icon>
+          </a>
+          <mat-nav-list class="sidenav-submenu" *ngIf="showTools">
+            <a
+              mat-list-item
+              routerLink="/werkzeugkasten/timer"
+              routerLinkActive="active"
+              ><span class="submenu-spacer"></span><mat-icon>av_timer</mat-icon
+              ><span class="item-spacer"></span>Timer</a
+            >
+            <a
+              mat-list-item
+              routerLink="/werkzeugkasten/Zufallsgenerator"
+              routerLinkActive="active"
+              *ngIf="auth.isAuthenticated()"
+              ><span class="submenu-spacer"></span><mat-icon>shuffle</mat-icon
+              ><span class="item-spacer"></span>Zufallsgenerator</a
+            >
+          </mat-nav-list>
         </mat-nav-list>
       </mat-sidenav>
 
-
-
-      <mat-sidenav-content>
+      <mat-sidenav-content [class.dark-theme]="isDarkTheme">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
