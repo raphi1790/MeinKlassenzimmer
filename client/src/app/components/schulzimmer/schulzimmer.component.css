@@ -1,5 +1,6 @@
 .mat-form-field {
   display: block;
+  width: 100%
 }
 .mat-list-item.highlighted {
   background-color: var(--accent-color);

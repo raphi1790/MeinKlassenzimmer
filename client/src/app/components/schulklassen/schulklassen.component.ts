@@ -239,6 +239,10 @@ export class SchulklassenComponent implements OnInit {
     this.savingIsActiv = false; 
     this.isSaving = true;
     this.myUser.schulklassen = this.klassenToPerson
+    // Update entities, which are removed as a side effect of deleting a particular schulklasse
+    this.myUser.klassenlisten = this.klassenlistenToPerson
+    this.myUser.sitzordnungen = this.sitzordnungenToPerson
+
     this.dataService.updateUser(this.myUser);
     this.isSaving = false;
     this.klassenToPersonOriginal = this.klassenToPerson;

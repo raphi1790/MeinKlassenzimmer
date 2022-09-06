@@ -140,10 +140,7 @@ export class ListenverwaltungComponent implements OnInit {
     this.selectedKlassenliste = this.klassenlistenToPerson.filter(liste => liste.id == klassenliste.id)[0];
     this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == this.selectedKlassenliste.schulklassenId)[0]
     this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson,
-      this.klassenToPerson, this.relevantSchulklasse)
-
-
-
+      this.klassenToPerson, this.relevantSchulklasse).filter(regel => regel.type==="Unmögliche Paarung") //Since there are no seatings, it doesn't make sense to allow other type of regeln
 
 
 

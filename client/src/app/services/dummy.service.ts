@@ -269,7 +269,7 @@ export class DummyService implements DataService {
         regel1.schueler2Id = '3'
 
         let regel2 = new Regel()
-        regel2.id = '1'
+        regel2.id = '2'
         regel2.personId = 'abc'
         regel2.beschreibung = "Test Regel 2"
         regel2.active = true
@@ -278,7 +278,7 @@ export class DummyService implements DataService {
         regel2.schueler1Id = '1'
         regel2.schueler2Id = null
 
-        return [regel1, regel2]
+        return [ regel1, regel2]
 
 
 

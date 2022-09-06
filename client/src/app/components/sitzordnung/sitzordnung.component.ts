@@ -127,9 +127,11 @@ export class SitzordnungComponent implements OnChanges{
         dialogRef.componentInstance.submitClicked.subscribe(result => {
           console.log("The dialog was closed.")
           this.selection = result
+          let seletedRegelIds = result.selected.map(output => output.id)
+          console.log("seletedRegelIds:", seletedRegelIds)
           let activeRegeln = this.relevantRegeln
-            .filter(item => this.selection.selected
-              .map(output => output.id).includes(item.id))
+            .filter(regel => seletedRegelIds.includes(regel.id))
+          console.log("active Regeln:",activeRegeln)
           this.randomizeSeating(activeRegeln)
           dialogSubmitSubscription.unsubscribe();
         })

@@ -238,6 +238,7 @@ export class SchulzimmerComponent implements OnInit {
     this.savingIsActiv = false; 
     this.isSaving = true;
     this.myUser.schulzimmer = this.schulzimmerToPerson
+    this.myUser.sitzordnungen = this.sitzordnungenToPerson // Update sitzordnungen, which are removed as a side effect of deleting a particular schulzimmer
     this.dataService.updateUser(this.myUser);
     this.isSaving = false;
     this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;

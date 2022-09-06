@@ -61,8 +61,7 @@ export class RegelFilter{
                     let newElt = Object.assign({}, element);
                     return newElt.schueler.filter(x => x.id== inputRegeln[index].schueler1Id)
                 });
-                if(inputRegeln[index].type === "Unmögliche Paarung" 
-                    && chosenSchueler[0][0].schulklassenId == selectedSchulklasse.id){
+                if(chosenSchueler[0][0].schulklassenId == selectedSchulklasse.id){
                     relevantRegeln.push(inputRegeln[index]);
                 }   
                          
