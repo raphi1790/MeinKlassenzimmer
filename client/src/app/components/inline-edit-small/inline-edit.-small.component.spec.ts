@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { InlineEditSmallComponent } from './inline-edit-small.component';
 
@@ -6,7 +6,7 @@ describe('InlineEditComponent', () => {
   let component: InlineEditSmallComponent;
   let fixture: ComponentFixture<InlineEditSmallComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ InlineEditSmallComponent ]
     })

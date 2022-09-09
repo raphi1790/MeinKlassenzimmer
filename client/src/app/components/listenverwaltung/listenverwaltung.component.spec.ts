@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ListenverwaltungComponent } from './listenverwaltung.component';
 
@@ -6,7 +6,7 @@ describe('ZufallsgeneratorComponent', () => {
   let component: ListenverwaltungComponent;
   let fixture: ComponentFixture<ListenverwaltungComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ListenverwaltungComponent ]
     })
