@@ -9,7 +9,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { RegelEnricher } from '../../helpers/regel.enricher';
 import { Observable } from 'rxjs';
 import { OutputRegelTisch } from '../../models/output.regel.sitzordnung';
-import * as uuidv4 from 'uuid/v4';
+import * as uuidv4 from 'uuidv4';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { OutputRegelPaarung } from '../../models/output.regel.paarung';
 import { map } from 'rxjs/operators';

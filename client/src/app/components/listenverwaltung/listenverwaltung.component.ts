@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { User } from '../../models/user';
 import { Klassenliste } from '../../models/klassenliste';
 import { map } from 'rxjs/operators';
-import * as uuidv4 from 'uuid/v4';
+import * as uuidv4 from 'uuidv4';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Name } from 'src/app/models/name';
 import { Gruppe } from 'src/app/models/gruppe';

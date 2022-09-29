@@ -4,7 +4,7 @@ import {Schulklasse} from '../../models/schulklasse';
 import {Schueler} from '../../models/schueler';
 
 import { FormControl, Validators } from '@angular/forms';
-import * as uuidv4 from 'uuid/v4';
+import * as uuidv4 from 'uuidv4';
 import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';

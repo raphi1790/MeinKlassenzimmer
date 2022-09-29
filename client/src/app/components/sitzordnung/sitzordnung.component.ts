@@ -7,7 +7,6 @@ import * as html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import * as CONFIG from '../../../config.json';
 import { Regel } from '../../models/regel';
-import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material/checkbox';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -25,7 +24,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Schueler } from 'src/app/models/schueler';
 import { Seating } from 'src/app/models/seating';
 import { Tisch } from 'src/app/models/tisch';
-import * as uuidv4 from 'uuid/v4';
+import * as uuidv4 from 'uuidv4';
 @Component({
   selector: 'app-sitzordnung',
   templateUrl: './sitzordnung.component.html',

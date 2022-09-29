@@ -5,7 +5,7 @@ import { Randomizer } from './randomizer';
 import { Regel } from "../models/regel";
 import { Preparer } from "./preparer";
 import { Seating } from '../models/seating';
-import * as uuidv4 from 'uuid/v4';
+import * as uuidv4 from 'uuidv4';
 
 export class SeatingPreparer extends Preparer {
     seatings: Seating[]
