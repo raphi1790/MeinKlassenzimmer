@@ -15,7 +15,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { Name } from 'src/app/models/name';
-import * as uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({

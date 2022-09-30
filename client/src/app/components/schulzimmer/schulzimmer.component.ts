@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Tisch } from '../../models/tisch';
 import { FormControl, Validators } from '@angular/forms';
-import * as uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 import * as CONFIG from '../../../config.json';
 import { Regel } from '../../models/regel';

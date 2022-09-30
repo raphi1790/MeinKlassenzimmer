@@ -12,8 +12,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Regel } from 'src/app/models/regel';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import * as jsPDF from 'jspdf';
-import * as html2canvas from 'html2canvas';
+import jsPDF  from 'jspdf';
+import html2canvas from 'html2canvas';
 import { Name } from 'src/app/models/name';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 

@@ -21,7 +21,7 @@
 
       }else {
           this.nameKurz = null;
-          this.name = schueler.name;
+          this.name = null;
           
       }
     

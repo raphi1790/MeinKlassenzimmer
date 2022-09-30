@@ -3,11 +3,10 @@ import { Component, OnInit, OnChanges, ViewChild, EventEmitter, Output } from '@
 import { Schulklasse } from '../../models/schulklasse';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { SeatingPreparer } from '../../helpers/seating.preparer';
-import * as html2canvas from 'html2canvas';
-import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import jsPdf from 'jspdf';
 import * as CONFIG from '../../../config.json';
 import { Regel } from '../../models/regel';
-import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material/checkbox';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -25,7 +24,8 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Schueler } from 'src/app/models/schueler';
 import { Seating } from 'src/app/models/seating';
 import { Tisch } from 'src/app/models/tisch';
-import * as uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
+
 @Component({
   selector: 'app-sitzordnung',
   templateUrl: './sitzordnung.component.html',
@@ -225,7 +225,7 @@ export class SitzordnungComponent implements OnChanges{
     html2canvas(data).then(function (canvas) {
       debugger;
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('l'); 
+      const pdf = new jsPdf('l'); 
       var width = pdf.internal.pageSize.getWidth();    
       var height = pdf.internal.pageSize.getHeight();
       var ratio = height/ divHeight;

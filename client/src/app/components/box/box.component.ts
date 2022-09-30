@@ -9,15 +9,15 @@ import { Schulzimmer } from 'src/app/models/schulzimmer';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { Tisch } from 'src/app/models/tisch';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
-import * as uuidv4 from 'uuid/v4';
-import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material/checkbox';
+import { v4 as uuidv4 } from 'uuid';
+import { MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-box',
   templateUrl: './box.component.html',
   styleUrls: ['./box.component.css'],
   providers: [
-    { provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'noop' }
+    { provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: 'noop' }
   ]
 })
 export class BoxComponent implements OnChanges {

@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import { User } from '../models/user';
 import { Schulklasse } from '../models/schulklasse';
 import { Schueler } from '../models/schueler';
-import * as uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 import { Schulzimmer } from '../models/schulzimmer';
 import { Tisch } from '../models/tisch';
 import { PositionTisch } from '../models/position.tisch';
