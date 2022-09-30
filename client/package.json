@@ -37,7 +37,7 @@
     "rxjs-compat": "^6.3.3",
     "travis": "^0.1.1",
     "tslib": "^2.0.0",
-    "uuidv4": "^6.2.13",
+    "uuid": "^6.2.13",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {

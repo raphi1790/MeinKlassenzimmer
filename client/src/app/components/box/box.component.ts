@@ -9,7 +9,7 @@ import { Schulzimmer } from 'src/app/models/schulzimmer';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { Tisch } from 'src/app/models/tisch';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
-import * as uuidv4 from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 import { MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 
 @Component({
