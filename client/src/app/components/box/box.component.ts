@@ -17,7 +17,7 @@ import { MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
   templateUrl: './box.component.html',
   styleUrls: ['./box.component.css'],
   providers: [
-    { provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: 'noop' }
+    { provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: { clickAction: 'noop' }}
   ]
 })
 export class BoxComponent implements OnChanges {
