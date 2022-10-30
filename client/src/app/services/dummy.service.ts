@@ -105,14 +105,14 @@ export class DummyService implements DataService {
         this.schulklasse2.schueler[1] = new Schueler({
             id: 'b',
             schulklassenId: '2',
-            name: 'test',
+            name: 'testing',
             vorname: 'schueler' + ' b'
 
         })
         this.schulklasse2.schueler[2] = new Schueler({
             id: 'c',
             schulklassenId: '2',
-            name: 'test',
+            name: null,
             vorname: 'schueler' + ' c'
 
         })
