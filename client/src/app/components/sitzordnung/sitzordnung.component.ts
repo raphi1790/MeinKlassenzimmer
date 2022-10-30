@@ -104,6 +104,9 @@ export class SitzordnungComponent implements OnChanges{
     return currentSeating
   }
   getShortName(name: string):string{
+    if (name == null){
+      return ""
+    }
     if(name.length > 4){
       return name.substring(0,4) + "."
     }
