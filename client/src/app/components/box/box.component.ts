@@ -149,34 +149,33 @@ export class BoxComponent implements OnChanges {
 
   activateTisch(): void {
     debugger;
-    if (this.boxIsSelected()) {
-      if (this.currentTisch.active) {
-        if (!this.regelChecker.regelExistsToTischId(this.currentTisch.id, this.regelnToPerson)) {
-          // deactivate tisch if there is no corresponding Regel to it
-          this.currentTisch.active = false
-          this.tischActive = false
-          this.updateCurrentTischInSchulzimmer()
-          this.noteSchulzimmer.emit(this.selectedSchulzimmer);
-          // remove Tisch from Sitzordnungen
-          this.sitzordnungenToPerson = this.sitzordnungRemover.removeTischFromSeating(this.currentTisch, this.sitzordnungenToPerson)
-          this.noteSitzordnungen.emit(this.sitzordnungenToPerson)
-
-        } else {
-          this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
-            data: { text: "Es existieren noch Regeln zu diesem Objekt, weshalb es nicht gelöscht werden kann. Bitte lösche zuerst die entsprechenden Regeln." },
-            width: '550px',
-          });
-        }
-
-      } else {
-        this.tischActive = true
-        this.currentTisch.active = true
+    if (this.currentTisch.active) {
+      if (!this.regelChecker.regelExistsToTischId(this.currentTisch.id, this.regelnToPerson)) {
+        // deactivate tisch if there is no corresponding Regel to it
+        this.currentTisch.active = false
+        this.tischActive = false
         this.updateCurrentTischInSchulzimmer()
         this.noteSchulzimmer.emit(this.selectedSchulzimmer);
+        // remove Tisch from Sitzordnungen
+        this.sitzordnungenToPerson = this.sitzordnungRemover.removeTischFromSeating(this.currentTisch, this.sitzordnungenToPerson)
+        this.noteSitzordnungen.emit(this.sitzordnungenToPerson)
+
+      } else {
+        this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
+          data: { text: "Es existieren noch Regeln zu diesem Objekt, weshalb es nicht gelöscht werden kann. Bitte lösche zuerst die entsprechenden Regeln." },
+          width: '550px',
+        });
       }
 
+    } else {
+      this.tischActive = true
+      this.currentTisch.active = true
+      this.updateCurrentTischInSchulzimmer()
+      this.noteSchulzimmer.emit(this.selectedSchulzimmer);
     }
+
   }
+  
 
   ngOnChanges() {
     this.getTisch(this.row, this.column)
