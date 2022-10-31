@@ -66,13 +66,11 @@ export class SchulzimmerComponent implements OnInit {
     this.regelChecker = new  RegelChecker();
   }
 
-
   loadInputData() {
     this.dataService.mapUser(user => this.applyUser(user))
 
   
   }
-
   applyUser(users){
       debugger;
       this.myUser = new User(users[0])
@@ -90,7 +88,6 @@ export class SchulzimmerComponent implements OnInit {
   }
 
 
-
   getErrorMessageNeuesSchulzimmer() {
     return this.neuesSchulzimmerForm.hasError('required') ? 'Wert erforderlich' :
         this.neuesSchulzimmerForm.hasError('minlength') ? 'Name zu kurz' :
@@ -101,20 +98,20 @@ export class SchulzimmerComponent implements OnInit {
     debugger;
     // console.log("table number (before findMaximalTischNumber): " + this.currentTischNumber);
     this.selectedSchulzimmer = selectedSchulzimmer;
-     if (this.selectedSchulzimmer.tische != null){
-      this.maximalTischNumber = this.findMaximalTischNumber(this.selectedSchulzimmer.tische);
-    }
-    else{
-      this.maximalTischNumber = 0;
-    }
+    this.maximalTischNumber = this.findMaximalTischNumber(this.selectedSchulzimmer.tische);
     // console.log("table number (after findMaximalTischNumber): " + this.currentTischNumber);
 
   }
 
   findMaximalTischNumber(tische: Tisch[]):number{
     debugger;
+    if (tische == null || tische.length == 0){
+      return 0
+    }
+    console.log("findMaximalTischNumber:", tische)
     let allTischNumbers = tische.map(a => a.tischNumber); 
     var maximalTischNumber = Math.max.apply(null, allTischNumbers) ;
+    console.log("findMaximalTischNumber:", maximalTischNumber)
     return Math.max(maximalTischNumber,0); 
 };
 
@@ -183,11 +180,7 @@ export class SchulzimmerComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.schulzimmerToPerson);
 
   }
-  updateMaximalTischNumber(newNumber:number){
-    // console.log("new Number: "+ newNumber);
-    debugger;
-    this.maximalTischNumber = Math.max(newNumber, this.maximalTischNumber)
-  }
+
   updateSchulzimmer(updatedSchulzimmer: Schulzimmer): void {
     debugger;
     this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
@@ -198,6 +191,7 @@ export class SchulzimmerComponent implements OnInit {
     }
     else {
       this.schulzimmerToPerson.push(updatedSchulzimmer);
+      this.maximalTischNumber = this.findMaximalTischNumber(updatedSchulzimmer.tische)
     }
     this.savingIsActiv = true;
     console.log("Updated SchulzimmerToPerson");
