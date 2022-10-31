@@ -113,7 +113,7 @@
                       <td *ngFor="let column of columnSchulzimmer; let c = index">
                          <app-box [selectedSchulzimmer]="selectedSchulzimmer" [row] ="r" [column]="c" [regelnToPerson]= "regelnToPerson" 
                           [sitzordnungenToPerson]="sitzordnungenToPerson" [maximalTischNumber]="maximalTischNumber"
-                          (noteSchulzimmer)="updateSchulzimmer($event)" (noteSchulzimmerTischNumber) = "updateMaximalTischNumber($event)"
+                          (noteSchulzimmer)="updateSchulzimmer($event)" 
                           (noteSitzordnungen)="updateSitzordnungen($event)"
                           >
                         </app-box>

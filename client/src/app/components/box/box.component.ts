@@ -43,7 +43,6 @@ export class BoxComponent implements OnChanges {
   @Input('sitzordnungenToPerson') sitzordnungenToPerson: Sitzordnung[]
 
   @Output() noteSchulzimmer: EventEmitter<Schulzimmer> = new EventEmitter<Schulzimmer>();
-  @Output() noteSchulzimmerTischNumber: EventEmitter<number> = new EventEmitter<number>();
   @Output() noteSitzordnungen: EventEmitter<Sitzordnung[]> = new EventEmitter<Sitzordnung[]>();
 
   tischStyle: string
@@ -53,13 +52,11 @@ export class BoxComponent implements OnChanges {
 
 
   getStyle(): void {
-    this.currentTisch = this.getTisch(this.row, this.column)
-    this.currentTischNumber = this.maximalTischNumber
-
+    debugger
     this.tischStyle = 'unselectedTischStyle'
     this.tischActive = false
     this.checkboxDisabled = true
-    if (this.boxIsSelected()) {
+    if (this.currentTisch !== null) {
       this.tischStyle = 'selectedTischStyle';
       this.currentTischNumber = this.currentTisch.tischNumber
       this.checkboxDisabled = false
@@ -71,32 +68,43 @@ export class BoxComponent implements OnChanges {
 
   }
 
-  private getTisch(row: number, column: number): Tisch {
-
+  private getTisch(row: number, column: number) {
+    // Updates variable currentTisch and currentTischNumber
+    let tisch : Tisch
     if (this.selectedSchulzimmer.tische !== undefined && this.selectedSchulzimmer.tische !== null) {
-      let currentTisch = this.selectedSchulzimmer.tische.filter(tisch => tisch.position.row === row && tisch.position.column === column)[0]
-      return currentTisch ? currentTisch : null
+      tisch = this.selectedSchulzimmer.tische.filter(tisch => tisch.position.row === row && tisch.position.column === column)[0]
+      // return currentTisch ? currentTisch : null
     }
+    if (tisch){
+      this.currentTisch = tisch
+      this.currentTischNumber = tisch.tischNumber
+    }else{
+      this.currentTisch = null
+      this.currentTischNumber = -1
+    }
+  
+    
 
   }
   private boxIsSelected(): boolean {
+    // this.currentTisch = this.getTisch(this.row, this.column)
     return this.currentTisch ? true : false
   }
 
 
   selectTisch(): void {
     debugger;
-    if (this.boxIsSelected()) {
+    this.getTisch(this.row, this.column)
+    if (this.currentTisch) {
+      // De-select table
       if (!this.regelChecker.regelExistsToTischId(this.currentTisch.id, this.regelnToPerson)) {
 
         this.tischStyle = 'unselectedTischStyle';
         this.currentTischNumber = null
-        this.maximalTischNumber--
         this.removeTischFromSchulzimmer()
         this.tischActive = false
         this.checkboxDisabled = true
         this.noteSchulzimmer.emit(this.selectedSchulzimmer);
-        this.noteSchulzimmerTischNumber.emit(this.maximalTischNumber);
 
         // remove Tisch from Sitzordnungen
         this.sitzordnungenToPerson = this.sitzordnungRemover.removeTischFromSeating(this.currentTisch, this.sitzordnungenToPerson)
@@ -107,10 +115,9 @@ export class BoxComponent implements OnChanges {
           width: '550px',
         });
       }
-
-
     }
     else {
+      console.log("maximalTischNumber", this.maximalTischNumber)
       this.tischStyle = 'selectedTischStyle';
       let newTisch = new Tisch({
         'id': uuidv4(),
@@ -119,13 +126,14 @@ export class BoxComponent implements OnChanges {
         'schulzimmerId': this.selectedSchulzimmer.id,
         'tischNumber': ++this.maximalTischNumber
       })
+      this.currentTisch = newTisch
+      this.currentTischNumber = newTisch.tischNumber
       this.selectedSchulzimmer.tische.push(newTisch)
       this.tischActive = true
       this.checkboxDisabled = false
       this.noteSchulzimmer.emit(this.selectedSchulzimmer);
-      this.noteSchulzimmerTischNumber.emit(this.maximalTischNumber);
+  
     }
-
 
   }
 
@@ -168,16 +176,13 @@ export class BoxComponent implements OnChanges {
       }
 
     }
-
-
-
   }
 
   ngOnChanges() {
+    this.getTisch(this.row, this.column)
+    this.currentTischNumber = 10
     this.getStyle();
   }
-
-
 }
 
 
