@@ -30,7 +30,9 @@ export class SitzordnungenRemover {
     debugger;
     if (typeof sitzordnungenToPerson !== 'undefined') {
       sitzordnungenToPerson.forEach(function (o) {
-        o.seatings = o.seatings.filter(seating => seating.schueler.id != removedSchueler.id )
+        if (o.seatings){
+          o.seatings = o.seatings.filter(seating => seating.schueler.id != removedSchueler.id )
+        }
         });
       return sitzordnungenToPerson
 
