@@ -26,6 +26,7 @@ export class DummyService implements DataService {
     schulzimmer1: Schulzimmer
     schulzimmer: Schulzimmer[]
     sitzordnung1: Sitzordnung
+    sitzordnung2: Sitzordnung
     sitzordnungen: Sitzordnung[]
     user: User
     schulklasse3: Schulklasse;
@@ -249,8 +250,16 @@ export class DummyService implements DataService {
         //     tisch: tische[3]
 
         // })
+        this.sitzordnung2 = new Sitzordnung()
+        this.sitzordnung2.id = '2',
+        this.sitzordnung2.personId = 'abc'
+        this.sitzordnung2.schulklassenId = '1'
+        this.sitzordnung2.schulzimmerId = '1'
+        this.sitzordnung2.name = 'Empty Sitzordnung'
+        this.sitzordnung2.seatings = null
+
     
-       this.sitzordnungen = [this.sitzordnung1]
+       this.sitzordnungen = [this.sitzordnung1, this.sitzordnung2]
        return this.sitzordnungen
 
 

@@ -9,9 +9,11 @@ export class KlassenlistenRemover {
     debugger;
     if (typeof klassenlistenToPerson !== 'undefined') {
       klassenlistenToPerson.forEach(function (o) {
+        if (o.gruppen){
         o.gruppen.forEach(function (gruppe) {
           gruppe.schueler = gruppe.schueler.filter(schueler => schueler.id != removedSchueler.id);
         });
+      }
       });
       return klassenlistenToPerson
 

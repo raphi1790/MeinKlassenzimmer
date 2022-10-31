@@ -10,13 +10,19 @@ export class SitzordnungenRemover {
 
   removeTischFromSeating(removedTisch: Tisch, sitzordnungenToPerson: Sitzordnung[]  ): Sitzordnung[]{
     debugger;
+    // console.log("removeTischFromSeating, removedTisch", removedTisch)
+    // console.log("removeTischFromSeating, sitzordnungenToPerson", sitzordnungenToPerson)
     if (typeof sitzordnungenToPerson !== 'undefined') {
       sitzordnungenToPerson.forEach(function (o) {
-        o.seatings = o.seatings.filter(seating => !(seating.tisch.position.column === removedTisch.position.column && seating.tisch.position.row === removedTisch.position.row ))
+        if (o.seatings){
+          o.seatings = o.seatings.filter(seating => !(seating.tisch.position.column === removedTisch.position.column && seating.tisch.position.row === removedTisch.position.row ))
+        }
+        
         });
       return sitzordnungenToPerson
 
     }
+    
 
   }
 
@@ -24,7 +30,9 @@ export class SitzordnungenRemover {
     debugger;
     if (typeof sitzordnungenToPerson !== 'undefined') {
       sitzordnungenToPerson.forEach(function (o) {
-        o.seatings = o.seatings.filter(seating => seating.schueler.id != removedSchueler.id )
+        if (o.seatings){
+          o.seatings = o.seatings.filter(seating => seating.schueler.id != removedSchueler.id )
+        }
         });
       return sitzordnungenToPerson
 
