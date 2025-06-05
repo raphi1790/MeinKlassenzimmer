@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpClient} from '@angular/common/http';
-import 'rxjs/Rx';
 import { User } from '../models/user';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "@angular/fire/firestore";
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "@angular/fire/compat/firestore";
 import { DataService } from "./data.service";
 
 
@@ -24,7 +23,6 @@ export class UserService implements DataService{
 
 
   private getUserId():string{
-    debugger;
     let currentUser = this.authService.authState
     return currentUser.uid;
   }

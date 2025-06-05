@@ -4,7 +4,7 @@ import { Tisch } from '../../models/tisch';
 import { FormControl, Validators } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 
-import * as CONFIG from '../../../config.json';
+import CONFIG from '../../../config.json';
 import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
@@ -61,8 +61,8 @@ export class SchulzimmerComponent implements OnInit {
      public dialog: MatDialog,private _snackBar: MatSnackBar
       ) {
     this.maximalTischNumber = 0;
-    this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
-    this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
+    this.rowSchulzimmer = Array.from(new Array(CONFIG.numberOfRows),(val,index)=>index);
+    this.columnSchulzimmer = Array.from(new Array(CONFIG.numberOfColumns),(val,index)=>index);
     this.regelChecker = new  RegelChecker();
   }
 

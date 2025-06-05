@@ -1,4 +1,4 @@
-import * as CONFIG from '../../config.json';
+import CONFIG from '../../config.json';
 import { Preparer } from './preparer.js';
 import { Regel } from '../models/regel.js';
 import { Schueler } from '../models/schueler.js';
@@ -11,7 +11,7 @@ export class CalculatingEngine{
 
     calculate(inputPreparer : Preparer, inputSchueler: Schueler[], inputRegeln: Regel[], inputTisch?: Tisch[],  inputGroupNumber?: number ): any{
         let countAttemp = 0;
-        let maximalNumberOfAttemps = (<any>CONFIG).numberOfAttemps ;
+        let maximalNumberOfAttemps = CONFIG.numberOfAttemps ;
         // console.log(maximalNumberOfAttemps);
         
         let regelnPaarung = inputRegeln.filter(regel => regel.type == "Unmögliche Paarung")

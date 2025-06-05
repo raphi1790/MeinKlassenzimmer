@@ -2,13 +2,12 @@
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import 'rxjs/add/operator/filter';
-import { AngularFireAuth} from "@angular/fire/auth";
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { User } from '../../models/user';
 import { Observable, of } from 'rxjs';
-import { switchMap} from 'rxjs/operators';
-import firebase from 'firebase/app';
+import { switchMap } from 'rxjs/operators';
+import firebase from 'firebase/compat/app'; // Changed to compat
 import { environment } from 'src/environments/environment';
 
 
@@ -48,7 +47,6 @@ export class AuthService {
     return this.afAuth.signInWithPopup(
       new firebase.auth.GoogleAuthProvider()).then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        debugger;
         this.updateUserData(result.user);
         this.authState = result.user;
         this.getToken(result);
@@ -84,14 +82,12 @@ export class AuthService {
 
 
   private getToken(result:any) {
-    debugger;
     var token = result.credential.accessToken;
     localStorage.setItem('tokenId', token);
   }
 
   private updateUserData(user) {
     // Sets user data to firestore on login
-    debugger;
     const userRef: AngularFirestoreDocument<any> = this.firestore.doc(`users/${user.uid}`);
 
     const data: User = {

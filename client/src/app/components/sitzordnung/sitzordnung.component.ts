@@ -5,7 +5,7 @@ import { Schulzimmer } from '../../models/schulzimmer';
 import { SeatingPreparer } from '../../helpers/seating.preparer';
 import html2canvas from 'html2canvas';
 import jsPdf from 'jspdf';
-import * as CONFIG from '../../../config.json';
+import CONFIG from '../../../config.json';
 import { Regel } from '../../models/regel';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -49,8 +49,8 @@ export class SitzordnungComponent implements OnChanges{
   
 
   constructor(public dialog: MatDialog) { 
-    this.rowSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfRows),(val,index)=>index);
-    this.columnSchulzimmer = Array.from(new Array((<any>CONFIG).numberOfColumns),(val,index)=>index);
+    this.rowSchulzimmer = Array.from(new Array(CONFIG.numberOfRows),(val,index)=>index);
+    this.columnSchulzimmer = Array.from(new Array(CONFIG.numberOfColumns),(val,index)=>index);
 
 
   }

@@ -1,10 +1,6 @@
 import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { MatDialog } from '@angular/material/dialog';
-import { InfoDialogComponent } from 'src/app/components/info-dialog/info-dialog.component';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
-import { map } from 'rxjs/operators';
-import "rxjs/add/operator/toPromise";
 
 @Injectable()
 export class UnsavedGuard implements CanDeactivate<any> {

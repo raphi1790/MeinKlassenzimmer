@@ -16,9 +16,9 @@ import { AnleitungComponent } from './components/anleitung/anleitung.component';
 import { InlineEditSmallComponent} from './components/inline-edit-small/inline-edit-small.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 import { environment } from '../environments/environment';
 import { UnsavedGuard } from './helpers/guards/unsaved.guard';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
@@ -73,7 +73,7 @@ import { BoxComponent } from './components/box/box.component';
     FormsModule,
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule,// imports firebase/auth, only needed for auth features
+    AngularFireAuthModule,
     AngularFirestoreModule,
     CountdownModule,
     DragDropModule,
@@ -96,9 +96,6 @@ import { BoxComponent } from './components/box/box.component';
 
 
   ],
-  bootstrap: [AppComponent],
-  entryComponents: [SpeichernInfoDialogComponent,
-      RegelDialogComponent, 
-      InfoDialogComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
