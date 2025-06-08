@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
+  standalone: false,
   selector: 'app-startseite',
   templateUrl: './startseite.component.html',
   styleUrls: ['./startseite.component.css']

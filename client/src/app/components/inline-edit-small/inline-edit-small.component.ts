@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Name } from '../../models/name';
 
 @Component({
+  standalone: false,
   selector: 'app-inline-edit-small',
   templateUrl: './inline-edit-small.component.html',
   styleUrls: ['./inline-edit-small.component.css']

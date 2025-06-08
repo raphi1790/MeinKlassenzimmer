@@ -27,6 +27,7 @@ import { Tisch } from 'src/app/models/tisch';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
+  standalone: false,
   selector: 'app-sitzordnung',
   templateUrl: './sitzordnung.component.html',
   styleUrls: ['./sitzordnung.component.css']

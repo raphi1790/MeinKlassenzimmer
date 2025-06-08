@@ -3,6 +3,7 @@ import { SpeichernInfoDialogComponent } from '../speichern-info-dialog/speichern
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 @Component({
+  standalone: false,
   selector: 'app-speichern',
   templateUrl: './speichern.component.html',
   styleUrls: ['./speichern.component.css']

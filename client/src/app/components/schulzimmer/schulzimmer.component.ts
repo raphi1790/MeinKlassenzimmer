@@ -22,6 +22,7 @@ import { MatSort } from '@angular/material/sort';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
+  standalone: false,
   selector: 'app-schulzimmer',
   templateUrl: './schulzimmer.component.html',
   styleUrls: ['./schulzimmer.component.css']

@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Regel } from 'src/app/models/regel';
 
 @Component({
+  standalone: false,
     selector: 'app-regel-dialog',
     templateUrl: './regel-dialog.component.html',
     styleUrls: ['./regel-dialog.component.css']

@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
+  standalone: false,
   selector: 'app-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css']

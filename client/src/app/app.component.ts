@@ -9,8 +9,7 @@ import {environment} from '../environments/environment'
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  standalone: false
-})
+  standalone: false,})
 export class AppComponent {
 
   constructor(public auth: AuthService) {

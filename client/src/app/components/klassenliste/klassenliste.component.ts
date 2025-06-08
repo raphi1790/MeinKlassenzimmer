@@ -18,6 +18,7 @@ import { Name } from 'src/app/models/name';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-klassenliste',
   templateUrl: './klassenliste.component.html',
   styleUrls: ['./klassenliste.component.css']
