@@ -1,10 +1,21 @@
-.mat-card-header {
+mat-card-header {
   display: grid;
+  padding-bottom: 16;
 }
-.mat-card {
-  margin-left: auto;
-  margin-right: auto;
+mat-card {
+  margin-top: 1em;
 }
+mat-card h3, mat-card h4 {
+  margin-top: 0.5em;
+  padding-left: 16px;
+  font-weight: 500;
+}
+
+mat-card-title-group, mat-card-title {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
 
 img {
   border: 2px solid #979599;

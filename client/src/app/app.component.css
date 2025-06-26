@@ -1,70 +1,74 @@
-
-.app-toolbar-icon {
-    padding: 0 14px;
-  }
-  
-  .toolbar-spacer {
-    flex: 1 1 auto;
-  }
-  .item-spacer {
-    display: block;
-    padding: 3px
-  }
-  h1.app-name {
-    margin-left: 8px;
-  }
-
-  .sidenav-container {
-    /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
-       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
-    flex: 1;
-    height: 100%;
-  }
-
-  .app-container {
-    position: absolute;
-    top: 60px;
-    bottom: 0px;
-    left: 0;
-    right: 0;
-    min-height: 100% - 60px;;
-
-  }
-  
-
-  mat-sidenav {
-    width: 250px;
-    height: 100%;
-  }
-  .mat-sidenav-content {
-    background-image: linear-gradient(to bottom, #cac7cc 0%, #cac7cc 35%, #f7f7f7 35%,#f7f7f7 100%);
+/*===============================================
+    Main App & Toolbar Styles
+================================================*/
+h1.app-name {
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
-.mat-list-item.active{
-  background-color: var(--accent-color);
-}
-.submenu-spacer {
-  display: block;
-  padding: 15px
-}
-a.header{
-  font-weight: bold;
-}
-mat-icon.notranslate.mat-list-icon.werkzeugkasten.material-icons.mat-icon-no-color{
-  padding:0px;
+.toolbar-spacer {
+  flex: 1 1 auto;
 }
 
-mat-icon.notranslate.mat-list-icon.verwaltung.material-icons.mat-icon-no-color{
-  padding:0px;
+.app-container {
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
+/*===============================================
+    Sidenav Container & Content
+================================================*/
+mat-sidenav {
+  width: 250px;
+}
 
+.mat-sidenav-content {
+  background-image: linear-gradient(to bottom, #cac7cc 0%, #cac7cc 35%, #f7f7f7 35%, #f7f7f7 100%);
+}
 
+/*===============================================
+    Sidenav List & Item Styling (DEFINITIVE FIX)
+================================================*/
 
+/* Remove forced flex and vertical centering, let Material handle it */
+a[mat-list-item] {
+  height: 48px;
+}
 
+/* Header bolding remains */
+a.header,
+a.header span,
+a.header mat-icon,
+a.header .menu-toggle-icon {
+  font-weight: bold !important;
+}
 
+/* Reduce icon spacing for new Material layout */
+a[mat-list-item] mat-icon[mat-list-icon] {
+  margin-right: 16px;
+  vertical-align: middle;
+  margin-top: -2px; /* Adjust this value as needed for perfect alignment */
+}
 
+/* Arrow icon spacing */
+.menu-toggle-icon {
+  margin-left: 8px;
+}
 
+/* Remove excessive submenu indentation */
+.sidenav-submenu a[mat-list-item] {
+  padding-left: 40px !important;
+}
 
-  
-  
+a.mat-mdc-list-item.active,
+a.mat-mdc-list-item.cdk-program-focused,
+a.mat-mdc-list-item[aria-current="page"],
+a.mat-mdc-list-item.mdc-list-item--activated {
+  background-color:var(--accent-color); /* or your preferred yellow */
+  color: #222 !important;
+}
