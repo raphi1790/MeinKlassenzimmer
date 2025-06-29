@@ -8,16 +8,16 @@
   padding-top: 10px;
 }
 
-.mat-list-item.highlighted {
+.mat-list-item.highlighted, .mat-mdc-list-item.highlighted {
   background-color: var(--accent-color);
 }
-.mat-card-header {
+.mat-card-header, .mat-mdc-card-header {
   display: grid;
 }
-.mat-card-header-text {
+.mat-card-header-text, .mat-mdc-card-header-text {
   margin: 0 0px;
 }
-.mat-table {
+.mat-table, .mat-mdc-table {
   overflow: auto;
   width: 100%;
 }

@@ -40,7 +40,7 @@
     background-image: linear-gradient(to bottom, #cac7cc 0%, #cac7cc 35%, #f7f7f7 35%,#f7f7f7 100%);
 }
 
-.mat-list-item.active{
+.mat-list-item.active, .mat-mdc-list-item.active{
   background-color: var(--accent-color);
 }
 .submenu-spacer {
@@ -50,11 +50,11 @@
 a.header{
   font-weight: bold;
 }
-mat-icon.notranslate.mat-list-icon.werkzeugkasten.material-icons.mat-icon-no-color{
+mat-icon.notranslate.mat-list-icon.werkzeugkasten.material-icons.mat-icon-no-color, .mat-mdc-icon.notranslate.mat-mdc-list-icon.werkzeugkasten.material-icons.mat-mdc-icon-no-color{
   padding:0px;
 }
 
-mat-icon.notranslate.mat-list-icon.verwaltung.material-icons.mat-icon-no-color{
+mat-icon.notranslate.mat-list-icon.verwaltung.material-icons.mat-icon-no-color, .mat-mdc-icon.notranslate.mat-mdc-list-icon.verwaltung.material-icons.mat-mdc-icon-no-color{
   padding:0px;
 }
 
