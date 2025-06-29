@@ -6,13 +6,13 @@
     display: block;
     width: 100%
 }  
-.mat-card-header {
+.mat-card-header, .mat-mdc-card-header {
   display: grid;
 }  
-.mat-card-header-text {
+.mat-card-header-text, .mat-mdc-card-header-text {
   margin: 0 0px;
 }
-.mat-table {
+.mat-table, .mat-mdc-table {
   overflow: auto;
   max-height: 500px;
 }
@@ -23,7 +23,7 @@
   position: relative;
 }
 
-.mat-card-footer{
+.mat-card-footer, .mat-mdc-card-footer{
     margin-left: -8px;
     margin-bottom: -8px;
 }
