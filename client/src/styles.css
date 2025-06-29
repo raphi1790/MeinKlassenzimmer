@@ -25,7 +25,8 @@ body {
   font-size: 8pt;
   float: right;
 }
-.mat-card {
+.mat-card,
+.mdc-card {
   margin-top: 20px;
   margin-bottom: 15px;
   margin-left: 15px;
@@ -36,7 +37,7 @@ body {
   width: 790px;
 }
 
-.mat-checkbox .mat-checkbox-inner-container {
+.mat-checkbox .mat-checkbox-inner-container .mat-mdc-checkbox{
   position: absolute;
   bottom: 0;
   right: 0;

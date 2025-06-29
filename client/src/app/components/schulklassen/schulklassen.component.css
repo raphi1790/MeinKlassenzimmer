@@ -11,12 +11,14 @@
 .mat-list-item.highlighted {
   background-color: var(--accent-color);
 }
-.mat-card-header {
-  display: grid;
+
+.mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 8px; /* Add some padding if buttons are too close to edge */
+  padding-bottom: 8px; /* Add some padding if buttons are too close to edge */
 }
-.mat-card-header-text {
-  margin: 0 0px;
-}
+
 .mat-table {
   overflow: auto;
   width: 100%;
