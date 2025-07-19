@@ -18,22 +18,16 @@
 .tischNumber{
     color: white;
     text-align: center;
-    
+    padding-top: 15px;
     
 }
-.checkboxActiveTisch .mat-checkbox-inner-container {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    height: 15px;
-    width: 15px;
-    size: 15px;
-  }
 
-  .checkboxActiveTischContainer{
+.checkboxActiveTischContainer{
     position: absolute;
-    bottom: 0;
-    right: 0;
     height: 15px;
     width: 15px;
-  }
+    right: 14px;
+    bottom: 14px;
+    display: block;
+}
+

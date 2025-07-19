@@ -19,6 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
+  standalone: false,
   selector: 'app-regeln',
   templateUrl: './regeln.component.html',
   styleUrls: ['./regeln.component.css']

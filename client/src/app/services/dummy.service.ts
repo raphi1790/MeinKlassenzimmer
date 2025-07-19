@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import 'rxjs/Rx';
 import { User } from '../models/user';
 import { Schulklasse } from '../models/schulklasse';
 import { Schueler } from '../models/schueler';
@@ -13,7 +12,6 @@ import { Sitzordnung } from '../models/sitzordnung';
 import { Seating } from '../models/seating';
 import { Regel } from '../models/regel';
 import { DataService } from "./data.service";
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
 
 
 

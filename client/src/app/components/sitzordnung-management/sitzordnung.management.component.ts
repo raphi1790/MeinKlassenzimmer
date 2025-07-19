@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
+  standalone: false,
     selector: 'app-sitzordnung-management',
     templateUrl: './sitzordnung.management.component.html',
     styleUrls: ['./sitzordnung.management.component.css']

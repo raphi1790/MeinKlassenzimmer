@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 
 @Component({
+  standalone: false,
   selector: 'app-box',
   templateUrl: './box.component.html',
   styleUrls: ['./box.component.css'],

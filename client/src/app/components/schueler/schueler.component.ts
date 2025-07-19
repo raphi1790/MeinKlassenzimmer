@@ -19,6 +19,7 @@ import { Sitzordnung } from 'src/app/models/sitzordnung';
 
 
 @Component({
+  standalone: false,
   selector: 'app-schueler',
   templateUrl: './schueler.component.html',
   styleUrls: ['./schueler.component.css']

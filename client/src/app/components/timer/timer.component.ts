@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, OnChanges } from '@angular/core';
-import { CountdownComponent, CountdownGlobalConfig } from 'ngx-countdown';
+import { CountdownComponent, CountdownConfig } from 'ngx-countdown';
 import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
+  standalone: false,
   selector: 'app-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css']

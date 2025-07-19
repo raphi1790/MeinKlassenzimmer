@@ -5,3 +5,5 @@ meinKlassenzimmer/public/dist
 client/firebase-debug.log
 
 client/src/environments/
+
+client/.angular/*

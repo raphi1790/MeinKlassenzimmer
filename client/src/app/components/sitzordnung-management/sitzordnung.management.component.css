@@ -6,20 +6,19 @@
     display: block;
     width: 100%
 }  
-.mat-card-header {
+.mat-card-header, .mat-mdc-card-header {
   display: grid;
 }  
-.mat-card-header-text {
+.mat-card-header-text, .mat-mdc-card-header-text {
   margin: 0 0px;
 }
-.mat-table {
-  overflow: auto;
-  width: 100%;
+.mat-table, .mat-mdc-table {
+  overflow: hidden;
 }
 .mat-column-select {
   overflow: visible;
 }
-.mat-checkbox  {
+mat-checkbox .mat-mdc-checkbox {
   position: relative;
 }
 .second-column-card{
@@ -32,7 +31,7 @@
 .col-md-7{
     padding-left: 0px;
 }
-.mat-card-footer{
+.mat-card-footer, .mat-mdc-card-footer{
     margin-left: -8px;
     margin-bottom: -8px;
 }

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~font-awesome/css/font-awesome.css";
+@import "font-awesome/css/font-awesome.css";
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 :root {
   --primary-color: #673ab7;
@@ -25,7 +25,8 @@ body {
   font-size: 8pt;
   float: right;
 }
-.mat-card {
+.mat-card,
+.mdc-card {
   margin-top: 20px;
   margin-bottom: 15px;
   margin-left: 15px;
@@ -36,7 +37,7 @@ body {
   width: 790px;
 }
 
-.mat-checkbox .mat-checkbox-inner-container {
+.mat-checkbox .mat-checkbox-inner-container .mat-mdc-checkbox .mat-mdc-checkbox-inner-container{
   position: absolute;
   bottom: 0;
   right: 0;
@@ -55,4 +56,10 @@ body {
 
 .row {
   width: 100% !important;
+}
+#my-custom-chip {
+  background-color: var(--primary-color) !important;
+}
+#my-custom-chip .mdc-evolution-chip__text-label {
+  color: white !important;
 }

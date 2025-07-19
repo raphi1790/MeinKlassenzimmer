@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
+  standalone: false,
   selector: 'app-zufallsgenerator',
   templateUrl: './zufallsgenerator.component.html',
   styleUrls: ['./zufallsgenerator.component.css']

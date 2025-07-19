@@ -25,6 +25,7 @@ import { DataService } from 'src/app/services/data.service';
 
 
 @Component({
+  standalone: false,
   selector: 'app-schulklassen',
   templateUrl: './schulklassen.component.html',
   styleUrls: ['./schulklassen.component.css'],

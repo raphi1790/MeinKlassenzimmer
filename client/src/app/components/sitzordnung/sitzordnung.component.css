@@ -6,16 +6,16 @@
     display: block;
     width: 100%
 }  
-.mat-card-header {
+.mat-card-header, .mat-mdc-card-header {
   display: grid;
 }  
-.mat-card-header-text {
+.mat-card-header-text, .mat-mdc-card-header-text {
   margin: 0 0px;
 }
 .mat-column-select {
   overflow: visible;
 }
-.mat-checkbox  {
+mat-checkbox .mat-mdc-checkbox {
   position: relative;
 }
 .second-column-card{

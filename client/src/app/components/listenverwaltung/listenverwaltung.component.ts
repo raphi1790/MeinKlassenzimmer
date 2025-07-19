@@ -18,6 +18,7 @@ import { MatSort } from '@angular/material/sort';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
+  standalone: false,
   selector: 'app-listenverwaltung',
   templateUrl: './listenverwaltung.component.html',
   styleUrls: ['./listenverwaltung.component.css']
