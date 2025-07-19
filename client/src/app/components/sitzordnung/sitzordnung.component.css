@@ -15,7 +15,7 @@
 .mat-column-select {
   overflow: visible;
 }
-.mat-checkbox  {
+mat-checkbox .mat-mdc-checkbox {
   position: relative;
 }
 .second-column-card{

@@ -23,8 +23,7 @@
   padding-left: 0px;
 }
 .mat-table, .mat-mdc-table {
-  overflow: auto;
-  width: 100%;
+  overflow: hidden;
 }
 .mat-column-name {
   word-wrap: break-word !important;

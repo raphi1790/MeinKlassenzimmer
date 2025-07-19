@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-      <div class="col-md-5 responsive">
+      <div class="col-md-5">
         <div class="column1">
           <div class="input-form-container">
             <mat-card>
@@ -27,22 +27,17 @@
                   </mat-form-field>
 
                 </div>
-                <mat-card-actions>
-                    <button mat-raised-button color="accent" (click)="selectInputNumberSchueler()">Schüler auswählen</button>
-      
-      
-      
-      
-                  </mat-card-actions>
-  
-  
+                
               </mat-card-content>
+              <mat-card-actions>
+                  <button mat-raised-button color="accent" (click)="selectInputNumberSchueler()">Schüler auswählen</button>
+              </mat-card-actions>
               <mat-card-footer>
                 <mat-chip-set aria-label="Predefined selection">
-                  <mat-chip color="primary" selected (click)="selectOneSchueler()">1 Schüler</mat-chip>
-                  <mat-chip color="primary" (click)="selectTwoSchueler()" selected>2 Schüler</mat-chip>
-                  <mat-chip color="primary" (click)="selectFiveSchueler()" selected>5 Schüler</mat-chip>
-                </mat-chip-set>
+                  <mat-chip id="my-custom-chip" (click)="selectOneSchueler()">1 Schüler</mat-chip>
+                  <mat-chip id="my-custom-chip" (click)="selectTwoSchueler()">2 Schüler</mat-chip>
+                  <mat-chip id="my-custom-chip" (click)="selectFiveSchueler()">5 Schüler</mat-chip>
+              </mat-chip-set>
               </mat-card-footer>
             </mat-card>
           </div>
@@ -51,10 +46,7 @@
   
         </div>
       </div>
-  
-  
-  
-  
+      
       <div class="col-md-7" >
         <div class="column2" >
           <div class="schulzimmer">

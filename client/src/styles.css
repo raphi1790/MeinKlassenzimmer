@@ -37,7 +37,7 @@ body {
   width: 790px;
 }
 
-.mat-checkbox .mat-checkbox-inner-container .mat-mdc-checkbox{
+.mat-checkbox .mat-checkbox-inner-container .mat-mdc-checkbox .mat-mdc-checkbox-inner-container{
   position: absolute;
   bottom: 0;
   right: 0;
@@ -56,4 +56,10 @@ body {
 
 .row {
   width: 100% !important;
+}
+#my-custom-chip {
+  background-color: var(--primary-color) !important;
+}
+#my-custom-chip .mdc-evolution-chip__text-label {
+  color: white !important;
 }

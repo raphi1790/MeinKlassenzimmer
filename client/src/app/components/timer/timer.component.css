@@ -14,19 +14,19 @@
 .mat-card-header, .mat-mdc-card-header {
     display: grid;
   }  
-  .mat-card-header-text, .mat-mdc-card-header-text {
-    margin: 0 0px;
-  }
+.mat-card-header-text, .mat-mdc-card-header-text {
+margin: 0 0px;
+}
 
-  .mat-card-footer, .mat-mdc-card-footer{
-      margin-left: -8px;
-      margin-bottom: -8px;
-  }
-  h1.timer-detail{
-      font-size: 100px;
-      text-align: center;
+.mat-card-footer, .mat-mdc-card-footer{
+    padding-left: 16px;
+    padding-bottom: 5px;
+}
+h1.timer-detail{
+    font-size: 100px;
+    text-align: center;
 
-  }
+}
 
 
 

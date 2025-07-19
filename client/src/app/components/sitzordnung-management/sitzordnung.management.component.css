@@ -13,13 +13,12 @@
   margin: 0 0px;
 }
 .mat-table, .mat-mdc-table {
-  overflow: auto;
-  width: 100%;
+  overflow: hidden;
 }
 .mat-column-select {
   overflow: visible;
 }
-.mat-checkbox  {
+mat-checkbox .mat-mdc-checkbox {
   position: relative;
 }
 .second-column-card{

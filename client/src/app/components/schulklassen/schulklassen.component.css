@@ -1,6 +1,6 @@
-.mat-form-field {
+mat-form-field, .mat-mdc-form-field {
+  width: 100%;
   display: block;
-  width: 100%
 }
 .button-list {
   width: 100%;
@@ -18,8 +18,7 @@
   margin: 0 0px;
 }
 .mat-table, .mat-mdc-table {
-  overflow: auto;
-  width: 100%;
+  overflow: hidden;
 }
 .mat-column-name {
   word-wrap: break-word !important;
