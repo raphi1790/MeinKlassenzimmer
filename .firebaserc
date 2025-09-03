@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "meinklassenzimmer"
-  }
+    "default": "meinklassenzimmer",
+    "meinklassenzimmer-qual": "meinklassenzimmer-qual"
+  },
+  "targets": {},
+  "etags": {}
 }
