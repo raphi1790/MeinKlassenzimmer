@@ -79,7 +79,7 @@ import { MaterialModule } from './material.module';
     CountdownModule,
     DragDropModule,
     ScrollingModule,
-    MaterialModule, // <-- This is the only line you need for all Material modules.
+    MaterialModule,
   ],
   providers: [
     AuthService,

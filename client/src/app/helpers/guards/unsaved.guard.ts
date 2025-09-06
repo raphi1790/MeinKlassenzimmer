@@ -2,7 +2,9 @@ import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from "@ang
 import { Injectable } from "@angular/core";
 import { MatDialog } from '@angular/material/dialog';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UnsavedGuard implements CanDeactivate<any> {
     constructor(public dialog: MatDialog){}
 
