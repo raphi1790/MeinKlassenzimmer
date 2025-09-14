@@ -82,13 +82,11 @@ import { MaterialModule } from './material.module';
     MaterialModule,
   ],
   providers: [
-    AuthService,
     {
       provide: DataService,
       useClass: environment.production ? UserService : DummyService,
     },
     UnsavedGuard,
-    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

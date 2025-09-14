@@ -3,7 +3,6 @@ export const environment = {
   firebaseConfig: {
     apiKey: "AIzaSyBVB5VHzTtUtAQ1rwUsamX6kaz-sn_3KdM",
     authDomain: "meinklassenzimmer-qual.firebaseapp.com",
-    databaseURL: "https://meinklassenzimmer-qual.firebaseio.com",
     projectId: "meinklassenzimmer-qual",
     storageBucket: "meinklassenzimmer-qual.firebasestorage.app",
     messagingSenderId: "435136862828",
