@@ -8,8 +8,8 @@ import { environment } from 'src/environments/environment';
   standalone: false,
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.css'],
-  providers: [AuthService]
+  styleUrls: ['./toolbar.component.css']
+  // Removed providers: [AuthService] - this was causing separate instances!
 })
 export class ToolbarComponent{
   
@@ -17,7 +17,7 @@ export class ToolbarComponent{
 
   showEmail(){
     if (environment.production){
-      if (this.auth.authState !== undefined){
+      if (this.auth.authState !== null && this.auth.authState !== undefined){
         return this.auth.authState.email
       }
       else{
@@ -26,17 +26,16 @@ export class ToolbarComponent{
     }else{
       return "Development"
     }
-    
-    
-
   }
+  
   login() {
-    this.auth.login();
+    console.log('🔧 Login button clicked');
+    this.auth.login().then(result => {
+      console.log('🔧 Login result:', result);
+    });
   }
 
   logout() {
     this.auth.logout();
   }
-
-
 }

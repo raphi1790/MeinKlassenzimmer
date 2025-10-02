@@ -2,48 +2,89 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient} from '@angular/common/http';
 import { User } from '../models/user';
-import { map } from 'rxjs/operators';
-import { AuthService } from '../services/auth/auth.service';
+import { map, switchMap, filter } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "@angular/fire/compat/firestore";
 import { DataService } from "./data.service";
 
-
-
 @Injectable()
-export class UserService implements DataService{
+export class UserService implements DataService {
+  private dbPath = '/users';
+  
+  constructor(
+    private http: HttpClient, 
+    private afAuth: AngularFireAuth, 
+    private firestore: AngularFirestore
+  ) {
+    console.log('📊 UserService constructor called');
+  }
 
-    private dbPath = '/users';
-    usersRef: AngularFirestoreCollection<User> = null
+  getUser(): Observable<User[]> {
+  console.log('📊 getUser called');
+  
+  return this.afAuth.authState.pipe(
+    filter(user => !!user),
+    switchMap(user => {
+      console.log('📊 User authenticated, querying Firestore for uid:', user.uid);
+      
+      return this.firestore.doc<User>(`${this.dbPath}/${user.uid}`).get().pipe(
+        map(doc => {
+          if (doc.exists) {
+            // Existing user
+            const data = doc.data() as User;
+            return [new User({ ...data, uid: user.uid })];
+          } else {
+            // New user - create default document
+            const newUser = new User({
+              uid: user.uid,
+              email: user.email,
+              displayName: user.displayName,
+              photoURL: user.photoURL,
+              schulklassen: [],
+              klassenlisten: [],
+              schulzimmer: [],
+              regeln: [],
+              sitzordnungen: []
+            });
+            
+            // Save new user document
+            this.updateUser(newUser);
+            
+            return [newUser];
+          }
+        })
+      );
+    })
+    );
+  }
+
+  mapUser(apply) {
+    console.log('📊 mapUser called');
+    this.getUser().subscribe({
+      next: (users) => {
+        console.log('📊 mapUser received users:', users);
+        apply(users);
+      },
+      error: (error) => {
+        console.error('📊 mapUser error:', error);
+      }
+    });
+  }
+
+  updateUser(data: User) {
+    console.log('📊 updateUser called with:', data);
     
-
-
-  constructor(private http: HttpClient, private authService: AuthService, private firestore: AngularFirestore) { 
-    this.usersRef = this.firestore.collection(this.dbPath, ref => ref.where("uid", "==", this.getUserId()));
+    // Get current user directly from AngularFireAuth
+    this.afAuth.currentUser.then(currentUser => {
+      if (currentUser) {
+        const userRef = this.firestore.collection(this.dbPath).doc(currentUser.uid);
+        userRef.set(JSON.parse(JSON.stringify(data)), { merge: true });
+        console.log('📊 updateUser completed');
+      } else {
+        console.error('📊 updateUser error: No authenticated user');
+      }
+    }).catch(error => {
+      console.error('📊 updateUser error:', error);
+    });
   }
-
-
-  private getUserId():string{
-    let currentUser = this.authService.authState
-    return currentUser.uid;
-  }
-
-   getUser(): AngularFirestoreCollection<User> {
-    return this.usersRef;
-  }
-
-  mapUser(apply){
-    this.getUser().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ uid: c.payload.doc['id'], ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(apply);
-  } 
-
-  updateUser(data:User) {
-      // console.log(JSON.parse(JSON.stringify(data)))
-    this.usersRef.doc(this.getUserId()).set(JSON.parse(JSON.stringify(data)), { merge: true });
-
- } 
 }
