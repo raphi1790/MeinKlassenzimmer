@@ -6,6 +6,7 @@ import { map, switchMap, filter } from 'rxjs/operators';
 import { Auth, authState } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { DataService } from './data.service';
+import { LoggingService } from './logging.service';
 
 @Injectable()
 export class UserService implements DataService {
@@ -14,17 +15,19 @@ export class UserService implements DataService {
   private firestore = inject(Firestore);
   private http = inject(HttpClient);
 
+  private logger = inject(LoggingService);
+
   constructor() {
-    console.log('📊 UserService constructor called');
+    this.logger.db('UserService constructor called');
   }
 
   getUser(): Observable<User[]> {
-    console.log('📊 getUser called');
+    this.logger.db('getUser called');
     
     return authState(this.auth).pipe(
       filter(user => !!user),
       switchMap(user => {
-        console.log('📊 User authenticated, querying Firestore for uid:', user!.uid);
+        this.logger.db('User authenticated, querying Firestore', { userExists: true });
         
         const userDocRef = doc(this.firestore, `${this.dbPath}/${user!.uid}`);
         
@@ -55,7 +58,7 @@ export class UserService implements DataService {
               observer.complete();
             }
           }).catch(error => {
-            console.error('📊 Error fetching user document:', error);
+            this.logger.error('Error fetching user document:', error);
             observer.error(error);
           });
         });
@@ -64,20 +67,20 @@ export class UserService implements DataService {
   }
 
   mapUser(apply: (users: User[]) => void) {
-    console.log('📊 mapUser called');
+    this.logger.db('mapUser called');
     this.getUser().subscribe({
       next: (users) => {
-        console.log('📊 mapUser received users:', users);
+        this.logger.db('mapUser received users', { count: users.length });
         apply(users);
       },
       error: (error) => {
-        console.error('📊 mapUser error:', error);
+        this.logger.error('mapUser error:', error);
       }
     });
   }
 
   async updateUser(data: User): Promise<void> {
-    console.log('📊 updateUser called with:', data);
+    this.logger.db('updateUser called');
     
     try {
       const currentUser = this.auth.currentUser;
@@ -85,12 +88,12 @@ export class UserService implements DataService {
       if (currentUser) {
         const userDocRef = doc(this.firestore, this.dbPath, currentUser.uid);
         await setDoc(userDocRef, JSON.parse(JSON.stringify(data)), { merge: true });
-        console.log('📊 updateUser completed');
+        this.logger.db('updateUser completed');
       } else {
-        console.error('📊 updateUser error: No authenticated user');
+        this.logger.error('updateUser error: No authenticated user');
       }
     } catch (error) {
-      console.error('📊 updateUser error:', error);
+      this.logger.error('updateUser error:', error);
       throw error;
     }
   }

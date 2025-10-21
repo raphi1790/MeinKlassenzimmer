@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  enableDebugLogs: true,
   firebaseConfig: {
     apiKey: "AIzaSyBVB5VHzTtUtAQ1rwUsamX6kaz-sn_3KdM",
     authDomain: "meinklassenzimmer-qual.firebaseapp.com",

@@ -9,6 +9,7 @@ import {
   signOut,
   User as FirebaseUser 
 } from '@angular/fire/auth';
+import { LoggingService } from '../logging.service';
 import { 
   Firestore, 
   doc, 
@@ -27,18 +28,19 @@ export class AuthService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
   private router = inject(Router);
+  private logger = inject(LoggingService);
 
   authState: FirebaseUser | null = null;
   user: Observable<User | null>;
   private userSubject = new BehaviorSubject<User | null>(null);
 
   constructor() {
-    console.log('🏗️ AuthService constructor');
+    this.logger.auth('AuthService constructor');
     
     // Subscribe to auth state changes
     authState(this.auth).subscribe((auth) => {
       this.authState = auth;
-      console.log('🔐 Auth state changed:', auth?.email || 'null');
+      this.logger.auth('Auth state changed', { email: auth?.email || 'null' });
     });
 
     // Initialize the user observable
@@ -59,9 +61,9 @@ export class AuthService {
     setDoc(testDocRef, {
       timestamp: new Date()
     }).then(() => {
-      console.log('📊 Firestore connection test successful');
+      this.logger.db('Firestore connection test successful');
     }).catch(error => {
-      console.error('📊 Firestore connection test failed:', error);
+      this.logger.error('Firestore connection test failed', error);
     });
   }
 
@@ -69,21 +71,21 @@ export class AuthService {
     try {
       const provider = new GoogleAuthProvider();
       
-      console.log('🔐 Starting login...');
+      this.logger.auth('Starting login process');
       const credential = await signInWithPopup(this.auth, provider);
 
       if (!credential) {
         throw new Error('No credential after sign-in');
       }
 
-      console.log('✅ Sign-in successful');
+      this.logger.auth('Sign-in successful');
       const firebaseUser = credential.user;
       
       if (!firebaseUser) {
         throw new Error('No Firebase user after sign-in');
       }
 
-      console.log('👤 User obtained, writing test document...');
+      this.logger.auth('User obtained, writing test document');
       
       // Write test document using modern API
       const testDocRef = doc(this.firestore, 'test', 'test_login');
@@ -91,10 +93,10 @@ export class AuthService {
         timestamp: serverTimestamp(),
         userId: firebaseUser.uid
       });
-      console.log('✅ Test login document written successfully');
+      this.logger.db('Test login document written successfully');
 
       // Update user data
-      console.log('📝 Updating user data...');
+      this.logger.db('Updating user data');
       await this.updateUserData(firebaseUser);
 
       // Navigate to dashboard
