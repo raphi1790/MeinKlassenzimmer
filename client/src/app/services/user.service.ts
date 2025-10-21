@@ -1,64 +1,69 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient} from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { map, switchMap, filter } from 'rxjs/operators';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from "@angular/fire/compat/firestore";
-import { DataService } from "./data.service";
+import { Auth, authState } from '@angular/fire/auth';
+import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { DataService } from './data.service';
 
 @Injectable()
 export class UserService implements DataService {
   private dbPath = '/users';
-  
-  constructor(
-    private http: HttpClient, 
-    private afAuth: AngularFireAuth, 
-    private firestore: AngularFirestore
-  ) {
+  private auth = inject(Auth);
+  private firestore = inject(Firestore);
+  private http = inject(HttpClient);
+
+  constructor() {
     console.log('📊 UserService constructor called');
   }
 
   getUser(): Observable<User[]> {
-  console.log('📊 getUser called');
-  
-  return this.afAuth.authState.pipe(
-    filter(user => !!user),
-    switchMap(user => {
-      console.log('📊 User authenticated, querying Firestore for uid:', user.uid);
-      
-      return this.firestore.doc<User>(`${this.dbPath}/${user.uid}`).get().pipe(
-        map(doc => {
-          if (doc.exists) {
-            // Existing user
-            const data = doc.data() as User;
-            return [new User({ ...data, uid: user.uid })];
-          } else {
-            // New user - create default document
-            const newUser = new User({
-              uid: user.uid,
-              email: user.email,
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-              schulklassen: [],
-              klassenlisten: [],
-              schulzimmer: [],
-              regeln: [],
-              sitzordnungen: []
-            });
-            
-            // Save new user document
-            this.updateUser(newUser);
-            
-            return [newUser];
-          }
-        })
-      );
-    })
+    console.log('📊 getUser called');
+    
+    return authState(this.auth).pipe(
+      filter(user => !!user),
+      switchMap(user => {
+        console.log('📊 User authenticated, querying Firestore for uid:', user!.uid);
+        
+        const userDocRef = doc(this.firestore, `${this.dbPath}/${user!.uid}`);
+        
+        return new Observable<User[]>(observer => {
+          getDoc(userDocRef).then(docSnapshot => {
+            if (docSnapshot.exists()) {
+              // Existing user
+              const data = docSnapshot.data() as User;
+              observer.next([new User({ ...data, uid: user!.uid })]);
+              observer.complete();
+            } else {
+              // New user - create default document
+              const newUser = new User({
+                uid: user!.uid,
+                email: user!.email || '',
+                displayName: user!.displayName || '',
+                photoURL: user!.photoURL || '',
+                schulklassen: [],
+                klassenlisten: [],
+                schulzimmer: [],
+                regeln: [],
+                sitzordnungen: []
+              });
+              
+              // Save new user document
+              this.updateUser(newUser);
+              observer.next([newUser]);
+              observer.complete();
+            }
+          }).catch(error => {
+            console.error('📊 Error fetching user document:', error);
+            observer.error(error);
+          });
+        });
+      })
     );
   }
 
-  mapUser(apply) {
+  mapUser(apply: (users: User[]) => void) {
     console.log('📊 mapUser called');
     this.getUser().subscribe({
       next: (users) => {
@@ -71,20 +76,22 @@ export class UserService implements DataService {
     });
   }
 
-  updateUser(data: User) {
+  async updateUser(data: User): Promise<void> {
     console.log('📊 updateUser called with:', data);
     
-    // Get current user directly from AngularFireAuth
-    this.afAuth.currentUser.then(currentUser => {
+    try {
+      const currentUser = this.auth.currentUser;
+      
       if (currentUser) {
-        const userRef = this.firestore.collection(this.dbPath).doc(currentUser.uid);
-        userRef.set(JSON.parse(JSON.stringify(data)), { merge: true });
+        const userDocRef = doc(this.firestore, this.dbPath, currentUser.uid);
+        await setDoc(userDocRef, JSON.parse(JSON.stringify(data)), { merge: true });
         console.log('📊 updateUser completed');
       } else {
         console.error('📊 updateUser error: No authenticated user');
       }
-    }).catch(error => {
+    } catch (error) {
       console.error('📊 updateUser error:', error);
-    });
+      throw error;
+    }
   }
 }

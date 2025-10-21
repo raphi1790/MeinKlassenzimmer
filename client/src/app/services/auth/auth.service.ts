@@ -1,45 +1,62 @@
-// src/app/auth/auth.service.ts
-import { Injectable, NgZone, Injector } from '@angular/core';
+// src/app/services/auth/auth.service.ts
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from "@angular/fire/compat/auth";
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { 
+  Auth, 
+  authState, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  signOut,
+  User as FirebaseUser 
+} from '@angular/fire/auth';
+import { 
+  Firestore, 
+  doc, 
+  setDoc, 
+  docData,
+  serverTimestamp 
+} from '@angular/fire/firestore';
 import { User } from '../../models/user';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { switchMap, startWith } from 'rxjs/operators';
-import firebase from 'firebase/compat/app';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  authState: any;
-  user: Observable<User>;
+  // Modern inject() pattern
+  private auth = inject(Auth);
+  private firestore = inject(Firestore);
+  private router = inject(Router);
+
+  authState: FirebaseUser | null = null;
+  user: Observable<User | null>;
   private userSubject = new BehaviorSubject<User | null>(null);
 
-  constructor(
-    public afAuth: AngularFireAuth,
-    private router: Router,
-    private firestore: AngularFirestore,
-    private ngZone: NgZone,
-    private injector: Injector
-  ) {
+  constructor() {
+    console.log('🏗️ AuthService constructor');
     
-    this.afAuth.authState.subscribe((auth) => {
+    // Subscribe to auth state changes
+    authState(this.auth).subscribe((auth) => {
       this.authState = auth;
+      console.log('🔐 Auth state changed:', auth?.email || 'null');
     });
 
-    // Initialize the user observable with proper error handling and null safety
-    this.user = this.afAuth.authState.pipe(
-      startWith(null), // Start with null to prevent undefined issues
+    // Initialize the user observable
+    this.user = authState(this.auth).pipe(
+      startWith(null),
       switchMap(user => {
         if (user && user.uid) {
-          return this.firestore.doc<User>(`users/${user.uid}`).valueChanges();
+          const userDocRef = doc(this.firestore, `users/${user.uid}`);
+          return docData(userDocRef) as Observable<User>;
         } else {
           return of(null);
         }
       })
     );
-    
-    this.firestore.collection('test').doc('test_constructor').set({
+
+    // Test Firestore connection in constructor
+    const testDocRef = doc(this.firestore, 'test', 'test_constructor');
+    setDoc(testDocRef, {
       timestamp: new Date()
     }).then(() => {
       console.log('📊 Firestore connection test successful');
@@ -49,85 +66,82 @@ export class AuthService {
   }
 
   public async login() {
-    // DON'T wrap the entire method in ngZone.run()!
     try {
-      const provider = new firebase.auth.GoogleAuthProvider();
+      const provider = new GoogleAuthProvider();
       
       console.log('🔐 Starting login...');
-      const credential = await this.afAuth.signInWithPopup(provider);
+      const credential = await signInWithPopup(this.auth, provider);
 
       if (!credential) {
         throw new Error('No credential after sign-in');
       }
 
-      console.log('✅ Sign-in successful, getting user...');
-      const firebaseUser = await this.afAuth.currentUser;
+      console.log('✅ Sign-in successful');
+      const firebaseUser = credential.user;
+      
       if (!firebaseUser) {
         throw new Error('No Firebase user after sign-in');
       }
 
       console.log('👤 User obtained, writing test document...');
       
-      debugger;
-      // AngularFirestore works here because we're NOT inside ngZone.run()
-      await this.firestore.collection('test').doc('test_login').set({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      // Write test document using modern API
+      const testDocRef = doc(this.firestore, 'test', 'test_login');
+      await setDoc(testDocRef, {
+        timestamp: serverTimestamp(),
         userId: firebaseUser.uid
       });
-      console.log('✅ Test login document written via AngularFirestore');
+      console.log('✅ Test login document written successfully');
 
       // Update user data
       console.log('📝 Updating user data...');
       await this.updateUserData(firebaseUser);
 
-      // ONLY wrap navigation in ngZone if needed
+      // Navigate to dashboard
       console.log('🚀 Navigating to dashboard...');
-      await this.ngZone.run(() => this.router.navigate(['/dashboard']));
+      await this.router.navigate(['/dashboard']);
 
-      // Store token
-      if (credential) {
-        this.getToken(credential);
-      }
+      // Store token in localStorage
+      const token = await firebaseUser.getIdToken();
+      localStorage.setItem('tokenId', token);
 
-      console.log('✅ Login process completed');
+      console.log('✅ Login process completed successfully');
     } catch (error) {
       console.error('❌ Error during login:', error);
       if (error instanceof Error) {
-        console.error('Error name:', error.name);
-        console.error('Error message:', error.message);
-        console.error('Error stack:', error.stack);
+        console.error('Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        });
       }
       throw error;
     }
   }
 
-  public logout() {
-    this.afAuth.signOut();
-    this.router.navigate(['/']);
-    localStorage.clear();
+  public async logout() {
+    try {
+      await signOut(this.auth);
+      await this.router.navigate(['/']);
+      localStorage.clear();
+      console.log('✅ Logged out successfully');
+    } catch (error) {
+      console.error('❌ Error during logout:', error);
+      throw error;
+    }
   }
 
   public isAuthenticated(): boolean {
-    // always authenticated if in develop-mode
+    // Always authenticated in development mode
     return environment.production ? this.authState !== null : true;
   }
 
-  private get currentUser(): any {
-    return this.isAuthenticated ? this.authState : null;
-  }
-
-  private getToken(result: any) {
-    var token = result.credential.accessToken;
-    localStorage.setItem('tokenId', token);
-  }
-
-  private async updateUserData(user: firebase.User | null): Promise<void> {
+  private async updateUserData(user: FirebaseUser | null): Promise<void> {
     if (!user) return;
 
     try {
-      // FIX 4: Use Firebase SDK directly to avoid injection issues
-      const userDoc = firebase.firestore().collection('users').doc(user.uid);
-      
+      const userDocRef = doc(this.firestore, 'users', user.uid);
+
       const data: User = {
         uid: user.uid,
         email: user.email || '',
@@ -135,9 +149,9 @@ export class AuthService {
         photoURL: user.photoURL || '',
       };
 
-      await userDoc.set(data, { merge: true });
+      await setDoc(userDocRef, data, { merge: true });
       this.userSubject.next(data);
-      console.log('✅ User data updated successfully via Firebase SDK');
+      console.log('✅ User data updated successfully');
     } catch (error) {
       console.error('❌ Error updating user data:', error);
       throw error;

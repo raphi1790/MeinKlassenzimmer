@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { AuthService} from '../../services/auth/auth.service'
+import { Auth, authState } from '@angular/fire/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -9,18 +9,20 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  private auth = inject(Auth);
+  private router = inject(Router);
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> {
-    
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    // Always allow in development mode
     if (!environment.production) {
       return new BehaviorSubject(true);
     }
 
-    // Use Firebase authState directly instead of Firestore user document
-    return this.auth.afAuth.authState.pipe(
+    // Use modern Firebase authState
+    return authState(this.auth).pipe(
       take(1),
       map(user => !!user), // Check if Firebase Auth user exists
       tap(loggedIn => {
