@@ -15,7 +15,12 @@ import {
   doc, 
   setDoc, 
   docData,
-  serverTimestamp 
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc
 } from '@angular/fire/firestore';
 import { User } from '../../models/user';
 import { Observable, of, BehaviorSubject } from 'rxjs';
@@ -100,23 +105,16 @@ export class AuthService {
       await this.updateUserData(firebaseUser);
 
       // Navigate to dashboard
-      console.log('🚀 Navigating to dashboard...');
-      await this.router.navigate(['/dashboard']);
+      this.logger.auth('Navigating to main page');
+      await this.router.navigate(['/']);
 
       // Store token in localStorage
       const token = await firebaseUser.getIdToken();
       localStorage.setItem('tokenId', token);
 
-      console.log('✅ Login process completed successfully');
+      this.logger.auth('Login process completed successfully');
     } catch (error) {
-      console.error('❌ Error during login:', error);
-      if (error instanceof Error) {
-        console.error('Error details:', {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        });
-      }
+      this.logger.error('Error during login', error);
       throw error;
     }
   }
@@ -126,9 +124,9 @@ export class AuthService {
       await signOut(this.auth);
       await this.router.navigate(['/']);
       localStorage.clear();
-      console.log('✅ Logged out successfully');
+      this.logger.auth('Logged out successfully');
     } catch (error) {
-      console.error('❌ Error during logout:', error);
+      this.logger.error('Error during logout', error);
       throw error;
     }
   }
@@ -143,20 +141,89 @@ export class AuthService {
 
     try {
       const userDocRef = doc(this.firestore, 'users', user.uid);
+      const userDocSnapshot = await getDoc(userDocRef);
 
-      const data: User = {
-        uid: user.uid,
-        email: user.email || '',
-        displayName: user.displayName || '',
-        photoURL: user.photoURL || '',
+      // If user exists in the new collection, update merge with new auth data
+      if (userDocSnapshot.exists()) {
+        const existingData = userDocSnapshot.data() as User;
+        const updatedData: User = {
+          ...existingData,
+          uid: user.uid,
+          email: user.email || '',
+          displayName: user.displayName || '',
+          photoURL: user.photoURL || '',
+        };
+        await setDoc(userDocRef, updatedData, { merge: true });
+        this.userSubject.next(updatedData);
+        this.logger.auth('User data updated successfully');
+      } else {
+        // User doesn't exist, check if they exist in users_old collection
+        this.logger.auth('User not found in users collection, checking users_old');
+        const migratedData = await this.migrateUserFromOldCollection(user.email || '', user);
+        
+        if (migratedData) {
+          // User was found and migrated
+          this.userSubject.next(migratedData);
+          this.logger.auth('User successfully migrated from users_old collection');
+        } else {
+          // User is completely new, create default document
+          const newUserData: User = {
+            uid: user.uid,
+            email: user.email || '',
+            displayName: user.displayName || '',
+            photoURL: user.photoURL || '',
+          };
+          await setDoc(userDocRef, newUserData, { merge: true });
+          this.userSubject.next(newUserData);
+          this.logger.auth('New user created successfully');
+        }
+      }
+    } catch (error) {
+      this.logger.error('Error updating user data', error);
+      throw error;
+    }
+  }
+
+  private async migrateUserFromOldCollection(email: string, firebaseUser: FirebaseUser): Promise<User | null> {
+    try {
+      // Query users_old collection by email
+      const userOldCollectionRef = collection(this.firestore, 'users_old');
+      const q = query(userOldCollectionRef, where('email', '==', email));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        this.logger.auth('No matching user found in users_old collection');
+        return null;
+      }
+
+      // Get the first matching document
+      const oldUserDoc = querySnapshot.docs[0];
+      const oldUserData = oldUserDoc.data() as any;
+
+      this.logger.auth('Found user in users_old collection, migrating data', { oldUid: oldUserDoc.id });
+
+      // Prepare migrated data with new UID and current Firebase user's displayName and photoURL
+      const migratedData: User = {
+        ...oldUserData,
+        uid: firebaseUser.uid, // Replace with current authentication UID
+        email: email,
+        displayName: firebaseUser.displayName || '',
+        photoURL: firebaseUser.photoURL || '',
       };
 
-      await setDoc(userDocRef, data, { merge: true });
-      this.userSubject.next(data);
-      console.log('✅ User data updated successfully');
+      // Write migrated data to users collection
+      const userDocRef = doc(this.firestore, 'users', firebaseUser.uid);
+      await setDoc(userDocRef, migratedData, { merge: true });
+
+      this.logger.db('User data migrated from users_old to users collection', { 
+        oldUid: oldUserDoc.id, 
+        newUid: firebaseUser.uid 
+      });
+
+      return migratedData;
     } catch (error) {
-      console.error('❌ Error updating user data:', error);
-      throw error;
+      this.logger.error('Error migrating user from users_old collection', error);
+      return null;
     }
   }
 }

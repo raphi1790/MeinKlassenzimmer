@@ -3,6 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { Auth, authState } from '@angular/fire/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, map, take } from 'rxjs/operators';
+import { LoggingService } from '../../services/logging.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -11,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class AuthGuard implements CanActivate {
   private auth = inject(Auth);
   private router = inject(Router);
+  private logger = inject(LoggingService);
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -27,10 +29,10 @@ export class AuthGuard implements CanActivate {
       map(user => !!user), // Check if Firebase Auth user exists
       tap(loggedIn => {
         if (!loggedIn) {
-          console.log('access denied - not authenticated in Firebase Auth');
+          this.logger.auth('Access denied - not authenticated in Firebase Auth');
           this.router.navigate(['/']);
         } else {
-          console.log('access granted - authenticated in Firebase Auth');
+          this.logger.auth('Access granted - authenticated in Firebase Auth');
         }
       })
     );
