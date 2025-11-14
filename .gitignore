@@ -7,3 +7,5 @@ client/firebase-debug.log
 
 client/.angular/*
 firebase-debug.log
+client/data/old-firebase-key.json
+client/data/new-firebase-qual-key.json
