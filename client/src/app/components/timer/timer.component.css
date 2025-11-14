@@ -1,31 +1,209 @@
+/* Form field styling */
+.input-form-field {
+  display: flex;
+  flex-direction: column;
+}
+
 .mat-form-field {
-    display: flex;
+  display: block;
+  width: 100%;
+}
+
+/* Card header styling */
+.mat-card-header,
+.mat-mdc-card-header {
+  display: grid;
+}
+
+.mat-card-header-text,
+.mat-mdc-card-header-text {
+  margin: 0;
+}
+
+/* Card footer styling */
+.mat-card-footer,
+.mat-mdc-card-footer {
+  padding-left: 16px;
+  padding-bottom: 5px;
+}
+
+/* Preset timer label */
+.preset-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.5px;
+}
+
+/* Timer form container */
+.timer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Timer display */
+.timer-display {
+  font-size: 100px;
+  font-weight: 300;
+  text-align: center;
+  line-height: 1.2;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Courier New', 'Courier', monospace;
+  letter-spacing: 6px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+}
+
+/* Timer status color states */
+.timer-display.status-started {
+  color: #4caf50;
+  animation: pulse-timer 1.5s ease-in-out infinite;
+}
+
+.timer-display.status-paused {
+  color: #ff9800;
+  opacity: 0.75;
+}
+
+.timer-display.status-ready {
+  color: #333333;
+}
+
+/* Pulse animation for running timer */
+@keyframes pulse-timer {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+/* Timer content container */
+.timer-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
+
+/* Timer action buttons */
+.timer-actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.timer-actions button {
+  min-width: 120px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.timer-actions button:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.timer-actions button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Audio control toggle */
+.audio-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  gap: 12px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+}
+
+mat-slide-toggle {
+  width: 100%;
+}
+
+mat-slide-toggle span {
+  margin-left: 8px;
+}
+
+/* Icon styling */
+mat-icon {
+  margin-right: 8px;
+}
+
+/* Chip set styling */
+mat-chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+mat-chip {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 20px;
+}
+
+mat-chip:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* Responsive design - Tablets */
+@media (max-width: 768px) {
+  .timer-display {
+    font-size: 64px;
+    letter-spacing: 4px;
+    min-height: 120px;
+  }
+
+  .timer-actions {
     flex-direction: column;
-}  
-.button-list{
+    gap: 8px;
+  }
+
+  .timer-actions button {
     width: 100%;
-    height: 100%;
-    padding-top: 10px;
+  }
+
+  .timer-content {
+    min-height: 150px;
+  }
 }
 
-.mat-list-item.highlighted, .mat-mdc-list-item.highlighted{
-    background-color: var(--accent-color);
-}
-.mat-card-header, .mat-mdc-card-header {
-    display: grid;
-  }  
-.mat-card-header-text, .mat-mdc-card-header-text {
-margin: 0 0px;
-}
+/* Responsive design - Mobile */
+@media (max-width: 576px) {
+  .timer-display {
+    font-size: 48px;
+    letter-spacing: 2px;
+    min-height: 100px;
+  }
 
-.mat-card-footer, .mat-mdc-card-footer{
-    padding-left: 16px;
-    padding-bottom: 5px;
-}
-h1.timer-detail{
-    font-size: 100px;
-    text-align: center;
+  .timer-actions button {
+    min-width: 100px;
+    font-size: 13px;
+  }
 
+  .audio-control {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .timer-content {
+    min-height: 120px;
+  }
 }
 
 

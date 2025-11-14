@@ -1,12 +1,9 @@
 <div class="container-fluid">
-
   <div class="row">
+    <!-- Timer Configuration Panel -->
     <div class="col-md-5">
       <div class="column1">
-
-
         <div class="input-form-container">
-
           <mat-card>
             <mat-card-header>
               <mat-card-title-group>
@@ -14,77 +11,112 @@
                   <h4>Timer einstellen</h4>
                 </mat-card-title>
               </mat-card-title-group>
-
             </mat-card-header>
+            
             <mat-card-content>
-              <mat-form-field>
-                <input matInput placeholder="Anzahl Sekunden" type="number" [(ngModel)]="selectedSecondsInput">
+              <form [formGroup]="timerForm" class="timer-form">
+                <mat-form-field>
+                  <mat-label>Minuten</mat-label>
+                  <input matInput 
+                         type="number" 
+                         formControlName="minutes"
+                         min="0"
+                         aria-label="Anzahl Minuten">
+                </mat-form-field>
 
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput placeholder="Anzahl Minuten" type="number" [(ngModel)]="selectedMinutesInput">
-
-              </mat-form-field>
-
+                <mat-form-field>
+                  <mat-label>Sekunden</mat-label>
+                  <input matInput 
+                         type="number" 
+                         formControlName="seconds"
+                         min="0"
+                         max="59"
+                         aria-label="Anzahl Sekunden">
+                </mat-form-field>
+              </form>
             </mat-card-content>
+
             <mat-card-actions>
-              <button mat-raised-button color="accent" (click)="setTime()">Timer stellen</button>
-
-
-
-
+              <button mat-raised-button 
+                      color="accent" 
+                      (click)="setTime()"
+                      [disabled]="timerForm.invalid"
+                      aria-label="Timer einstellen">
+                Timer stellen
+              </button>
             </mat-card-actions>
+
             <mat-card-footer>
-              <mat-chip-set aria-label="Predefined selection">
-                <mat-chip id="my-custom-chip" (click)="setOneMinuteCountdown()">1 Minute</mat-chip>
-                <mat-chip id="my-custom-chip" (click)="setTwoMinutesCountdown()" >2 Minuten</mat-chip>
-                <mat-chip id="my-custom-chip" (click)="setFiveMinutesCountdown()" >5 Minuten</mat-chip>
+              <div class="preset-label">Schnellauswahl:</div>
+              <mat-chip-set aria-label="Vordefinierte Timer">
+                <mat-chip 
+                  *ngFor="let preset of presets"
+                  (click)="setPresetTime(preset.seconds)"
+                  color="primary">
+                  {{ preset.label }}
+                </mat-chip>
               </mat-chip-set>
             </mat-card-footer>
           </mat-card>
         </div>
       </div>
-
-
-
-
     </div>
+
+    <!-- Timer Display Panel -->
     <div class="col-md-7">
       <div class="column2">
         <div class="timer">
-          <div class="schuelerListe">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>
+                  <h4>Timer</h4>
+                </mat-card-title>
+              </mat-card-title-group>
+            </mat-card-header>
 
-            <mat-card>
-              <mat-card-header>
-                <mat-card-title-group>
-                  <mat-card-title>
-                    <h4>Timer</h4>
-                  </mat-card-title>
-                </mat-card-title-group>
+            <mat-card-content class="timer-content">
+              <countdown #countdown 
+                         [config]="config || {format: 'mm:ss'}" 
+                         (event)="timesUp($event)"
+                         class="timer-display"
+                         [ngClass]="'status-' + status">
+                $!m!:$!s!
+              </countdown>
+            </mat-card-content>
 
-              </mat-card-header>
-              <mat-card-content>
-                <h1 class="timer-detail" >
-                  <countdown #countdown [config]="config" (event)="timesUp($event)">$!m!:$!s!</countdown>
-             
-                </h1>
+            <mat-card-actions class="timer-actions">
+              <button mat-raised-button 
+                      color="primary" 
+                      (click)="start()"
+                      [disabled]="isTimerRunning"
+                      aria-label="Timer starten">
+                Start
+              </button>
+              <button mat-raised-button 
+                      (click)="pause()"
+                      [disabled]="isTimerPaused || isTimerReady"
+                      aria-label="Timer pausieren">
+                Pause
+              </button>
+              <button mat-raised-button 
+                      color="accent"
+                      (click)="resetTimer()"
+                      aria-label="Timer zurücksetzen">
+                Zurücksetzen
+              </button>
+            </mat-card-actions>
 
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-raised-button color="primary" (click)="start()">Start</button>
-                <button mat-raised-button (click)="pause()">Pause</button>
-                <button mat-raised-button (click)="resetTimer()">Zurücksetzen</button>
-
-
-              </mat-card-actions>
-
-            </mat-card>
-
-          </div>
-
+            <mat-card-footer class="audio-control">
+              <mat-slide-toggle 
+                [(ngModel)]="isAudioEnabled"
+                aria-label="Ton bei Timer-Ende">
+                Ton bei Ende
+              </mat-slide-toggle>
+            </mat-card-footer>
+          </mat-card>
         </div>
       </div>
     </div>
-
   </div>
 </div>
