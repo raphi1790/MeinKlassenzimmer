@@ -1,6 +1,9 @@
 const admin = require('firebase-admin');
 
+// === ADJUST ===
 // OLD Firebase Configuration
+// - Set `oldServiceAccount` to the path of the old project's service account JSON
+// - If the old project requires an explicit projectId, uncomment and set it below
 const oldServiceAccount = require('./old-firebase-key.json');
 const oldApp = admin.initializeApp({
   credential: admin.credential.cert(oldServiceAccount),
@@ -8,11 +11,14 @@ const oldApp = admin.initializeApp({
   // projectId: 'your-old-project-id'
 }, 'old');
 
+// === ADJUST ===
 // NEW Firebase Configuration
-const newServiceAccount = require('./new-firebase-qual-key.json');
+// - Replace `new-firebase-prod-key.json` with your new project's service account
+// - Update `projectId` to your new Firebase project ID (this is important for Firestore)
+const newServiceAccount = require('./new-firebase-prod-key.json');
 const newApp = admin.initializeApp({
   credential: admin.credential.cert(newServiceAccount),
-  projectId: 'meinklassenzimmer-qual'  // Deine neue Project ID
+  projectId: 'meinklassenzimmer-prod'  // Deine neue Project ID - === ADJUST ===
 }, 'new');
 
 const oldDb = oldApp.firestore();
@@ -75,6 +81,9 @@ async function listAllCollections() {
 async function migrate() {
   console.log('🚀 Starting Firestore migration...');
   console.log(`📤 From: OLD Firebase Project`);
+  // === ADJUST ===
+  // Update the printed target project name below for clearer console output if needed.
+  // This does NOT affect the actual destination — that is determined by `newServiceAccount` and `projectId` above.
   console.log(`📥 To: meinklassenzimmer-qual\n`);
   
   try {
@@ -92,7 +101,13 @@ async function migrate() {
     // }
     
     // Option 2: Manually specify collections (comment out Option 1 and uncomment this)
-  
+
+    // === ADJUST ===
+    // Collections to migrate:
+    // - Edit or add `migrateAndRenameCollection(oldName, newName)` calls for the collections you want to copy.
+    // - The second argument `newName` is optional — omit it to keep the same collection name in the target.
+    // - Example: await migrateAndRenameCollection('users', 'users_old'); // renames 'users' -> 'users_old'
+    // - The script currently migrates `users` to `users_old` as an example below.
     await migrateAndRenameCollection('users', 'users_old');
     // await migrateAndRenameCollection('test');
     // await migrateAndRenameCollection('schulklassen');
