@@ -1,0 +1,60 @@
+name: Manual Deploy (qual / prod)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to deploy (e.g. v1.2.3)'
+        required: true
+      environment:
+        description: 'Target environment: qual or prod'
+        required: true
+        default: 'qual'
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment }} from ${{ inputs.tag }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout at tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+        working-directory: client
+
+      - name: Build (if applicable)
+        run: |
+          npm run build --if-present
+        working-directory: client
+
+      - name: Deploy to qual
+        if: ${{ inputs.environment == 'qual' }}
+        env:
+          # set FIREBASE_QUAL_TOKEN in repo secrets
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_QUAL_TOKEN }}
+        run: |
+          echo "Run your qual deployment command here (example uses firebase)":
+          # Example: npx firebase deploy --project meinklassenzimmer-qual --only hosting
+
+      - name: Deploy to prod
+        if: ${{ inputs.environment == 'prod' }}
+        env:
+          # set FIREBASE_PROD_TOKEN in repo secrets
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_PROD_TOKEN }}
+        run: |
+          echo "Run your prod deployment command here (example uses firebase)":
+          # Example: npx firebase deploy --project meinklassenzimmer-prod --only hosting
+
+      - name: Finished
+        run: echo "Deployment job finished. Check Actions logs and Environments for approvals." 
