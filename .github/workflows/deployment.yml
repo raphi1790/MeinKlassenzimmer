@@ -1,0 +1,62 @@
+# ==============================================================================
+# GITHUB SETUP REQUIRED:
+# 1. Go to Settings > Environments.
+# 2. Create an environment named "qual" and another named "prod".
+# 3. In EACH environment, add the following:
+#    - Secret:   FIREBASE_SA           (The JSON key of your Service Account)
+#    - Variable: FIREBASE_PROJECT_ID   (Your Firebase Project ID, e.g., 'my-app-qual')
+# ==============================================================================
+
+name: Manual Deploy (qual / prod)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to deploy (e.g. v1.2.3)'
+        required: true
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'qual'
+        type: choice
+        options:
+          - qual
+          - prod
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment }} from ${{ inputs.tag }}
+    runs-on: ubuntu-latest
+    # This line tells GitHub to pull secrets/vars from the selected environment
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout at tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: Build
+        run: npm run build --if-present
+        working-directory: client
+
+      - name: Deploy to Firebase
+        env:
+          SA_JSON: ${{ secrets.FIREBASE_SA }}
+          PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+        run: |
+          echo "$SA_JSON" > credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/credentials.json
+          npx firebase-tools@latest deploy --project "$PROJECT_ID" --only hosting
