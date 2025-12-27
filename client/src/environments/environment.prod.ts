@@ -9,7 +9,8 @@ export const environment = {
     storageBucket: "meinklassenzimmer.appspot.com",
     messagingSenderId: "946677335646",
     appId: "meinklassenzimmer"
-  }
+  },
+   deployTag: 'v0.0.0'
   };
-  
+
 

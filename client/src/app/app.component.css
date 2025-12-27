@@ -8,6 +8,16 @@ h1.app-name {
   cursor: pointer;
 }
 
+.app-deploy-tag {
+  margin-left: 8px;
+  font-size: 0.8em;
+  opacity: 0.85;
+  background: rgba(255,255,255,0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  align-self: center;
+}
+
 .toolbar-spacer {
   flex: 1 1 auto;
 }

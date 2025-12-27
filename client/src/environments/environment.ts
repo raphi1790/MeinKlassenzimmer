@@ -15,4 +15,6 @@ export const environment = {
     messagingSenderId: "946677335646",
     appId: "meinklassenzimmer"
   }
+  ,
+  deployTag: 'local'
 };

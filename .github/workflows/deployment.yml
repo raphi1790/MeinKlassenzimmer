@@ -28,7 +28,6 @@ jobs:
   deploy:
     name: Deploy to ${{ inputs.environment }} from ${{ inputs.tag }}
     runs-on: ubuntu-latest
-    # This line tells GitHub to pull secrets/vars from the selected environment
     environment: ${{ inputs.environment }}
 
     steps:
@@ -48,7 +47,15 @@ jobs:
         run: npm ci
         working-directory: client
 
+      - name: Inject Tag into Environment File
+        # This searches for 'deployTag: "any-value"' and replaces it with the input tag
+        # We target environment.prod.ts because that's what 'ng build' uses for production configurations
+        run: |
+          sed -i "s/deployTag: .*/deployTag: '${{ inputs.tag }}',/" src/environments/environment.prod.ts
+        working-directory: client
+
       - name: Build
+        # Now when this runs, the JS files will contain the tag string instead of 'local'
         run: npm run build --if-present
         working-directory: client
 

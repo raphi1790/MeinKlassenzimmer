@@ -31,6 +31,7 @@ export class AppComponent {
  }
 
   title = 'app';
+  deployTag = environment.deployTag;
 
   
 }
