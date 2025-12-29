@@ -1,68 +1,46 @@
-Firestore migration instructions
-===============================
+# Data migration helper
 
-Purpose
--------
-This README explains how to migrate documents from the old Firestore project to the new project using the `migrate-data.js` script in this folder.
+This folder contains a small migration script `migrate-data.js` to copy Firestore collections from one Firebase project to another using the Firebase Admin SDK.
 
-Prerequisites
--------------
-- Node.js (14+ recommended) installed
-- `firebase-admin` installed in the project (run `npm install firebase-admin` from project root or this folder)
-- Two service-account JSON files present in this folder (or adjust the paths in the script):
-  - `old-firebase-key.json` (service account for the old project)
-  - `new-firebase-prod-key.json` (service account for the new project)
+## What the script does
+- Connects to an **old** Firebase project and a **new** Firebase project using service account JSON keys.
+- Optionally discovers collections in the old project and copies documents to the new project's Firestore.
+- Copies documents in batches (commits every 500 writes) to avoid exceeding write limits.
+- Allows renaming collections during copy (e.g. copy `users` → `users_old`).
 
-Obtaining the service-account JSON keys
---------------------------------------
-- Go to the Firebase Console for the project you need a key for: https://console.firebase.google.com/
-- Select the project, then open Project Settings (gear icon) → "Service accounts" tab.
-- Under "Firebase Admin SDK" click "Generate new private key" and confirm. A JSON file will be downloaded.
-- Rename the downloaded file to match the script expectations (for example `old-firebase-key.json` or `new-firebase-prod-key.json`) and place it into the `client/data` folder, or update the `require()` path in `migrate-data.js`.
-- Keep these files secret — do NOT commit them to source control. Add them to `.gitignore` if necessary.
+## Prerequisites
+- Node.js (v16+ recommended, Node 22 is used in this repo)
+- `firebase-admin` (the script requires this; the repo likely already has it in global/node_modules but you can install locally)
+- Service account JSON key files for **both** source and target Firebase projects. You must have a service account key file for every project involved in the migration.
 
-Notes on permissions and safety
--------------------------------
-- You need a Firebase project role that can create service account keys (Project Owner or Service Account Admin).
-- For safer operations consider creating a dedicated service account with limited permissions (only Firestore access) rather than using a wide-scoped owner key.
-- If you prefer not to store JSON files in the repo, you can set environment variables or a small config file and modify `migrate-data.js` to read from those instead.
+Place the JSON key files in this folder. Example filenames used in the script:
+- `old-firebase-key.json` — service account for the source (old) project
+- `new-firebase-prod-key.json` — service account for the destination (new) project
 
-What to change in the script (`migrate-data.js`)
------------------------------------------------
-The script contains clearly marked sections you may need to adjust. Look for comment markers that start with `=== ADJUST ===`.
+## How to call the script
 
-Key items to review and edit:
-- Service account file paths:
-  - `oldServiceAccount` — path to old project's service account JSON
-  - `newServiceAccount` — path to new project's service account JSON
-- New project ID:
-  - `projectId` value passed to the new app initialization (example: `meinklassenzimmer-prod`)
-- Collections to migrate:
-  - The script supports auto-discovery (`listAllCollections()`), or manual migration calls like `migrateAndRenameCollection('users', 'users_old')`.
-  - Edit the manual list block to include the collections you want to migrate. The second argument is optional and lets you rename the collection in the target DB.
-- Batch size / commit threshold:
-  - The script currently commits batches every 500 documents; you can change this number in the script if needed.
+1. Inspect and edit `migrate-data.js` to point to the correct service account filenames and (if needed) set the `projectId` for the new app. The script currently contains `// === ADJUST ===` markers where you should adjust values.
 
-Running the migration
----------------------
-From the project root:
+2. (Optional) Install dependencies locally in this folder:
 
 ```bash
-cd /Users/raphscho/Documents/Projects/MeinKlassenzimmer
-npm install firebase-admin
-node client/data/migrate-data.js
+cd client/data
+npm ci
+npm install firebase-admin --save
 ```
 
-Or run from the data folder:
+3. Run the migration:
 
 ```bash
-cd /Users/raphscho/Documents/Projects/MeinKlassenzimmer/client/data
-npm install firebase-admin
+cd client/data
 node migrate-data.js
 ```
 
-Recommendations
----------------
-- Run the script first against a non-production target to verify results.
-- Backup your data or export important collections before migrating.
-- Verify document counts in the Firebase Console after migration.
+The script prints discovered collections and progress messages. By default the example migrates the `users` collection to `users_old` — edit the `migrate()` function to change which collections are migrated (the file contains commented examples).
+
+## Important notes and safety
+- You must provide valid service account keys for every project you connect to — the script authenticates with those JSON files.
+- Verify `projectId` for the destination project in the script; an incorrect `projectId` may write to the wrong Firestore instance.
+- The script performs write operations to the destination project; consider running it against a test/qual project first.
+- Use the Firebase Emulator Suite to test locally where possible, but be aware the Admin SDK requires service account credentials for real projects.
+- Always back up source data or test on a small subset before migrating everything.
