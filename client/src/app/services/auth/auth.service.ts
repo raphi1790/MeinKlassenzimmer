@@ -60,16 +60,6 @@ export class AuthService {
         }
       })
     );
-
-    // Test Firestore connection in constructor
-    const testDocRef = doc(this.firestore, 'test', 'test_constructor');
-    setDoc(testDocRef, {
-      timestamp: new Date()
-    }).then(() => {
-      this.logger.db('Firestore connection test successful');
-    }).catch(error => {
-      this.logger.error('Firestore connection test failed', error);
-    });
   }
 
   public async login() {
