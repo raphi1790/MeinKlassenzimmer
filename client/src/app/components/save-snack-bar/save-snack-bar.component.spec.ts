@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { SaveSnackBarComponent } from './save-snack-bar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MaterialModule } from 'src/app/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SaveSnackBarComponent', () => {
   let component: SaveSnackBarComponent;
@@ -8,7 +11,16 @@ describe('SaveSnackBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SaveSnackBarComponent ]
+      imports: [
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule
+      ],
+      declarations: [ SaveSnackBarComponent ],
+      providers: [
+        { provide: MatSnackBar, useValue: {} }
+      ]
     })
     .compileComponents();
   }));

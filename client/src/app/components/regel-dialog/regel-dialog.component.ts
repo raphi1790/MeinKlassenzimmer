@@ -36,7 +36,7 @@ export class RegelDialogComponent implements OnInit {
             console.log(this.selection)
     }
 
-    saveMessage() {
+    confirm() {
         debugger;
         this.submitClicked.emit(this.selection);
         this.dialogRef.close();
