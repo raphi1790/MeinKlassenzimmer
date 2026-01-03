@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Schulklasse } from '../../models/schulklasse';
 import { Schueler } from '../../models/schueler';
-import { MatTableDataSource, MatTable } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { User } from '../../models/user';
 import { Klassenliste } from '../../models/klassenliste';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Name } from 'src/app/models/name';

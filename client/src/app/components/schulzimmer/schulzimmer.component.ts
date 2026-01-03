@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Tisch } from '../../models/tisch';
 import { FormControl, Validators } from '@angular/forms';
@@ -9,7 +9,7 @@ import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';

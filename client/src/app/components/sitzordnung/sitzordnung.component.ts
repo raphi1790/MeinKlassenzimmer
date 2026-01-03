@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnChanges, EventEmitter, Output } from '@angular/core';
 
 import { Schulklasse } from '../../models/schulklasse';
 import { Schulzimmer } from '../../models/schulzimmer';
@@ -8,14 +8,11 @@ import jsPdf from 'jspdf';
 import CONFIG from '../../../config.json';
 import { Regel } from '../../models/regel';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import { CalculatingEngine } from '../../helpers/calculating.engine';
 import { RegelFilter } from '../../helpers/regel.filter';
-import { map } from 'rxjs/operators';
 import { User } from '../../models/user';
-import { DummyService } from 'src/app/services/dummy.service';
 import { Input } from '@angular/core';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { RegelDialogComponent } from '../regel-dialog/regel-dialog.component';
@@ -230,7 +227,6 @@ export class SitzordnungComponent implements OnChanges{
       debugger;
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPdf('l'); 
-      var width = pdf.internal.pageSize.getWidth();    
       var height = pdf.internal.pageSize.getHeight();
       var ratio = height/ divHeight;
       var heightNew = height;

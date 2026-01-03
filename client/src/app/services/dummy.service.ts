@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Schulklasse } from '../models/schulklasse';
 import { Schueler } from '../models/schueler';
-import { v4 as uuidv4 } from 'uuid';
 import { Schulzimmer } from '../models/schulzimmer';
 import { Tisch } from '../models/tisch';
 import { PositionTisch } from '../models/position.tisch';

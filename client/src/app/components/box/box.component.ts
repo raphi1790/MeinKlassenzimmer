@@ -1,5 +1,4 @@
-import { getLocaleDateFormat } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RegelChecker } from 'src/app/helpers/regel.checker';
 import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
@@ -86,10 +85,6 @@ export class BoxComponent implements OnChanges {
   
     
 
-  }
-  private boxIsSelected(): boolean {
-    // this.currentTisch = this.getTisch(this.row, this.column)
-    return this.currentTisch ? true : false
   }
 
 

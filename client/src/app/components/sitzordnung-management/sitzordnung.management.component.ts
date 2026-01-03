@@ -1,13 +1,12 @@
-import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { Schulklasse } from '../../models/schulklasse';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Regel } from '../../models/regel';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { RegelFilter } from '../../helpers/regel.filter';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { MatSort } from '@angular/material/sort';

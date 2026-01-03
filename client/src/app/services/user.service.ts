@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { User } from '../models/user';
-import { map, switchMap, filter, tap } from 'rxjs/operators';
+import { switchMap, filter, tap } from 'rxjs/operators';
 import { Auth, authState } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { DataService } from './data.service';
@@ -13,7 +12,6 @@ export class UserService implements DataService {
   private dbPath = '/users';
   private auth = inject(Auth);
   private firestore = inject(Firestore);
-  private http = inject(HttpClient);
 
   private logger = inject(LoggingService);
 

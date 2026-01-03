@@ -3,7 +3,6 @@ import { Randomizer } from "./randomizer";
 import { Regel } from "../models/regel";
 import { Preparer } from "./preparer";
 import { Gruppe } from "../models/gruppe";
-import { Gruppeneinteilung } from "../models/gruppeneinteilung";
 
 
 export class GroupPreparer extends Preparer {

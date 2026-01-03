@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DummyService } from '../../services/dummy.service';
 import { Schulklasse } from '../../models/schulklasse';
 import { Schueler } from '../../models/schueler';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Randomizer } from '../../helpers/randomizer';
 import { User } from '../../models/user';
-import { UserService } from '../../services/user.service';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
