@@ -12,7 +12,7 @@ import { OutputRegelTisch } from '../../models/output.regel.sitzordnung';
 import { v4 as uuidv4 } from 'uuid';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { OutputRegelPaarung } from '../../models/output.regel.paarung';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -85,14 +85,14 @@ export class RegelnComponent implements OnInit {
 
   
   loadInputData() {
-    this.dataService.mapUser(user => this.applyUser(user))
+    this.dataService.mapUser().pipe(take(1)).subscribe(user => this.applyUser(user));
 
 
   }
 
-  applyUser(users) {
+  applyUser(user) {
     debugger;
-    this.myUser = new User(users[0])
+    this.myUser = new User(user)
     this.regelnToPerson = this.myUser.regeln
     this.regelnToPerson = JSON.parse(JSON.stringify(this.regelnToPerson));
     this.klassenToPerson = this.myUser.schulklassen

@@ -36,21 +36,17 @@ export class DummyService implements DataService {
     constructor() {
 
     }
-    mapUser(apply):void{
-        apply([new User({
+    mapUser(): Observable<User> {
+        return of(new User({
             uid: 'abc',
             email: "raphael.schoenenberger@test.ch",
             photoURL: null,
-            displayName : 'Dummy User',
-            schulklassen : this.getSchulklassen(),
-            schulzimmer : this.getSchulzimmer(),
+            displayName: 'Dummy User',
+            schulklassen: this.getSchulklassen(),
+            schulzimmer: this.getSchulzimmer(),
             sitzordnungen: this.getSitzordnungen(),
             regeln: this.getRegeln()
-        })])
-        debugger;
-        
-        
-
+        }));
     }
     updateUser(user:User):void{
         console.log("saved on dummy-service:", user)

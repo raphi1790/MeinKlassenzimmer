@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Randomizer } from '../../helpers/randomizer';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -36,14 +36,14 @@ export class ZufallsgeneratorComponent implements OnInit {
 
 
   loadInputData() {
-    this.dataService.mapUser(user => this.applyUser(user))
+    this.dataService.mapUser().pipe(take(1)).subscribe(user => this.applyUser(user));
 
 
   }
 
-  applyUser(users) {
+  applyUser(user) {
     debugger;
-    this.myUser = new User(users[0])
+    this.myUser = new User(user)
     this.klassenToPerson = this.myUser.schulklassen
     // console.log(this.myUser)
     // console.log(this.klassenToPerson)

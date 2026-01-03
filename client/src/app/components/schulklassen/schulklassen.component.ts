@@ -10,7 +10,7 @@ import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../models/user';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Klassenliste } from 'src/app/models/klassenliste';
@@ -75,14 +75,14 @@ export class SchulklassenComponent implements OnInit {
 
 
   loadInputData() {
-    this.dataService.mapUser(user => this.applyUser(user))
+    this.dataService.mapUser().pipe(take(1)).subscribe(user => this.applyUser(user));
 
   
   }
 
-  applyUser(users){
+  applyUser(user){
       debugger;
-      this.myUser = new User(users[0])
+      this.myUser = new User(user)
       debugger;
       this.klassenToPerson = this.myUser.schulklassen
       this.regelnToPerson = this.myUser.regeln
