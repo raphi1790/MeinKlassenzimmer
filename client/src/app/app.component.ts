@@ -1,6 +1,5 @@
 import { Component} from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
-import { User } from './models/user';
 import {environment} from '../environments/environment'
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit,  Input, OnChanges, EventEmitter, Output, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { Component,  Input, OnChanges, EventEmitter, Output, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 
 import {Schulklasse} from '../../models/schulklasse';
 import {Schueler} from '../../models/schueler';
@@ -28,7 +28,7 @@ export class SchuelerComponent implements OnChanges, AfterViewInit {
   regelChecker: RegelChecker;
 
 
-  constructor(private ref: ChangeDetectorRef, public dialog: MatDialog) {
+  constructor(public dialog: MatDialog) {
     this.schulklasse.schueler = new Array();
     this.regelChecker = new RegelChecker();
     this.anzahlSchueler = 0;

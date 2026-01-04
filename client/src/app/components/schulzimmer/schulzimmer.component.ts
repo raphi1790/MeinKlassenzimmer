@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Schulzimmer } from '../../models/schulzimmer';
 import { Tisch } from '../../models/tisch';
 import { FormControl, Validators } from '@angular/forms';
@@ -9,7 +9,7 @@ import { Regel } from '../../models/regel';
 import { RegelChecker } from '../../helpers/regel.checker';
 import { Name } from '../../models/name';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { map } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { User } from '../../models/user';
 import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -68,13 +68,13 @@ export class SchulzimmerComponent implements OnInit {
   }
 
   loadInputData() {
-    this.dataService.mapUser(user => this.applyUser(user))
+    this.dataService.mapUser().pipe(take(1)).subscribe(user => this.applyUser(user));
 
   
   }
-  applyUser(users){
+  applyUser(user){
       debugger;
-      this.myUser = new User(users[0])
+      this.myUser = new User(user)
       this.schulzimmerToPerson = this.myUser.schulzimmer
       this.regelnToPerson = this.myUser.regeln
       this.schulzimmerToPersonOriginal = JSON.parse(JSON.stringify(this.schulzimmerToPerson));

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Klassenliste } from 'src/app/models/klassenliste';
 import { Schueler } from 'src/app/models/schueler';
 import { Schulklasse } from 'src/app/models/schulklasse';
@@ -6,11 +6,10 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Gruppe } from 'src/app/models/gruppe';
 import { GroupPreparer } from 'src/app/helpers/group.preparer';
 import { CalculatingEngine } from 'src/app/helpers/calculating.engine';
-import { Randomizer } from 'src/app/helpers/randomizer';
 import { RegelDialogComponent } from '../regel-dialog/regel-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Regel } from 'src/app/models/regel';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import jsPDF  from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -140,7 +139,6 @@ export class KlassenlisteComponent implements OnChanges {
       debugger;
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
-      var width = pdf.internal.pageSize.getWidth();    
       var height = pdf.internal.pageSize.getHeight();
       var ratio = height/ divHeight;
       var heightNew = height;

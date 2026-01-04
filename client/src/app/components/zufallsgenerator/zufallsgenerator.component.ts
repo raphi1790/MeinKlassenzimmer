@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DummyService } from '../../services/dummy.service';
 import { Schulklasse } from '../../models/schulklasse';
 import { Schueler } from '../../models/schueler';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Randomizer } from '../../helpers/randomizer';
 import { User } from '../../models/user';
-import { UserService } from '../../services/user.service';
-import { map } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -36,14 +34,14 @@ export class ZufallsgeneratorComponent implements OnInit {
 
 
   loadInputData() {
-    this.dataService.mapUser(user => this.applyUser(user))
+    this.dataService.mapUser().pipe(take(1)).subscribe(user => this.applyUser(user));
 
 
   }
 
-  applyUser(users) {
+  applyUser(user) {
     debugger;
-    this.myUser = new User(users[0])
+    this.myUser = new User(user)
     this.klassenToPerson = this.myUser.schulklassen
     // console.log(this.myUser)
     // console.log(this.klassenToPerson)

@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Schulklasse } from '../models/schulklasse';
 import { Schueler } from '../models/schueler';
-import { v4 as uuidv4 } from 'uuid';
 import { Schulzimmer } from '../models/schulzimmer';
 import { Tisch } from '../models/tisch';
 import { PositionTisch } from '../models/position.tisch';
@@ -36,21 +34,17 @@ export class DummyService implements DataService {
     constructor() {
 
     }
-    mapUser(apply):void{
-        apply([new User({
+    mapUser(): Observable<User> {
+        return of(new User({
             uid: 'abc',
             email: "raphael.schoenenberger@test.ch",
             photoURL: null,
-            displayName : 'Dummy User',
-            schulklassen : this.getSchulklassen(),
-            schulzimmer : this.getSchulzimmer(),
+            displayName: 'Dummy User',
+            schulklassen: this.getSchulklassen(),
+            schulzimmer: this.getSchulzimmer(),
             sitzordnungen: this.getSitzordnungen(),
             regeln: this.getRegeln()
-        })])
-        debugger;
-        
-        
-
+        }));
     }
     updateUser(user:User):void{
         console.log("saved on dummy-service:", user)

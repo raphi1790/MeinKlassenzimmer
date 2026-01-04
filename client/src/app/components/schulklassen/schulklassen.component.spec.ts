@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { SchulzimmerComponent } from './schulzimmer.component';
+import { SchulklassenComponent } from './schulklassen.component';
 import { DataService } from '../../services/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,20 +11,20 @@ import { MaterialModule } from 'src/app/material.module';
 
 class MockDataService {
   mapUser() {
-    return of(new User({ uid: 'test-uid', email: 'test@test.com', displayName: 'Test User', photoURL: '', schulzimmer: [] }));
+    return of(new User({ uid: 'test-uid', email: 'test@test.com', displayName: 'Test User', photoURL: '', schulklassen: [] }));
   }
   updateUser() {
     //
   }
 }
 
-describe('SchulzimmerComponent', () => {
-  let component: SchulzimmerComponent;
-  let fixture: ComponentFixture<SchulzimmerComponent>;
+describe('SchulklassenComponent', () => {
+  let component: SchulklassenComponent;
+  let fixture: ComponentFixture<SchulklassenComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [SchulzimmerComponent],
+      declarations: [SchulklassenComponent],
       imports: [ FormsModule, ReactiveFormsModule, NoopAnimationsModule, MaterialModule ],
       providers: [
         { provide: DataService, useClass: MockDataService },
@@ -35,7 +35,7 @@ describe('SchulzimmerComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SchulzimmerComponent);
+    fixture = TestBed.createComponent(SchulklassenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -44,18 +44,18 @@ describe('SchulzimmerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add a new Schulzimmer', () => {
+  it('should add a new Schulklasse', () => {
     // Arrange
     component.ngOnInit(); // Load initial user data
-    expect(component.schulzimmerToPerson.length).toBe(0);
-    component.neuesSchulzimmerName = 'Neues Testzimmer';
+    expect(component.klassenToPerson.length).toBe(0);
+    component.neueSchulklasseName = 'Neue Testklasse';
 
     // Act
-    component.addSchulzimmerTmp();
+    component.addSchulklasse();
 
     // Assert
-    expect(component.schulzimmerToPerson.length).toBe(1);
-    expect(component.schulzimmerToPerson[0].name).toBe('Neues Testzimmer');
+    expect(component.klassenToPerson.length).toBe(1);
+    expect(component.klassenToPerson[0].name).toBe('Neue Testklasse');
     expect(component.savingIsActiv).toBe(true);
   });
 });

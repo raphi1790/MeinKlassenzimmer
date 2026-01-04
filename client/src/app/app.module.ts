@@ -20,7 +20,6 @@ import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.compo
 import { SpeichernComponent } from './components/speichern/speichern.component';
 import { SpeichernInfoDialogComponent } from './components/speichern-info-dialog/speichern-info-dialog.component';
 import { StartseiteComponent } from './components/startseite/startseite.component';
-import { AuthService } from './services/auth/auth.service';
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { AnleitungComponent } from './components/anleitung/anleitung.component';
 import { InlineEditSmallComponent } from './components/inline-edit-small/inline-edit-small.component';
@@ -31,7 +30,6 @@ import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { RegelnComponent } from './components/regeln/regeln.component';
 import { RegelDialogComponent } from './components/regel-dialog/regel-dialog.component';
 import { InfoDialogComponent } from './components/info-dialog/info-dialog.component';
-import { AuthGuard } from './helpers/guards/auth.guard';
 import { UserService } from './services/user.service';
 import { TimerComponent } from './components/timer/timer.component';
 import { ZufallsgeneratorComponent } from './components/zufallsgenerator/zufallsgenerator.component';

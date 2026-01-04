@@ -1,6 +1,7 @@
+import { Observable } from 'rxjs';
 import { User } from "../models/user";
 
 export abstract class DataService {
-    abstract mapUser(any): any;
+    abstract mapUser(): Observable<User>;
     abstract updateUser(user:User): void;
   }
