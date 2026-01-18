@@ -19,7 +19,6 @@ export class InlineEditSmallComponent implements OnInit {
 
 
   beginEdit(el: HTMLElement): void {
-      debugger;
       this.isDisplay = false;
 
       setTimeout(() => {
@@ -28,7 +27,6 @@ export class InlineEditSmallComponent implements OnInit {
   }
 
   editDone(newText: string): void {
-      debugger;
       this.isDisplay = true;
       let newName = new Name();
       newName.text = newText;

@@ -1,3 +1,8 @@
-mat-form-field {
-    margin-right: 12px;
-  }
+.save-snackbar-content {
+  display: flex;
+  align-items: center;
+}
+
+.snackbar-message {
+  margin-left: 10px;
+}

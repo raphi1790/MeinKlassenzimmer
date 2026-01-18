@@ -40,7 +40,6 @@ export class ZufallsgeneratorComponent implements OnInit {
   }
 
   applyUser(user) {
-    debugger;
     this.myUser = new User(user)
     this.klassenToPerson = this.myUser.schulklassen
     // console.log(this.myUser)

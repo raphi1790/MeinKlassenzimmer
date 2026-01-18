@@ -3,5 +3,5 @@ import { User } from "../models/user";
 
 export abstract class DataService {
     abstract mapUser(): Observable<User>;
-    abstract updateUser(user:User): void;
+    abstract updateUser(user:User): Promise<void>;
   }

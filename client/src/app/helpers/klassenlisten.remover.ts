@@ -6,7 +6,6 @@ export class KlassenlistenRemover {
   constructor() { }
 
   removeSchuelerFromKlassenlisten(removedSchueler: Schueler, klassenlistenToPerson: Klassenliste[]): Klassenliste[] {
-    debugger;
     if (typeof klassenlistenToPerson !== 'undefined') {
       klassenlistenToPerson.forEach(function (o) {
         if (o.gruppen){
@@ -24,7 +23,6 @@ export class KlassenlistenRemover {
   }
 
   removeKlassenlistenContainingSchulklasse(selectedSchulklasse: Schulklasse, klassenlistenToPerson: Klassenliste[]): [Klassenliste[], number]{
-    debugger;
     let numFiltered = 0
     klassenlistenToPerson = klassenlistenToPerson.filter(
        function(liste) { 

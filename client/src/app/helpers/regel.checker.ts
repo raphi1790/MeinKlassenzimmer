@@ -7,12 +7,10 @@ import { Schulzimmer } from "../models/schulzimmer";
 export class RegelChecker{
 
     regelExistsToSchueler(inputSchueler: Schueler, inputRegeln: Regel[]): boolean{
-        debugger;
         return inputRegeln.some(regel => regel.schueler1Id === inputSchueler.id)
     }
 
     regelExistsToSchulklasse(inputKlasse: Schulklasse, inputRegeln: Regel[]): boolean{
-        debugger;
         let regelExistsToKlasse = false;
         inputKlasse.schueler.forEach(schueler => {
             if(this.regelExistsToSchueler(schueler,inputRegeln)){
@@ -22,7 +20,6 @@ export class RegelChecker{
         return regelExistsToKlasse
     }
     regelExistsToTischId(inputTischId: string, inputRegeln: Regel[]): boolean{
-        debugger;
         let boolVariable = false
         if(inputTischId){
             boolVariable = inputRegeln.some(regel => regel.tischId === inputTischId)
@@ -30,7 +27,6 @@ export class RegelChecker{
         return  boolVariable
     }
     regelExistsToSchulzimmer(inputZimmer: Schulzimmer, inputRegeln: Regel[]): boolean{
-        debugger;
         let regelExistsToZimmer = false;
         inputZimmer.tische.forEach(tisch => {
             if(this.regelExistsToTischId(tisch.id ,inputRegeln)){

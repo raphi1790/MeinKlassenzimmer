@@ -62,7 +62,6 @@ export class SchuelerComponent implements OnChanges, AfterViewInit {
  
 
   deleteSchueler(deletedSchueler: Schueler):void{
-    debugger;
     if(!this.regelChecker.regelExistsToSchueler(deletedSchueler, this.regelnToPerson)){
       this.schulklasse.schueler = this.schulklasse.schueler.filter(
         item => item.id != deletedSchueler.id
@@ -94,7 +93,6 @@ export class SchuelerComponent implements OnChanges, AfterViewInit {
   };
 
   addSchueler():void {
-    debugger;
     var schuelerTmp = new Schueler({
       id: uuidv4(),
       schulklassenId:this.schulklasse.id,
@@ -121,7 +119,6 @@ export class SchuelerComponent implements OnChanges, AfterViewInit {
 
   }
   ngOnChanges(){
-    debugger;
     this.schulklasse = this.selectedSchulklasse;
     this.dataSource.data = this.schulklasse.schueler;
     this.anzahlSchueler = this.selectedSchulklasse.schueler.length;

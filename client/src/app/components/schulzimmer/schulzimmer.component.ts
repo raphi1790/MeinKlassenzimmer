@@ -11,8 +11,6 @@ import { Name } from '../../models/name';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { User } from '../../models/user';
-import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { SitzordnungenRemover } from 'src/app/helpers/sitzordnungen.remover';
@@ -20,6 +18,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DataService } from 'src/app/services/data.service';
+import { AutoSaveService } from 'src/app/services/auto-save.service';
 
 @Component({
   standalone: false,
@@ -40,10 +39,8 @@ export class SchulzimmerComponent implements OnInit {
   regelnToPerson: Regel[];
   selectedSchulzimmer: Schulzimmer;
   neueSchulzimmerTmp: Schulzimmer[];
-  savingIsActiv : boolean;
   neuesSchulzimmerName: string;
   neuesSchulzimmerForm = new FormControl('', [Validators.required, Validators.minLength(2)]);
-  isSaving: boolean;
   maximalTischNumber: number;
   regelChecker:RegelChecker;
   infoDialogRef: MatDialogRef<InfoDialogComponent>;
@@ -59,7 +56,8 @@ export class SchulzimmerComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-     public dialog: MatDialog,private _snackBar: MatSnackBar
+    private autoSaveService: AutoSaveService,
+     public dialog: MatDialog
       ) {
     this.maximalTischNumber = 0;
     this.rowSchulzimmer = Array.from(new Array(CONFIG.numberOfRows),(val,index)=>index);
@@ -73,7 +71,6 @@ export class SchulzimmerComponent implements OnInit {
   
   }
   applyUser(user){
-      debugger;
       this.myUser = new User(user)
       this.schulzimmerToPerson = this.myUser.schulzimmer
       this.regelnToPerson = this.myUser.regeln
@@ -96,7 +93,6 @@ export class SchulzimmerComponent implements OnInit {
   }
 
   onSelect(selectedSchulzimmer: Schulzimmer): void {
-    debugger;
     // console.log("table number (before findMaximalTischNumber): " + this.currentTischNumber);
     this.selectedSchulzimmer = selectedSchulzimmer;
     this.maximalTischNumber = this.findMaximalTischNumber(this.selectedSchulzimmer.tische);
@@ -105,7 +101,6 @@ export class SchulzimmerComponent implements OnInit {
   }
 
   findMaximalTischNumber(tische: Tisch[]):number{
-    debugger;
     if (tische == null || tische.length == 0){
       return 0
     }
@@ -135,7 +130,9 @@ export class SchulzimmerComponent implements OnInit {
 
         }
       this.selectedSchulzimmer = null;    
-      this.savingIsActiv = true; 
+      this.myUser.schulzimmer = this.schulzimmerToPerson;
+      this.myUser.sitzordnungen = this.sitzordnungenToPerson;
+      this.autoSaveService.notifyUserChange(this.myUser);
       this.dataSource = new MatTableDataSource(this.schulzimmerToPerson);
 
     }else{
@@ -155,16 +152,15 @@ export class SchulzimmerComponent implements OnInit {
   }
 
   onNameChange(newName : Name):void{
-    debugger;
     let oldName = this.schulzimmerToPerson.filter(zimmer => zimmer.id == newName.id)[0].name;
     if(oldName != newName.text){
       this.schulzimmerToPerson.filter(klasse => klasse.id == newName.id)[0].name = newName.text;
-      this.savingIsActiv = true;
+      this.myUser.schulzimmer = this.schulzimmerToPerson;
+      this.autoSaveService.notifyUserChange(this.myUser);
     }
   }
 
   addSchulzimmerTmp(): void {
-    debugger;
     var neuesSchulzimmerTmp = new Schulzimmer();
     neuesSchulzimmerTmp.name = this.neuesSchulzimmerName;
     neuesSchulzimmerTmp.id = uuidv4();
@@ -172,7 +168,8 @@ export class SchulzimmerComponent implements OnInit {
     this.schulzimmerToPerson.push(neuesSchulzimmerTmp);
     neuesSchulzimmerTmp = null;
     this.selectedSchulzimmer = null;
-    this.savingIsActiv = true;
+    this.myUser.schulzimmer = this.schulzimmerToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
     this.neuesSchulzimmerName = null;
 
     this.neuesSchulzimmerForm.markAsPristine();
@@ -183,7 +180,6 @@ export class SchulzimmerComponent implements OnInit {
   }
 
   updateSchulzimmer(updatedSchulzimmer: Schulzimmer): void {
-    debugger;
     this.schulzimmerToPerson = this.schulzimmerToPerson.filter(
       item =>
         item.id !== updatedSchulzimmer.id)
@@ -194,29 +190,22 @@ export class SchulzimmerComponent implements OnInit {
       this.schulzimmerToPerson.push(updatedSchulzimmer);
       this.maximalTischNumber = this.findMaximalTischNumber(updatedSchulzimmer.tische)
     }
-    this.savingIsActiv = true;
+    this.myUser.schulzimmer = this.schulzimmerToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
     console.log("Updated SchulzimmerToPerson");
     console.log(this.schulzimmerToPerson);
   }
 
   updateSitzordnungen(updatedSitzordnungen: Sitzordnung[]): void {
-    debugger;
     this.sitzordnungenToPerson = updatedSitzordnungen
     console.log("this.sitzordnungenToPerson ", this.sitzordnungenToPerson)
-    this.savingIsActiv = true;
+    this.myUser.sitzordnungen = this.sitzordnungenToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
   }
 
 
   canDeactivate(){
-    debugger;
-    return !this.savingIsActiv;
-  }
-
-  openSavingSnackBar(){
-    this._snackBar.openFromComponent(SaveSnackBarComponent, {
-      duration: 2000,
-    });
-
+    return true;
   }
 
   applyFilter(event: Event) {
@@ -228,27 +217,7 @@ export class SchulzimmerComponent implements OnInit {
     }
 }
 
-  saveSchulzimmerTische() {
-    debugger;
-    this.savingIsActiv = false; 
-    this.isSaving = true;
-    this.myUser.schulzimmer = this.schulzimmerToPerson
-    this.myUser.sitzordnungen = this.sitzordnungenToPerson // Update sitzordnungen, which are removed as a side effect of deleting a particular schulzimmer
-    this.dataService.updateUser(this.myUser);
-    this.isSaving = false;
-    this.schulzimmerToPersonOriginal = this.schulzimmerToPerson;
-    this.openSavingSnackBar()
-    
-  }
-  cancel(){
-    debugger;
-    this.schulzimmerToPerson = JSON.parse(JSON.stringify(this.schulzimmerToPersonOriginal));
-    this.sitzordnungenToPerson = JSON.parse(JSON.stringify(this.sitzordnungenToPersonOriginal));
-    this.savingIsActiv = false;
-  }
-
   ngOnInit() {
-    debugger;
     this.isLoadingData = true;
     this.loadInputData();
 

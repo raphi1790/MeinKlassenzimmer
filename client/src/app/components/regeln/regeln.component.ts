@@ -13,9 +13,8 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { OutputRegelPaarung } from '../../models/output.regel.paarung';
 import { take } from 'rxjs/operators';
 import { User } from '../../models/user';
-import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/app/services/data.service';
+import { AutoSaveService } from 'src/app/services/auto-save.service';
 
 @Component({
   standalone: false,
@@ -33,8 +32,6 @@ export class RegelnComponent implements OnInit {
   outputSchulklasse: Schulklasse;
   klassenToPerson: Schulklasse[];
   zimmerToPerson: Schulzimmer[];
-  savingIsActiv: boolean;
-  isSaving: boolean;
   regelnToPerson: Regel[];
   regelnToPersonOriginal: Regel[];
   regelTypes = ['Fester Sitzplatz', 'Unmögliche Paarung']
@@ -68,7 +65,8 @@ export class RegelnComponent implements OnInit {
 
   constructor(
     private dataService:DataService,
-    private _snackBar: MatSnackBar) {
+    private autoSaveService: AutoSaveService
+    ) {
     this.regelEnricher = new RegelEnricher();
 
   }
@@ -90,7 +88,6 @@ export class RegelnComponent implements OnInit {
   }
 
   applyUser(user) {
-    debugger;
     this.myUser = new User(user)
     this.regelnToPerson = this.myUser.regeln
     this.regelnToPerson = JSON.parse(JSON.stringify(this.regelnToPerson));
@@ -130,7 +127,6 @@ export class RegelnComponent implements OnInit {
 
   }
   enrichRegeln(regeln: Regel[]) {
-    debugger;
     let regelnTypeSitzplatz = regeln.filter(regel => regel.type == "Fester Sitzplatz");
     let regelnTypePaarung = regeln.filter(regel => regel.type == "Unmögliche Paarung");
     this.dataSourceSitzplatz.data = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, regelnTypeSitzplatz);
@@ -144,7 +140,8 @@ export class RegelnComponent implements OnInit {
     this.regelnToPerson = this.regelnToPerson.filter(
       item =>
         item.id !== regelOutput.regelId);
-    this.savingIsActiv = true;
+    this.myUser.regeln = this.regelnToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
     this.dataSourceSitzplatz.data = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
 
   }
@@ -152,13 +149,13 @@ export class RegelnComponent implements OnInit {
     this.regelnToPerson = this.regelnToPerson.filter(
       item =>
         item.id !== regelOutput.regelId);
-    this.savingIsActiv = true;
+    this.myUser.regeln = this.regelnToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
     this.dataSourcePaarung.data = this.regelEnricher.enrichedRegelPaarung(this.klassenToPerson, this.regelnToPerson);
 
   }
 
   addRegel(): void {
-    debugger;
     this.formSubmitAttempt = true;
     if (this.myFormBase.valid && (this.myFormFesterSitzplatz.valid || this.myFormPaarung.valid)) {
       var neueRegelTmp = new Regel();
@@ -175,7 +172,8 @@ export class RegelnComponent implements OnInit {
       }
       this.regelnToPerson.push(neueRegelTmp);
       this.enrichRegeln(this.regelnToPerson);
-      this.savingIsActiv = true;
+      this.myUser.regeln = this.regelnToPerson;
+      this.autoSaveService.notifyUserChange(this.myUser);
       this.myFormBase.reset();
       this.myFormFesterSitzplatz.reset();
       this.myFormPaarung.reset();
@@ -206,41 +204,11 @@ export class RegelnComponent implements OnInit {
     );
   }
 
-  openSavingSnackBar() {
-    this._snackBar.openFromComponent(SaveSnackBarComponent, {
-      duration: 2000,
-    });
-
-  }
-
-
-  saveRegeln() {
-    debugger;
-    this.savingIsActiv = false; 
-    this.isSaving = true;
-    this.myUser.regeln = this.regelnToPerson
-    this.dataService.updateUser(this.myUser);
-    this.isSaving = false;
-    this.regelnToPersonOriginal = this.regelnToPerson;
-    this.openSavingSnackBar()
-
-  }
-
-  cancel() {
-    debugger;
-    this.regelnToPerson = JSON.parse(JSON.stringify(this.regelnToPersonOriginal));
-    this.dataSourcePaarung.data = this.regelEnricher.enrichedRegelPaarung(this.klassenToPerson, this.regelnToPerson);
-    this.dataSourceSitzplatz.data = this.regelEnricher.enrichedRegelSitzplatz(this.klassenToPerson, this.zimmerToPerson, this.regelnToPerson);
-    this.savingIsActiv = false;
-  }
-
   canDeactivate() {
-    debugger;
-    return !this.savingIsActiv;
+    return true;
   }
 
   ngOnInit() {
-    debugger;
     this.createFormControls();
     this.createForm();
     this.isLoadingData = true;

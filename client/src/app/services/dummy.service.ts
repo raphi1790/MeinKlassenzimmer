@@ -46,8 +46,9 @@ export class DummyService implements DataService {
             regeln: this.getRegeln()
         }));
     }
-    updateUser(user:User):void{
+    updateUser(user:User): Promise<void>{
         console.log("saved on dummy-service:", user)
+        return Promise.resolve();
     }
     private getSchueler(): Schueler[]{
         let schueler = new Array<Schueler>(5)
@@ -188,7 +189,6 @@ export class DummyService implements DataService {
         return tische
     }
     getSchulzimmer(): Schulzimmer[] {
-        debugger;
         this.schulzimmer1 = new Schulzimmer()
         this.schulzimmer1.id = '1'
         this.schulzimmer1.personId = 'abc'

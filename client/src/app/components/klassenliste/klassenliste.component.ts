@@ -45,7 +45,6 @@ export class KlassenlisteComponent implements OnChanges {
 
 
   drop(event: CdkDragDrop<string[]>) {
-    debugger;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -58,7 +57,6 @@ export class KlassenlisteComponent implements OnChanges {
   }
 
   private updateRemainingSchueler(schuelerTotal: Schueler[], klassenliste: Klassenliste): Schueler[] {
-    debugger;
     var fixedSchueler = new Array<Schueler>()
     for (let index = 0; index < klassenliste.gruppen.length; index++) {
       fixedSchueler.push(...klassenliste.gruppen[index].schueler)
@@ -70,7 +68,6 @@ export class KlassenlisteComponent implements OnChanges {
   }
 
   openRegelDialog(): void {
-    debugger;
     this.dataSource.data = this.relevantRegeln;
     const dialogRef = this.dialog.open(RegelDialogComponent, {
       width: '550px',
@@ -80,7 +77,6 @@ export class KlassenlisteComponent implements OnChanges {
 
     dialogRef.afterClosed().subscribe(result => {
     });
-    debugger;
     const dialogSubmitSubscription =
       dialogRef.componentInstance.submitClicked.subscribe(result => {
         console.log("The dialog was closed.")
@@ -96,7 +92,6 @@ export class KlassenlisteComponent implements OnChanges {
   }
 
   onNameChange(newName : Name):void{
-    debugger;
     let oldName = this.selectedKlassenliste.gruppen.filter(gruppe => gruppe.id.toString() == newName.id)[0].name;
     if(oldName != newName.text){
       this.selectedKlassenliste.gruppen.filter(gruppe => gruppe.id.toString() == newName.id)[0].name = newName.text;
@@ -110,7 +105,6 @@ export class KlassenlisteComponent implements OnChanges {
 
     let groupPreparer = new GroupPreparer();
     let calculatingEngine = new CalculatingEngine();
-    debugger;
     let resultOutput = calculatingEngine.calculate(groupPreparer, this.relevantSchulklasse.schueler, activeRegeln, null, this.selectedKlassenliste.gruppen.length)
     if (typeof resultOutput === 'undefined') {
       this.infoDialogRef = this.dialog.open(InfoDialogComponent, {
@@ -130,13 +124,11 @@ export class KlassenlisteComponent implements OnChanges {
   }
 
   generatePdf() {
-    debugger;
     var fileName = "Gruppeneinteilung_" + this.selectedKlassenliste.name + ".pdf";
     var data = document.getElementById("contentToPdf");
     var divWidth = data.offsetWidth;
     var divHeight = data.offsetHeight;
     html2canvas(data).then(function (canvas) {
-      debugger;
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
       var height = pdf.internal.pageSize.getHeight();
@@ -152,7 +144,6 @@ export class KlassenlisteComponent implements OnChanges {
 
 
   ngOnChanges(): void {
-    debugger;
     this.defaultGroup.schueler = this.updateRemainingSchueler(this.relevantSchulklasse.schueler, this.selectedKlassenliste)
 
 

@@ -9,7 +9,6 @@ export class SitzordnungenRemover {
   constructor() { }
 
   removeTischFromSeating(removedTisch: Tisch, sitzordnungenToPerson: Sitzordnung[]  ): Sitzordnung[]{
-    debugger;
     // console.log("removeTischFromSeating, removedTisch", removedTisch)
     // console.log("removeTischFromSeating, sitzordnungenToPerson", sitzordnungenToPerson)
     if (typeof sitzordnungenToPerson !== 'undefined') {
@@ -27,7 +26,6 @@ export class SitzordnungenRemover {
   }
 
   removeSchuelerFromSeating(removedSchueler: Schueler, sitzordnungenToPerson: Sitzordnung[]): Sitzordnung[] {
-    debugger;
     if (typeof sitzordnungenToPerson !== 'undefined') {
       sitzordnungenToPerson.forEach(function (o) {
         if (o.seatings){
@@ -41,7 +39,6 @@ export class SitzordnungenRemover {
   }
 
   removeSitzordnungenContainingSchulklasse(selectedSchulklasse: Schulklasse, sitzordnungenToPerson: Sitzordnung[]): [Sitzordnung[], number]{
-    debugger;
     let numFiltered = 0
     sitzordnungenToPerson = sitzordnungenToPerson.filter(
        function(liste) { 
@@ -58,7 +55,6 @@ export class SitzordnungenRemover {
   }
 
   removeSitzordnungenContainingSchulzimmer(selectedSchulzimmer: Schulzimmer, sitzordnungenToPerson: Sitzordnung[]):[Sitzordnung[], number]{ 
-    debugger;
     let numFiltered = 0
     sitzordnungenToPerson = sitzordnungenToPerson.filter(
        function(liste) { 

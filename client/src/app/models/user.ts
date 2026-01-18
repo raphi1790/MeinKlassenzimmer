@@ -19,7 +19,6 @@ export class User {
 
 
   constructor(user: User) {
-    debugger;
     this.uid = user.uid;
     this.email = user.email;
     this.photoURL = user.photoURL;
