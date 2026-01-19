@@ -11,11 +11,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Name } from 'src/app/models/name';
 import { Gruppe } from 'src/app/models/gruppe';
 import { Regel } from 'src/app/models/regel';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { RegelFilter } from 'src/app/helpers/regel.filter';
 import { MatSort } from '@angular/material/sort';
 import { DataService } from 'src/app/services/data.service';
+import { AutoSaveService } from 'src/app/services/auto-save.service';
 
 @Component({
   standalone: false,
@@ -31,7 +30,6 @@ export class ListenverwaltungComponent implements OnInit {
   klassenlistenToPerson: Klassenliste[]
   klassenlistenToPersonOriginal: Klassenliste[]
   isLoadingData: boolean;
-  isSaving: boolean;
   regelnToPerson: Regel[];
   selectedSchulklasse: Schulklasse;
   selectedListNameInput: string;
@@ -39,7 +37,6 @@ export class ListenverwaltungComponent implements OnInit {
   selectedSchueler: Schueler[];
   selectedKlassenliste: Klassenliste;
   relevantSchulklasse: Schulklasse;
-  savingIsActiv: boolean;
 
   displayedColumns: string[] = ['name', "klasse", 'groups', 'action'];
   dataSource: MatTableDataSource<Klassenliste>;
@@ -59,7 +56,8 @@ export class ListenverwaltungComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private _snackBar: MatSnackBar) {
+    private autoSaveService: AutoSaveService
+    ) {
 
     this.regelFilter = new RegelFilter()
   }
@@ -74,7 +72,6 @@ export class ListenverwaltungComponent implements OnInit {
   }
 
   applyUser(user) {
-    debugger;
     this.myUser = new User(user)
     this.klassenToPerson = this.myUser.schulklassen
     this.regelnToPerson = this.myUser.regeln
@@ -93,7 +90,6 @@ export class ListenverwaltungComponent implements OnInit {
 
 
   createKlassenliste(): void {
-    debugger;
     var klasselisteTmp = new Klassenliste();
     klasselisteTmp.name = this.selectedListNameInput;
     klasselisteTmp.id = uuidv4();
@@ -104,8 +100,9 @@ export class ListenverwaltungComponent implements OnInit {
     klasselisteTmp = null;
     this.selectedSchulklasse = null;
     this.selectedGroupNumberInput = null;
-    this.savingIsActiv = true;
     this.selectedListNameInput = null;
+    this.myUser.klassenlisten = this.klassenlistenToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
 
     this.myListForm.markAsPristine();
     this.myListForm.markAsUntouched();
@@ -117,13 +114,11 @@ export class ListenverwaltungComponent implements OnInit {
   }
 
   private initializeGroups(inputGroupNumber: number, schulklassenId: string): Gruppe[] {
-    debugger;
     // let numberOfGroups = this.calculateNumberGroups(inputGroupNumber)
     let numberOfGroups = Math.round(inputGroupNumber)
     let gruppen = new Array<Gruppe>(numberOfGroups)
     // Set id and name of each group
     for (var i = 0; i < gruppen.length; i++) {
-      debugger;
       gruppen[i] = new Gruppe()
       gruppen[i].id = i;
       gruppen[i].name = 'Gruppe ' + (i + 1)
@@ -137,7 +132,6 @@ export class ListenverwaltungComponent implements OnInit {
 
 
   onSelect(klassenliste: Klassenliste): void {
-    debugger;
     this.selectedKlassenliste = this.klassenlistenToPerson.filter(liste => liste.id == klassenliste.id)[0];
     this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == this.selectedKlassenliste.schulklassenId)[0]
     this.relevantRegeln = this.regelFilter.filterRegelBySchulklasse(this.regelnToPerson,
@@ -147,21 +141,21 @@ export class ListenverwaltungComponent implements OnInit {
 
   }
   onNameChange(newName: Name): void {
-    debugger;
     let oldName = this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == newName.id)[0].name;
     if (oldName != newName.text) {
       this.klassenlistenToPerson.filter(klassenliste => klassenliste.id == newName.id)[0].name = newName.text;
-      this.savingIsActiv = true;
+      this.myUser.klassenlisten = this.klassenlistenToPerson;
+      this.autoSaveService.notifyUserChange(this.myUser);
     }
 
   }
   deleteKlassenliste(klassenliste: Klassenliste): void {
-    debugger;
     this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
       item =>
         item.id !== klassenliste.id);
     this.selectedKlassenliste = null;
-    this.savingIsActiv = true;
+    this.myUser.klassenlisten = this.klassenlistenToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
     this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
 
   }
@@ -174,7 +168,6 @@ export class ListenverwaltungComponent implements OnInit {
 
 
   updateKlassenliste(updatedKlassenliste: Klassenliste): void {
-    debugger;
     this.klassenlistenToPerson = this.klassenlistenToPerson.filter(
       item =>
         item.id !== updatedKlassenliste.id)
@@ -184,7 +177,8 @@ export class ListenverwaltungComponent implements OnInit {
     else {
       this.klassenlistenToPerson.push(updatedKlassenliste);
     }
-    this.savingIsActiv = true;
+    this.myUser.klassenlisten = this.klassenlistenToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
   }
 
   isFieldValid(form: FormGroup, field: string) {
@@ -211,34 +205,8 @@ export class ListenverwaltungComponent implements OnInit {
     });
   }
 
-  openSavingSnackBar() {
-    this._snackBar.openFromComponent(SaveSnackBarComponent, {
-      duration: 2000,
-    });
-
-  }
-
   canDeactivate() {
-    debugger;
-    return !this.savingIsActiv;
-  }
-
-  saveKlassenlisten(): void {
-    debugger;
-    this.savingIsActiv = false; 
-    this.isSaving = true;
-    this.myUser.klassenlisten = this.klassenlistenToPerson
-    this.dataService.updateUser(this.myUser);
-    this.isSaving = false;
-    this.klassenlistenToPersonOriginal = this.klassenlistenToPerson;
-    this.openSavingSnackBar()
-
-  }
-  cancel() {
-    debugger;
-    this.klassenlistenToPerson = JSON.parse(JSON.stringify(this.klassenlistenToPersonOriginal));
-    this.dataSource = new MatTableDataSource(this.klassenlistenToPerson);
-    this.savingIsActiv = false;
+    return true;
   }
 
   applyFilter(event: Event) {
@@ -254,7 +222,6 @@ export class ListenverwaltungComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger;
     this.createFormControls();
     this.createForm();
     this.isLoadingData = true;

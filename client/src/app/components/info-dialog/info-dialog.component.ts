@@ -20,7 +20,6 @@ export class InfoDialogComponent implements OnInit {
     }
 
     confirm(): void {
-        debugger;
         // this.submitClicked.emit(true);
         this.dialogRef.close();
 

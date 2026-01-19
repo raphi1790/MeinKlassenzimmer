@@ -1,1 +1,8 @@
-<p>Änderungen erfolgreich gespeichert!</p>
+<div class="save-snackbar-content">
+  <mat-spinner *ngIf="data.status === 'saving'" [diameter]="20"></mat-spinner>
+  <mat-icon *ngIf="data.status === 'saved'">done</mat-icon>
+  <mat-icon *ngIf="data.status === 'error'">error</mat-icon>
+  <span class="snackbar-message">
+    {{data.message}}
+  </span>
+</div>

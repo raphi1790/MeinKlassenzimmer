@@ -191,11 +191,6 @@
             </mat-card-actions>
           </mat-card>
         </div>
-        <app-speichern
-          (saveData)="saveRegeln()"
-          (cancelData)="cancel()"
-          [savingIsActive]="savingIsActiv"
-        ></app-speichern>
       </div>
     </div>
     <div class="col-md-7">
@@ -354,6 +349,6 @@
   </div>
 
   <div id="center" style="position: fixed; top: 50%; left: 50%">
-    <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner>
+    <mat-spinner *ngIf="isLoadingData"></mat-spinner>
   </div>
 </div>

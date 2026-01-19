@@ -113,7 +113,6 @@
                       <input
                         matInput
                         placeholder="Name"
-                        (change)="savingIsActiv = true"
                         [value]="sitzordnung.name"
                         [(ngModel)]="sitzordnung.name"
                       />
@@ -171,39 +170,34 @@
                 </tr>
               </table>
 
-              <mat-paginator
-                [pageSizeOptions]="[5, 10, 25, 100]"
-              ></mat-paginator>
-            </div>
-          </mat-card-content>
-        </mat-card>
-        <app-speichern
-          (saveData)="saveSitzordnungen()"
-          (cancelData)="cancel()"
-          [savingIsActive]="savingIsActiv"
-        ></app-speichern>
-      </div>
-    </div>
-
-    <div class="col-lg-7 col-md-12">
-      <div class="column2">
-        <div class="selectionSitzordnung" *ngIf="selectedSitzordnung">
-          <div class="sitzordnung">
-            <app-sitzordnung
-              [selectedSitzordnung]="selectedSitzordnung"
-              [relevantSchulklasse]="relevantSchulklasse"
-              [relevantSchulzimmer]="relevantSchulzimmer"
-              [relevantRegeln]="relevantRegeln"
-              (noteSitzordnungManagement)="updateSitzordnung($event)"
-            >
-            </app-sitzordnung>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="center" style="position: fixed; top: 50%; left: 50%">
-      <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner>
-    </div>
-  </div>
-</div>
+                              <mat-paginator
+                              [pageSizeOptions]="[5, 10, 25, 100]"
+                            ></mat-paginator>
+                          </div>
+                        </mat-card-content>
+                      </mat-card>
+                    </div>
+                  </div>
+              
+                  <div class="col-lg-7 col-md-12">
+                    <div class="column2">
+                      <div class="selectionSitzordnung" *ngIf="selectedSitzordnung">
+                        <div class="sitzordnung">
+                          <app-sitzordnung
+                            [selectedSitzordnung]="selectedSitzordnung"
+                            [relevantSchulklasse]="relevantSchulklasse"
+                            [relevantSchulzimmer]="relevantSchulzimmer"
+                            [relevantRegeln]="relevantRegeln"
+                            (noteSitzordnung)="updateSitzordnung($event)"
+                          >
+                          </app-sitzordnung>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              
+                  <div id="center" style="position: fixed; top: 50%; left: 50%">
+                    <mat-spinner *ngIf="isLoadingData"></mat-spinner>
+                  </div>
+                </div>
+              </div>

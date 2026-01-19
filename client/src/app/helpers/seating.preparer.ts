@@ -60,7 +60,6 @@ export class SeatingPreparer extends Preparer {
         return this.seatings
     }
     paarungSatisfied(inputSeatings: any, inputRegeln: Regel[]):boolean{
-        debugger;
         let paarungSatisfied = true
         inputRegeln.forEach(regel => {
             if (regel.type == "Unmögliche Paarung"){

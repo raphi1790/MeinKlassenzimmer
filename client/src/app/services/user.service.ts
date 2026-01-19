@@ -12,7 +12,6 @@ export class UserService implements DataService {
   private dbPath = '/users';
   private auth = inject(Auth);
   private firestore = inject(Firestore);
-
   private logger = inject(LoggingService);
 
   constructor() {

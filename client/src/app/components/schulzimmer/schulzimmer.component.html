@@ -54,7 +54,7 @@
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
                   <mat-cell *matCellDef="let schulzimmer"> 	<mat-form-field floatLabel="never" (click)="onSelect(schulzimmer)">
-                    <input matInput placeholder="Name" (change)="savingIsActiv = true" [value]="schulzimmer.name" [(ngModel)]="schulzimmer.name" >
+                    <input matInput placeholder="Name" [value]="schulzimmer.name" [(ngModel)]="schulzimmer.name" >
                   </mat-form-field> </mat-cell>
                 </ng-container>
             
@@ -84,7 +84,6 @@
           </mat-card>
 
 
-          <app-speichern (saveData)="saveSchulzimmerTische()" (cancelData) ="cancel()" [savingIsActive] ="savingIsActiv"></app-speichern>
         </div>
 
 
@@ -129,7 +128,7 @@
         </div>
       </div>
       <div id="center" style="position:fixed;top:50%;left:50%">
-        <mat-spinner *ngIf="isSaving || isLoadingData"></mat-spinner>
+        <mat-spinner *ngIf="isLoadingData"></mat-spinner>
       </div>
     </div>
   </div>

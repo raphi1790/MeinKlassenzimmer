@@ -89,7 +89,6 @@ export class BoxComponent implements OnChanges {
 
 
   selectTisch(): void {
-    debugger;
     this.getTisch(this.row, this.column)
     if (this.currentTisch) {
       // De-select table
@@ -144,7 +143,6 @@ export class BoxComponent implements OnChanges {
   }
 
   activateTisch(): void {
-    debugger;
     if (this.currentTisch.active) {
       if (!this.regelChecker.regelExistsToTischId(this.currentTisch.id, this.regelnToPerson)) {
         // deactivate tisch if there is no corresponding Regel to it

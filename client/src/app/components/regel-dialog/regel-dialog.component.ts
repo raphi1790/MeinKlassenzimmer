@@ -21,7 +21,6 @@ export class RegelDialogComponent implements OnInit {
     @Output() submitClicked = new EventEmitter<any>();
 
     isAllSelected() {
-        debugger;
         const numSelected = this.selection.selected.length;
         const numRows = this.data.input.data.length;
         return numSelected === numRows;
@@ -29,7 +28,6 @@ export class RegelDialogComponent implements OnInit {
 
     /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggle() {
-        debugger;
         this.isAllSelected() ?
             this.selection.clear() :
             this.data.input.data.forEach(row => this.selection.select(row));
@@ -37,7 +35,6 @@ export class RegelDialogComponent implements OnInit {
     }
 
     confirm() {
-        debugger;
         this.submitClicked.emit(this.selection);
         this.dialogRef.close();
       }

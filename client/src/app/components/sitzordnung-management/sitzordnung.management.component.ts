@@ -11,11 +11,10 @@ import { User } from '../../models/user';
 import { Sitzordnung } from 'src/app/models/sitzordnung';
 import { MatSort } from '@angular/material/sort';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
 import { Name } from 'src/app/models/name';
 import { v4 as uuidv4 } from 'uuid';
 import { DataService } from 'src/app/services/data.service';
+import { AutoSaveService } from 'src/app/services/auto-save.service';
 
 @Component({
   standalone: false,
@@ -33,8 +32,6 @@ export class SitzordnungManagementComponent implements OnInit {
     sitzordnungenToPerson: Sitzordnung[]
     sitzordnungenToPersonOriginal: Sitzordnung[]
     isLoadingData: boolean;
-    isSaving: boolean;
-    savingIsActiv: boolean;
     regelnToPerson: Regel[];
     selectedSitzordnung: Sitzordnung;
     selectedSitzordnungNameInput: string;
@@ -64,7 +61,7 @@ export class SitzordnungManagementComponent implements OnInit {
 
     constructor(
         private dataService: DataService,
-        private _snackBar: MatSnackBar
+        private autoSaveService: AutoSaveService
     ) {
         this.regelFilter = new RegelFilter()
 
@@ -76,7 +73,6 @@ export class SitzordnungManagementComponent implements OnInit {
       }
     
       applyUser(user) {
-        debugger;
         this.myUser = new User(user)
         this.sitzordnungenToPerson = this.myUser.sitzordnungen
         this.sitzordnungenToPersonOriginal = JSON.parse(JSON.stringify(this.sitzordnungenToPerson));
@@ -132,13 +128,11 @@ export class SitzordnungManagementComponent implements OnInit {
         });
     }
     canDeactivate() {
-        debugger;
-        return !this.savingIsActiv;
+        return true;
     }
 
 
     createSitzordnung(): void {
-        debugger;
         let sitzordnungTmp = new Sitzordnung();
         sitzordnungTmp.personId = this.myUser.uid;
         sitzordnungTmp.id = uuidv4();
@@ -147,8 +141,8 @@ export class SitzordnungManagementComponent implements OnInit {
         sitzordnungTmp.schulzimmerId = this.selectedSchulzimmer.id
         sitzordnungTmp.seatings = null
         this.sitzordnungenToPerson.push(sitzordnungTmp);
-
-        this.savingIsActiv = true;
+        this.myUser.sitzordnungen = this.sitzordnungenToPerson;
+        this.autoSaveService.notifyUserChange(this.myUser);
 
         sitzordnungTmp = null;
         this.selectedSchulklasse = null;
@@ -164,7 +158,6 @@ export class SitzordnungManagementComponent implements OnInit {
     }
 
     onSelect(selectedSitzordnung: Sitzordnung): void {
-        debugger;
         this.selectedSitzordnung = selectedSitzordnung;
         this.relevantSchulklasse = this.klassenToPerson.filter(klasse => klasse.id == selectedSitzordnung.schulklassenId)[0]
         this.relevantSchulzimmer = this.zimmerToPerson.filter(zimmer => zimmer.id == selectedSitzordnung.schulzimmerId)[0]
@@ -174,28 +167,27 @@ export class SitzordnungManagementComponent implements OnInit {
     }
 
     deleteSitzordnung(selectedSitzordnung: Sitzordnung): void {
-        debugger;
         this.sitzordnungenToPerson = this.sitzordnungenToPerson.filter(
             item =>
                 item.id !== selectedSitzordnung.id);
         this.selectedSitzordnung = null;
-        this.savingIsActiv = true;
+        this.myUser.sitzordnungen = this.sitzordnungenToPerson;
+        this.autoSaveService.notifyUserChange(this.myUser);
         this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
 
     }
 
     onNameChange(newName: Name): void {
-        debugger;
         let oldName = this.sitzordnungenToPerson.filter(sitzordnung => sitzordnung.id == newName.id)[0].name;
         if (oldName != newName.text) {
             this.sitzordnungenToPerson.filter(sitzordnung => sitzordnung.id == newName.id)[0].name = newName.text;
-            this.savingIsActiv = true;
+            this.myUser.sitzordnungen = this.sitzordnungenToPerson;
+            this.autoSaveService.notifyUserChange(this.myUser);
         }
 
     }
 
     updateSitzordnung(updatedSitzordnung: Sitzordnung): void {
-        debugger;
         this.sitzordnungenToPerson = this.sitzordnungenToPerson.filter(
             item =>
                 item.id !== updatedSitzordnung.id)
@@ -205,36 +197,9 @@ export class SitzordnungManagementComponent implements OnInit {
         else {
             this.sitzordnungenToPerson.push(updatedSitzordnung);
         }
-        this.savingIsActiv = true;
+        this.myUser.sitzordnungen = this.sitzordnungenToPerson;
+        this.autoSaveService.notifyUserChange(this.myUser);
         
-    }
-
-
-
-
-    cancel() {
-        debugger;
-        this.sitzordnungenToPerson = JSON.parse(JSON.stringify(this.sitzordnungenToPersonOriginal));
-        this.dataSource = new MatTableDataSource(this.sitzordnungenToPerson);
-        this.savingIsActiv = false;
-    }
-
-    saveSitzordnungen(): void {
-        debugger;
-        this.savingIsActiv = false;
-        this.isSaving = true;
-        this.myUser.sitzordnungen = this.sitzordnungenToPerson
-        this.dataService.updateUser(this.myUser);
-        this.isSaving = false;
-        this.sitzordnungenToPersonOriginal = this.sitzordnungenToPerson;
-        this.openSavingSnackBar()
-
-    }
-    openSavingSnackBar() {
-        this._snackBar.openFromComponent(SaveSnackBarComponent, {
-            duration: 2000,
-        });
-
     }
 
     applyFilter(event: Event) {

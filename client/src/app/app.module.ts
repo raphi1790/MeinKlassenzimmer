@@ -17,8 +17,6 @@ import { AppComponent } from './app.component';
 import { SchulklassenComponent } from './components/schulklassen/schulklassen.component';
 import { SchulzimmerComponent } from './components/schulzimmer/schulzimmer.component';
 import { SitzordnungComponent } from './components/sitzordnung/sitzordnung.component';
-import { SpeichernComponent } from './components/speichern/speichern.component';
-import { SpeichernInfoDialogComponent } from './components/speichern-info-dialog/speichern-info-dialog.component';
 import { StartseiteComponent } from './components/startseite/startseite.component';
 import { SchuelerComponent } from './components/schueler/schueler.component';
 import { AnleitungComponent } from './components/anleitung/anleitung.component';
@@ -53,12 +51,9 @@ import { MaterialModule } from './material.module';
     ToolbarComponent,
     AnleitungComponent,
     RegelnComponent,
-    SpeichernComponent,
-    SpeichernInfoDialogComponent,
     RegelDialogComponent,
     TimerComponent,
     ZufallsgeneratorComponent,
-    SaveSnackBarComponent,
     ListenverwaltungComponent,
     KlassenlisteComponent,
     InlineEditSmallComponent,

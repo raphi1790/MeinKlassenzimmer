@@ -11,8 +11,6 @@ import { Name } from '../../models/name';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../models/user';
 import { take } from 'rxjs/operators';
-import { SaveSnackBarComponent } from '../save-snack-bar/save-snack-bar.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Klassenliste } from 'src/app/models/klassenliste';
 import { KlassenlistenRemover } from 'src/app/helpers/klassenlisten.remover';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
@@ -22,6 +20,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DataService } from 'src/app/services/data.service';
+import { AutoSaveService } from 'src/app/services/auto-save.service';
 
 
 @Component({
@@ -36,8 +35,6 @@ import { DataService } from 'src/app/services/data.service';
 
 export class SchulklassenComponent implements OnInit {
   
-  savingIsActiv: boolean;
-  isSaving: boolean;
   klassenToPerson: Schulklasse[];
   klassenToPersonOriginal: Schulklasse[];
   klassenlistenToPerson : Klassenliste[];
@@ -63,8 +60,8 @@ export class SchulklassenComponent implements OnInit {
   
   constructor(
     private dataService: DataService,
-     public dialog: MatDialog,
-     private _snackBar: MatSnackBar) {
+    private autoSaveService: AutoSaveService,
+     public dialog: MatDialog) {
       this.regelChecker = new RegelChecker();
 
       
@@ -81,9 +78,7 @@ export class SchulklassenComponent implements OnInit {
   }
 
   applyUser(user){
-      debugger;
       this.myUser = new User(user)
-      debugger;
       this.klassenToPerson = this.myUser.schulklassen
       this.regelnToPerson = this.myUser.regeln
       this.klassenToPersonOriginal = JSON.parse(JSON.stringify(this.klassenToPerson));
@@ -109,13 +104,11 @@ export class SchulklassenComponent implements OnInit {
 
 
   onSelect(selectedSchulklasse: Schulklasse): void {
-    debugger;
     this.selectedSchulklasse = selectedSchulklasse;
 
 
   }
   deleteSchulklasse(selectedSchulklasse: Schulklasse):void{
-    debugger;
     if(!this.regelChecker.regelExistsToSchulklasse(selectedSchulklasse, this.regelnToPerson)){
       this.klassenToPerson = this.klassenToPerson.filter(
         item =>
@@ -139,7 +132,10 @@ export class SchulklassenComponent implements OnInit {
         });
         
       }
-      this.savingIsActiv = true;
+      this.myUser.schulklassen = this.klassenToPerson;
+      this.myUser.klassenlisten = this.klassenlistenToPerson;
+      this.myUser.sitzordnungen = this.sitzordnungenToPerson;
+      this.autoSaveService.notifyUserChange(this.myUser);
       this.selectedSchulklasse = null;
       this.dataSource = new MatTableDataSource(this.klassenToPerson);
     }else{
@@ -158,7 +154,6 @@ export class SchulklassenComponent implements OnInit {
   }
 
   addSchulklasse(): void {
-    debugger;
     var neueKlasseTmp = new Schulklasse();
     neueKlasseTmp.name = this.neueSchulklasseName;
     neueKlasseTmp.id = uuidv4();
@@ -166,7 +161,8 @@ export class SchulklassenComponent implements OnInit {
     this.klassenToPerson.push(neueKlasseTmp);
     neueKlasseTmp = null;
     this.selectedSchulklasse = null;
-    this.savingIsActiv = true;
+    this.myUser.schulklassen = this.klassenToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
     this.neueSchulklasseName = null;
 
     this.neueSchulklasseForm.markAsPristine();
@@ -177,7 +173,6 @@ export class SchulklassenComponent implements OnInit {
   }
 
   updateSchulklasse(updatedKlasse: Schulklasse): void {
-    debugger;
     this.klassenToPerson = this.klassenToPerson.filter(
       item =>
         item.id !== updatedKlasse.id)
@@ -187,44 +182,38 @@ export class SchulklassenComponent implements OnInit {
     else {
       this.klassenToPerson.push(updatedKlasse);
     }
-    this.savingIsActiv = true;
+    this.myUser.schulklassen = this.klassenToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
   }
 
   updateKlassenlisten(updatedKlasselisten: Klassenliste[]): void {
-    debugger;
     this.klassenlistenToPerson = updatedKlasselisten
-    this.savingIsActiv = true;
+    this.myUser.klassenlisten = this.klassenlistenToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
   }
 
   updateSitzordnungen(updatedSitzordnungen: Sitzordnung[]): void {
-    debugger;
     this.sitzordnungenToPerson = updatedSitzordnungen
-    this.savingIsActiv = true;
+    this.myUser.sitzordnungen = this.sitzordnungenToPerson;
+    this.autoSaveService.notifyUserChange(this.myUser);
   }
 
 
 
   onNameChange(newName : Name):void{
-    debugger;
     let oldName = this.klassenToPerson.filter(klasse => klasse.id == newName.id)[0].name;
     if(oldName != newName.text){
       this.klassenToPerson.filter(klasse => klasse.id == newName.id)[0].name = newName.text;
-      this.savingIsActiv = true;
+      this.myUser.schulklassen = this.klassenToPerson;
+      this.autoSaveService.notifyUserChange(this.myUser);
     }
     
 
   }
   canDeactivate(){
-    debugger;
-    return !this.savingIsActiv;
+    return true;
   }
 
-  openSavingSnackBar(){
-    this._snackBar.openFromComponent(SaveSnackBarComponent, {
-      duration: 2000,
-    });
-
-  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -235,31 +224,7 @@ export class SchulklassenComponent implements OnInit {
 }
 
   
-  saveSchulklasseSchueler() {
-    debugger;
-    this.savingIsActiv = false; 
-    this.isSaving = true;
-    this.myUser.schulklassen = this.klassenToPerson
-    // Update entities, which are removed as a side effect of deleting a particular schulklasse
-    this.myUser.klassenlisten = this.klassenlistenToPerson
-    this.myUser.sitzordnungen = this.sitzordnungenToPerson
-
-    this.dataService.updateUser(this.myUser);
-    this.isSaving = false;
-    this.klassenToPersonOriginal = this.klassenToPerson;
-    this.openSavingSnackBar()
-    
-  }
-  cancel(){
-    debugger;
-    this.klassenToPerson = JSON.parse(JSON.stringify(this.klassenToPersonOriginal));
-    this.klassenlistenToPerson = JSON.parse(JSON.stringify(this.klassenlistenToPersonOriginal));
-    this.sitzordnungenToPerson = JSON.parse(JSON.stringify(this.sitzordnungenToPersonOriginal));
-    this.savingIsActiv = false;
-  }
-
   ngOnInit(){
-    debugger;
     this.isLoadingData = true;
     this.loadInputData();
 

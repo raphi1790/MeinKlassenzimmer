@@ -15,7 +15,6 @@ export class GroupPreparer extends Preparer {
     
 
     prepare(inputSchueler: Schueler[], inputRegeln: Regel[],inputTischeActive=null,  inputGroupNumber? : number): Gruppe[] {
-        debugger;
         console.log("Start prepare GroupPreparer");
         if (inputSchueler.length == 0) {
             console.log("Abbruch, da keine Schueler übergeben wurden.")
@@ -47,7 +46,6 @@ export class GroupPreparer extends Preparer {
 
 
     paarungSatisfied(inputDataSource: Gruppe[],  inputRegeln: Regel[]):boolean{
-        debugger;
         let paarungSatisfied = true;
         inputRegeln.forEach(regel => {
             

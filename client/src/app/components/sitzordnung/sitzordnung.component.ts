@@ -97,7 +97,6 @@ export class SitzordnungComponent implements OnChanges{
   }
 
   getDropListData(row: number, column: number):any{
-    // debugger;
     let currentSeating = this.workingSeatings.filter(seating => seating.tisch.position.row == row && seating.tisch.position.column ==column)[0]
     return currentSeating
   }
@@ -111,7 +110,6 @@ export class SitzordnungComponent implements OnChanges{
     return name
   }
   openRegelDialog(): void {
-    debugger;
     if (!this.tooManyStudents()){
       // console.log("this.relevantRegeln", this.relevantRegeln)
       this.dataSource.data = this.relevantRegeln;
@@ -123,7 +121,6 @@ export class SitzordnungComponent implements OnChanges{
 
       dialogRef.afterClosed().subscribe(result => {
       });
-      debugger;
       const dialogSubmitSubscription =
         dialogRef.componentInstance.submitClicked.subscribe(result => {
           console.log("The dialog was closed.")
@@ -148,7 +145,6 @@ export class SitzordnungComponent implements OnChanges{
 
   }
   private updateRemainingSchueler(schuelerTotal: Schueler[], sitzordnung: Sitzordnung): Schueler[] {
-    debugger;
     if (schuelerTotal === null || schuelerTotal === undefined){
       return null
     }
@@ -165,7 +161,6 @@ export class SitzordnungComponent implements OnChanges{
 
   }
   private updateSeatingsToSitzordnung(inputSeatings: Seating[]):Seating[]{
-    debugger;
     let filteredSeatings = inputSeatings.filter(seating => seating.schueler !== null && seating.schueler !== undefined)
     console.log("filteredSeatings", filteredSeatings)
     return filteredSeatings
@@ -191,7 +186,6 @@ export class SitzordnungComponent implements OnChanges{
 
     let seatingPreparer = new SeatingPreparer();
     let calculatingEngine = new CalculatingEngine();
-    debugger;
     let activeTische = this.relevantSchulzimmer.tische.filter(tisch => tisch.active)
     let resultOutput = calculatingEngine.calculate(seatingPreparer, this.relevantSchulklasse.schueler, activeRegeln, activeTische, null)
     console.log("resultOutput", resultOutput)
@@ -218,13 +212,11 @@ export class SitzordnungComponent implements OnChanges{
 
 
   generatePdf(){
-    debugger;
     var fileName = "Sitzordnung_" + this.selectedSitzordnung.name + ".pdf";
     var data = document.getElementById("contentToPdf");
     var divWidth = data.offsetWidth;
     var divHeight = data.offsetHeight;
     html2canvas(data).then(function (canvas) {
-      debugger;
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPdf('l'); 
       var height = pdf.internal.pageSize.getHeight();
@@ -238,7 +230,6 @@ export class SitzordnungComponent implements OnChanges{
   }
 
   getWorkingSeatings(sitzordnung: Sitzordnung, schulzimmer: Schulzimmer):Seating[]{
-    debugger;
     let sitzordnungCopy = JSON.parse(JSON.stringify(sitzordnung)); //deep copy of sitzordnung; otherwise it overwrites the original element
     var fixedTische= new Array<Tisch>()
     if(sitzordnungCopy.seatings !== null ){
@@ -273,7 +264,6 @@ export class SitzordnungComponent implements OnChanges{
 
 
   ngOnChanges(){
-    debugger;
     this.remainingSchueler = this.updateRemainingSchueler(this.relevantSchulklasse.schueler, this.selectedSitzordnung)
     this.workingSeatings = this.getWorkingSeatings(this.selectedSitzordnung, this.relevantSchulzimmer)
    
