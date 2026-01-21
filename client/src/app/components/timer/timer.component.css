@@ -57,32 +57,24 @@
   align-items: center;
   justify-content: center;
   min-height: 140px;
+  color: #000000; /* Plain black */
 }
 
 /* Timer status color states */
 .timer-display.status-started {
-  color: #4caf50;
-  animation: pulse-timer 1.5s ease-in-out infinite;
+  /* Removed animation */
 }
 
 .timer-display.status-paused {
-  color: #ff9800;
   opacity: 0.75;
 }
 
 .timer-display.status-ready {
-  color: #333333;
+  /* Removed specific color */
 }
 
 /* Pulse animation for running timer */
-@keyframes pulse-timer {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.04);
-  }
-}
+/* Removed @keyframes pulse-timer */
 
 /* Timer content container */
 .timer-content {
