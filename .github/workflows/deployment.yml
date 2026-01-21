@@ -48,15 +48,14 @@ jobs:
         working-directory: client
 
       - name: Inject Tag into Environment File
-        # This searches for 'deployTag: "any-value"' and replaces it with the input tag
-        # We target environment.prod.ts because that's what 'ng build' uses for production configurations
         run: |
-          sed -i "s/deployTag: .*/deployTag: '${{ inputs.tag }}',/" src/environments/environment.prod.ts
+          FILE_TO_UPDATE="src/environments/environment.${{ inputs.environment }}.ts"
+          sed -i "s/deployTag: .*/deployTag: '${{ inputs.tag }}'/" "$FILE_TO_UPDATE"
         working-directory: client
 
       - name: Build
-        # Now when this runs, the JS files will contain the tag string instead of 'local'
-        run: npm run build --if-present
+        # This will now correctly use 'qual' or 'production' configuration from angular.json
+        run: ng build --configuration=${{ inputs.environment }}
         working-directory: client
 
       - name: Deploy to Firebase
