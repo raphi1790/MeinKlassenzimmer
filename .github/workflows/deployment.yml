@@ -55,7 +55,7 @@ jobs:
 
       - name: Build
         # This will now correctly use 'qual' or 'production' configuration from angular.json
-        run: ng build --configuration=${{ inputs.environment }}
+        run: npx ng build --configuration=${{ inputs.environment }}
         working-directory: client
 
       - name: Deploy to Firebase
