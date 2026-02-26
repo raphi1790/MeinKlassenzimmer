@@ -33,10 +33,11 @@
                   <button mat-raised-button color="accent" (click)="selectInputNumberSchueler()">Schüler auswählen</button>
               </mat-card-actions>
               <mat-card-footer>
+                <div class="preset-label">Schnellauswahl:</div>
                 <mat-chip-set aria-label="Predefined selection">
-                  <mat-chip id="my-custom-chip" (click)="selectOneSchueler()">1 Schüler</mat-chip>
-                  <mat-chip id="my-custom-chip" (click)="selectTwoSchueler()">2 Schüler</mat-chip>
-                  <mat-chip id="my-custom-chip" (click)="selectFiveSchueler()">5 Schüler</mat-chip>
+                  <mat-chip (click)="selectOneSchueler()">1 Schüler</mat-chip>
+                  <mat-chip (click)="selectTwoSchueler()">2 Schüler</mat-chip>
+                  <mat-chip (click)="selectFiveSchueler()">5 Schüler</mat-chip>
               </mat-chip-set>
               </mat-card-footer>
             </mat-card>

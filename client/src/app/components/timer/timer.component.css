@@ -2,6 +2,7 @@
 .input-form-field {
   display: flex;
   flex-direction: column;
+  gap: 14px;
 }
 
 .mat-form-field {
@@ -20,19 +21,12 @@
   margin: 0;
 }
 
-/* Card footer styling */
-.mat-card-footer,
-.mat-mdc-card-footer {
-  padding-left: 16px;
-  padding-bottom: 5px;
-}
-
 /* Preset timer label */
 .preset-label {
   font-size: 13px;
   font-weight: 600;
   margin-bottom: 12px;
-  color: rgba(0, 0, 0, 0.8);
+  color: var(--text-color);
   letter-spacing: 0.5px;
 }
 
@@ -45,43 +39,19 @@
 
 /* Timer display */
 .timer-display {
-  font-size: 100px;
-  font-weight: 300;
+  font-size: clamp(2.2rem, 10vw, 5.2rem);
+  font-weight: 500;
   text-align: center;
   line-height: 1.2;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: 'Courier New', 'Courier', monospace;
-  letter-spacing: 6px;
+  font-family: "Space Grotesk", "Courier New", monospace;
+  letter-spacing: clamp(1px, 0.6vw, 6px);
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 140px;
-}
-
-/* Timer status color states */
-.timer-display.status-started {
-  color: #4caf50;
-  animation: pulse-timer 1.5s ease-in-out infinite;
-}
-
-.timer-display.status-paused {
-  color: #ff9800;
-  opacity: 0.75;
-}
-
-.timer-display.status-ready {
-  color: #333333;
-}
-
-/* Pulse animation for running timer */
-@keyframes pulse-timer {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.04);
-  }
+  min-height: clamp(96px, 20vw, 140px);
+  color: var(--text-color);
+  white-space: nowrap;
 }
 
 /* Timer content container */
@@ -89,7 +59,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 180px;
+  min-height: clamp(120px, 28vw, 180px);
+  overflow: hidden;
 }
 
 /* Timer action buttons */
@@ -105,7 +76,6 @@
   min-width: 120px;
   border-radius: 4px;
   font-weight: 500;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
 }
@@ -143,30 +113,10 @@ mat-icon {
   margin-right: 8px;
 }
 
-/* Chip set styling */
-mat-chip-set {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-mat-chip {
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 20px;
-}
-
-mat-chip:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-}
-
 /* Responsive design - Tablets */
 @media (max-width: 768px) {
   .timer-display {
-    font-size: 64px;
-    letter-spacing: 4px;
-    min-height: 120px;
+    min-height: 100px;
   }
 
   .timer-actions {
@@ -186,9 +136,7 @@ mat-chip:hover:not(:disabled) {
 /* Responsive design - Mobile */
 @media (max-width: 576px) {
   .timer-display {
-    font-size: 48px;
-    letter-spacing: 2px;
-    min-height: 100px;
+    min-height: 90px;
   }
 
   .timer-actions button {

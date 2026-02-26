@@ -1,6 +1,7 @@
 .input-form-field {
     display: flex;
     flex-direction: column;
+    gap: 14px;
   }
   .mat-form-field {
     display: block;
@@ -17,16 +18,6 @@
 }
 mat-checkbox .mat-mdc-checkbox {
   position: relative;
-}
-.second-column-card{
-  width: 950px;
-  margin-top: 20px;
-  margin-bottom: 0px;
-  margin-left: 0px;
-  margin-right: 20px;
-}
-.col-md-7{
-    padding-left: 0px;
 }
 
 .unselected-tisch{
