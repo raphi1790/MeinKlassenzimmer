@@ -10,8 +10,13 @@ import { environment } from 'src/environments/environment';
   // Removed providers: [AuthService] - this was causing separate instances!
 })
 export class ToolbarComponent{
+  isDarkMode = false;
   
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService) {
+    const savedTheme = localStorage.getItem('mk-theme');
+    this.isDarkMode = savedTheme === 'dark';
+    this.applyTheme();
+  }
 
   showEmail(){
     if (environment.production){
@@ -36,4 +41,14 @@ export class ToolbarComponent{
   logout() {
     this.auth.logout();
   }
-}
+
+  toggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('mk-theme', this.isDarkMode ? 'dark' : 'light');
+    this.applyTheme();
+  }
+
+  private applyTheme(): void {
+    document.body.classList.toggle('dark-theme', this.isDarkMode);
+  }
+} 

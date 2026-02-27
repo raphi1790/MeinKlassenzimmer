@@ -20,12 +20,14 @@
       <mat-sidenav #snav class="app-sidenav" [mode]="'side'" opened="true" [fixedInViewport]="false">
         
         <mat-nav-list>
+          <p class="sidenav-section-title">Allgemein</p>
 
           <a mat-list-item routerLink="/anleitung" routerLinkActive="active">
             <mat-icon mat-list-icon>info</mat-icon>
             <span>Erste Schritte</span>
           </a>
 
+          <p class="sidenav-section-title">Verwaltung</p>
           <a mat-list-item class="header" (click)="toggleVerwaltungMenu()">
             <mat-icon mat-list-icon>settings</mat-icon>
             <span>Verwaltung</span>
@@ -48,6 +50,7 @@
             </a>
           </mat-nav-list>
 
+          <p class="sidenav-section-title" *ngIf="auth.isAuthenticated()">Planung</p>
           <a mat-list-item routerLink="/sitzordnung" routerLinkActive="active" *ngIf="auth.isAuthenticated()">
             <mat-icon mat-list-icon>autorenew</mat-icon>
             <span>Sitzordnung</span>
@@ -58,6 +61,7 @@
             <span>Gruppeneinteilung</span>
           </a>
 
+          <p class="sidenav-section-title">Werkzeugkasten</p>
           <a mat-list-item class="header" (click)="toggleToolsMenu()">
             <mat-icon mat-list-icon>business</mat-icon>
             <span>Werkzeugkasten</span>

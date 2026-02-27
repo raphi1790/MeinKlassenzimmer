@@ -2,6 +2,32 @@
     padding: 0 14px;
   }
   
-  .toolbar-spacer {
+.toolbar-spacer {
     flex: 1 1 auto;
   }
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+}
+
+.toolbar-actions .mat-mdc-button-base {
+  height: 36px;
+  min-height: 36px;
+  line-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.theme-toggle {
+  margin-right: 2px;
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,6 +1,7 @@
 .input-form-field {
     display: flex;
     flex-direction: column;
+    gap: 14px;
   }
 .mat-form-field {
   display: block;
@@ -23,7 +24,10 @@ mat-checkbox .mat-mdc-checkbox {
   position: relative;
 }
 
-.mat-card-footer, .mat-mdc-card-footer{
-  padding-left: 16px;
-  padding-bottom: 5px;
+.preset-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-color);
+  letter-spacing: 0.5px;
 }

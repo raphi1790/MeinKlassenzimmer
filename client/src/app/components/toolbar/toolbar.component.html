@@ -1,4 +1,12 @@
-<div>
+<div class="toolbar-actions">
+  <button
+    mat-icon-button
+    class="theme-toggle"
+    (click)="toggleTheme()"
+    [attr.aria-label]="isDarkMode ? 'Helles Design aktivieren' : 'Dunkles Design aktivieren'"
+  >
+    <mat-icon>{{ isDarkMode ? "light_mode" : "dark_mode" }}</mat-icon>
+  </button>
 
 
   <button mat-button *ngIf="!auth.isAuthenticated()" (click)="auth.login()">

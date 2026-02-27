@@ -2,9 +2,6 @@ mat-card-header {
   display: grid;
   padding-bottom: 16;
 }
-mat-card {
-  margin-top: 1em;
-}
 mat-card h3, mat-card h4 {
   margin-top: 0.5em;
   padding-left: 16px;
@@ -24,12 +21,14 @@ img {
   justify-content: space-between;
 }
 .avatar-image {
-  width: 75px;
-  height: 75px;
-  margin-top: 15px;
+  width: 96px;
+  height: 96px;
+  margin-top: 2px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .contact-card {
-  max-width: 360px;
+  max-width: 430px;
 }
 address {
   font-style: normal;
@@ -37,13 +36,11 @@ address {
   font-style: italic;
 }
 .adresse {
-  text-align: center;
+  text-align: left;
 }
 .contact-text {
-  text-align: center;
-}
-.col-md-3 {
-  padding-left: 0px;
+  text-align: left;
+  margin: 0;
 }
 .responsive {
   width: 100%;
@@ -53,4 +50,26 @@ address {
 
 .container-fluid .row {
   justify-content: space-around;
+}
+
+.contact-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.contact-content {
+  min-width: 0;
+  word-break: break-word;
+}
+
+.contact-content a {
+  display: inline-block;
+  margin-top: 6px;
+}
+
+@media (max-width: 540px) {
+  .contact-layout {
+    flex-direction: column;
+  }
 }

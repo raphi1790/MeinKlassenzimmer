@@ -2,24 +2,37 @@
     Main App & Toolbar Styles
 ================================================*/
 h1.app-name {
-  margin-left: 8px;
+  margin-left: 6px;
   display: flex;
   align-items: center;
   cursor: pointer;
+  gap: 10px;
 }
 
 .app-deploy-tag {
-  margin-left: 8px;
+  margin-left: 2px;
   font-size: 0.8em;
-  opacity: 0.85;
-  background: rgba(255,255,255,0.06);
-  padding: 2px 6px;
-  border-radius: 4px;
+  opacity: 0.95;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 999px;
   align-self: center;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  min-height: 24px;
 }
 
 .toolbar-spacer {
   flex: 1 1 auto;
+}
+
+mat-toolbar.mat-toolbar.mat-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 20px -16px rgba(10, 35, 58, 0.9);
+  display: flex;
+  align-items: center;
 }
 
 .app-container {
@@ -35,10 +48,51 @@ h1.app-name {
 ================================================*/
 mat-sidenav {
   width: 250px;
+  border-right: 1px solid #d7e2ef;
+  background: linear-gradient(180deg, #f5f9ff 0%, #f1f7ff 65%, #eef5ff 100%);
+  overflow-x: hidden;
 }
 
 .mat-sidenav-content {
-  background-image: linear-gradient(to bottom, #cac7cc 0%, #cac7cc 35%, #f7f7f7 35%, #f7f7f7 100%);
+  background:
+    linear-gradient(180deg, #dbe3ee 0%, #dbe3ee 34%, #f8fbff 34%, #f8fbff 100%),
+    radial-gradient(circle at 15% -30%, rgba(255, 255, 255, 0.6) 0%, rgba(248, 251, 255, 0) 58%);
+}
+
+:host ::ng-deep .app-sidenav .mat-drawer-inner-container {
+  overflow-x: hidden !important;
+}
+
+:host ::ng-deep .app-sidenav .mat-mdc-nav-list {
+  padding-top: 10px;
+}
+
+.sidenav-section-title {
+  margin: 14px 16px 8px;
+  font-size: 0.73rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: #4d5f76;
+  text-transform: none;
+}
+
+:host-context(.dark-theme) .mat-sidenav-content {
+  background:
+    linear-gradient(180deg, #333d4d 0%, #333d4d 34%, #27303f 34%, #27303f 100%),
+    radial-gradient(circle at 15% -30%, rgba(157, 173, 196, 0.18) 0%, rgba(39, 48, 63, 0) 60%);
+}
+
+:host-context(.dark-theme) .sidenav-section-title {
+  color: #aab7c9;
+}
+
+:host-context(.dark-theme) a[mat-list-item] {
+  color: #d8dee9;
+}
+
+:host-context(.dark-theme) ::ng-deep a[mat-list-item] .mdc-list-item__primary-text,
+:host-context(.dark-theme) ::ng-deep a[mat-list-item] mat-icon {
+  color: #d8dee9 !important;
 }
 
 /*===============================================
@@ -48,6 +102,10 @@ mat-sidenav {
 /* Remove forced flex and vertical centering, let Material handle it */
 a[mat-list-item] {
   height: 48px;
+  border-radius: 10px;
+  margin: 3px 8px;
+  max-width: calc(100% - 16px);
+  box-sizing: border-box;
 }
 
 /* Header bolding remains */
@@ -60,9 +118,9 @@ a.header .menu-toggle-icon {
 
 /* Reduce icon spacing for new Material layout */
 a[mat-list-item] mat-icon[mat-list-icon] {
-  margin-right: 16px;
+  margin-right: 14px;
   vertical-align: middle;
-  margin-top: -2px; /* Adjust this value as needed for perfect alignment */
+  margin-top: -2px;
 }
 
 /* Arrow icon spacing */
@@ -72,13 +130,21 @@ a[mat-list-item] mat-icon[mat-list-icon] {
 
 /* Remove excessive submenu indentation */
 .sidenav-submenu a[mat-list-item] {
-  padding-left: 40px !important;
+  padding-left: 32px !important;
+}
+
+:host ::ng-deep a[mat-list-item] .mdc-list-item__content,
+:host ::ng-deep a[mat-list-item] .mdc-list-item__primary-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 a.mat-mdc-list-item.active,
 a.mat-mdc-list-item.cdk-program-focused,
 a.mat-mdc-list-item[aria-current="page"],
 a.mat-mdc-list-item.mdc-list-item--activated {
-  background-color:var(--accent-color); /* or your preferred yellow */
-  color: #222 !important;
+  background-color: var(--accent-color);
+  color: #0a1d2f !important;
+  box-shadow: 0 8px 18px -14px rgba(23, 83, 73, 0.9);
 }

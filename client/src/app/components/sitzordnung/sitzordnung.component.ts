@@ -211,22 +211,42 @@ export class SitzordnungComponent implements OnChanges{
   }
 
 
-  generatePdf(){
-    var fileName = "Sitzordnung_" + this.selectedSitzordnung.name + ".pdf";
-    var data = document.getElementById("contentToPdf");
-    var divWidth = data.offsetWidth;
-    var divHeight = data.offsetHeight;
-    html2canvas(data).then(function (canvas) {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPdf('l'); 
-      var height = pdf.internal.pageSize.getHeight();
-      var ratio = height/ divHeight;
-      var heightNew = height;
-      var widthNew = divWidth * ratio
-      pdf.addImage(imgData, 'PNG', 0, 0, widthNew, heightNew);
+  async generatePdf(){
+    const fileName = "Sitzordnung_" + this.selectedSitzordnung.name + ".pdf";
+    const data = document.getElementById("contentToPdf");
+
+    if (!data) {
+      return;
+    }
+
+    const body = document.body;
+    const hadDarkTheme = body.classList.contains("dark-theme");
+
+    try {
+      if (hadDarkTheme) {
+        body.classList.remove("dark-theme");
+        body.classList.add("export-light");
+        await new Promise<void>(resolve => setTimeout(resolve, 40));
+      }
+
+      const divWidth = data.offsetWidth;
+      const divHeight = data.offsetHeight;
+      const canvas = await html2canvas(data, { backgroundColor: "#ffffff" });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPdf("l");
+      const height = pdf.internal.pageSize.getHeight();
+      const ratio = height / divHeight;
+      const heightNew = height;
+      const widthNew = divWidth * ratio;
+
+      pdf.addImage(imgData, "PNG", 0, 0, widthNew, heightNew);
       pdf.save(fileName);
-    });
-        
+    } finally {
+      body.classList.remove("export-light");
+      if (hadDarkTheme) {
+        body.classList.add("dark-theme");
+      }
+    }
   }
 
   getWorkingSeatings(sitzordnung: Sitzordnung, schulzimmer: Schulzimmer):Seating[]{

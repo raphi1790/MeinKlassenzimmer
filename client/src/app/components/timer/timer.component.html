@@ -79,8 +79,7 @@
               <countdown #countdown 
                          [config]="config || {format: 'mm:ss'}" 
                          (event)="timesUp($event)"
-                         class="timer-display"
-                         [ngClass]="'status-' + status">
+                         class="timer-display">
                 $!m!:$!s!
               </countdown>
             </mat-card-content>

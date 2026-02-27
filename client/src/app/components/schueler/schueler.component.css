@@ -1,6 +1,7 @@
 .input-form-field {
   display: flex;
   flex-direction: column;
+  gap: 14px;
 }
 .input-form-field > * {
   width: 100%;
